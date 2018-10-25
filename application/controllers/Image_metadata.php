@@ -1,9 +1,11 @@
 <?php
 include_once 'Curl_util.php';
+include_once 'General_util.php';
 class Image_metadata extends CI_Controller
 {
     public function edit($image_id="0")
     {
+        $gutil = new General_util();
         if(strcmp($image_id, "0") == 0)
         {
             show_404();
@@ -27,6 +29,10 @@ class Image_metadata extends CI_Controller
         
         if($json->found)
         {
+            if($gutil->startsWith($image_id, "CIL_"))
+            {
+                $data['numeric_id'] = str_replace("CIL_", "", $image_id);
+            }
             $data['title'] = "CIL | Edit ".$image_id;
             $data['data_json'] = $json;
             $this->load->view('templates/header', $data);
