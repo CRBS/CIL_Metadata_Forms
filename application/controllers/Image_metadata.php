@@ -30,6 +30,7 @@ class Image_metadata extends CI_Controller
             $data['title'] = "CIL | Edit ".$image_id;
             $data['data_json'] = $json;
             $this->load->view('templates/header', $data);
+            $this->load->view('edit/edit_main', $data);
             $this->load->view('templates/footer', $data);
         }
         else
