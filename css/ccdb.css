@@ -1,0 +1,16 @@
+.half-rule { 
+    margin-left: 0;
+    text-align: left;
+    width: 50%;
+ }
+
+ 
+body {
+    padding-top: 70px;
+}
+
+
+.invalid-input
+{
+  border:1px solid #ff3333;
+}

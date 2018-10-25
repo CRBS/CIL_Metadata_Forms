@@ -1,6 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+$json_str = file_get_contents("C:/data/cil_metadata_config.json");
+$json = json_decode($json_str);
+        
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
@@ -521,3 +524,5 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+
+$config['elasticsearch_host'] = $json->elasticsearch_host_stage;
