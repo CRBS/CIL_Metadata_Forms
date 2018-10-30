@@ -6,6 +6,60 @@ require_once 'General_util.php';
 
 class Autocomplete extends REST_Controller
 {
+      public function cell_types_get($prefix="") 
+   {
+        $query = "{\n".
+                    "\"term_suggest\":{"."\n".
+                        "\"text\":\"".$prefix."\","."\n".
+                        "\"completion\": {"."\n".
+                        "\"field\" : \"Cell_type_suggest\""."\n".
+                        "}".
+                    "}\n".
+                "}";
+        $this->handleAutoComplete($prefix, $query);
+        
+   }
+   
+   public function cellular_components_get($prefix="")
+   {
+       $query = "{\n".
+                    "\"term_suggest\":{"."\n".
+                        "\"text\":\"".$prefix."\","."\n".
+                        "\"completion\": {"."\n".
+                        "\"field\" : \"Cellular_component_suggest\""."\n".
+                        "}".
+                    "}\n".
+                "}";
+        $this->handleAutoComplete($prefix, $query);
+   }
+   
+   public function biological_processes_get($prefix="")
+   {
+       $query = "{\n".
+                    "\"term_suggest\":{"."\n".
+                        "\"text\":\"".$prefix."\","."\n".
+                        "\"completion\": {"."\n".
+                        "\"field\" : \"Biological_processes_suggest\""."\n".
+                        "}".
+                    "}\n".
+                "}";
+        $this->handleAutoComplete($prefix, $query);
+   }
+   
+   public function anatomical_entities_get($prefix="")
+   {
+       $query = "{\n".
+                    "\"term_suggest\":{"."\n".
+                        "\"text\":\"".$prefix."\","."\n".
+                        "\"completion\": {"."\n".
+                        "\"field\" : \"Anatomical_entities_suggest\""."\n".
+                        "}".
+                    "}\n".
+                "}";
+        $this->handleAutoComplete($prefix, $query);
+   }
+   
+   
    public function ncbi_organism_get($prefix="")
    {
        $query = "{\n".
@@ -19,6 +73,183 @@ class Autocomplete extends REST_Controller
         $this->handleAutoComplete($prefix, $query);
    }
    
+   public function molecular_functions_get($prefix="")
+   {
+       $query = "{\n".
+                    "\"term_suggest\":{"."\n".
+                        "\"text\":\"".$prefix."\","."\n".
+                        "\"completion\": {"."\n".
+                        "\"field\" : \"Molecular_function_suggest\""."\n".
+                        "}".
+                    "}\n".
+                "}";
+        $this->handleAutoComplete($prefix, $query);
+   }
+   
+   public function cell_lines_get($prefix="")
+   {
+       $query = "{\n".
+                    "\"term_suggest\":{"."\n".
+                        "\"text\":\"".$prefix."\","."\n".
+                        "\"completion\": {"."\n".
+                        "\"field\" : \"Cell_line_suggest\""."\n".
+                        "}".
+                    "}\n".
+                "}";
+        $this->handleAutoComplete($prefix, $query);
+   }
+   
+   
+   public function imaging_methods_get($prefix="")
+   {
+       $query = "{\n".
+                    "\"term_suggest\":{"."\n".
+                        "\"text\":\"".$prefix."\","."\n".
+                        "\"completion\": {"."\n".
+                        "\"field\" : \"Imaging_method_suggest\""."\n".
+                        "}".
+                    "}\n".
+                "}";
+        $this->handleAutoComplete($prefix, $query);
+   }
+   
+   public function human_development_anatomies_get($prefix="")
+   {
+       $query = "{\n".
+                    "\"term_suggest\":{"."\n".
+                        "\"text\":\"".$prefix."\","."\n".
+                        "\"completion\": {"."\n".
+                        "\"field\" : \"Human_development_anatomy_suggest\""."\n".
+                        "}".
+                    "}\n".
+                "}";
+        $this->handleAutoComplete($prefix, $query);
+   }
+    
+   public function human_diseases_get($prefix="")
+   {
+       $query = "{\n".
+                    "\"term_suggest\":{"."\n".
+                        "\"text\":\"".$prefix."\","."\n".
+                        "\"completion\": {"."\n".
+                        "\"field\" : \"Human_disease_suggest\""."\n".
+                        "}".
+                    "}\n".
+                "}";
+        $this->handleAutoComplete($prefix, $query);
+   }
+    
+   public function mouse_gross_anatomies_get($prefix="")
+   {
+       $query = "{\n".
+                    "\"term_suggest\":{"."\n".
+                        "\"text\":\"".$prefix."\","."\n".
+                        "\"completion\": {"."\n".
+                        "\"field\" : \"Mouse_gross_anatomy_suggest\""."\n".
+                        "}".
+                    "}\n".
+                "}";
+       //echo $query;
+        $this->handleAutoComplete($prefix, $query);
+   }
+   
+   public function mouse_pathologies_get($prefix="")
+   {
+       $query = "{\n".
+                    "\"term_suggest\":{"."\n".
+                        "\"text\":\"".$prefix."\","."\n".
+                        "\"completion\": {"."\n".
+                        "\"field\" : \"Mouse_pathology_suggest\""."\n".
+                        "}".
+                    "}\n".
+                "}";
+       //echo $query;
+        $this->handleAutoComplete($prefix, $query);
+   }
+   
+   public function plant_growths_get($prefix="")
+   {
+       $query = "{\n".
+                    "\"term_suggest\":{"."\n".
+                        "\"text\":\"".$prefix."\","."\n".
+                        "\"completion\": {"."\n".
+                        "\"field\" : \"Plant_growth_suggest\""."\n".
+                        "}".
+                    "}\n".
+                "}";
+       //echo $query;
+        $this->handleAutoComplete($prefix, $query);
+   }
+   
+   public function teleost_anatomies_get($prefix="")
+   {
+       $query = "{\n".
+                    "\"term_suggest\":{"."\n".
+                        "\"text\":\"".$prefix."\","."\n".
+                        "\"completion\": {"."\n".
+                        "\"field\" : \"Teleost_anatomy_suggest\""."\n".
+                        "}".
+                    "}\n".
+                "}";
+       //echo $query;
+        $this->handleAutoComplete($prefix, $query);
+   }
+   
+   public function Xenopus_anatomies_get($prefix="")
+   {
+       $query = "{\n".
+                    "\"term_suggest\":{"."\n".
+                        "\"text\":\"".$prefix."\","."\n".
+                        "\"completion\": {"."\n".
+                        "\"field\" : \"Xenopus_anatomy_suggest\""."\n".
+                        "}".
+                    "}\n".
+                "}";
+       //echo $query;
+        $this->handleAutoComplete($prefix, $query);
+   }
+   
+   public function Zebrafish_anatomies_get($prefix="")
+   {
+       $query = "{\n".
+                    "\"term_suggest\":{"."\n".
+                        "\"text\":\"".$prefix."\","."\n".
+                        "\"completion\": {"."\n".
+                        "\"field\" : \"Zebrafish_anatomy_suggest\""."\n".
+                        "}".
+                    "}\n".
+                "}";
+       //echo $query;
+        $this->handleAutoComplete($prefix, $query);
+   }
+   
+   public function general_terms_get($prefix="")
+   {
+       $query = "{\n".
+                    "\"term_suggest\":{"."\n".
+                        "\"text\":\"".$prefix."\","."\n".
+                        "\"completion\": {"."\n".
+                        "\"field\" : \"General_term_suggest\""."\n".
+                        "}".
+                    "}\n".
+                "}";
+        $this->handleAutoComplete($prefix, $query);
+   }
+  
+   /*
+   public function ncbi_organism_get($prefix="")
+   {
+       $query = "{\n".
+                    "\"term_suggest\":{"."\n".
+                        "\"text\":\"".$prefix."\","."\n".
+                        "\"completion\": {"."\n".
+                        "\"field\" : \"NCBI_organism_suggest\""."\n".
+                        "}".
+                    "}\n".
+                "}";
+        $this->handleAutoComplete($prefix, $query);
+   }
+   */
    
    private function handleAutoComplete($prefix, $query)
    {
