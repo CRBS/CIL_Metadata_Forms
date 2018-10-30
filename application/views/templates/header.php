@@ -14,7 +14,7 @@
     <script src="/js/popper.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/custom.js"></script>
-    
+    <link rel="icon" href="/pix/favicon.ico" type="image/x-icon" />
     <script src="/js/cil_input_autocomplete.js?<?php echo uniqid(); ?>" type="text/javascript"></script>
     <script src="http://cellimagelibrary.org/js/jquery/jquery-1.12.4/jquery-1.12.4.js"></script> 
     <script src="http://cellimagelibrary.org/js/jquery/jquery-1.12.1/jquery-ui.js"></script>
