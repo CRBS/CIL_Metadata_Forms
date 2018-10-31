@@ -529,3 +529,5 @@ $config['elasticsearch_host'] = $json->elasticsearch_host_stage;
 
 $config['api_host'] = $json->service_api_host_stage;
 $config['auth_key'] = $json->cil_auth;
+
+$config['test_output_folder'] = "C:/Test";
