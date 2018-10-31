@@ -2,6 +2,25 @@
 
 class Curl_util
 {
+    
+    public function auth_curl_get($service_auth,$url)
+    {
+        echo "<br/>URL here:".$url;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+        
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        
+        curl_setopt($ch, CURLOPT_USERPWD, $service_auth);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        
+        $response  = curl_exec($ch);
+        curl_close($ch);
+        return $response;
+    }
+    
     public function curl_get($url)
     {
         $CI = CI_Controller::get_instance();

@@ -526,3 +526,6 @@ $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
 
 $config['elasticsearch_host'] = $json->elasticsearch_host_stage;
+
+$config['api_host'] = $json->service_api_host_stage;
+$config['auth_key'] = $json->cil_auth;
