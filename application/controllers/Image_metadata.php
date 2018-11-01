@@ -13,8 +13,10 @@ class Image_metadata extends CI_Controller
         var_dump($json);
     }
     
-    public function submit()
+    public function submit($image_id="0")
     {
+        $this->load->helper('url');
+        $base_url = $this->config->item('base_url');
         $test_output_folder = $this->config->item('test_output_folder');
         $desc = $this->input->post('description', TRUE);
         $tech_details = $this->input->post('tech_details', TRUE);
@@ -45,6 +47,12 @@ class Image_metadata extends CI_Controller
         
         $json_str = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         file_put_contents($test_output_folder."/test.json", $json_str);
+        
+        $dbutil = new DB_util();
+        $dbutil->submitMetadata($image_id, $json_str);
+        
+        redirect ($base_url."/image_metadata/edit/".$image_id);
+        
         /*echo "<br/>Description:".$desc;
         echo "<br/>Tech_details:".$tech_details;
         echo "<br/>ncbi:".$ncbi;
@@ -80,7 +88,10 @@ class Image_metadata extends CI_Controller
                 $data['numeric_id'] = str_replace("CIL_", "", $image_id);
             }
             $data['title'] = "CIL | Edit ".$image_id;
-            $data['data_json'] = $json;
+            //$data['data_json'] = $json;
+            $data['image_id'] = $image_id;
+            $mjson = json_decode($json->metadata);
+            $data['json'] = $mjson;
             $this->load->view('templates/header', $data);
             $this->load->view('edit/edit_main', $data);
             $this->load->view('templates/footer', $data);

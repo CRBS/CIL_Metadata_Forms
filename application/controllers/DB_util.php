@@ -5,6 +5,32 @@ class DB_util
     private $success = "success";
     private $id = 0;
     private $metadata = "metadata";
+    
+    public function submitMetadata($image_id,$metadata)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $array = array();
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+        {   
+            return false;
+        }
+        $sql = "update cil_metadata set metadata = $1 where image_id = $2";
+        $input = array();
+        array_push($input, $metadata);
+        array_push($input, $image_id);
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        
+        pg_close($conn);
+        return true;
+    }
+    
     public function getMetadata($image_id)
     {
         $CI = CI_Controller::get_instance();
