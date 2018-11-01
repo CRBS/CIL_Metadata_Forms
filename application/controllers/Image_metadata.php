@@ -1,8 +1,17 @@
 <?php
 include_once 'Curl_util.php';
 include_once 'General_util.php';
+include_once 'DB_util.php';
 class Image_metadata extends CI_Controller
 {
+    public function test($image_id)
+    {
+        $dbutil = new DB_util();
+        $json = $dbutil->getMetadata($image_id);
+        //$json_str = json_encode($json);
+        //echo $json_str;
+        var_dump($json);
+    }
     
     public function submit()
     {
@@ -50,12 +59,44 @@ class Image_metadata extends CI_Controller
     
     public function edit($image_id="0")
     {
+        $dbutil = new DB_util();
         $gutil = new General_util();
         if(strcmp($image_id, "0") == 0)
         {
             show_404();
             return;
         }
+        
+        $json = $dbutil->getMetadata($image_id);
+        if(!$json->success)
+        {
+            show_404();
+            return;
+        }
+        else
+        {
+            if($gutil->startsWith($image_id, "CIL_"))
+            {
+                $data['numeric_id'] = str_replace("CIL_", "", $image_id);
+            }
+            $data['title'] = "CIL | Edit ".$image_id;
+            $data['data_json'] = $json;
+            $this->load->view('templates/header', $data);
+            $this->load->view('edit/edit_main', $data);
+            $this->load->view('templates/footer', $data);
+        }
+    }
+    
+    /*
+    public function edit($image_id="0")
+    {
+        $gutil = new General_util();
+        if(strcmp($image_id, "0") == 0)
+        {
+            show_404();
+            return;
+        }
+        
         $esPrefix = $this->config->item('elasticsearch_host');
         $url = $esPrefix."/ccdbv8/data/".$image_id;
         $cutil = new Curl_util();
@@ -90,7 +131,7 @@ class Image_metadata extends CI_Controller
             return;
         }
     }
-    
+    */
     
     private function handleOntologyInput($type, $keywords)
     {
