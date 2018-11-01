@@ -15,6 +15,10 @@ class Image_metadata extends CI_Controller
     
     public function submit($image_id="0")
     {
+        $dbutil = new DB_util();
+        $mjson = $dbutil->getMetadata($image_id);
+        
+        
         $this->load->helper('url');
         $base_url = $this->config->item('base_url');
         $test_output_folder = $this->config->item('test_output_folder');
@@ -26,8 +30,19 @@ class Image_metadata extends CI_Controller
         $cellular_component = $this->input->post('image_search_parms[cellular_component]', TRUE);
         
         $json_str = "{\"CIL_CCDB\": {\"Status\": {\"Deleted\": false,\"Is_public\": false },\"CIL\":{\"CORE\":{\"IMAGEDESCRIPTION\":{  }}}}}";
-        echo $json_str;
-        $json = json_decode($json_str);
+        
+        if($mjson->success)
+        {
+            echo "<br/>Loading the previous json sucessfully";
+            //echo "<br/><br/>---".$mjson->metadata."????<br/>";
+            $json = json_decode($mjson->metadata);
+        }
+        else
+        {
+            $json = json_decode($json_str);
+            echo "<br/>Loading the previous json NOT sucessfully";
+        }
+        
         if(!is_null($desc) && strlen(trim($desc)) > 0)
         {
             $desc = trim($desc);
@@ -45,13 +60,72 @@ class Image_metadata extends CI_Controller
             $json->CIL_CCDB->CIL->CORE->TECHNICALDETAILS = $djson;
         }
         
+        if(isset($json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION))
+        {
+            echo "<br/>Has NCBI";
+            $ncbiJson = $json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION;
+            if(is_array($ncbiJson))
+            {
+                echo "<br/>Is Array";
+                if(!is_null($ncbi) && strlen(trim($ncbi)))
+                {
+                    
+                    $onto_id = $this->handleOntologyInput("ncbi_organism",$ncbi);
+                    if(is_null($onto_id))
+                    {
+                        $item = array();
+                        $item['free_text'] = $ncbi;
+                        $item_jstr = json_encode($item);
+                        $itemJson = json_decode($item_jstr);
+                        array_push($ncbiJson, $itemJson);
+                    }
+                    else 
+                    {
+                        $item = array();
+                        $item['onto_id'] = $onto_id;
+                        $item['onto_name'] = $ncbi;
+                        $item_jstr = json_encode($item);
+                        $itemJson = json_decode($item_jstr);
+                        array_push($ncbiJson, $itemJson);
+                    }
+                    
+                    $json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION=$ncbiJson;
+                }
+            }
+        }
+        else 
+        {
+            echo "<br/>Does not have NCBI";
+            if(!is_null($ncbi) && strlen(trim($ncbi)))
+            {
+                $ncbiArray = array();
+                $onto_id = $this->handleOntologyInput("ncbi_organism",$ncbi);
+                if(is_null($onto_id))
+                {
+                    $item = array();
+                    $item['free_text'] = $ncbi;
+                    array_push($ncbiArray, $item);
+                }
+                else 
+                {
+                    $item = array();
+                    $item['onto_id'] = $onto_id;
+                    $item['onto_name'] = $ncbi;
+                    array_push($ncbiArray, $item);
+                }
+                $ncbi_jstr = json_encode($ncbiArray);
+                $json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION = json_decode($ncbi_jstr);
+            }
+        }
+        
+        
         $json_str = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         file_put_contents($test_output_folder."/test.json", $json_str);
         
-        $dbutil = new DB_util();
-        $dbutil->submitMetadata($image_id, $json_str);
+        //$dbutil = new DB_util();
+        //$dbutil->submitMetadata($image_id, $json_str);
         
-        redirect ($base_url."/image_metadata/edit/".$image_id);
+        //redirect ($base_url."/image_metadata/edit/".$image_id);
         
         /*echo "<br/>Description:".$desc;
         echo "<br/>Tech_details:".$tech_details;
