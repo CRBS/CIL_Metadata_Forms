@@ -2,6 +2,7 @@
 include_once 'Curl_util.php';
 include_once 'General_util.php';
 include_once 'DB_util.php';
+include_once 'Ontology_util.php';
 class Image_metadata extends CI_Controller
 {
     public function test($image_id)
@@ -16,6 +17,7 @@ class Image_metadata extends CI_Controller
     public function submit($image_id="0")
     {
         $dbutil = new DB_util();
+        $outil = new Ontology_util();
         $mjson = $dbutil->getMetadata($image_id);
         
         
@@ -31,16 +33,19 @@ class Image_metadata extends CI_Controller
         
         $json_str = "{\"CIL_CCDB\": {\"Status\": {\"Deleted\": false,\"Is_public\": false },\"CIL\":{\"CORE\":{\"IMAGEDESCRIPTION\":{  }}}}}";
         
-        if($mjson->success)
+        if($mjson->success && isset($mjson->metadata)
+                && !is_null($mjson->metadata)
+                && strlen(trim($mjson->metadata)) > 0
+                )
         {
-            echo "<br/>Loading the previous json sucessfully";
+            //echo "<br/>Loading the previous json sucessfully";
             //echo "<br/><br/>---".$mjson->metadata."????<br/>";
             $json = json_decode($mjson->metadata);
         }
         else
         {
             $json = json_decode($json_str);
-            echo "<br/>Loading the previous json NOT sucessfully";
+            //echo "<br/>Loading the previous json NOT sucessfully";
         }
         
         if(!is_null($desc) && strlen(trim($desc)) > 0)
@@ -62,59 +67,17 @@ class Image_metadata extends CI_Controller
         
         if(isset($json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION))
         {
-            echo "<br/>Has NCBI";
             $ncbiJson = $json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION;
-            if(is_array($ncbiJson))
-            {
-                echo "<br/>Is Array";
-                if(!is_null($ncbi) && strlen(trim($ncbi)))
-                {
-                    
-                    $onto_id = $this->handleOntologyInput("ncbi_organism",$ncbi);
-                    if(is_null($onto_id))
-                    {
-                        $item = array();
-                        $item['free_text'] = $ncbi;
-                        $item_jstr = json_encode($item);
-                        $itemJson = json_decode($item_jstr);
-                        array_push($ncbiJson, $itemJson);
-                    }
-                    else 
-                    {
-                        $item = array();
-                        $item['onto_id'] = $onto_id;
-                        $item['onto_name'] = $ncbi;
-                        $item_jstr = json_encode($item);
-                        $itemJson = json_decode($item_jstr);
-                        array_push($ncbiJson, $itemJson);
-                    }
-                    
-                    $json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION=$ncbiJson;
-                }
-            }
+            $ncbiJson=$outil->handleExistingOntoJSON($ncbiJson, "ncbi_organism", $ncbi);
+            $json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION=$ncbiJson;
+            
         }
         else 
         {
-            echo "<br/>Does not have NCBI";
-            if(!is_null($ncbi) && strlen(trim($ncbi)))
+            $ncbiJson = $outil->handleNewOntoJson("ncbi_organism", $ncbi);
+            if(!is_null($ncbiJson))
             {
-                $ncbiArray = array();
-                $onto_id = $this->handleOntologyInput("ncbi_organism",$ncbi);
-                if(is_null($onto_id))
-                {
-                    $item = array();
-                    $item['free_text'] = $ncbi;
-                    array_push($ncbiArray, $item);
-                }
-                else 
-                {
-                    $item = array();
-                    $item['onto_id'] = $onto_id;
-                    $item['onto_name'] = $ncbi;
-                    array_push($ncbiArray, $item);
-                }
-                $ncbi_jstr = json_encode($ncbiArray);
-                $json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION = json_decode($ncbi_jstr);
+                $json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION=$ncbiJson;
             }
         }
         
@@ -138,6 +101,8 @@ class Image_metadata extends CI_Controller
         echo "<br/>cellular_component:".$cellular_component;
         echo "<br/>cellular_components expansion:".$this->handleOntologyInput("cellular_components",$cellular_component);*/
     }
+    
+    
     
     public function edit($image_id="0")
     {
@@ -218,38 +183,5 @@ class Image_metadata extends CI_Controller
     }
     */
     
-    private function handleOntologyInput($type, $keywords)
-    {
-        if(is_null($keywords))
-            return null;
-        else
-        {
-            $keywords = trim($keywords);
-            if(strlen($keywords)==0)
-                return null;
-            
-            $keywords=str_replace(" ", "%20", $keywords);
-        }
-        $api_host = $this->config->item('api_host');
-        $service_auth = $this->config->item('auth_key');
-        
-        $url = $api_host."/rest/simple_ontology_expansion/".$type."/Name/".
-            htmlspecialchars($keywords);
-       //echo "<br/>".$url;
-       //echo "<br/>auth:".$service_auth;
-       $cutil = new Curl_util();
-       $response = $cutil->auth_curl_get($service_auth, $url);
-       //echo $response;
-       $json = json_decode($response);
-       if(isset($json->hits->total) && $json->hits->total == 0)
-           return null;
-       else 
-       {
-          if(isset($json->hits->hits[0]->_source->Expansion->Onto_id))
-            return $json->hits->hits[0]->_source->Expansion->Onto_id;
-          else
-            return null;
-       }
-    }
 }
 

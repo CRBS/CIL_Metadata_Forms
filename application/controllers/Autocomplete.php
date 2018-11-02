@@ -6,7 +6,7 @@ require_once 'General_util.php';
 
 class Autocomplete extends REST_Controller
 {
-      public function cell_types_get($prefix="") 
+   public function cell_types_get($prefix="") 
    {
         $query = "{\n".
                     "\"term_suggest\":{"."\n".
