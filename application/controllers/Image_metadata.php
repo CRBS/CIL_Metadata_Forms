@@ -11,7 +11,104 @@ class Image_metadata extends CI_Controller
         $json = $dbutil->getMetadata($image_id);
         //$json_str = json_encode($json);
         //echo $json_str;
-        var_dump($json);
+        $array = array();
+        $array['empty'] = true;
+        
+        header('Content-Type: application/json');
+        if(!is_null($json) && isset($json->metadata))
+            echo $json->metadata;
+        else
+            echo json_encode ($array);
+    }
+    
+    public function clean($image_id="0")
+    {
+        $dbutil = new DB_util();
+        $dbutil->submitMetadata($image_id, "");
+        $this->load->helper('url');
+        $base_url = $this->config->item('base_url');
+        redirect ($base_url."/image_metadata/edit/".$image_id);
+    }
+    
+    public function delete_field($image_id="0",$field="0",$input="0")
+    {
+        $input=str_replace("%20", " ", $input);
+        $dbutil = new DB_util();
+        $outil = new Ontology_util();
+        $test_output_folder = $this->config->item('test_output_folder');
+        $mjson = $dbutil->getMetadata($image_id);
+        if(!$mjson->success)
+        {
+            show_404();
+            return;
+        }
+        $this->load->helper('url');
+        $base_url = $this->config->item('base_url');
+        
+        if($mjson->success && isset($mjson->metadata)
+                && !is_null($mjson->metadata)
+                && strlen(trim($mjson->metadata)) > 0
+                )
+        {
+
+            $json = json_decode($mjson->metadata);
+            $coreJson= $json->CIL_CCDB->CIL->CORE;
+            foreach($coreJson as $key => $val) 
+            {
+                if(strcmp($key,$field) == 0)
+                {
+                    if(is_array($coreJson->{$key}))
+                    {
+                        $i = 0;
+                        $removeIndex = null;
+                        $jsonArray = $coreJson->{$key};
+                        foreach($jsonArray as $item)
+                        {
+                            if(isset($item->onto_name))
+                            {
+                                if(strcmp($input,$item->onto_name)==0)
+                                {
+                                    //echo "<br/>".$item->onto_name;
+                                    //unset($jsonArray[$i]);
+                                    //break;
+                                    $removeIndex = $i;
+                                }
+                            }
+                            else if(isset($item->free_text))
+                            {
+                                if(strcmp($input,$item->free_text)==0)
+                                {
+                                    //echo "<br/>".$item->free_text;
+                                    //unset($jsonArray[$i]);
+                                    //break;
+                                    $removeIndex = $i;
+                                }
+                            }
+                            $i++;
+                        }
+                        if(!is_null($removeIndex))
+                        {
+                            unset($jsonArray[$removeIndex]);
+                            $jsonArray=array_values ($jsonArray);
+                        }
+                        
+                        $coreJson->{$key} = $jsonArray;
+                        
+                    }
+                } 
+            }
+            //header('Content-Type: application/json');
+            $json_str = json_encode($json,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            //echo $json_str;
+            
+             //file_put_contents($test_output_folder."/test.json", $json_str);
+        
+        
+            $dbutil->submitMetadata($image_id, $json_str);
+        
+            redirect ($base_url."/image_metadata/edit/".$image_id);
+        }
+        
     }
     
     public function submit($image_id="0")
@@ -20,6 +117,11 @@ class Image_metadata extends CI_Controller
         $outil = new Ontology_util();
         $mjson = $dbutil->getMetadata($image_id);
         
+        if(!$mjson->success)
+        {
+            show_404();
+            return;
+        }
         
         $this->load->helper('url');
         $base_url = $this->config->item('base_url');
@@ -65,30 +167,58 @@ class Image_metadata extends CI_Controller
             $json->CIL_CCDB->CIL->CORE->TECHNICALDETAILS = $djson;
         }
         
-        if(isset($json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION))
+        
+        /***********Start NCBI *******************/
+        if(!is_null($ncbi) && strlen(trim($ncbi)) > 0)
         {
-            $ncbiJson = $json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION;
-            $ncbiJson=$outil->handleExistingOntoJSON($ncbiJson, "ncbi_organism", $ncbi);
-            $json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION=$ncbiJson;
-            
-        }
-        else 
-        {
-            $ncbiJson = $outil->handleNewOntoJson("ncbi_organism", $ncbi);
-            if(!is_null($ncbiJson))
+            if(isset($json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION))
             {
+                $ncbiJson = $json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION;
+                $ncbiJson=$outil->handleExistingOntoJSON($ncbiJson, "ncbi_organism", $ncbi);
                 $json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION=$ncbiJson;
+
+            }
+            else 
+            {
+                $ncbiJson = $outil->handleNewOntoJson("ncbi_organism", $ncbi);
+                if(!is_null($ncbiJson))
+                {
+                    $json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION=$ncbiJson;
+                }
             }
         }
+         /***********End NCBI *******************/
+        
+        
+        /***********Start Cell Type *******************/
+        if(!is_null($cell_type) && strlen(trim($cell_type)) > 0)
+        {
+            if(isset($json->CIL_CCDB->CIL->CORE->CELLTYPE))
+            {
+                $cellTypeJson = $json->CIL_CCDB->CIL->CORE->CELLTYPE;
+                $cellTypeJson = $outil->handleExistingOntoJSON($ncbiJson, "cell_types", $cell_type);
+                $json->CIL_CCDB->CIL->CORE->CELLTYPE = $cellTypeJson;
+
+            }
+            else 
+            {
+                $cellTypeJson = $outil->handleNewOntoJson("cell_types", $cell_type);
+                if(!is_null($ncbiJson))
+                {
+                    $json->CIL_CCDB->CIL->CORE->CELLTYPE=$cellTypeJson;
+                }
+            }
+        }
+        /***********End Cell Type *******************/
         
         
         $json_str = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         file_put_contents($test_output_folder."/test.json", $json_str);
         
-        //$dbutil = new DB_util();
-        //$dbutil->submitMetadata($image_id, $json_str);
         
-        //redirect ($base_url."/image_metadata/edit/".$image_id);
+        $dbutil->submitMetadata($image_id, $json_str);
+        
+        redirect ($base_url."/image_metadata/edit/".$image_id);
         
         /*echo "<br/>Description:".$desc;
         echo "<br/>Tech_details:".$tech_details;

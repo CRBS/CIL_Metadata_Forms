@@ -4,6 +4,34 @@
     <div class="col-md-6">
         <div class="form-group">
             <label class="col-form-label" for="inputDefault"> NCBI Organismal Classification</label>
+            <?php 
+                if(isset($json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION))
+                {
+                    
+                    $ncbiJson = $json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION;
+                    
+                    if(is_array($ncbiJson))
+                    {
+                        echo "Is_array";
+                        echo "<ul>";
+                        foreach($ncbiJson as $ncbi)
+                        {
+                            if(isset($ncbi->free_text))
+                                echo "<li>".$ncbi->free_text."<a  href=\"/image_metadata/delete_field/".$image_id."/NCBIORGANISMALCLASSIFICATION/".$ncbi->free_text."\" target=\"_self\"> &#x2716;</a></li>";
+                            else if(isset($ncbi->onto_name) && isset($ncbi->onto_id))
+                            {
+                                echo "<li><a href=\"#\" data-toggle=\"tooltip\" title=\"".$ncbi->onto_id."\">".$ncbi->onto_name."</a><a  href=\"/image_metadata/delete_field/".$image_id."/NCBIORGANISMALCLASSIFICATION/".$ncbi->onto_name."\" target=\"_self\"> &#x2716;</a></li>";
+                            }
+                        }
+                        echo "</ul>";
+                    }
+                    else
+                    {
+                        echo "Is_NOT_array";
+                    }
+                }
+            ?>
+            
             <input id="image_search_parms_ncbi" name="image_search_parms[ncbi]" style="width: 100%" value="" class="form-control cil_san_regular_font ui-autocomplete-input" autocomplete="off" type="text">
         </div>
     </div>
