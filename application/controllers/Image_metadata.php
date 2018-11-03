@@ -234,30 +234,11 @@ class Image_metadata extends CI_Controller
         /***********End Cell Line *******************/
         
         
-        /***********Start Cell Line *******************/
-        if(!is_null($cell_line) && strlen(trim($cell_line)) > 0)
-        {
-            if(isset($json->CIL_CCDB->CIL->CORE->CELLLINE))
-            {
-                $cellLineJson = $json->CIL_CCDB->CIL->CORE->CELLLINE;
-                $cellLineJson = $outil->handleExistingOntoJSON($cellLineJson, "cell_lines", $cell_line);
-                $json->CIL_CCDB->CIL->CORE->CELLLINE = $cellLineJson;
 
-            }
-            else 
-            {
-                $cellLineJson = $outil->handleNewOntoJson("cell_lines", $cell_line);
-                if(!is_null($cellLineJson))
-                {
-                    $json->CIL_CCDB->CIL->CORE->CELLLINE=$cellLineJson;
-                }
-            }
-        }
-        /***********End Cell Line *******************/
         
         
         /***********Start CELLULAR COMPONENT *******************/
-        if(!is_null($cell_line) && strlen(trim($cell_line)) > 0)
+        if(!is_null($cellular_component) && strlen(trim($cellular_component)) > 0)
         {
             if(isset($json->CIL_CCDB->CIL->CORE->CELLULARCOMPONENT))
             {

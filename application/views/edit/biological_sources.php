@@ -72,12 +72,60 @@
     <div class="col-md-6">
         <div class="form-group">
             <label class="col-form-label" for="inputDefault"> Cell Line</label>
+            <?php 
+                if(isset($json->CIL_CCDB->CIL->CORE->CELLLINE))
+                {
+                    $itemsJson = $json->CIL_CCDB->CIL->CORE->CELLLINE;
+                    if(is_array($itemsJson))
+                    {
+                        echo "<ul>";
+                        foreach($itemsJson as $item)
+                        {
+                            if(isset($item->free_text))
+                                echo "<li>".$item->free_text."<a  href=\"/image_metadata/delete_field/".$image_id."/CELLLINE/".$item->free_text."\" target=\"_self\"> &#x2716;</a></li>";
+                            else if(isset($item->onto_name) && isset($item->onto_id))
+                            {
+                                echo "<li><a href=\"#\" data-toggle=\"tooltip\" title=\"".$item->onto_id."\">".$item->onto_name."</a><a  href=\"/image_metadata/delete_field/".$image_id."/CELLLINE/".$item->onto_name."\" target=\"_self\"> &#x2716;</a></li>";
+                            }
+                        }
+                        echo "</ul>";
+                    }
+                    else
+                    {
+                        //echo "Is_NOT_array";
+                    }
+                }
+            ?>
             <input id="image_search_parms_cell_line" name="image_search_parms[cell_line]" style="width: 100%" type="text" value="" class="form-control cil_san_regular_font ui-autocomplete-input" autocomplete="off">
         </div>
     </div>
     <div class="col-md-6">
         <div class="form-group">
             <label class="col-form-label" for="inputDefault"> Cell Component (GO)</label>
+            <?php 
+                if(isset($json->CIL_CCDB->CIL->CORE->CELLULARCOMPONENT))
+                {
+                    $itemsJson = $json->CIL_CCDB->CIL->CORE->CELLULARCOMPONENT;
+                    if(is_array($itemsJson))
+                    {
+                        echo "<ul>";
+                        foreach($itemsJson as $item)
+                        {
+                            if(isset($item->free_text))
+                                echo "<li>".$item->free_text."<a  href=\"/image_metadata/delete_field/".$image_id."/CELLULARCOMPONENT/".$item->free_text."\" target=\"_self\"> &#x2716;</a></li>";
+                            else if(isset($item->onto_name) && isset($item->onto_id))
+                            {
+                                echo "<li><a href=\"#\" data-toggle=\"tooltip\" title=\"".$item->onto_id."\">".$item->onto_name."</a><a  href=\"/image_metadata/delete_field/".$image_id."/CELLULARCOMPONENT/".$item->onto_name."\" target=\"_self\"> &#x2716;</a></li>";
+                            }
+                        }
+                        echo "</ul>";
+                    }
+                    else
+                    {
+                        //echo "Is_NOT_array";
+                    }
+                }
+            ?>
             <input id="image_search_parms_cellular_component" name="image_search_parms[cellular_component]" style="width: 100%" type="text" value="" class="form-control cil_san_regular_font ui-autocomplete-input" autocomplete="off">
         </div>
     </div>
