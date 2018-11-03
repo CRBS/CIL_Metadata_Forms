@@ -12,7 +12,7 @@
                     
                     if(is_array($ncbiJson))
                     {
-                        echo "Is_array";
+                       
                         echo "<ul>";
                         foreach($ncbiJson as $ncbi)
                         {
@@ -27,7 +27,7 @@
                     }
                     else
                     {
-                        echo "Is_NOT_array";
+                        //echo "Is_NOT_array";
                     }
                 }
             ?>
@@ -38,6 +38,32 @@
     <div class="col-md-6">
         <div class="form-group">
             <label class="col-form-label" for="inputDefault"> Cell Type</label>
+            <?php 
+                if(isset($json->CIL_CCDB->CIL->CORE->CELLTYPE))
+                {
+                    
+                    $cellTypeJson = $json->CIL_CCDB->CIL->CORE->CELLTYPE;
+                    
+                    if(is_array($cellTypeJson))
+                    {
+                        echo "<ul>";
+                        foreach($cellTypeJson as $cellType)
+                        {
+                            if(isset($cellType->free_text))
+                                echo "<li>".$cellType->free_text."<a  href=\"/image_metadata/delete_field/".$image_id."/CELLTYPE/".$cellType->free_text."\" target=\"_self\"> &#x2716;</a></li>";
+                            else if(isset($cellType->onto_name) && isset($cellType->onto_id))
+                            {
+                                echo "<li><a href=\"#\" data-toggle=\"tooltip\" title=\"".$cellType->onto_id."\">".$cellType->onto_name."</a><a  href=\"/image_metadata/delete_field/".$image_id."/CELLTYPE/".$cellType->onto_name."\" target=\"_self\"> &#x2716;</a></li>";
+                            }
+                        }
+                        echo "</ul>";
+                    }
+                    else
+                    {
+                        //echo "Is_NOT_array";
+                    }
+                }
+            ?>
             <input id="image_search_parms_cell_type" name="image_search_parms[cell_type]" style="width: 100%" type="text" value="" class="form-control cil_san_regular_font ui-autocomplete-input" autocomplete="off"> 
         </div>
     </div>

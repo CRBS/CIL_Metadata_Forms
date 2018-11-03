@@ -196,20 +196,86 @@ class Image_metadata extends CI_Controller
             if(isset($json->CIL_CCDB->CIL->CORE->CELLTYPE))
             {
                 $cellTypeJson = $json->CIL_CCDB->CIL->CORE->CELLTYPE;
-                $cellTypeJson = $outil->handleExistingOntoJSON($ncbiJson, "cell_types", $cell_type);
+                $cellTypeJson = $outil->handleExistingOntoJSON($cellTypeJson, "cell_types", $cell_type);
                 $json->CIL_CCDB->CIL->CORE->CELLTYPE = $cellTypeJson;
 
             }
             else 
             {
                 $cellTypeJson = $outil->handleNewOntoJson("cell_types", $cell_type);
-                if(!is_null($ncbiJson))
+                if(!is_null($cellTypeJson))
                 {
                     $json->CIL_CCDB->CIL->CORE->CELLTYPE=$cellTypeJson;
                 }
             }
         }
         /***********End Cell Type *******************/
+        
+        
+        /***********Start Cell Line *******************/
+        if(!is_null($cell_line) && strlen(trim($cell_line)) > 0)
+        {
+            if(isset($json->CIL_CCDB->CIL->CORE->CELLLINE))
+            {
+                $cellLineJson = $json->CIL_CCDB->CIL->CORE->CELLLINE;
+                $cellLineJson = $outil->handleExistingOntoJSON($cellLineJson, "cell_lines", $cell_line);
+                $json->CIL_CCDB->CIL->CORE->CELLLINE = $cellLineJson;
+
+            }
+            else 
+            {
+                $cellLineJson = $outil->handleNewOntoJson("cell_lines", $cell_line);
+                if(!is_null($cellLineJson))
+                {
+                    $json->CIL_CCDB->CIL->CORE->CELLLINE=$cellLineJson;
+                }
+            }
+        }
+        /***********End Cell Line *******************/
+        
+        
+        /***********Start Cell Line *******************/
+        if(!is_null($cell_line) && strlen(trim($cell_line)) > 0)
+        {
+            if(isset($json->CIL_CCDB->CIL->CORE->CELLLINE))
+            {
+                $cellLineJson = $json->CIL_CCDB->CIL->CORE->CELLLINE;
+                $cellLineJson = $outil->handleExistingOntoJSON($cellLineJson, "cell_lines", $cell_line);
+                $json->CIL_CCDB->CIL->CORE->CELLLINE = $cellLineJson;
+
+            }
+            else 
+            {
+                $cellLineJson = $outil->handleNewOntoJson("cell_lines", $cell_line);
+                if(!is_null($cellLineJson))
+                {
+                    $json->CIL_CCDB->CIL->CORE->CELLLINE=$cellLineJson;
+                }
+            }
+        }
+        /***********End Cell Line *******************/
+        
+        
+        /***********Start CELLULAR COMPONENT *******************/
+        if(!is_null($cell_line) && strlen(trim($cell_line)) > 0)
+        {
+            if(isset($json->CIL_CCDB->CIL->CORE->CELLULARCOMPONENT))
+            {
+                $cellCompJson = $json->CIL_CCDB->CIL->CORE->CELLULARCOMPONENT;
+                $cellCompJson = $outil->handleExistingOntoJSON($cellCompJson, "cellular_components", $cellular_component);
+                $json->CIL_CCDB->CIL->CORE->CELLULARCOMPONENT = $cellCompJson;
+
+            }
+            else 
+            {
+                $cellCompJson = $outil->handleNewOntoJson("cellular_components", $cellular_component);
+                if(!is_null($cellCompJson))
+                {
+                    $json->CIL_CCDB->CIL->CORE->CELLULARCOMPONENT=$cellCompJson;
+                }
+            }
+        }
+        /***********End CELLULAR COMPONENT *******************/
         
         
         $json_str = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
