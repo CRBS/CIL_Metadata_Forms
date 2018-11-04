@@ -132,7 +132,9 @@ class Image_metadata extends CI_Controller
         $cell_type = $this->input->post('image_search_parms[cell_type]', TRUE);
         $cell_line = $this->input->post('image_search_parms[cell_line]', TRUE);
         $cellular_component = $this->input->post('image_search_parms[cellular_component]', TRUE);
-        
+        $biological_process = $this->input->post('image_search_parms[biological_process]', TRUE);
+        $molecular_function = $this->input->post('image_search_parms[molecular_function]', TRUE);
+                
         $json_str = "{\"CIL_CCDB\": {\"Status\": {\"Deleted\": false,\"Is_public\": false },\"CIL\":{\"CORE\":{\"IMAGEDESCRIPTION\":{  }}}}}";
         
         if($mjson->success && isset($mjson->metadata)
@@ -257,6 +259,49 @@ class Image_metadata extends CI_Controller
             }
         }
         /***********End CELLULAR COMPONENT *******************/
+        
+        
+        /***********Start Biological Process *******************/
+        if(!is_null($biological_process) && strlen(trim($biological_process)) > 0)
+        {
+            if(isset($json->CIL_CCDB->CIL->CORE->BIOLOGICALPROCESS))
+            {
+                $bioProcessJson = $json->CIL_CCDB->CIL->CORE->BIOLOGICALPROCESS;
+                $bioProcessJson = $outil->handleExistingOntoJSON($bioProcessJson, "biological_processes", $biological_process);
+                $json->CIL_CCDB->CIL->CORE->BIOLOGICALPROCESS = $bioProcessJson;
+
+            }
+            else 
+            {
+                $bioProcessJson = $outil->handleNewOntoJson("biological_processes", $biological_process);
+                if(!is_null($bioProcessJson))
+                {
+                    $json->CIL_CCDB->CIL->CORE->BIOLOGICALPROCESS=$bioProcessJson;
+                }
+            }
+        }
+        /***********End Biological Process *******************/
+        
+        /***********Start Molecular Function *******************/
+        if(!is_null($molecular_function) && strlen(trim($molecular_function)) > 0)
+        {
+            if(isset($json->CIL_CCDB->CIL->CORE->MOLECULARFUNCTION))
+            {
+                $molFuncJson = $json->CIL_CCDB->CIL->CORE->MOLECULARFUNCTION;
+                $molFuncJson = $outil->handleExistingOntoJSON($molFuncJson, "molecular_functions", $molecular_function);
+                $json->CIL_CCDB->CIL->CORE->MOLECULARFUNCTION = $molFuncJson;
+
+            }
+            else 
+            {
+                $molFuncJson = $outil->handleNewOntoJson("molecular_functions", $molecular_function);
+                if(!is_null($molFuncJson))
+                {
+                    $json->CIL_CCDB->CIL->CORE->MOLECULARFUNCTION=$molFuncJson;
+                }
+            }
+        }
+        /***********End Molecular Function *******************/
         
         
         $json_str = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
