@@ -122,7 +122,7 @@ class Image_metadata extends CI_Controller
             show_404();
             return;
         }
-        
+
         $this->load->helper('url');
         $base_url = $this->config->item('base_url');
         $test_output_folder = $this->config->item('test_output_folder');
@@ -134,7 +134,8 @@ class Image_metadata extends CI_Controller
         $cellular_component = $this->input->post('image_search_parms[cellular_component]', TRUE);
         $biological_process = $this->input->post('image_search_parms[biological_process]', TRUE);
         $molecular_function = $this->input->post('image_search_parms[molecular_function]', TRUE);
-                
+        $imageType = $this->input->post('image_search_parms[item_type_bim]', TRUE);
+        
         $json_str = "{\"CIL_CCDB\": {\"Status\": {\"Deleted\": false,\"Is_public\": false },\"CIL\":{\"CORE\":{\"IMAGEDESCRIPTION\":{  }}}}}";
         
         if($mjson->success && isset($mjson->metadata)
@@ -302,6 +303,32 @@ class Image_metadata extends CI_Controller
             }
         }
         /***********End Molecular Function *******************/
+        
+        /***********Start Image Type *******************/
+        if(!is_null($imageType) && strlen(trim($imageType)) > 0)
+        {
+            echo "<br/>imageType is not NULL";
+            if(isset($json->CIL_CCDB->CIL->CORE->ITEMTYPE))
+            {
+                $imageTypeJson = $json->CIL_CCDB->CIL->CORE->ITEMTYPE;
+                $imageTypeJson = $outil->handleExistingOntoJSON($imageTypeJson, "imaging_methods", $imageType);
+                $json->CIL_CCDB->CIL->CORE->ITEMTYPE = $imageTypeJson;
+
+            }
+            else 
+            {
+                $imageTypeJson = $outil->handleNewOntoJson("imaging_methods", $imageType);
+                if(!is_null($imageTypeJson))
+                {
+                    $json->CIL_CCDB->CIL->CORE->ITEMTYPE=$imageTypeJson;
+                }
+            }
+        }
+        else 
+        {
+            echo "<br/>imageType is NULL";
+        }
+        /***********End Image Type *******************/
         
         
         $json_str = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
