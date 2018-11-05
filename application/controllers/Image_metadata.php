@@ -136,6 +136,8 @@ class Image_metadata extends CI_Controller
         $molecular_function = $this->input->post('image_search_parms[molecular_function]', TRUE);
         $imageType = $this->input->post('image_search_parms[item_type_bim]', TRUE);
         $imageMode = $this->input->post('image_search_parms[image_mode_bim]', TRUE);
+        $visualMethod = $this->input->post('image_search_parms[visualization_methods_bim]', TRUE);
+        $sourceContrast = $this->input->post('image_search_parms[source_of_contrast_bim]', TRUE);
         
         $json_str = "{\"CIL_CCDB\": {\"Status\": {\"Deleted\": false,\"Is_public\": false },\"CIL\":{\"CORE\":{\"IMAGEDESCRIPTION\":{  }}}}}";
         
@@ -349,6 +351,51 @@ class Image_metadata extends CI_Controller
             }
         }
         /***********End Image Mode *******************/
+        
+        
+        /***********Start Visualization Method *******************/
+        if(!is_null($visualMethod) && strlen(trim($visualMethod)) > 0)
+        {
+            
+            if(isset($json->CIL_CCDB->CIL->CORE->VISUALIZATIONMETHODS))
+            {
+                $visualMethodJson = $json->CIL_CCDB->CIL->CORE->VISUALIZATIONMETHODS;
+                $visualMethodJson = $outil->handleExistingOntoJSON($visualMethodJson, "imaging_methods", $visualMethod);
+                $json->CIL_CCDB->CIL->CORE->VISUALIZATIONMETHODS = $visualMethodJson;
+
+            }
+            else 
+            {
+                $visualMethodJson = $outil->handleNewOntoJson("imaging_methods", $visualMethod);
+                if(!is_null($visualMethodJson))
+                {
+                    $json->CIL_CCDB->CIL->CORE->VISUALIZATIONMETHODS = $visualMethodJson;
+                }
+            }
+        }
+        /***********End Visualization Method *******************/
+        
+        /***********Start Source of Contrast *******************/
+        if(!is_null($sourceContrast) && strlen(trim($sourceContrast)) > 0)
+        {
+            
+            if(isset($json->CIL_CCDB->CIL->CORE->SOURCEOFCONTRAST))
+            {
+                $sourceContrastJson = $json->CIL_CCDB->CIL->CORE->SOURCEOFCONTRAST;
+                $sourceContrastJson = $outil->handleExistingOntoJSON($sourceContrastJson, "imaging_methods", $sourceContrast);
+                $json->CIL_CCDB->CIL->CORE->SOURCEOFCONTRAST = $sourceContrastJson;
+
+            }
+            else 
+            {
+                $sourceContrastJson = $outil->handleNewOntoJson("imaging_methods", $sourceContrast);
+                if(!is_null($sourceContrastJson))
+                {
+                    $json->CIL_CCDB->CIL->CORE->SOURCEOFCONTRAST = $sourceContrastJson;
+                }
+            }
+        }
+        /***********End Source of Contrast *******************/
         
         
         $json_str = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
