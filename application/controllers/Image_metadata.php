@@ -140,7 +140,8 @@ class Image_metadata extends CI_Controller
         $sourceContrast = $this->input->post('image_search_parms[source_of_contrast_bim]', TRUE);
         $intactCell = $this->input->post('image_search_parms[relation_to_intact_cell_bim]', TRUE);
         $processHistory = $this->input->post('image_search_parms[processing_history_bim]', TRUE);
-        
+        $preparation = $this->input->post('image_search_parms[preparation_bim]', TRUE);
+        $imageParameter = $this->input->post('image_search_parms[parameter_imaged_bim]', TRUE);        
         
         $json_str = "{\"CIL_CCDB\": {\"Status\": {\"Deleted\": false,\"Is_public\": false },\"CIL\":{\"CORE\":{\"IMAGEDESCRIPTION\":{  }}}}}";
         
@@ -444,6 +445,49 @@ class Image_metadata extends CI_Controller
             }
         }
         /***********End Processing History *******************/
+        
+        
+        /***********Start Preparation *******************/
+        if(!is_null($preparation) && strlen(trim($preparation)) > 0)
+        {
+            if(isset($json->CIL_CCDB->CIL->CORE->PREPARATION))
+            {
+                $preparationJson = $json->CIL_CCDB->CIL->CORE->PREPARATION;
+                $preparationJson = $outil->handleExistingOntoJSON($preparationJson, "imaging_methods", $preparation);
+                $json->CIL_CCDB->CIL->CORE->PREPARATION = $preparationJson;
+
+            }
+            else 
+            {
+                $preparationJson = $outil->handleNewOntoJson("imaging_methods", $preparation);
+                if(!is_null($preparationJson))
+                {
+                    $json->CIL_CCDB->CIL->CORE->PREPARATION = $preparationJson;
+                }
+            }
+        }
+        /***********End Preparation *******************/
+        
+        
+        /***********Start Parameter Imaged *******************/
+        if(!is_null($imageParameter) && strlen(trim($imageParameter)) > 0)
+        {
+            if(isset($json->CIL_CCDB->CIL->CORE->PARAMETERIMAGED))
+            {
+                $imageParameterJson = $json->CIL_CCDB->CIL->CORE->PARAMETERIMAGED;
+                $imageParameterJson = $outil->handleExistingOntoJSON($imageParameterJson, "imaging_methods", $imageParameter);
+                $json->CIL_CCDB->CIL->CORE->PARAMETERIMAGED = $imageParameterJson;
+            }
+            else 
+            {
+                $imageParameterJson = $outil->handleNewOntoJson("imaging_methods", $imageParameter);
+                if(!is_null($imageParameterJson))
+                {
+                    $json->CIL_CCDB->CIL->CORE->PARAMETERIMAGED = $imageParameterJson;
+                }
+            }
+        }
+        /***********End Parameter Imaged *******************/
         
         
         $json_str = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
