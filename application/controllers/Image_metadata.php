@@ -138,6 +138,9 @@ class Image_metadata extends CI_Controller
         $imageMode = $this->input->post('image_search_parms[image_mode_bim]', TRUE);
         $visualMethod = $this->input->post('image_search_parms[visualization_methods_bim]', TRUE);
         $sourceContrast = $this->input->post('image_search_parms[source_of_contrast_bim]', TRUE);
+        $intactCell = $this->input->post('image_search_parms[relation_to_intact_cell_bim]', TRUE);
+        $processHistory = $this->input->post('image_search_parms[processing_history_bim]', TRUE);
+        
         
         $json_str = "{\"CIL_CCDB\": {\"Status\": {\"Deleted\": false,\"Is_public\": false },\"CIL\":{\"CORE\":{\"IMAGEDESCRIPTION\":{  }}}}}";
         
@@ -396,6 +399,51 @@ class Image_metadata extends CI_Controller
             }
         }
         /***********End Source of Contrast *******************/
+        
+        /***********Start Intact Cell *******************/
+        if(!is_null($intactCell) && strlen(trim($intactCell)) > 0)
+        {
+            
+            if(isset($json->CIL_CCDB->CIL->CORE->RELATIONTOINTACTCELL))
+            {
+                $intactCellJson = $json->CIL_CCDB->CIL->CORE->RELATIONTOINTACTCELL;
+                $intactCellJson = $outil->handleExistingOntoJSON($intactCellJson, "imaging_methods", $intactCell);
+                $json->CIL_CCDB->CIL->CORE->RELATIONTOINTACTCELL = $intactCellJson;
+
+            }
+            else 
+            {
+                $intactCellJson = $outil->handleNewOntoJson("imaging_methods", $intactCell);
+                if(!is_null($intactCellJson))
+                {
+                    $json->CIL_CCDB->CIL->CORE->RELATIONTOINTACTCELL = $intactCellJson;
+                }
+            }
+        }
+        /***********End Intact Cell *******************/
+        
+        
+        /***********Start Processing History *******************/
+        if(!is_null($processHistory) && strlen(trim($processHistory)) > 0)
+        {
+            
+            if(isset($json->CIL_CCDB->CIL->CORE->PROCESSINGHISTORY))
+            {
+                $processHistoryJson = $json->CIL_CCDB->CIL->CORE->PROCESSINGHISTORY;
+                $processHistoryJson = $outil->handleExistingOntoJSON($processHistoryJson, "imaging_methods", $processHistory);
+                $json->CIL_CCDB->CIL->CORE->PROCESSINGHISTORY = $processHistoryJson;
+
+            }
+            else 
+            {
+                $processHistoryJson = $outil->handleNewOntoJson("imaging_methods", $processHistory);
+                if(!is_null($processHistoryJson))
+                {
+                    $json->CIL_CCDB->CIL->CORE->PROCESSINGHISTORY = $processHistoryJson;
+                }
+            }
+        }
+        /***********End Processing History *******************/
         
         
         $json_str = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
