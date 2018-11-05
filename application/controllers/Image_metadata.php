@@ -135,6 +135,7 @@ class Image_metadata extends CI_Controller
         $biological_process = $this->input->post('image_search_parms[biological_process]', TRUE);
         $molecular_function = $this->input->post('image_search_parms[molecular_function]', TRUE);
         $imageType = $this->input->post('image_search_parms[item_type_bim]', TRUE);
+        $imageMode = $this->input->post('image_search_parms[image_mode_bim]', TRUE);
         
         $json_str = "{\"CIL_CCDB\": {\"Status\": {\"Deleted\": false,\"Is_public\": false },\"CIL\":{\"CORE\":{\"IMAGEDESCRIPTION\":{  }}}}}";
         
@@ -307,7 +308,7 @@ class Image_metadata extends CI_Controller
         /***********Start Image Type *******************/
         if(!is_null($imageType) && strlen(trim($imageType)) > 0)
         {
-            echo "<br/>imageType is not NULL";
+            
             if(isset($json->CIL_CCDB->CIL->CORE->ITEMTYPE))
             {
                 $imageTypeJson = $json->CIL_CCDB->CIL->CORE->ITEMTYPE;
@@ -324,11 +325,30 @@ class Image_metadata extends CI_Controller
                 }
             }
         }
-        else 
-        {
-            echo "<br/>imageType is NULL";
-        }
         /***********End Image Type *******************/
+        
+        
+        /***********Start Image Mode *******************/
+        if(!is_null($imageMode) && strlen(trim($imageMode)) > 0)
+        {
+            
+            if(isset($json->CIL_CCDB->CIL->CORE->IMAGINGMODE))
+            {
+                $imageModeJson = $json->CIL_CCDB->CIL->CORE->IMAGINGMODE;
+                $imageModeJson = $outil->handleExistingOntoJSON($imageModeJson, "imaging_methods", $imageMode);
+                $json->CIL_CCDB->CIL->CORE->ITEMTYPE = $imageModeJson;
+
+            }
+            else 
+            {
+                $imageModeJson = $outil->handleNewOntoJson("imaging_methods", $imageMode);
+                if(!is_null($imageModeJson))
+                {
+                    $json->CIL_CCDB->CIL->CORE->IMAGINGMODE=$imageModeJson;
+                }
+            }
+        }
+        /***********End Image Mode *******************/
         
         
         $json_str = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);

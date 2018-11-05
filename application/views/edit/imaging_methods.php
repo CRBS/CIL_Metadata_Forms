@@ -32,6 +32,33 @@
         </div>
     </div>
     <div class="col-md-6">
-        
+        <div class="form-group">
+            <label class="col-form-label" for="inputDefault"> Image Mode</label>
+            <?php 
+                if(isset($json->CIL_CCDB->CIL->CORE->IMAGINGMODE))
+                {
+                    $itemsJson = $json->CIL_CCDB->CIL->CORE->IMAGINGMODE;
+                    if(is_array($itemsJson))
+                    {
+                        echo "<ul>";
+                        foreach($itemsJson as $item)
+                        {
+                            if(isset($item->free_text))
+                                echo "<li>".$item->free_text."<a  href=\"/image_metadata/delete_field/".$image_id."/IMAGINGMODE/".$item->free_text."\" target=\"_self\"> &#x2716;</a></li>";
+                            else if(isset($item->onto_name) && isset($item->onto_id))
+                            {
+                                echo "<li><a href=\"#\" data-toggle=\"tooltip\" title=\"".$item->onto_id."\">".$item->onto_name."</a><a  href=\"/image_metadata/delete_field/".$image_id."/IMAGINGMODE/".$item->onto_name."\" target=\"_self\"> &#x2716;</a></li>";
+                            }
+                        }
+                        echo "</ul>";
+                    }
+                    else
+                    {
+                        //echo "Is_NOT_array";
+                    }
+                }
+            ?>
+            <input id="image_search_parms_image_mode_bim" name="image_search_parms[image_mode_bim]" style="width: 100%" type="text" value="" class="acInput form-control cil_san_regular_font ui-autocomplete-input" autocomplete="off">
+        </div>
     </div>
 </div>
