@@ -45,7 +45,22 @@
     <div class="col-md-6">
         <div class="form-group">
             <label class="col-form-label" for="inputDefault"> Y image size</label>
-            <input id="y_image_size" name="y_image_size" style="width: 100%" type="text" value="" class="form-control cil_san_regular_font " >
+            <input id="y_image_size" name="y_image_size" style="width: 100%" type="text" value="<?php
+            if(isset($json->CIL_CCDB->CIL->CORE->DIMENSION))
+            {
+                $dimensions = $json->CIL_CCDB->CIL->CORE->DIMENSION;
+                foreach ($dimensions as $dim)
+                {
+                    if(isset($dim->Space->axis)
+                            && strcmp($dim->Space->axis,"Y")==0
+                            && isset($dim->Space->Image_size))
+                    {
+                        echo $dim->Space->Image_size;
+                    }
+                }
+            }
+            
+            ?>" class="form-control cil_san_regular_font " >
         </div>
     </div>
     <div class="col-md-4">
@@ -72,7 +87,21 @@
     <div class="col-md-6">
         <div class="form-group">
             <label class="col-form-label" for="inputDefault"> Z image size</label>
-            <input id="y_image_size" name="z_image_size" style="width: 100%" type="text" value="" class="form-control cil_san_regular_font " >
+            <input id="y_image_size" name="z_image_size" style="width: 100%" type="text" value="<?php
+            if(isset($json->CIL_CCDB->CIL->CORE->DIMENSION))
+            {
+                $dimensions = $json->CIL_CCDB->CIL->CORE->DIMENSION;
+                foreach ($dimensions as $dim)
+                {
+                    if(isset($dim->Space->axis)
+                            && strcmp($dim->Space->axis,"Z")==0
+                            && isset($dim->Space->Image_size))
+                    {
+                        echo $dim->Space->Image_size;
+                    }
+                }
+            }
+            ?>" class="form-control cil_san_regular_font " >
         </div>
     </div>
     <div class="col-md-4">

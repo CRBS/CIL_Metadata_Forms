@@ -496,7 +496,10 @@ class Image_metadata extends CI_Controller
         
         $dim_util = new Dimension_util();
         /*********Start X size**************************/
-        if(!is_null($x_image_size) && strlen(trim($x_image_size)) > 0)
+        $json = $dim_util->handle_size("X", $json, $x_image_size);
+        $json = $dim_util->handle_size("Y", $json, $y_image_size);
+        $json = $dim_util->handle_size("Z", $json, $z_image_size);
+        /*if(!is_null($x_image_size) && strlen(trim($x_image_size)) > 0)
         {
             $is_set = false;
             if(is_numeric($x_image_size))
@@ -538,7 +541,7 @@ class Image_metadata extends CI_Controller
                 
             }
             
-        }
+        }*/
         /*********End X size****************************/
         
         $json_str = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
