@@ -147,6 +147,15 @@ class Image_metadata extends CI_Controller
         $x_image_size = $this->input->post('x_image_size', TRUE);
         $y_image_size = $this->input->post('y_image_size', TRUE);
         $z_image_size = $this->input->post('z_image_size', TRUE);
+        //Pixel size 
+        $x_pixel_size = $this->input->post('x_pixel_size', TRUE);
+        $y_pixel_size = $this->input->post('y_pixel_size', TRUE);
+        $z_pixel_size = $this->input->post('z_pixel_size', TRUE);
+        //Pixel unit
+        $x_pixel_unit = $this->input->post('x_pixel_unit', TRUE);
+        $y_pixel_unit = $this->input->post('y_pixel_unit', TRUE);
+        $z_pixel_unit = $this->input->post('z_pixel_unit', TRUE);
+        
         
         $json_str = "{\"CIL_CCDB\": {\"Status\": {\"Deleted\": false,\"Is_public\": false },\"CIL\":{\"CORE\":{\"IMAGEDESCRIPTION\":{  }}}}}";
         
@@ -499,49 +508,10 @@ class Image_metadata extends CI_Controller
         $json = $dim_util->handle_size("X", $json, $x_image_size);
         $json = $dim_util->handle_size("Y", $json, $y_image_size);
         $json = $dim_util->handle_size("Z", $json, $z_image_size);
-        /*if(!is_null($x_image_size) && strlen(trim($x_image_size)) > 0)
-        {
-            $is_set = false;
-            if(is_numeric($x_image_size))
-            {   
-                echo "<br/>Is numeric:".$x_image_size;
-                $x_image_size = intval($x_image_size);
-                if(!isset($json->CIL_CCDB->CIL->CORE->DIMENSION))
-                {
-                    $json->CIL_CCDB->CIL->CORE->DIMENSION = array();
-                }
-
-                    
-                    $dimensions = $json->CIL_CCDB->CIL->CORE->DIMENSION;
-                    foreach($dimensions as $dim)
-                    {
-                        if(isset($dim->Space->axis)&&
-                                strcmp($dim->Space->axis,"X")==0)
-                        {
-                            $dim->Space->Image_size = $x_image_size;
-                            $is_set =true;
-                        }
-                    }
-                    
-                    if(!$is_set)
-                    {
-                        echo "<br/>Is NOT SET";
-                        
-                        $item_json_str  = "{\"Space\":{}}";
-                        $item_json = json_decode($item_json_str);
-                        $item_json->Space->axis = "X";
-                        $item_json->Space->Image_size = $x_image_size;
-                        array_push($json->CIL_CCDB->CIL->CORE->DIMENSION, $item_json);
-                    }
-                    else
-                    {
-                       echo "<br/>Is SET"; 
-                    }
-                
-                
-            }
-            
-        }*/
+        
+        $json = $dim_util->handle_pixel("X", $json, $x_pixel_size, $x_pixel_unit);
+        $json = $dim_util->handle_pixel("Y", $json, $y_pixel_size, $y_pixel_unit);
+        $json = $dim_util->handle_pixel("Z", $json, $z_pixel_size, $z_pixel_unit);
         /*********End X size****************************/
         
         $json_str = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
