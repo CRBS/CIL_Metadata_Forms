@@ -533,3 +533,4 @@ $config['auth_key'] = $json->cil_auth;
 $config['db_params']= $json->cil_pgsql_db;
 
 $config['test_output_folder'] = "C:/Test";
+$config['upload_location'] = "C:/Test";

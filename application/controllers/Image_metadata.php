@@ -6,6 +6,45 @@ include_once 'Ontology_util.php';
 include_once 'Dimension_util.php';
 class Image_metadata extends CI_Controller
 {
+    
+    public function upload_cil_image($image_id)
+    {
+        $upload_location = $this->config->item('upload_location');
+        $config2 = array(
+        'upload_path' => $upload_location,
+        'allowed_types' => "gif|jpg|png|jpeg",
+        'overwrite' => TRUE,
+        'max_size' => "12048000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
+        'max_height' => "4000",
+        'max_width' => "4000"
+        );
+        $this->load->library('upload', $config2);
+        if($this->upload->do_upload())
+        {
+            $img = array('upload_data' => $this->upload->data());
+            if(!is_null($img))
+            {
+                //echo "<br/>".$img->upload_data->full_path;
+                if(array_key_exists('upload_data',$img))
+                {
+                    $upload_metadata = $img['upload_data'];
+                    if(array_key_exists('full_path',$upload_metadata))
+                    {
+                        $full_path = $upload_metadata['full_path'];
+                        echo "<br/>". $full_path;
+
+                    }
+                   
+                }
+            }
+        }
+        else
+        {
+            $error = array('error' => $this->upload->display_errors());
+            var_dump($error);
+        }
+    }
+    
     public function test($image_id)
     {
         $dbutil = new DB_util();
