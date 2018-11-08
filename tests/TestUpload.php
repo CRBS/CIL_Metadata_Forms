@@ -21,6 +21,6 @@
     //echo $hex;
     $json_str = file_get_contents("C:/data/cil_metadata_config.json");
     $json = json_decode($json_str);
-    $url = $json->metadata_service_prefix."/upload_image/7777";
+    $url = $json->metadata_service_prefix."/upload_image/50511";
     $response = auth_curl_post($url,$json->metadata_auth,$hex);
     echo "\nOUTPUT:".$response;
