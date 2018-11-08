@@ -534,3 +534,6 @@ $config['db_params']= $json->cil_pgsql_db;
 
 $config['test_output_folder'] = "C:/Test";
 $config['upload_location'] = "C:/Test";
+
+$config['metadata_service_prefix'] = $json->metadata_service_prefix;
+$config['metadata_auth'] = $json->metadata_auth;

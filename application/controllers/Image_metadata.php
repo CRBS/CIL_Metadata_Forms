@@ -9,6 +9,9 @@ class Image_metadata extends CI_Controller
     
     public function upload_cil_image($image_id)
     {
+        $cutil= new Curl_util();
+        $metadata_service_prefix = $this->config->item('metadata_service_prefix');
+        $metadata_auth = $this->config->item('metadata_auth');
         $upload_location = $this->config->item('upload_location');
         $config2 = array(
         'upload_path' => $upload_location,
@@ -19,6 +22,8 @@ class Image_metadata extends CI_Controller
         'max_width' => "4000"
         );
         $this->load->library('upload', $config2);
+        $url = $metadata_service_prefix."/upload_image/".$image_id;
+        
         if($this->upload->do_upload())
         {
             $img = array('upload_data' => $this->upload->data());
@@ -32,7 +37,11 @@ class Image_metadata extends CI_Controller
                     {
                         $full_path = $upload_metadata['full_path'];
                         echo "<br/>". $full_path;
-
+                        $bin = file_get_contents($full_path);
+                        $hex = bin2hex($bin);
+                        $response = $cutil->auth_curl_post($url, $metadata_auth, $hex);
+                        echo "<br/>".$response;
+                        
                     }
                    
                 }
