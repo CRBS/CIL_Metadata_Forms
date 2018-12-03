@@ -190,7 +190,14 @@ class Image_metadata extends CI_Controller
         $intactCell = $this->input->post('image_search_parms[relation_to_intact_cell_bim]', TRUE);
         $processHistory = $this->input->post('image_search_parms[processing_history_bim]', TRUE);
         $preparation = $this->input->post('image_search_parms[preparation_bim]', TRUE);
-        $imageParameter = $this->input->post('image_search_parms[parameter_imaged_bim]', TRUE);        
+        $imageParameter = $this->input->post('image_search_parms[parameter_imaged_bim]', TRUE); 
+        
+        $still_image = $this->input->post('still_image', TRUE);
+        $z_stack = $this->input->post('z_stack', TRUE);
+        $time_series = $this->input->post('time_series', TRUE);
+        $video = $this->input->post('video', TRUE);
+        
+        
         //Dimensions
         $x_image_size = $this->input->post('x_image_size', TRUE);
         $y_image_size = $this->input->post('y_image_size', TRUE);
@@ -205,7 +212,7 @@ class Image_metadata extends CI_Controller
         $z_pixel_unit = $this->input->post('z_pixel_unit', TRUE);
         
         
-        $json_str = "{\"CIL_CCDB\": {\"Status\": {\"Deleted\": false,\"Is_public\": false },\"CIL\":{\"CORE\":{\"IMAGEDESCRIPTION\":{  }}}}}";
+        $json_str = "{\"CIL_CCDB\": {\"Status\": {\"Deleted\": false,\"Is_public\": true },\"CIL\":{\"CORE\":{\"IMAGEDESCRIPTION\":{  }}}}}";
         
         if($mjson->success && isset($mjson->metadata)
                 && !is_null($mjson->metadata)
@@ -551,6 +558,28 @@ class Image_metadata extends CI_Controller
         }
         /***********End Parameter Imaged *******************/
         
+        /**********Data type*********************************/
+        if(!is_null($still_image))
+            $json->CIL_CCDB->Data_type->Still_image = true;
+        else 
+            $json->CIL_CCDB->Data_type->Still_image = false;
+        
+       if(!is_null($z_stack))
+            $json->CIL_CCDB->Data_type->Z_stack = true;
+       else 
+            $json->CIL_CCDB->Data_type->Z_stack = false;
+       
+       if(!is_null($time_series))
+           $json->CIL_CCDB->Data_type->Time_series = true;
+       else 
+           $json->CIL_CCDB->Data_type->Time_series = false;
+       
+       if(!is_null($video))
+           $json->CIL_CCDB->Data_type->Video = true;
+       else
+           $json->CIL_CCDB->Data_type->Video = false;
+       /**********End Data type*********************************/
+        
         $dim_util = new Dimension_util();
         /*********Start X size**************************/
         $json = $dim_util->handle_size("X", $json, $x_image_size);
@@ -563,7 +592,7 @@ class Image_metadata extends CI_Controller
         /*********End X size****************************/
         
         $json_str = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-        file_put_contents($test_output_folder."/test.json", $json_str);
+        file_put_contents($test_output_folder."/".$image_id.".json", $json_str);
         
         
         $dbutil->submitMetadata($image_id, $json_str);
