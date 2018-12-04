@@ -79,6 +79,61 @@ class Image_metadata extends CI_Controller
         redirect ($base_url."/image_metadata/edit/".$image_id);
     }
     
+    public function delete_attribution($image_id="0",$field="0",$input="0")
+    {
+        $input=str_replace("%20", " ", $input);
+        $dbutil = new DB_util();
+        $test_output_folder = $this->config->item('test_output_folder');
+        $mjson = $dbutil->getMetadata($image_id);
+        if(!$mjson->success)
+        {
+            show_404();
+            return;
+        }
+        $this->load->helper('url');
+        $base_url = $this->config->item('base_url');
+        
+        if($mjson->success && isset($mjson->metadata)
+                && !is_null($mjson->metadata)
+                && strlen(trim($mjson->metadata)) > 0
+                )
+        {
+            $json = json_decode($mjson->metadata);
+            $coreJson= $json->CIL_CCDB->CIL->CORE;
+            
+            if(strcmp($field, "Contributors") == 0)
+            {
+                //error_log('In Contributors', 3, $test_output_folder."/delete.json");
+                if(isset($coreJson->ATTRIBUTION->Contributors))
+                {
+                    $contributors = $coreJson->ATTRIBUTION->Contributors;
+                    $removeIndex = null;
+                    $i = 0;
+                    foreach($contributors as $contributor)
+                    {
+                        if(strcmp($contributor, $input) == 0)
+                        {
+                            $removeIndex = $i;
+                        }
+                        
+                        $i++;
+                    }
+                    
+                    if(!is_null($removeIndex))
+                    {
+                        unset($contributors[$removeIndex]);
+                        $coreJson->ATTRIBUTION->Contributors=array_values($contributors);
+                    }
+                }
+            }
+            
+            $json_str = json_encode($json,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            file_put_contents($test_output_folder."/".$image_id.".json", $json_str);
+            $dbutil->submitMetadata($image_id, $json_str);
+            redirect ($base_url."/image_metadata/edit/".$image_id);
+        }
+    }
+    
     public function delete_field($image_id="0",$field="0",$input="0")
     {
         $input=str_replace("%20", " ", $input);
@@ -197,6 +252,7 @@ class Image_metadata extends CI_Controller
         $time_series = $this->input->post('time_series', TRUE);
         $video = $this->input->post('video', TRUE);
         
+        $attribution_name = $this->input->post('attribution_name', TRUE);
         
         //Dimensions
         $x_image_size = $this->input->post('x_image_size', TRUE);
@@ -228,6 +284,9 @@ class Image_metadata extends CI_Controller
             $json = json_decode($json_str);
             //echo "<br/>Loading the previous json NOT sucessfully";
         }
+        
+        
+        
         
         if(!is_null($desc) && strlen(trim($desc)) > 0)
         {
@@ -557,6 +616,22 @@ class Image_metadata extends CI_Controller
             }
         }
         /***********End Parameter Imaged *******************/
+        
+        
+        /***********Attribution***************************/
+        if(!is_null($attribution_name) && strlen(trim($attribution_name))>0)
+        {
+            //echo "<br/>Attribution:".$attribution_name;
+            $name_array = array();
+            if(isset($json->CIL_CCDB->CIL->CORE->ATTRIBUTION->Contributors))
+            {
+                $name_array = $json->CIL_CCDB->CIL->CORE->ATTRIBUTION->Contributors;      
+            }
+            array_push($name_array, $attribution_name);
+            $json->CIL_CCDB->CIL->CORE->ATTRIBUTION->Contributors = $name_array;
+            
+        }
+        /***********End Attribution**********************/
         
         /**********Data type*********************************/
         if(!is_null($still_image))
