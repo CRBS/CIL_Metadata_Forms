@@ -470,7 +470,7 @@ class Image_metadata extends CI_Controller
             {
                 $imageModeJson = $json->CIL_CCDB->CIL->CORE->IMAGINGMODE;
                 $imageModeJson = $outil->handleExistingOntoJSON($imageModeJson, "imaging_methods", $imageMode);
-                $json->CIL_CCDB->CIL->CORE->ITEMTYPE = $imageModeJson;
+                $json->CIL_CCDB->CIL->CORE->IMAGINGMODE = $imageModeJson;
 
             }
             else 
@@ -633,6 +633,7 @@ class Image_metadata extends CI_Controller
         }
         /***********End Attribution**********************/
         
+        
         /**********Data type*********************************/
         if(!is_null($still_image))
             $json->CIL_CCDB->Data_type->Still_image = true;
@@ -654,6 +655,63 @@ class Image_metadata extends CI_Controller
        else
            $json->CIL_CCDB->Data_type->Video = false;
        /**********End Data type*********************************/
+       
+       /***********Image files****************************/
+        if(isset($json->CIL_CCDB->Data_type->Video) && $json->CIL_CCDB->Data_type->Video)
+        {
+            $numeric_id = str_replace("CIL_", "", $image_id);
+            $i_item1_str = "{".
+                    "\"Mime_type\": \"application/zip\",".
+                    "\"File_type\": \"Zip\",".
+                    "\"File_path\": \"".$numeric_id.".zip\",".
+                    "\"Size\": 15659136".
+                    "}";
+            
+            $i_item2_str = "{".
+                    "\"Mime_type\": \"image/jpeg; charset=utf-8\",".
+                    "\"File_type\": \"Jpeg\",".
+                    "\"File_path\": \"".$numeric_id.".jpg\",".
+                    "\"Size\": 116024".
+                    "}";
+            
+            $i_item3_str = "{".
+                    "\"Mime_type\": \"video/x-flv\",".
+                    "\"File_type\": \"Flv\",".
+                    "\"File_path\": \"".$numeric_id.".flv\",".
+                    "\"Size\": 1392086".
+                    "}";
+            $i_item1 = json_decode($i_item1_str);
+            $i_item2 = json_decode($i_item2_str);
+            $i_item3 = json_decode($i_item3_str);
+            
+            $i_array = array();
+            array_push($i_array, $i_item1);
+            array_push($i_array, $i_item2);
+            array_push($i_array, $i_item3);
+            
+            $json->CIL_CCDB->CIL->Image_files = $i_array;
+        }
+        /***********End Image files****************************/
+        
+        
+        /***********Licensing*********************************/
+        $public_domain = $this->input->post('public_domain', TRUE);
+        $attribution_cc = $this->input->post('attribution_cc', TRUE);
+        $attribution_nc_sa = $this->input->post('attribution_nc_sa', TRUE);
+        $copyright = $this->input->post('copyright', TRUE);
+        
+        if(!is_null($public_domain))
+           $json->CIL_CCDB->CIL->CORE->TERMSANDCONDITIONS->free_text = "public_domain";
+        if(!is_null($attribution_cc))
+           $json->CIL_CCDB->CIL->CORE->TERMSANDCONDITIONS->free_text = "attribution_cc_by";
+        if(!is_null($attribution_nc_sa))
+           $json->CIL_CCDB->CIL->CORE->TERMSANDCONDITIONS->free_text = "attribution_nc_sa";
+        if(!is_null($copyright))
+           $json->CIL_CCDB->CIL->CORE->TERMSANDCONDITIONS->free_text = "copyright";
+       /************End licensing*********************************/
+        
+        
+       $json->CIL_CCDB->Status->Is_public = true;
         
         $dim_util = new Dimension_util();
         /*********Start X size**************************/
