@@ -137,6 +137,7 @@ class Image_metadata extends CI_Controller
     public function delete_field($image_id="0",$field="0",$input="0")
     {
         $input=str_replace("%20", " ", $input);
+        $input= str_replace("_single_quote_", "'", $input);
         $dbutil = new DB_util();
         $outil = new Ontology_util();
         $test_output_folder = $this->config->item('test_output_folder');
@@ -247,6 +248,11 @@ class Image_metadata extends CI_Controller
         $preparation = $this->input->post('image_search_parms[preparation_bim]', TRUE);
         $imageParameter = $this->input->post('image_search_parms[parameter_imaged_bim]', TRUE); 
         
+        /**************Biological Context**************************************************/
+        $human_disease = $this->input->post('image_search_parms[human_disease]', TRUE); 
+        
+        /**************End Biological Context*********************************************/
+        
         $still_image = $this->input->post('still_image', TRUE);
         $z_stack = $this->input->post('z_stack', TRUE);
         $time_series = $this->input->post('time_series', TRUE);
@@ -326,6 +332,28 @@ class Image_metadata extends CI_Controller
             }
         }
          /***********End NCBI *******************/
+        
+        
+        
+        /************Human Disease**************************/
+        if(!is_null($human_disease) && strlen(trim($human_disease)) > 0)
+        {
+            if(isset($json->CIL_CCDB->CIL->CORE->HUMAN_DISEASE))
+            {
+                $humanDiseaseJson = $json->CIL_CCDB->CIL->CORE->HUMAN_DISEASE;
+                $humanDiseaseJson = $outil->handleExistingOntoJSON($humanDiseaseJson,"human_diseases",$human_disease);
+                $json->CIL_CCDB->CIL->CORE->HUMAN_DISEASE = $humanDiseaseJson;
+            }
+            else
+            {
+                $humanDiseaseJson = $outil->handleNewOntoJson("human_diseases", $human_disease);
+                if(!is_null($humanDiseaseJson))
+                {
+                    $json->CIL_CCDB->CIL->CORE->HUMAN_DISEASE=$humanDiseaseJson;
+                }
+            }
+        }
+        /************End Human Disease**********************/
         
         
         /***********Start Cell Type *******************/

@@ -1,5 +1,5 @@
 <br/>
-<span class="cil_title2">Biological Sources</span>
+<span class="cil_title2">Biological Context</span>
 <div class="row">
     <div class="col-md-6">
         <div class="form-group">
@@ -59,6 +59,39 @@
                 }
             ?>
             <input id="image_search_parms_molecular_function" name="image_search_parms[molecular_function]" style="width: 100%" type="text" value="" class="form-control cil_san_regular_font ui-autocomplete-input" autocomplete="off">
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="col-form-label" for="inputDefault">Human Disease</label>
+            <?php
+                if(isset($json->CIL_CCDB->CIL->CORE->HUMAN_DISEASE))
+                {
+                    $itemsJson = $json->CIL_CCDB->CIL->CORE->HUMAN_DISEASE;
+                    if(count($itemsJson)>0 && is_array($itemsJson))
+                    {
+                        echo "<ul>";
+                        foreach($itemsJson as $item)
+                        {
+                            if(isset($item->free_text))
+                            {
+                                $label = str_replace("'", "_single_quote_", $item->free_text);
+                                echo "<li>".$item->free_text."<a  href=\"/image_metadata/delete_field/".$image_id."/HUMAN_DISEASE/".$label."\" target=\"_self\"> &#x2716;</a></li>";
+                            
+                            }
+                            else if(isset($item->onto_name) && isset($item->onto_id))
+                            {
+                                 $label = str_replace("'", "_single_quote_;", $item->onto_name);
+                                echo "<li><a href=\"#\" data-toggle=\"tooltip\" title=\"".$item->onto_id."\">".$item->onto_name."</a><a  href=\"/image_metadata/delete_field/".$image_id."/HUMAN_DISEASE/".$item->onto_name."\" target=\"_self\"> &#x2716;</a></li>";
+                            }
+                        }
+                        echo "</ul>";
+                    }
+                }
+            ?>
+            <input id="image_search_parms_human_disease" name="image_search_parms[human_disease]" style="width: 100%" type="text" value="" class="acInput form-control cil_san_regular_font ui-autocomplete-input" autocomplete="off">
         </div>
     </div>
 </div>
