@@ -83,8 +83,8 @@
                             }
                             else if(isset($item->onto_name) && isset($item->onto_id))
                             {
-                                 $label = str_replace("'", "_single_quote_;", $item->onto_name);
-                                echo "<li><a href=\"#\" data-toggle=\"tooltip\" title=\"".$item->onto_id."\">".$item->onto_name."</a><a  href=\"/image_metadata/delete_field/".$image_id."/HUMAN_DISEASE/".$item->onto_name."\" target=\"_self\"> &#x2716;</a></li>";
+                                 $label = str_replace("'", "_single_quote_", $item->onto_name);
+                                echo "<li><a href=\"#\" data-toggle=\"tooltip\" title=\"".$item->onto_id."\">".$item->onto_name."</a><a  href=\"/image_metadata/delete_field/".$image_id."/HUMAN_DISEASE/".$label."\" target=\"_self\"> &#x2716;</a></li>";
                             }
                         }
                         echo "</ul>";
@@ -94,4 +94,5 @@
             <input id="image_search_parms_human_disease" name="image_search_parms[human_disease]" style="width: 100%" type="text" value="" class="acInput form-control cil_san_regular_font ui-autocomplete-input" autocomplete="off">
         </div>
     </div>
+    <div class="col-md-6"></div>
 </div>

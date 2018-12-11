@@ -206,7 +206,7 @@ class Image_metadata extends CI_Controller
             $json_str = json_encode($json,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
             //echo $json_str;
             
-             //file_put_contents($test_output_folder."/test.json", $json_str);
+            file_put_contents($test_output_folder."/".$image_id.".json", $json_str);
         
         
             $dbutil->submitMetadata($image_id, $json_str);
@@ -687,6 +687,7 @@ class Image_metadata extends CI_Controller
        /***********Image files****************************/
         if(isset($json->CIL_CCDB->Data_type->Video) && $json->CIL_CCDB->Data_type->Video)
         {
+            $json->CIL_CCDB->CIL->Image_files = array();
             $numeric_id = str_replace("CIL_", "", $image_id);
             $i_item1_str = "{".
                     "\"Mime_type\": \"application/zip\",".
@@ -706,6 +707,42 @@ class Image_metadata extends CI_Controller
                     "\"Mime_type\": \"video/x-flv\",".
                     "\"File_type\": \"Flv\",".
                     "\"File_path\": \"".$numeric_id.".flv\",".
+                    "\"Size\": 1392086".
+                    "}";
+            $i_item1 = json_decode($i_item1_str);
+            $i_item2 = json_decode($i_item2_str);
+            $i_item3 = json_decode($i_item3_str);
+            
+            $i_array = array();
+            array_push($i_array, $i_item1);
+            array_push($i_array, $i_item2);
+            array_push($i_array, $i_item3);
+            
+            $json->CIL_CCDB->CIL->Image_files = $i_array;
+        }
+        
+        if(isset($json->CIL_CCDB->Data_type->Still_image) && $json->CIL_CCDB->Data_type->Still_image)
+        {
+            $json->CIL_CCDB->CIL->Image_files = array();
+            $numeric_id = str_replace("CIL_", "", $image_id);
+            $i_item1_str = "{".
+                    "\"Mime_type\": \"application/zip\",".
+                    "\"File_type\": \"Zip\",".
+                    "\"File_path\": \"".$numeric_id.".zip\",".
+                    "\"Size\": 15659136".
+                    "}";
+            
+            $i_item2_str = "{".
+                    "\"Mime_type\": \"image/jpeg; charset=utf-8\",".
+                    "\"File_type\": \"Jpeg\",".
+                    "\"File_path\": \"".$numeric_id.".jpg\",".
+                    "\"Size\": 116024".
+                    "}";
+            
+            $i_item3_str = "{".
+                    "\"Mime_type\": \"image/tif\",".
+                    "\"File_type\": \"OME_tif\",".
+                    "\"File_path\": \"".$numeric_id.".tif\",".
                     "\"Size\": 1392086".
                     "}";
             $i_item1 = json_decode($i_item1_str);

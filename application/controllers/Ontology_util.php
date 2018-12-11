@@ -4,6 +4,33 @@ include_once 'Curl_util.php';
 
 class Ontology_util
 {
+    private function handleOntologyInput($type,$search_value)
+    {
+        $cutil = new Curl_util();
+        $CI = CI_Controller::get_instance();
+        $api_host = $CI->config->item('api_host');
+        $service_auth = $CI->config->item('auth_key');
+        //echo "<br/>Auth:".$service_auth;
+        $url = $api_host."/rest/ontology_expansion/".$type."/Name";
+        //echo "<br/>".$url;
+        $array = array();
+        $array['Search_value'] = $search_value;
+        $json_str = json_encode($array);
+        //echo "<br/>".$json_str;
+        $response = $cutil->auth_curl_get_with_data($service_auth, $url, $json_str);
+
+        $json = json_decode($response);
+        if(isset($json->hits->total) && $json->hits->total == 0)
+           return null;
+       else 
+       {
+          if(isset($json->hits->hits[0]->_source->Expansion->Onto_id))
+            return $json->hits->hits[0]->_source->Expansion->Onto_id;
+          else
+            return null;
+       }
+    }
+    /*
     private function handleOntologyInput($type, $keywords)
     {
         if(is_null($keywords))
@@ -37,7 +64,7 @@ class Ontology_util
           else
             return null;
        }
-    }
+    }*/
     
     public function handleNewOntoJson($type_name, $input)
     {
