@@ -126,6 +126,29 @@ class Image_metadata extends CI_Controller
                     }
                 }
             }
+            else if(strcmp($field, "Attribution_url") == 0)
+            {
+                $urls = $coreJson->ATTRIBUTION->URLs;
+                if(is_null($urls))
+                    $urls = array();
+                $removeIndex = null;
+                $i = 0;
+                
+                foreach($urls as $url)
+                {
+                    if(strcmp($url->Label, $input) == 0)
+                    {
+                        $removeIndex = $i;
+                    }
+                    $i++;
+                }
+                
+                if(!is_null($removeIndex))
+                {
+                    unset($urls[$removeIndex]);
+                    $coreJson->ATTRIBUTION->URLs=array_values($urls);
+                }
+            }
             
             $json_str = json_encode($json,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
             file_put_contents($test_output_folder."/".$image_id.".json", $json_str);
@@ -258,7 +281,12 @@ class Image_metadata extends CI_Controller
         $time_series = $this->input->post('time_series', TRUE);
         $video = $this->input->post('video', TRUE);
         
+        
+        /*************Attribution*******************************************/
         $attribution_name = $this->input->post('attribution_name', TRUE);
+        $attribution_url_label = $this->input->post('attribution_url_label', TRUE);
+        $attribution_url = $this->input->post('attribution_url', TRUE);
+        /*************End Attribution**************************************/
         
         //Dimensions
         $x_image_size = $this->input->post('x_image_size', TRUE);
@@ -333,7 +361,23 @@ class Image_metadata extends CI_Controller
         }
          /***********End NCBI *******************/
         
-        
+        /************Attribution URL**************************************/
+        if(!is_null($attribution_url_label) && strlen($attribution_url_label) > 0 
+                && !is_null($attribution_url) && strlen($attribution_url))
+        {
+            if(!isset($json->CIL_CCDB->CIL->CORE->ATTRIBUTION->URLs) ||  !is_array($json->CIL_CCDB->CIL->CORE->ATTRIBUTION->URLs))
+            {
+                $json->CIL_CCDB->CIL->CORE->ATTRIBUTION->URLs = array();
+            }
+
+            $attr_url = array();
+            $attr_url['Label'] = $attribution_url_label;
+            $attr_url['Href'] = $attribution_url;
+            $url_json_str = json_encode($attr_url);
+            $url_json = json_decode($url_json_str);
+            array_push($json->CIL_CCDB->CIL->CORE->ATTRIBUTION->URLs, $url_json);
+        }
+        /************End Attribution URL*********************************/
         
         /************Human Disease**************************/
         if(!is_null($human_disease) && strlen(trim($human_disease)) > 0)

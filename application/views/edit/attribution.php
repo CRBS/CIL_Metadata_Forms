@@ -28,4 +28,46 @@
     <div class="col-md-6">
         
     </div>
+    
+    <div class="col-md-12">
+        <div class="form-group">
+            <?php
+               
+                if(isset($json->CIL_CCDB->CIL->CORE->ATTRIBUTION->URLs))
+                {
+                    $urls = $json->CIL_CCDB->CIL->CORE->ATTRIBUTION->URLs;
+                    if(is_array($urls))
+                    {
+                        echo "<ul>";
+                        foreach($urls as $url)
+                        {
+                            if(isset($url->Label) && isset($url->Href))
+                            {
+                                $label = str_replace("'", "%27", $url->Label);
+                                echo "\n<li><a href='".$url->Href."' target='_blank'>URL: ".$url->Label."</a>";
+                                echo "\n<a  href=\"/image_metadata/delete_attribution/".$image_id."/Attribution_url/".$label."\" target=\"_self\"> &#x2716;</a></li>";
+                                echo "\n</li>";
+                                
+                            }
+                        }
+                        echo "</ul>";
+                    }
+                }
+            
+            ?>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="form-group">
+            <label class="col-form-label" for="inputDefault">URL label</label>
+            <input id="attribution_url_label" name="attribution_url_label" style="width: 100%" type="text" value="" class="form-control cil_san_regular_font" >
+        </div> 
+    </div>
+    <div class="col-md-8">
+        <div class="form-group">
+            <label class="col-form-label" for="inputDefault">URL</label>
+            <input id="attribution_url" name="attribution_url" style="width: 100%" type="text" value="" class="form-control cil_san_regular_font" >
+        </div> 
+    </div>
 </div>
