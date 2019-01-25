@@ -6,6 +6,9 @@ class DB_util
     private $id = 0;
     private $metadata = "metadata";
     
+    
+    
+    
     public function submitMetadata($image_id,$metadata)
     {
         $CI = CI_Controller::get_instance();
@@ -29,6 +32,38 @@ class DB_util
         
         pg_close($conn);
         return true;
+    }
+    
+    public function findIdsByTag($tag)
+    {
+        $id_array = array();
+    
+        $sql = "select numeric_id from cil_metadata where finished = false and tags = $1 order by numeric_id asc";
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $array = array();
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+        {   
+            return $id_array;
+        }
+        
+        $input = array();
+        array_push($input, $tag);
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return $id_array;
+        }
+            
+        while($row = pg_fetch_row($result))
+        {
+            array_push($id_array,$row[0]);
+        }
+        
+        pg_close($conn);
+        return $id_array;
     }
     
     public function getMetadata($image_id)
