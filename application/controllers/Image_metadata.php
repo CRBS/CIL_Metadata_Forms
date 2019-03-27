@@ -857,6 +857,7 @@ class Image_metadata extends CI_Controller
     
     public function edit($image_id="0")
     {
+        $this->load->helper('url');
         $dbutil = new DB_util();
         $gutil = new General_util();
         if(strcmp($image_id, "0") == 0)
@@ -864,6 +865,11 @@ class Image_metadata extends CI_Controller
             show_404();
             return;
         }
+        
+        $base_url = $this->config->item('base_url');
+        $login_hash = $this->session->userdata('login_hash');
+        if(is_null($login_hash))
+            redirect ($base_url."/login/auth_image/".$image_id);
         
         $json = $dbutil->getMetadata($image_id);
         if(!$json->success)

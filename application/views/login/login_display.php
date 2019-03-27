@@ -1,10 +1,6 @@
 <div class="container">
-    <form action="/login/auth/<?php echo $image_id; ?>" method="POST">
-    <div class="row">
-        <div class="col-md-12">
-            <img src="/images/CIL_logo_final_75H.jpg" height="50px"/>
-        </div>
-    </div>
+    <form action="/login/auth_image/<?php echo $image_id; ?>" method="POST">
+
     <br/>
     <div class="row">
         <div class="col-md-6">

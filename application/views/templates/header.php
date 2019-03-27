@@ -26,7 +26,7 @@
             <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
               <div class="container">
                   <img width="40" src="/pix/logo2.png">
-                  <a href="../" class="navbar-brand">&nbsp;<?php echo $title; ?></a>
+                  <a href="#" class="navbar-brand">&nbsp;<?php echo $title; ?></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
                 </button>

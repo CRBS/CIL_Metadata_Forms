@@ -1,11 +1,15 @@
 <?php
-
+include_once 'PasswordHash.php';
+include_once 'DB_util.php';
 class Login extends CI_Controller
 {
-    public function auth($image_id="0")
+    public function auth_image($image_id="0")
     {
         //$this->load->library('session');
         $this->load->helper('url');
+        $hasher = new PasswordHash(8, TRUE);
+        $dbutil = new DB_util();
+        
         
         $username = $this->input->post('username', TRUE);
         $password = $this->input->post('password', TRUE);
@@ -20,39 +24,22 @@ class Login extends CI_Controller
             $this->load->view('templates/footer', $data);
             return;
         }
+        $stored_hash = $dbutil->getPassHash($username);
         
-        
-        $users = $this->config->item('users');
-        $success = false;
-        
-        if(!is_null($users))
+        if($hasher->CheckPassword($password, $stored_hash))
         {
-            foreach($users as $user)
-            {
-                if(strcmp($username,$user->username) == 0 
-                        && strcmp($password,$user->password)==0)
-                {
-                    $array = array();
-                    $array["login"] = true;
-                    $this->session->set_userdata($array);
-                    $success = true;
-                    break;
-                }
-            }
-        }
-        if($success)
-        {
-            redirect ($base_url."/admin/image/".$image_id);
-            return;
+            $this->session->set_userdata('login_hash', $stored_hash);
+            redirect($base_url."/image_metadata/edit/".$image_id);
         }
         else 
         {
-            redirect ($base_url."/login/auth/".$image_id);
+            $data['title'] = "CIL login";
+            $this->load->view('templates/header', $data);
+            $this->load->view('login/login_display', $data);
+            $this->load->view('templates/footer', $data);
             return;
         }
-            
         
-         
     }
 }
 
