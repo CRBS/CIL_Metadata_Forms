@@ -7,7 +7,33 @@ class DB_util
     private $metadata = "metadata";
     
     
-    
+    public function getPassHash($user="0")
+    {
+        $hash = NULL;
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $array = array();
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+        {   
+            return NULL;
+        }
+        $sql = "select pass_hash from cil_users where username = $1";
+        $input = array();
+        array_push($input, $user);
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return NULL;
+        }
+        if($row = pg_fetch_row($result))
+        {
+            $hash = $row[0];
+        }
+        pg_close($conn);
+        return $hash;
+    }
     
     public function submitMetadata($image_id,$metadata)
     {
