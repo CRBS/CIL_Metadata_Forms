@@ -868,6 +868,7 @@ class Image_metadata extends CI_Controller
         
         $base_url = $this->config->item('base_url');
         $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
         if(is_null($login_hash))
             redirect ($base_url."/login/auth_image/".$image_id);
         

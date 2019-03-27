@@ -4,7 +4,7 @@
     <br/>
     <div class="row">
         <div class="col-md-6">
-            <div class="card border-light mb-3">
+            <div class="card border-dark mb-3">
                 <div class="card-header">Login</div>
                 <div class="card-body">
                     <div class="row">

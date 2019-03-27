@@ -32,10 +32,22 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                   <ul class="navbar-nav">
-
+                    
                   </ul>
+                   
+                </div>
+                  
+                <?php
+                    if(!isset($try_login) && isset($image_id))
+                    {
+                ?>
+                  <span style="color:white"><?php if(isset($username)) echo $username.":"; ?></span>&nbsp;&nbsp;<a href="/login/signout/<?php echo $image_id?>" target="_self">Log out</a>
+                <?php
+                    }
+                ?>
                 </div> 
               </div>
+            
             </div> 
-        </div> 
+        </div>
     </div>

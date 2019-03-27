@@ -19,6 +19,7 @@ class Login extends CI_Controller
         if(is_null($username) && is_null($password))
         {
             $data['title'] = "CIL login";
+            $data['try_login'] = true;
             $this->load->view('templates/header', $data);
             $this->load->view('login/login_display', $data);
             $this->load->view('templates/footer', $data);
@@ -28,18 +29,31 @@ class Login extends CI_Controller
         
         if($hasher->CheckPassword($password, $stored_hash))
         {
+            $this->session->set_userdata('username', $username);
             $this->session->set_userdata('login_hash', $stored_hash);
             redirect($base_url."/image_metadata/edit/".$image_id);
         }
         else 
         {
             $data['title'] = "CIL login";
+            $data['try_login'] = true;
             $this->load->view('templates/header', $data);
             $this->load->view('login/login_display', $data);
             $this->load->view('templates/footer', $data);
             return;
         }
         
+    }
+    
+    
+    public function signout($image_id="0")
+    {
+        $this->load->helper('url');
+        $base_url = $this->config->item('base_url');
+        $data['base_url'] = $base_url;
+        $this->session->set_userdata('login_hash', NULL);
+        $this->session->set_userdata('username', NULL);
+        redirect ($base_url."/image_metadata/edit/".$image_id);
     }
 }
 
