@@ -8,7 +8,9 @@
         while($i < $count)
         {
     ?>        
-    
+            <div class="row">
+                <div class="col-md-12"><br/></div>
+            </div>
             <div class="row">
                 <div class="col-md-3">
                     <?php
@@ -60,9 +62,13 @@
                 </div>
                 <br/>
             </div>
+            
     <?php
     
         }
         
     ?>
+    <div class="row">
+        <div class="col-md-12"><br/></div>
+    </div>
 </div>

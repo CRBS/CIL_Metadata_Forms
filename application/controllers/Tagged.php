@@ -32,7 +32,7 @@ class Tagged extends CI_Controller
         $dbutil = new DB_util();
         $idArray = $dbutil->findIdsByTag($tag);
         $data['tag'] = $tag;
-        $data['title'] = "Image from ".$tag;
+        $data['title'] = "Images from ".$tag;
         $data['id_array'] = $idArray;
         $this->load->view('templates/header', $data);
         $this->load->view('tags/display_summary', $data);
