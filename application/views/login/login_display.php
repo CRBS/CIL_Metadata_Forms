@@ -1,6 +1,21 @@
 <div class="container">
+    <?php
+        $form_open = false;
+        if(isset($image_id))
+        {
+            $form_open = true;
+    ?>        
     <form action="/login/auth_image/<?php echo $image_id; ?>" method="POST">
-
+    <?php
+        }
+        else if(isset($tag))
+        {
+            $form_open = true;
+    ?>
+    <form action="/login/process_tag/<?php echo $tag; ?>" method="POST">
+    <?php
+        }
+    ?>
     <br/>
     <div class="row">
         <div class="col-md-6">
@@ -31,6 +46,13 @@
         <div class="col-md-6">
         </div>
     </div>
+    <?php
+        if($form_open)
+        {
+    ?>        
     </form>
+    <?php
+        }
+    ?>
 </div>
 
