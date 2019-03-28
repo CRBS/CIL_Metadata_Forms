@@ -2,6 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 $json_str = file_get_contents("C:/data/cil_metadata_config.json");
+//$json_str = file_get_contents("/var/www/cil_metadata_config.json");
 $json = json_decode($json_str);
         
 /*
@@ -27,7 +28,7 @@ $json = json_decode($json_str);
 |
 */
 $config['base_url'] = 'http://localhost';
-
+//$config['base_url'] = 'https://protozoa.crbs.ucsd.edu';     
 /*
 |--------------------------------------------------------------------------
 | Index File
@@ -534,7 +535,10 @@ $config['auth_key'] = $json->cil_auth;
 $config['db_params']= $json->cil_pgsql_db;
 
 $config['test_output_folder'] = "C:/Test";
+//$config['test_output_folder'] = "/var/www/upload_dir";
+
 $config['upload_location'] = "C:/Test";
+//$config['upload_location'] = "/var/www/upload_dir";
 
 $config['metadata_service_prefix'] = $json->metadata_service_prefix;
 $config['metadata_auth'] = $json->metadata_auth;
