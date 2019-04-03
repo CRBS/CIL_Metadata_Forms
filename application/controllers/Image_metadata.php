@@ -860,6 +860,7 @@ class Image_metadata extends CI_Controller
         $this->load->helper('url');
         $dbutil = new DB_util();
         $gutil = new General_util();
+        $cutil = new Curl_util();
         if(strcmp($image_id, "0") == 0)
         {
             show_404();
@@ -887,7 +888,10 @@ class Image_metadata extends CI_Controller
             }
             $data['title'] = "CIL | Edit ".$image_id;
             $data['staging_website_prefix'] = $this->config->item('staging_website_prefix');
+            $data['elasticsearch_host_stage'] = $this->config->item('elasticsearch_host_stage');
+            $esUrl = $data['elasticsearch_host_stage']."/ccdbv8/data/".$image_id;
             //$data['data_json'] = $json;
+            $data['esUrl'] = $esUrl;
             $data['image_id'] = $image_id;
             $mjson = json_decode($json->metadata);
             $data['json'] = $mjson;

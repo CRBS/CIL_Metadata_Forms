@@ -26,9 +26,13 @@
     <br/>
     </div>
     <div class="col-md-12">
-        
-            <a href="<?php echo $staging_website_prefix."/images/".$numeric_id; ?>" target="_blank" class="btn btn-primary">View image</a>
-        
+        <a href="<?php echo $staging_website_prefix."/images/".$numeric_id; ?>" target="_blank" class="btn btn-primary">View image</a>        
+    </div>
+    <div class="col-md-12">
+    <br/>
+    </div>
+    <div class="col-md-12">
+        <a href="<?php echo $esUrl; ?>" target="_blank" class="btn btn-primary">Publish data</a>     
     </div>
 </div>
 
