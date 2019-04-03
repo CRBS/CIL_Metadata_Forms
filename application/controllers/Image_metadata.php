@@ -867,6 +867,7 @@ class Image_metadata extends CI_Controller
         }
         
         $base_url = $this->config->item('base_url');
+        
         $login_hash = $this->session->userdata('login_hash');
         $data['username'] = $this->session->userdata('username');
         if(is_null($login_hash))
@@ -885,6 +886,7 @@ class Image_metadata extends CI_Controller
                 $data['numeric_id'] = str_replace("CIL_", "", $image_id);
             }
             $data['title'] = "CIL | Edit ".$image_id;
+            $data['staging_website_prefix'] = $this->config->item('staging_website_prefix');
             //$data['data_json'] = $json;
             $data['image_id'] = $image_id;
             $mjson = json_decode($json->metadata);

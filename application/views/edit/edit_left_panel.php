@@ -27,7 +27,7 @@
     </div>
     <div class="col-md-12">
         
-            <a href="" target="_blank" class="btn btn-primary">View image</a>
+            <a href="<?php echo $staging_website_prefix."/images/".$numeric_id; ?>" target="_blank" class="btn btn-primary">View image</a>
         
     </div>
 </div>
