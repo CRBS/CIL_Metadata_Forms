@@ -7,6 +7,31 @@ class DB_util
     private $metadata = "metadata";
     
     
+    public function getAllAvailableImages()
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "select numeric_id from cil_metadata where publish_date is NULL order by numeric_id desc";
+        
+        $idArray = array();
+        
+        $result = pg_query($conn,$sql);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return $idArray;
+        }
+        
+        while($row = pg_fetch_row($result))
+        {
+            array_push($idArray, intval($row[0]));
+        }
+        pg_close($conn);
+        
+        return $idArray;
+    }
+    
+    
     public function getPassHash($user="0")
     {
         $hash = NULL;
