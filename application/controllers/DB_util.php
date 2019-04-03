@@ -12,7 +12,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "select numeric_id from cil_metadata where publish_date is NULL order by numeric_id desc";
-        
+        $conn = pg_pconnect($db_params);
         $idArray = array();
         
         $result = pg_query($conn,$sql);

@@ -21,8 +21,8 @@ class All_images extends CI_Controller
         
        $idArray = $dbutil->getAllAvailableImages();
        $data['idArray'] =   $idArray;
-       
-       $data['title'] = "Home";
+       $data['host'] = $base_url;
+       $data['title'] = "All images";
        $this->load->view('templates/header', $data);
        $this->load->view('home/all_images_display', $data);
        $this->load->view('templates/footer', $data);

@@ -33,6 +33,7 @@ class Tagged extends CI_Controller
         $idArray = $dbutil->findIdsByTag($tag);
         $data['tag'] = $tag;
         $data['title'] = "Images from ".$tag;
+        $data['host'] = $base_url;
         $data['id_array'] = $idArray;
         $this->load->view('templates/header', $data);
         $this->load->view('tags/display_summary', $data);

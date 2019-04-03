@@ -3,7 +3,7 @@
         $i=0;
         $count = count($id_array);
         
-        $host = "http://localhost";
+        //$host = "http://localhost";
         
         while($i < $count)
         {

@@ -5,7 +5,7 @@
             <center><a href="/tagged/images/wellcome" class="btn btn-info">Wellcome datasets</a></center>
         </div>
         <div class="col-md-4">
-           <center><a href="" class="btn btn-info">All images</a></center>
+           <center><a href="/all_images" class="btn btn-info">All images</a></center>
         </div>
     </div>
 </div>
