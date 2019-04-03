@@ -50,7 +50,13 @@
                   <span style="color:white"><?php if(isset($username)) echo $username.":"; ?></span>&nbsp;&nbsp;<a href="/login/signout_tag/<?php echo $tag; ?>" target="_self">Log out</a>
                 <?php
                     }
+                    else if(isset($username)) 
+                    {
                  ?>
+                   <span style="color:white"><?php if(isset($username)) echo $username.":"; ?></span>&nbsp;&nbsp;<a href="/login/signout_home" target="_self">Log out</a>
+                  <?php
+                    }
+                    ?>
                 </div> 
               </div>
             

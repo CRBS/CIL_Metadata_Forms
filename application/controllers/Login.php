@@ -131,6 +131,17 @@ class Login extends CI_Controller
          redirect($base_url."/login/auth_tag/".$tag);
                 return;
     }
+    
+    public function signout_home()
+    {
+        $this->load->helper('url');
+        $base_url = $this->config->item('base_url');
+        $data['base_url'] = $base_url;
+        $this->session->set_userdata('login_hash', NULL);
+        $this->session->set_userdata('username', NULL);
+        redirect($base_url."/home");
+        return;
+    }
 }
 
 
