@@ -853,7 +853,58 @@ class Image_metadata extends CI_Controller
         echo "<br/>cellular_components expansion:".$this->handleOntologyInput("cellular_components",$cellular_component);*/
     }
     
-    
+    public function publish_data($image_id="0")
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        $cutil = new Curl_util();
+        if(strcmp($image_id, "0") == 0)
+        {
+            show_404();
+            return;
+        }
+        
+        $base_url = $this->config->item('base_url');
+        
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        if(is_null($login_hash))
+            redirect ($base_url."/login/auth_image/".$image_id);
+        
+        $json = $dbutil->getMetadata($image_id);
+        if(!$json->success)
+        {
+            show_404();
+            return;
+        }
+        else if(isset($json->metadata))
+        {
+            
+            $json_str = $json->metadata;
+           
+           
+            if($gutil->startsWith($image_id, "CIL_"))
+            {
+                $data['numeric_id'] = str_replace("CIL_", "", $image_id);
+            }
+            $data['title'] = "CIL | Edit ".$image_id;
+            $data['staging_website_prefix'] = $this->config->item('staging_website_prefix');
+            $data['elasticsearch_host_stage'] = $this->config->item('elasticsearch_host_stage');
+            $esUrl = $data['elasticsearch_host_stage']."/ccdbv8/data/".$image_id;
+            //echo $esUrl."<br/><br/>";
+            //echo $json_str;
+
+            $response = $cutil->just_curl_put($esUrl, $json_str);
+            //echo $response;
+            redirect($data['staging_website_prefix']."/images/".$image_id);
+            
+        }
+        else
+        {
+            redirect($base_url."/image_metadata/edit/".$image_id);
+        }
+    }
     
     public function edit($image_id="0")
     {
@@ -890,6 +941,11 @@ class Image_metadata extends CI_Controller
             $data['staging_website_prefix'] = $this->config->item('staging_website_prefix');
             $data['elasticsearch_host_stage'] = $this->config->item('elasticsearch_host_stage');
             $esUrl = $data['elasticsearch_host_stage']."/ccdbv8/data/".$image_id;
+            $ejson_str = $cutil->curl_get($esUrl);
+            $ejson = json_decode($ejson_str);
+            
+            if(!is_null($ejson) && isset($ejson->found))
+                $data['enable_publish_button'] = !$ejson->found;
             //$data['data_json'] = $json;
             $data['esUrl'] = $esUrl;
             $data['image_id'] = $image_id;

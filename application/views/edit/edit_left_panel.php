@@ -28,11 +28,25 @@
     <div class="col-md-12">
         <a href="<?php echo $staging_website_prefix."/images/".$numeric_id; ?>" target="_blank" class="btn btn-primary">View image</a>        
     </div>
+    
+    <div class="col-md-12">
+        <?php
+            //if(isset($enable_publish_button) && $enable_publish_button)
+            //{
+        ?>      
+                <div class="col-md-12">
+                <br/>
+                </div>
+                <a href="/image_metadata/publish_data/CIL_<?php echo $numeric_id; ?>" target="_blank" class="btn btn-primary">Publish data</a>
+        <?php
+            //}
+        ?>
+    </div>
     <div class="col-md-12">
     <br/>
     </div>
     <div class="col-md-12">
-        <a href="<?php echo $esUrl; ?>" target="_blank" class="btn btn-primary">Publish data</a>     
+        <a href="/rest/metadata_json/CIL_<?php echo $numeric_id; ?>" target="_blank" class="btn btn-primary">View JSON</a>     
     </div>
 </div>
 
