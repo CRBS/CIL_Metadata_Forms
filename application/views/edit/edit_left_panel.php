@@ -22,12 +22,21 @@
         </form>
         
     </div>
+    
     <div class="col-md-12">
-    <br/>
+        <?php
+            if(isset($enable_unpublish_button) && $enable_unpublish_button)
+            {
+        ?>      
+                <div class="col-md-12">
+                <br/>
+                </div>
+                <a href="<?php echo $staging_website_prefix."/images/".$numeric_id; ?>" target="_blank" class="btn btn-primary">View image</a>      
+        <?php
+            }
+        ?>
     </div>
-    <div class="col-md-12">
-        <a href="<?php echo $staging_website_prefix."/images/".$numeric_id; ?>" target="_blank" class="btn btn-primary">View image</a>        
-    </div>
+
     
     <div class="col-md-12">
         <?php
@@ -43,10 +52,31 @@
         ?>
     </div>
     <div class="col-md-12">
-    <br/>
+        <?php
+            if(isset($enable_unpublish_button) && $enable_unpublish_button)
+            {
+        ?>      
+                <div class="col-md-12">
+                <br/>
+                </div>
+                <a href="/image_metadata/delete_es_image/CIL_<?php echo $numeric_id; ?>"  class="btn btn-danger">Unpublish</a>
+        <?php
+            }
+        ?>
     </div>
     <div class="col-md-12">
-        <a href="/rest/metadata_json/CIL_<?php echo $numeric_id; ?>" target="_blank" class="btn btn-primary">View JSON</a>     
+        <?php
+            if(isset($debug) && $debug)
+            {
+        ?>      
+                <div class="col-md-12">
+                <br/>
+                </div>
+                <a href="/rest/metadata_json/CIL_<?php echo $numeric_id; ?>" target="_blank" class="btn btn-primary">View JSON</a> 
+        <?php
+            }
+        ?>
     </div>
+    
 </div>
 
