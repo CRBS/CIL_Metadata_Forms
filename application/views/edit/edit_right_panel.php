@@ -8,8 +8,8 @@
     include_once 'imaging_methods.php'; 
     include_once 'dimensions.php';
     include_once 'attribution.php';
+    include_once 'image_files.php';
     include_once 'licensing.php';
-    
     include_once 'bottom_panel.php';
     
 ?>

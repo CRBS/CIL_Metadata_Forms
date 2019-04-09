@@ -6,6 +6,32 @@ class DB_util
     private $id = 0;
     private $metadata = "metadata";
     
+    public function getImageSizes($image_id="0")
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "select jpeg_size, zip_size from cil_metadata where image_id = $1";
+        $conn = pg_pconnect($db_params);
+        $input = array();
+        array_push($input, $image_id);
+        $result = pg_query_params($conn,$sql,$input);
+        
+        $iarray = array();
+        if($row = pg_fetch_row($result))
+        {
+            $temp = intval('jpeg_size');
+            if(!is_null($temp))
+                $iarray['jpeg_size'] = $row[0];
+            
+            $temp = intval('zip_size');
+            if(!is_null($temp))
+                $iarray['zip_size'] = $row[1];
+        }
+        pg_close($conn);
+        $json_str = json_encode($iarray);
+        $json = json_decode($json_str);
+        return $json;
+    }
     
     public function getAllAvailableImages()
     {

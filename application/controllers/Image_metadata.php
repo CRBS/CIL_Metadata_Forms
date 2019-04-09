@@ -989,9 +989,14 @@ class Image_metadata extends CI_Controller
             {
                 $data['numeric_id'] = str_replace("CIL_", "", $image_id);
             }
+            
+            $image_size_json = $dbutil->getImageSizes($image_id);
+            
             $data['title'] = "CIL | Edit ".$image_id;
             $data['staging_website_prefix'] = $this->config->item('staging_website_prefix');
             $data['elasticsearch_host_stage'] = $this->config->item('elasticsearch_host_stage');
+            $data['image_size_json'] = $image_size_json;
+            
             $esUrl = $data['elasticsearch_host_stage']."/ccdbv8/data/".$image_id;
             $ejson_str = $cutil->curl_get($esUrl);
             $ejson = json_decode($ejson_str);
