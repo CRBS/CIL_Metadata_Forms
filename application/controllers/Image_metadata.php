@@ -773,7 +773,9 @@ class Image_metadata extends CI_Controller
         {
             $json->CIL_CCDB->CIL->Image_files = array();
             $numeric_id = str_replace("CIL_", "", $image_id);
-            
+            $i_item1_str = NULL;
+            $i_item2_str = NULL;
+            $i_item3_str = NULL;
             if(!is_null($zip_size) && is_numeric($zip_size))
             {
                 $i_item1_str = "{".
@@ -803,15 +805,27 @@ class Image_metadata extends CI_Controller
                         "\"Size\": ".$tiff_size.
                         "}";
             }
-            
-            $i_item1 = json_decode($i_item1_str);
-            $i_item2 = json_decode($i_item2_str);
-            $i_item3 = json_decode($i_item3_str);
-            
             $i_array = array();
-            array_push($i_array, $i_item1);
-            array_push($i_array, $i_item2);
-            array_push($i_array, $i_item3);
+            if(!is_null($i_item1_str))
+            {
+                $i_item1 = json_decode($i_item1_str);
+                 array_push($i_array, $i_item1);
+            }
+            if(!is_null($i_item2_str))
+            {
+                $i_item2 = json_decode($i_item2_str);
+                array_push($i_array, $i_item2);
+            }
+            if(!is_null($i_item3_str))
+            {
+                $i_item3 = json_decode($i_item3_str);
+                array_push($i_array, $i_item3);
+            }
+            
+            
+           
+            
+            
             
             $json->CIL_CCDB->CIL->Image_files = $i_array;
         }
