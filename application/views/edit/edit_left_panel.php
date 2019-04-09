@@ -46,7 +46,7 @@
                 <div class="col-md-12">
                 <br/>
                 </div>
-                <a href="/image_metadata/publish_data/CIL_<?php echo $numeric_id; ?>" target="_blank" class="btn btn-primary">Publish data</a>
+                <a href="/image_metadata/publish_data/CIL_<?php echo $numeric_id; ?>" target="_self" class="btn btn-primary">Publish data</a>
         <?php
             //}
         ?>

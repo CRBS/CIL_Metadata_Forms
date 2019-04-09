@@ -271,6 +271,9 @@ class Image_metadata extends CI_Controller
         $preparation = $this->input->post('image_search_parms[preparation_bim]', TRUE);
         $imageParameter = $this->input->post('image_search_parms[parameter_imaged_bim]', TRUE); 
         
+        $jpeg_size = $this->input->post('jpeg_size', TRUE); 
+        $zip_size = $this->input->post('zip_size', TRUE); 
+        $tiff_size = $this->input->post('tiff_size', TRUE); 
         /**************Biological Context**************************************************/
         $human_disease = $this->input->post('image_search_parms[human_disease]', TRUE); 
         
@@ -318,7 +321,6 @@ class Image_metadata extends CI_Controller
             $json = json_decode($json_str);
             //echo "<br/>Loading the previous json NOT sucessfully";
         }
-        
         
         
         
@@ -765,30 +767,43 @@ class Image_metadata extends CI_Controller
             $json->CIL_CCDB->CIL->Image_files = $i_array;
         }
         
+        
+        
         if(isset($json->CIL_CCDB->Data_type->Still_image) && $json->CIL_CCDB->Data_type->Still_image)
         {
             $json->CIL_CCDB->CIL->Image_files = array();
             $numeric_id = str_replace("CIL_", "", $image_id);
-            $i_item1_str = "{".
-                    "\"Mime_type\": \"application/zip\",".
-                    "\"File_type\": \"Zip\",".
-                    "\"File_path\": \"".$numeric_id.".zip\",".
-                    "\"Size\": 15659136".
-                    "}";
             
-            $i_item2_str = "{".
-                    "\"Mime_type\": \"image/jpeg; charset=utf-8\",".
-                    "\"File_type\": \"Jpeg\",".
-                    "\"File_path\": \"".$numeric_id.".jpg\",".
-                    "\"Size\": 116024".
-                    "}";
+            if(!is_null($zip_size) && is_numeric($zip_size))
+            {
+                $i_item1_str = "{".
+                        "\"Mime_type\": \"application/zip\",".
+                        "\"File_type\": \"Zip\",".
+                        "\"File_path\": \"".$numeric_id.".zip\",".
+                        "\"Size\": ".$zip_size.
+                        "}";
+            }
             
-            $i_item3_str = "{".
-                    "\"Mime_type\": \"image/tif\",".
-                    "\"File_type\": \"OME_tif\",".
-                    "\"File_path\": \"".$numeric_id.".tif\",".
-                    "\"Size\": 1392086".
-                    "}";
+            if(!is_null($jpeg_size) && is_numeric($jpeg_size))
+            {
+                $i_item2_str = "{".
+                        "\"Mime_type\": \"image/jpeg; charset=utf-8\",".
+                        "\"File_type\": \"Jpeg\",".
+                        "\"File_path\": \"".$numeric_id.".jpg\",".
+                        "\"Size\": ".$jpeg_size.
+                        "}";
+            }
+            
+            if(!is_null($tiff_size) && is_numeric($tiff_size))
+            {
+                $i_item3_str = "{".
+                        "\"Mime_type\": \"image/tif\",".
+                        "\"File_type\": \"OME_tif\",".
+                        "\"File_path\": \"".$numeric_id.".tif\",".
+                        "\"Size\": ".$tiff_size.
+                        "}";
+            }
+            
             $i_item1 = json_decode($i_item1_str);
             $i_item2 = json_decode($i_item2_str);
             $i_item3 = json_decode($i_item3_str);
