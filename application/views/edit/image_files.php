@@ -8,7 +8,8 @@ if(isset($image_size_json) && isset($image_size_json->jpeg_size) && isset($image
 <span class="cil_title2">Image files</span>
 <div class="row">
     <div class="col-md-9">
-        <?php echo "https://cildata.crbs.ucsd.edu/media/images/".$numeric_id."/".$numeric_id.".jpg"; ?>
+        <?php $jpg_url = "https://cildata.crbs.ucsd.edu/media/images/".$numeric_id."/".$numeric_id.".jpg"; ?>
+        <a href="<?php echo $jpg_url; ?>" target="_blank"><?php echo $jpg_url; ?></a>
     </div>
     <div class="col-md-3">
         <?php 
@@ -21,7 +22,8 @@ if(isset($image_size_json) && isset($image_size_json->jpeg_size) && isset($image
 </div>
 <div class="row">
     <div class="col-md-9">
-        <?php echo "https://cildata.crbs.ucsd.edu/media/images/".$numeric_id."/".$numeric_id.".zip"; ?>
+        <?php $zip_url = "https://cildata.crbs.ucsd.edu/media/images/".$numeric_id."/".$numeric_id.".zip"; ?>
+        <a href="<?php echo $zip_url; ?>" target="_blank"><?php echo $zip_url; ?></a>
     </div>
     <div class="col-md-3">
         <?php 
@@ -33,14 +35,5 @@ if(isset($image_size_json) && isset($image_size_json->jpeg_size) && isset($image
     </div>
 </div>
 <?php
-}
-else
-{
-    var_dump($image_size_json);
-   if(!isset($image_size_json))
-       echo "image_size_json is not set";
-   
-   if(!isset($image_size_json->jpeg_size))
-        echo "image_size_json->jpeg_size is not set";
 }
 ?>
