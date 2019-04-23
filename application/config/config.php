@@ -550,3 +550,7 @@ $config['ezid_prefix'] = $json->ezid_prefix;
 $config['ezid_auth'] = $json->ezid_auth;
 $config['ezid_staging_shoulder'] = $json->ezid_staging_shoulder;
 $config['ezid_production_shoulder'] = $json->ezid_production_shoulder;
+
+
+$config['is_production'] = false;
+
