@@ -29,6 +29,9 @@ class Home extends CI_Controller
             return;
         }
         
+        
+        $tarray = $dbutil->getTags();
+        $data['tag_array'] = $tarray;
         $data['title'] = "Home";
         $this->load->view('templates/header', $data);
         $this->load->view('home/home_display', $data);

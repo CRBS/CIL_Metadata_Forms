@@ -7,6 +7,23 @@ class DB_util
     private $metadata = "metadata";
     
     
+    public function getTags()
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "select distinct tags from cil_metadata where tags is not null order by tags";
+        $conn = pg_pconnect($db_params);
+        $result = pg_query($conn, $sql);
+        $tarray = array();
+        while($row = pg_fetch_row($result))
+        {
+            $tag = $row[0];
+            array_push($tarray, $tag);
+        }
+        pg_close($conn);
+        return $tarray;
+    }
+    
     public function getUserRole($username)
     {
         $CI = CI_Controller::get_instance();
