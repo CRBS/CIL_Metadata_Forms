@@ -78,5 +78,17 @@
         ?>
     </div>
     
+    <div class="col-md-12">
+        <?php
+            if(isset($user_role) && strcmp($user_role,'admin') ==0)
+            {
+                
+        ?>
+            <a href="" target="_blank" class="btn btn-primary">Create the DOI</a> 
+        <?php
+            }
+        ?>
+    </div>
+    
 </div>
 

@@ -6,6 +6,25 @@ class DB_util
     private $id = 0;
     private $metadata = "metadata";
     
+    
+    public function getUserRole($username)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "select role from cil_users u, cil_roles r where u.user_role = r.id and u.username = $1";
+        $conn = pg_pconnect($db_params);
+        $input = array();
+        array_push($input, $username);
+        $result = pg_query_params($conn,$sql,$input);
+        $role = "member";
+        if($row = pg_fetch_row($result))
+        {
+            $role = $row[0];
+        }
+        pg_close($conn);
+        return $role;
+    }
+    
     public function getImageSizes($image_id="0")
     {
         $CI = CI_Controller::get_instance();
