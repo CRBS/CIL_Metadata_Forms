@@ -84,6 +84,9 @@
             {
                 
         ?>
+            <div class="col-md-12">
+                <br/>
+            </div>
             <a href="" target="_blank" class="btn btn-primary">Create the DOI</a> 
         <?php
             }

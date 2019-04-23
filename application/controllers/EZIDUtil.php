@@ -120,9 +120,10 @@ class EZIDUtil
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
         $output = curl_exec($ch);
-        echo  "\n".curl_getinfo($ch, CURLINFO_HTTP_CODE) . "\n";
-        echo  "\n".$output . "\n";
+        //echo  "\n".curl_getinfo($ch, CURLINFO_HTTP_CODE) . "\n";
+        //echo  "\n".$output . "\n";
         curl_close($ch);
+        return $output;
     }
     
     
