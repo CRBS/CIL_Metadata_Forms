@@ -1,5 +1,5 @@
 <?php
-
+include_once 'DB_util.php';
 class Upload_images extends CI_Controller
 {
     public function index()
@@ -13,7 +13,13 @@ class Upload_images extends CI_Controller
     
     public function do_upload()
     {
+        $dbutil = new DB_util();
+        
+        $data_location = $this->config->item('data_location');
         $upload_location = $this->config->item('upload_location');
+        $is_production = $this->config->item('is_production');
+        $id = $dbutil->getNextID($is_production);
+        
         $config2 = array(
         'upload_path' => $upload_location,
         'allowed_types' => "gif|jpg|png|jpeg",
@@ -36,28 +42,37 @@ class Upload_images extends CI_Controller
                     if(array_key_exists('full_path',$upload_metadata))
                     {
                         $full_path = $upload_metadata['full_path'];
-                        echo "<br/>". $full_path;
+                        echo "<br/>Uploaded path:". $full_path;
                         $info = pathinfo($full_path);
-                        $file_name =  basename($full_path,'.'.$info['extension']);
-                        
-                        $zip = new ZipArchive;
-                        $zipFile = $upload_location."/".$file_name.".zip";
-                        
-                        echo "<br/>".$zipFile;
-                        if(file_exists($zipFile))
+                        $data_dir = $data_location."/".$id;
+                        echo "<br/>New data dir:".$data_dir;
+                        $dir_success = mkdir($data_dir);
+                        if($dir_success)
                         {
-                            unlink($zipFile);
-                        }
-                        
-                        if ($zip->open($zipFile, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) 
-                        {
-                            $zip->addFile($full_path, basename($full_path));
-                            $zip->close();
-                            echo '<br/>Zip ok';
-                        } 
-                        else 
-                        {
-                            echo '<br/>Zip failed';
+                            $file_name =  basename($full_path,'.'.$info['extension']);
+                            $new_file_path = $data_dir."/".$id.".".$info['extension'];
+                            echo "<br/>New file path:". $new_file_path;
+                            rename($full_path, $new_file_path);
+                            
+                            $zip = new ZipArchive;
+                            $zipFile = $data_dir."/".$id.".zip";
+
+                            echo "<br/>Zip file:".$zipFile;
+                            if(file_exists($zipFile))
+                            {
+                                unlink($zipFile);
+                            }
+
+                            if ($zip->open($zipFile, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) 
+                            {
+                                $zip->addFile($new_file_path, basename($new_file_path));
+                                $zip->close();
+                                echo '<br/>Zip ok';
+                            } 
+                            else 
+                            {
+                                echo '<br/>Zip failed';
+                            }
                         }
                     }
                    

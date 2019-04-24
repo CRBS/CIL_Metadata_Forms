@@ -7,6 +7,27 @@ class DB_util
     private $metadata = "metadata";
     
     
+    public function getNextID($is_prod=false)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "";
+        if(!$is_prod)
+           $sql = "select nextval('test_id_sequence')";
+        else 
+           $sql = "select nextval('cil_id_sequence')";
+       
+        $conn = pg_pconnect($db_params);
+        $result = pg_query($conn, $sql);
+        $id = 0;
+        if($row = pg_fetch_row($result))
+        {
+            $id = intval($row[0]);
+        }
+        pg_close($conn);
+        return $id;
+    }
+    
     public function getTags()
     {
         $CI = CI_Controller::get_instance();
