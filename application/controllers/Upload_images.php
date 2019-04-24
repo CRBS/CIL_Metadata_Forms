@@ -1,4 +1,5 @@
 <?php
+include_once 'Curl_util.php';
 include_once 'General_util.php';
 include_once 'DB_util.php';
 class Upload_images extends CI_Controller
@@ -17,6 +18,13 @@ class Upload_images extends CI_Controller
     
     public function do_upload()
     {
+        
+        $cutil= new Curl_util();
+        
+        $base_url = $this->config->item('base_url');
+        $metadata_service_prefix = $this->config->item('metadata_service_prefix');
+        $metadata_auth = $this->config->item('metadata_auth');
+        
         $dbutil = new DB_util();
         $gutil = new General_util();
         $data_location = $this->config->item('data_location');
@@ -97,6 +105,13 @@ class Upload_images extends CI_Controller
                             
                             $metadata = "{\"CIL_CCDB\": {\"Status\": {\"Deleted\": false,\"Is_public\": true },\"CIL\":{\"CORE\":{\"IMAGEDESCRIPTION\":{  }, \"ATTRIBUTION\":{}  }}}}";
                             $dbutil->insertImageEntry($image_id,$image_name, $id, $metadata,$tag,$jpeg_size, $zip_size);
+                            
+                            $bin = file_get_contents($new_file_path);
+                            $hex = bin2hex($bin);
+                            $url = $metadata_service_prefix."/upload_image/".$id;
+                            $response = $cutil->auth_curl_post($url, $metadata_auth, $hex);
+                            echo "<br/>Upload response:".$response;
+                            echo "<br/>Edit URL:<a href='".$base_url."/image_metadata/edit/".$image_id."' target='_blank'>".$image_id."</a>";
                         }
                     }
                    

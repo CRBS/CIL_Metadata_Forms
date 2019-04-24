@@ -30,7 +30,7 @@ class Home extends CI_Controller
         }
         
         
-        $tarray = $dbutil->getTags();
+        $tarray = $dbutil->getStandardTags();
         $data['tag_array'] = $tarray;
         $data['title'] = "Home";
         $this->load->view('templates/header', $data);

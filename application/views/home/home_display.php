@@ -9,16 +9,19 @@
                 <div class="col-md-12">
                 <a href="/all_images" class="btn btn-info">All images</a>
                 </div>
-                <div class="col-md-12"><br/></div>
+                <div class="col-md-12"><br/><?php //var_dump($tag_array); ?></div>
                 <?php
                     foreach($tag_array as $tag)
                     {
+                        if(strcmp($tag,"none") !=0)
+                        {
                 ?>
                 <div class="col-md-12">
                 <a href="/tagged/images/<?php echo $tag; ?>" class="btn btn-info"><?php echo $tag; ?> datasets</a>
                 </div>
                 <div class="col-md-12"><br/></div>
                 <?php
+                        }
                     }
                 ?>
             </div>
@@ -28,7 +31,7 @@
                <span class="cil_title2">Manage</span>
             </div>
             <div class="col-md-12">
-                <a href="/upload_images" class="btn btn-info">Upload images</a>
+                <a href="/upload_images" class="btn btn-primary">Upload images</a>
             </div>
         </div>
         <div class="col-md-4">
