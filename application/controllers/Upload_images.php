@@ -1,10 +1,14 @@
 <?php
+include_once 'General_util.php';
 include_once 'DB_util.php';
 class Upload_images extends CI_Controller
 {
     public function index()
     {
+        $dbutil = new DB_util();
+        $tarray = $dbutil->getStandardTags();
         $data['title'] = "Upload image";
+        $data['tag_array'] = $tarray;
         $this->load->view('templates/header', $data);
         $this->load->view('upload/upload_main_display', $data);
         $this->load->view('templates/footer', $data);
@@ -14,12 +18,15 @@ class Upload_images extends CI_Controller
     public function do_upload()
     {
         $dbutil = new DB_util();
-        
+        $gutil = new General_util();
         $data_location = $this->config->item('data_location');
         $upload_location = $this->config->item('upload_location');
         $is_production = $this->config->item('is_production');
         $id = $dbutil->getNextID($is_production);
+        $image_id = "CIL_".$id;
+        $tag = $this->input->post('tag', TRUE);
         
+        echo "<br/>Tag:".$tag;
         $config2 = array(
         'upload_path' => $upload_location,
         'allowed_types' => "gif|jpg|png|jpeg",
@@ -42,6 +49,7 @@ class Upload_images extends CI_Controller
                     if(array_key_exists('full_path',$upload_metadata))
                     {
                         $full_path = $upload_metadata['full_path'];
+                        $image_name = basename($full_path);
                         echo "<br/>Uploaded path:". $full_path;
                         $info = pathinfo($full_path);
                         $data_dir = $data_location."/".$id;
@@ -51,13 +59,17 @@ class Upload_images extends CI_Controller
                         {
                             $file_name =  basename($full_path,'.'.$info['extension']);
                             $new_file_path = $data_dir."/".$id.".".$info['extension'];
-                            echo "<br/>New file path:". $new_file_path;
+                            
                             rename($full_path, $new_file_path);
                             
+                            $jpeg_size = NULL;
+                            $zip_size = NULL;
+                            if(file_exists($new_file_path))
+                                $jpeg_size = filesize ($new_file_path);
+                            echo "<br/>New file path:". $new_file_path."---".$jpeg_size;
                             $zip = new ZipArchive;
                             $zipFile = $data_dir."/".$id.".zip";
-
-                            echo "<br/>Zip file:".$zipFile;
+                            
                             if(file_exists($zipFile))
                             {
                                 unlink($zipFile);
@@ -73,6 +85,11 @@ class Upload_images extends CI_Controller
                             {
                                 echo '<br/>Zip failed';
                             }
+                            
+                            if(file_exists($zipFile))
+                                $zip_size = filesize ($zipFile);
+                            
+                            echo "<br/>Zip file:".$zipFile."----".$zip_size;
                         }
                     }
                    

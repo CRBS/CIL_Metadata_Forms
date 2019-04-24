@@ -6,6 +6,21 @@ class DB_util
     private $id = 0;
     private $metadata = "metadata";
     
+    public function getStandardTags()
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "select tag from cil_tags order by order_number asc";
+        $conn = pg_pconnect($db_params);
+        $result = pg_query($conn, $sql);
+        $tarray = array();
+        while($row = pg_fetch_row($result))
+        {
+            array_push($tarray,$row[0]);
+        }
+        pg_close($conn);
+        return $tarray;
+    }
     
     public function getNextID($is_prod=false)
     {
