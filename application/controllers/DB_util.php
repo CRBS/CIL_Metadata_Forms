@@ -206,6 +206,39 @@ class DB_util
         return true;
     }
     
+    public function insertImageEntry($image_id,$image_name, $numeric_id, $metadata,$tag,$jpeg_size, $zip_size)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+        {   
+            return false;
+        }
+        $sql = "insert into cil_metadata(image_id, image_name, create_time, numeric_id, metadata, external_id, ".
+               " tags, finished, jpeg_size, zip_size) ".
+               " values($1, $2,now(),$3, $4, $5, $6,false,$7,$8)";
+        $input = array();
+        array_push($input, $image_id); //1
+        array_push($input, $image_name); //2
+        array_push($input, $numeric_id); //3
+        array_push($input, $metadata); //4
+        array_push($input, $image_name); //5
+        array_push($input, $tag); //6
+        array_push($input, $jpeg_size); //7
+        array_push($input, $zip_size); //8
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        
+        pg_close($conn);
+        return true;
+    }
+    
     public function submitMetadata($image_id,$metadata)
     {
         $CI = CI_Controller::get_instance();

@@ -24,7 +24,10 @@ class Upload_images extends CI_Controller
         $is_production = $this->config->item('is_production');
         $id = $dbutil->getNextID($is_production);
         $image_id = "CIL_".$id;
+        echo "<br/>Image ID:".$image_id;
         $tag = $this->input->post('tag', TRUE);
+        if(strcmp($tag,"none")==0)
+                $tag = NULL;
         
         echo "<br/>Tag:".$tag;
         $config2 = array(
@@ -49,9 +52,10 @@ class Upload_images extends CI_Controller
                     if(array_key_exists('full_path',$upload_metadata))
                     {
                         $full_path = $upload_metadata['full_path'];
-                        $image_name = basename($full_path);
+                        
                         echo "<br/>Uploaded path:". $full_path;
                         $info = pathinfo($full_path);
+                        $image_name = basename($full_path,'.'.$info['extension']);
                         $data_dir = $data_location."/".$id;
                         echo "<br/>New data dir:".$data_dir;
                         $dir_success = mkdir($data_dir);
@@ -90,6 +94,9 @@ class Upload_images extends CI_Controller
                                 $zip_size = filesize ($zipFile);
                             
                             echo "<br/>Zip file:".$zipFile."----".$zip_size;
+                            
+                            $metadata = "{\"CIL_CCDB\": {\"Status\": {\"Deleted\": false,\"Is_public\": true },\"CIL\":{\"CORE\":{\"IMAGEDESCRIPTION\":{  }, \"ATTRIBUTION\":{}  }}}}";
+                            $dbutil->insertImageEntry($image_id,$image_name, $id, $metadata,$tag,$jpeg_size, $zip_size);
                         }
                     }
                    

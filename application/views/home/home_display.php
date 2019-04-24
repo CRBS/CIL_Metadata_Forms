@@ -15,7 +15,7 @@
                     {
                 ?>
                 <div class="col-md-12">
-                <a href="/tagged/images/wellcome" class="btn btn-info">Wellcome datasets</a>
+                <a href="/tagged/images/<?php echo $tag; ?>" class="btn btn-info"><?php echo $tag; ?> datasets</a>
                 </div>
                 <div class="col-md-12"><br/></div>
                 <?php
