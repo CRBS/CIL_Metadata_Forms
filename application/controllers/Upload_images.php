@@ -14,7 +14,7 @@ class Upload_images extends CI_Controller
             redirect ($base_url."/login/auth_image/".$image_id);
             return;
         }
-        $data['user_role'] = $dbutil->getUserRole($username);
+        $data['user_role'] = $dbutil->getUserRole($data['username']);
                 
         $tarray = $dbutil->getStandardTags();
         $data['title'] = "Upload image";
@@ -35,7 +35,7 @@ class Upload_images extends CI_Controller
             redirect ($base_url."/login/auth_image/".$image_id);
             return;
         }
-        $data['user_role'] = $dbutil->getUserRole($username);
+        $data['user_role'] = $dbutil->getUserRole($data['username']);
         
         
         $this->load->helper('url');

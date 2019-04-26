@@ -17,7 +17,7 @@ class Image_metadata extends CI_Controller
             redirect ($base_url."/login/auth_image/".$image_id);
             return;
         }
-        $data['user_role'] = $dbutil->getUserRole($username);
+        $data['user_role'] = $dbutil->getUserRole($data['username']);
         
         
         $cutil= new Curl_util();
