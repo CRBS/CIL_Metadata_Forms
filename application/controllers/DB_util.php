@@ -223,7 +223,7 @@ class DB_util
         array_push($input, $image_name); //2
         array_push($input, $numeric_id); //3
         array_push($input, $metadata); //4
-        array_push($input, $image_name); //5
+        array_push($input, $image_id); //5
         array_push($input, $tag); //6
         array_push($input, $jpeg_size); //7
         array_push($input, $zip_size); //8

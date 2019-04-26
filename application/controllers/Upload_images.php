@@ -19,8 +19,8 @@ class Upload_images extends CI_Controller
     public function do_upload()
     {
         
-        $cutil= new Curl_util();
-        
+        $cutil = new Curl_util();
+        $gutil = new General_util();
         $base_url = $this->config->item('base_url');
         $metadata_service_prefix = $this->config->item('metadata_service_prefix');
         $metadata_auth = $this->config->item('metadata_auth');
@@ -47,7 +47,8 @@ class Upload_images extends CI_Controller
         'max_width' => "4000"
         );
         $this->load->library('upload', $config2);
-        
+        $jpeg_size = NULL;
+        $zip_size = NULL;
         if($this->upload->do_upload())
         {
             $img = array('upload_data' => $this->upload->data());
@@ -60,8 +61,45 @@ class Upload_images extends CI_Controller
                     if(array_key_exists('full_path',$upload_metadata))
                     {
                         $filePath = $upload_metadata['full_path'];
-                        echo "<br/>Uploaded path:". $full_path;
-                        $cutil->remote_upload_file_post($id, $filePath);
+                        $info = pathinfo($filePath);
+                        $image_name = basename($filePath,'.'.$info['extension']);
+                        $jpeg_size = NULL;
+                        $zip_size = NULL;
+                        if($gutil->endsWith($filePath, ".jpg"))
+                            $jpeg_size = filesize($filePath);
+                        
+                        echo "<br/>JPEG size:".$jpeg_size;
+                        echo "<br/>Uploaded path:". $filePath;
+                        $response = $cutil->remote_upload_file_post($id, $filePath);
+                        
+                        
+                        echo "<br/>First Upload response:".$response;
+                        
+                        /////////////Zipping file/////////////////////////////////////////////
+                        
+                        $zip = new ZipArchive;
+                        $zipFile = $upload_location."/".$image_name.".zip";
+                            
+                        if(file_exists($zipFile))
+                        {
+                            unlink($zipFile);
+                        }
+
+                        if ($zip->open($zipFile, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) 
+                        {
+                            $zip->addFile($filePath, basename($filePath));
+                            $zip->close();
+                            //echo '<br/>Zip ok';
+                        } 
+                        else 
+                        {
+                            //echo '<br/>Zip failed';
+                        }
+                            
+                        if(file_exists($zipFile))
+                        $zip_size = filesize ($zipFile);
+                        echo "<br/>Zip size:".$zip_size;
+                        /////////////End Zipping file/////////////////////////////////////////////
                         
                         $metadata = "{\"CIL_CCDB\": {\"Status\": {\"Deleted\": false,\"Is_public\": true },\"CIL\":{\"CORE\":{\"IMAGEDESCRIPTION\":{  }, \"ATTRIBUTION\":{}  }}}}";
                         $dbutil->insertImageEntry($image_id,$image_name, $id, $metadata,$tag,$jpeg_size, $zip_size);

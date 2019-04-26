@@ -6,7 +6,7 @@ class Curl_util
     public function remote_upload_file_post($id,$filePath)
     {
         $CI = CI_Controller::get_instance();
-        $auth = $CI->config->item('service_auth');
+        $auth = $CI->config->item('metadata_auth');
         $remote_upload_prefix = $CI->config->item('remote_upload_prefix');
         
         $fileName = basename($filePath);
@@ -27,7 +27,7 @@ class Curl_util
 
         $response  = curl_exec($ch);
         curl_close($ch);
-        echo $response;
+        return $response;
     }
     
     public function auth_curl_post($url,$auth, $data)
