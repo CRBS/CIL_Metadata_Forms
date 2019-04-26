@@ -6,6 +6,7 @@ class Upload_images extends CI_Controller
 {
     public function index()
     {
+        $this->load->helper('url');
         $dbutil = new DB_util();
         $login_hash = $this->session->userdata('login_hash');
         $data['username'] = $this->session->userdata('username');
@@ -27,6 +28,7 @@ class Upload_images extends CI_Controller
     
     public function do_upload()
     {
+        $this->load->helper('url');
         $dbutil = new DB_util();
         $login_hash = $this->session->userdata('login_hash');
         $data['username'] = $this->session->userdata('username');
@@ -37,8 +39,6 @@ class Upload_images extends CI_Controller
         }
         $data['user_role'] = $dbutil->getUserRole($data['username']);
         
-        
-        $this->load->helper('url');
         $cutil = new Curl_util();
         $gutil = new General_util();
         $base_url = $this->config->item('base_url');
