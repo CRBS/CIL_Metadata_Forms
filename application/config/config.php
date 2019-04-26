@@ -559,4 +559,4 @@ if($config['is_production'])
 else 
     $config['data_location'] = $json->staging_data_location;
 
-        
+$config['remote_upload_prefix'] = $json->remote_upload_prefix;       

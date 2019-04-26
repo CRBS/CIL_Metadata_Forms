@@ -2,6 +2,34 @@
 
 class Curl_util
 {
+    
+    public function remote_upload_file_post($id,$filePath)
+    {
+        $CI = CI_Controller::get_instance();
+        $auth = $CI->config->item('service_auth');
+        $remote_upload_prefix = $CI->config->item('remote_upload_prefix');
+        
+        $fileName = basename($filePath);
+        $fields = [
+            'data' => new \CurlFile($filePath, 'image/jpeg', $fileName)
+        ];
+        
+        $url = $remote_upload_prefix."/upload_image/".$id;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: multipart/form-data'));
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_USERPWD, $auth);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+
+        $response  = curl_exec($ch);
+        curl_close($ch);
+        echo $response;
+    }
+    
     public function auth_curl_post($url,$auth, $data)
     {
         $ch = curl_init();

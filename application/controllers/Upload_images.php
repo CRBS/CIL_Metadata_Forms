@@ -59,60 +59,19 @@ class Upload_images extends CI_Controller
                     $upload_metadata = $img['upload_data'];
                     if(array_key_exists('full_path',$upload_metadata))
                     {
-                        $full_path = $upload_metadata['full_path'];
-                        
+                        $filePath = $upload_metadata['full_path'];
                         echo "<br/>Uploaded path:". $full_path;
-                        $info = pathinfo($full_path);
-                        $image_name = basename($full_path,'.'.$info['extension']);
-                        $data_dir = $data_location."/".$id;
-                        //echo "<br/>New data dir:".$data_dir;
-                        $dir_success = mkdir($data_dir);
-                        if($dir_success)
-                        {
-                            $file_name =  basename($full_path,'.'.$info['extension']);
-                            $new_file_path = $data_dir."/".$id.".".$info['extension'];
-                            
-                            rename($full_path, $new_file_path);
-                            
-                            $jpeg_size = NULL;
-                            $zip_size = NULL;
-                            if(file_exists($new_file_path))
-                                $jpeg_size = filesize ($new_file_path);
-                            //echo "<br/>New file path:". $new_file_path."---".$jpeg_size;
-                            $zip = new ZipArchive;
-                            $zipFile = $data_dir."/".$id.".zip";
-                            
-                            if(file_exists($zipFile))
-                            {
-                                unlink($zipFile);
-                            }
-
-                            if ($zip->open($zipFile, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) 
-                            {
-                                $zip->addFile($new_file_path, basename($new_file_path));
-                                $zip->close();
-                                //echo '<br/>Zip ok';
-                            } 
-                            else 
-                            {
-                                //echo '<br/>Zip failed';
-                            }
-                            
-                            if(file_exists($zipFile))
-                                $zip_size = filesize ($zipFile);
-                            
-                            echo "<br/>Zip file:".$zipFile."----".$zip_size;
-                            
-                            $metadata = "{\"CIL_CCDB\": {\"Status\": {\"Deleted\": false,\"Is_public\": true },\"CIL\":{\"CORE\":{\"IMAGEDESCRIPTION\":{  }, \"ATTRIBUTION\":{}  }}}}";
-                            $dbutil->insertImageEntry($image_id,$image_name, $id, $metadata,$tag,$jpeg_size, $zip_size);
-                            
-                            $bin = file_get_contents($new_file_path);
-                            $hex = bin2hex($bin);
-                            $url = $metadata_service_prefix."/upload_image/".$id;
-                            $response = $cutil->auth_curl_post($url, $metadata_auth, $hex);
-                            echo "<br/>Upload response:".$response;
-                            echo "<br/>Edit URL:<a href='".$base_url."/image_metadata/edit/".$image_id."' target='_blank'>".$image_id."</a>";
-                        }
+                        $cutil->remote_upload_file_post($id, $filePath);
+                        
+                        $metadata = "{\"CIL_CCDB\": {\"Status\": {\"Deleted\": false,\"Is_public\": true },\"CIL\":{\"CORE\":{\"IMAGEDESCRIPTION\":{  }, \"ATTRIBUTION\":{}  }}}}";
+                        $dbutil->insertImageEntry($image_id,$image_name, $id, $metadata,$tag,$jpeg_size, $zip_size);
+                        
+                        $bin = file_get_contents($filePath);
+                        $hex = bin2hex($bin);
+                        $url = $metadata_service_prefix."/upload_image/".$id;
+                        $response = $cutil->auth_curl_post($url, $metadata_auth, $hex);
+                        echo "<br/>Upload response:".$response;
+                        echo "<br/>Edit URL:<a href='".$base_url."/image_metadata/edit/".$image_id."' target='_blank'>".$image_id."</a>";
                     }
                    
                 }
@@ -120,8 +79,8 @@ class Upload_images extends CI_Controller
         }
         else
         {
-            $error = array('error' => $this->upload->display_errors());
-            var_dump($error);
+            echo "<br/>Upload Error:".$this->upload->display_errors();
+            
         }
     }
     
