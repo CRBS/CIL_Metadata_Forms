@@ -97,7 +97,7 @@ class Upload_images extends CI_Controller
                         }
                             
                         if(file_exists($zipFile))
-                        $zip_size = filesize ($zipFile);
+                            $zip_size = filesize ($zipFile);
                         echo "<br/>Zip size:".$zip_size;
                         /////////////End Zipping file/////////////////////////////////////////////
                         
@@ -110,6 +110,11 @@ class Upload_images extends CI_Controller
                         $response = $cutil->auth_curl_post($url, $metadata_auth, $hex);
                         echo "<br/>Upload response:".$response;
                         echo "<br/>Edit URL:<a href='".$base_url."/image_metadata/edit/".$image_id."' target='_blank'>".$image_id."</a>";
+                        if(file_exists($filePath))
+                            unlink($filePath);
+                        
+                        if(file_exists($zipFile))
+                            unlink($zipFile);
                         
                         $base_url = $this->config->item('base_url');
                         redirect ($base_url."/image_metadata/edit/".$image_id);
