@@ -22,7 +22,7 @@ class DB_util
         return $tarray;
     }
     
-    public function getNextID($is_prod=false)
+    public function getNextID($is_prod)
     {
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');

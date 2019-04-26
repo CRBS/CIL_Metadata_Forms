@@ -1006,7 +1006,10 @@ class Image_metadata extends CI_Controller
         $data['username'] = $username;
         $data['user_role'] = $dbutil->getUserRole($username);
         if(is_null($login_hash))
+        {
             redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
         
         $json = $dbutil->getMetadata($image_id);
         if(!$json->success)

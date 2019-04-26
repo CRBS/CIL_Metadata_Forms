@@ -552,7 +552,7 @@ $config['ezid_staging_shoulder'] = $json->ezid_staging_shoulder;
 $config['ezid_production_shoulder'] = $json->ezid_production_shoulder;
 
 
-$config['is_production'] = false;
+$config['is_production'] = true;
 
 if($config['is_production'])
     $config['data_location'] = $json->production_data_location;

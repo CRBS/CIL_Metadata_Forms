@@ -7,6 +7,15 @@ class Upload_images extends CI_Controller
     public function index()
     {
         $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        $data['user_role'] = $dbutil->getUserRole($username);
+                
         $tarray = $dbutil->getStandardTags();
         $data['title'] = "Upload image";
         $data['tag_array'] = $tarray;
@@ -18,6 +27,17 @@ class Upload_images extends CI_Controller
     
     public function do_upload()
     {
+        $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        $data['user_role'] = $dbutil->getUserRole($username);
+        
+        
         $this->load->helper('url');
         $cutil = new Curl_util();
         $gutil = new General_util();
@@ -25,7 +45,6 @@ class Upload_images extends CI_Controller
         $metadata_service_prefix = $this->config->item('metadata_service_prefix');
         $metadata_auth = $this->config->item('metadata_auth');
         
-        $dbutil = new DB_util();
         $gutil = new General_util();
         $data_location = $this->config->item('data_location');
         $upload_location = $this->config->item('upload_location');
