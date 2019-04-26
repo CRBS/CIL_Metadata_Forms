@@ -18,7 +18,7 @@ class Upload_images extends CI_Controller
     
     public function do_upload()
     {
-        
+        $this->load->helper('url');
         $cutil = new Curl_util();
         $gutil = new General_util();
         $base_url = $this->config->item('base_url');
@@ -110,6 +110,9 @@ class Upload_images extends CI_Controller
                         $response = $cutil->auth_curl_post($url, $metadata_auth, $hex);
                         echo "<br/>Upload response:".$response;
                         echo "<br/>Edit URL:<a href='".$base_url."/image_metadata/edit/".$image_id."' target='_blank'>".$image_id."</a>";
+                        
+                        $base_url = $this->config->item('base_url');
+                        redirect ($base_url."/image_metadata/edit/".$image_id);
                     }
                    
                 }
