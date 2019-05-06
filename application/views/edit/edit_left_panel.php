@@ -6,7 +6,11 @@
     }
 ?>
 <br/>
+
 <div class="row">
+    <div class="col-md-12">
+        Image name: <?php echo $image_name; ?>
+    </div>
     <div class="col-md-12">
         <center>
             <img src="https://cildata.crbs.ucsd.edu/media/thumbnail_display/<?php echo $id; ?>/<?php echo $id; ?>_thumbnailx512.jpg" class="img-thumbnail pull-right" width="100%">

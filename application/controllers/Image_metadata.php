@@ -1054,6 +1054,7 @@ class Image_metadata extends CI_Controller
             $data['esUrl'] = $esUrl;
             $data['image_id'] = $image_id;
             $mjson = json_decode($json->metadata);
+            $data['image_name'] = $json->image_name;
             $data['json'] = $mjson;
             $this->load->view('templates/header', $data);
             $this->load->view('edit/edit_main', $data);
