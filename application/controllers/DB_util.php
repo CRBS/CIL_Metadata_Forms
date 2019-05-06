@@ -268,7 +268,7 @@ class DB_util
     {
         $id_array = array();
     
-        $sql = "select numeric_id from cil_metadata where finished = false and tags = $1 order by numeric_id asc";
+        $sql = "select numeric_id, image_name from cil_metadata where finished = false and tags = $1 and delete_date is NULL order by numeric_id asc";
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $array = array();
@@ -289,7 +289,10 @@ class DB_util
             
         while($row = pg_fetch_row($result))
         {
-            array_push($id_array,$row[0]);
+            $item = array();
+            array_push($item,$row[0]);
+            array_push($item,$row[1]);
+            array_push($id_array,$item);
         }
         
         pg_close($conn);
