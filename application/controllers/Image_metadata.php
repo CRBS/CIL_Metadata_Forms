@@ -895,6 +895,49 @@ class Image_metadata extends CI_Controller
     }
     
     
+    public function delete_db_image($image_id="0")
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        $cutil = new Curl_util();
+        if(strcmp($image_id, "0") == 0)
+        {
+            show_404();
+            return;
+        }
+        
+        $base_url = $this->config->item('base_url');
+        
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        if(is_null($login_hash))
+            redirect ($base_url."/login/auth_image/".$image_id);
+        
+        $json = $dbutil->getMetadata($image_id);
+        if(!$json->success)
+        {
+            show_404();
+            return;
+        }
+        
+        $dbutil->updateImageDeleteTime($image_id);
+        
+        $elasticsearch_host_stage = $this->config->item('elasticsearch_host_stage');    
+        $esUrl = $elasticsearch_host_stage."/ccdbv8/data/".$image_id;
+        $ejson_str = $cutil->curl_get($esUrl);
+        $ejson = json_decode($ejson_str);
+        if(!is_null($ejson) && isset($ejson->found) && $ejson->found)
+        {
+            $this->delete_es_image($image_id);
+                
+        }
+        
+        redirect ($base_url."/home");
+
+    }
+    
+    
     public function delete_es_image($image_id="0")
     {
         $this->load->helper('url');
