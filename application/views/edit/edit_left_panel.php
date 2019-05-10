@@ -50,7 +50,7 @@
                 <div class="col-md-12">
                 <br/>
                 </div>
-                <a href="/image_metadata/publish_data/CIL_<?php echo $numeric_id; ?>" target="_self" class="btn btn-primary">Publish data</a>
+                <a href="/image_metadata/publish_data/CIL_<?php echo $numeric_id; ?>" target="_self" class="btn btn-primary">Publish data (Stage)</a>
         <?php
             //}
         ?>
@@ -63,7 +63,7 @@
                 <div class="col-md-12">
                 <br/>
                 </div>
-                <a href="/image_metadata/delete_es_image/CIL_<?php echo $numeric_id; ?>"  class="btn btn-danger">Unpublish</a>
+                <a href="/image_metadata/delete_es_image/CIL_<?php echo $numeric_id; ?>"  class="btn btn-danger">Unpublish (Stage)</a>
         <?php
             }
         ?>

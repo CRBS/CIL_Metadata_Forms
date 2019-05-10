@@ -1084,6 +1084,7 @@ class Image_metadata extends CI_Controller
             $data['title'] = "CIL | Edit ".$image_id;
             $data['staging_website_prefix'] = $this->config->item('staging_website_prefix');
             $data['elasticsearch_host_stage'] = $this->config->item('elasticsearch_host_stage');
+            $data['elasticsearch_host_prod'] = $this->config->item('elasticsearch_host_prod');
             $data['image_size_json'] = $image_size_json;
             
             $esUrl = $data['elasticsearch_host_stage']."/ccdbv8/data/".$image_id;

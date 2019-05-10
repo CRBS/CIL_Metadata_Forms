@@ -545,12 +545,12 @@ $config['metadata_service_prefix'] = $json->metadata_service_prefix;
 $config['metadata_auth'] = $json->metadata_auth;
 $config['staging_website_prefix'] = $json->staging_website_prefix;
 $config['elasticsearch_host_stage'] = $json->elasticsearch_host_stage;
+$config['elasticsearch_host_prod'] = $json->elasticsearch_host_prod;
 
 $config['ezid_prefix'] = $json->ezid_prefix;
 $config['ezid_auth'] = $json->ezid_auth;
 $config['ezid_staging_shoulder'] = $json->ezid_staging_shoulder;
 $config['ezid_production_shoulder'] = $json->ezid_production_shoulder;
-
 
 $config['is_production'] = true;
 
