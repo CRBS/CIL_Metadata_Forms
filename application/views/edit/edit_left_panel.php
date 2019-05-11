@@ -63,11 +63,43 @@
                 <div class="col-md-12">
                 <br/>
                 </div>
+                <a href="/image_metadata/publish_data_prod/CIL_<?php echo $numeric_id; ?>" target="_self" class="btn btn-primary">Publish data (Prod)</a>
+        <?php
+            }
+        ?>
+    </div>
+    
+    
+    <div class="col-md-12">
+        <?php
+            if(isset($enable_unpublish_button) && $enable_unpublish_button)
+            {
+        ?>      
+                <div class="col-md-12">
+                <br/>
+                </div>
                 <a href="/image_metadata/delete_es_image/CIL_<?php echo $numeric_id; ?>"  class="btn btn-danger">Unpublish (Stage)</a>
         <?php
             }
         ?>
     </div>
+    
+    
+    <div class="col-md-12">
+        <?php
+            if(isset($enable_unpublish_button_prod) && $enable_unpublish_button_prod)
+            {
+        ?>      
+                <div class="col-md-12">
+                <br/>
+                </div>
+                <a href="/image_metadata/delete_es_image_prod/CIL_<?php echo $numeric_id; ?>"  class="btn btn-danger">Unpublish (Prod)</a>
+        <?php
+            }
+        ?>
+    </div>
+    
+    
     <div class="col-md-12">
         <?php
             if(isset($debug) && $debug)

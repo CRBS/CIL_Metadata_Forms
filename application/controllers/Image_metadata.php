@@ -1016,7 +1016,9 @@ class Image_metadata extends CI_Controller
         {
             
             $json_str = $json->metadata;
-           
+            $mjson = json_decode($json_str);
+            $mjson->CIL_CCDB->Status->Publish_time = time();
+            $json_str = json_encode($mjson, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
            
             if($gutil->startsWith($image_id, "CIL_"))
             {
@@ -1087,15 +1089,27 @@ class Image_metadata extends CI_Controller
             $data['elasticsearch_host_prod'] = $this->config->item('elasticsearch_host_prod');
             $data['image_size_json'] = $image_size_json;
             
+            /*************Staging Elasticsearch****************************/
             $esUrl = $data['elasticsearch_host_stage']."/ccdbv8/data/".$image_id;
             $ejson_str = $cutil->curl_get($esUrl);
             $ejson = json_decode($ejson_str);
-            
             $data['enable_unpublish_button'] = false;
             if(!is_null($ejson) && isset($ejson->found) && $ejson->found)
                 $data['enable_unpublish_button'] = true;
+             $data['esUrl'] = $esUrl;
+             /*************End Staging Elasticsearch****************************/
+            
+            /*************Production Elasticsearch****************************/
+            $esProdUrl = $data['elasticsearch_host_prod']."/ccdbv8/data/".$image_id;
+            $epjson_str = $cutil->curl_get($esProdUrl);
+            $epjson = json_decode($epjson_str);
+            if(!is_null($epjson) && isset($epjson->found) && $epjson->found)
+                $data['enable_unpublish_button_prod'] = false;
+            $data['esProdUrl'] = $esProdUrl;
+            /*************End Production Elasticsearch****************************/
+            
             //$data['data_json'] = $json;
-            $data['esUrl'] = $esUrl;
+           
             $data['image_id'] = $image_id;
             $mjson = json_decode($json->metadata);
             $data['image_name'] = $json->image_name;
