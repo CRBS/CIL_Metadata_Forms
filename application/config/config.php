@@ -544,6 +544,8 @@ $config['upload_location'] = "C:/Test";
 $config['metadata_service_prefix'] = $json->metadata_service_prefix;
 $config['metadata_auth'] = $json->metadata_auth;
 $config['staging_website_prefix'] = $json->staging_website_prefix;
+$config['prod_website_prefix'] = $json->prod_website_prefix;
+
 $config['elasticsearch_host_stage'] = $json->elasticsearch_host_stage;
 $config['elasticsearch_host_prod'] = $json->elasticsearch_host_prod;
 

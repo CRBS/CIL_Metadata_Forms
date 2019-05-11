@@ -938,6 +938,55 @@ class Image_metadata extends CI_Controller
     }
     
     
+    public function delete_es_image_prod($image_id='0')
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        $cutil = new Curl_util();
+        if(strcmp($image_id, "0") == 0)
+        {
+            show_404();
+            return;
+        }
+        
+        $base_url = $this->config->item('base_url');
+        
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        if(is_null($login_hash))
+            redirect ($base_url."/login/auth_image/".$image_id);
+        
+        $json = $dbutil->getMetadata($image_id);
+        if(!$json->success)
+        {
+            show_404();
+            return;
+        }
+        else
+        {
+            if($gutil->startsWith($image_id, "CIL_"))
+            {
+                $data['numeric_id'] = str_replace("CIL_", "", $image_id);
+            }
+            $data['title'] = "CIL | Edit ".$image_id;
+            $data['staging_website_prefix'] = $this->config->item('staging_website_prefix');
+            $data['elasticsearch_host_prod'] = $this->config->item('elasticsearch_host_prod');
+            $esUrl = $data['elasticsearch_host_prod']."/ccdbv8/data/".$image_id;
+            $ejson_str = $cutil->curl_get($esUrl);
+            $ejson = json_decode($ejson_str);
+            
+            //echo $esUrl;
+            if(!is_null($ejson) && isset($ejson->found) && $ejson->found)
+            {
+               $cutil->just_curl_delete($esUrl);
+               $dbutil->unpublish($image_id);
+            }
+        }
+        
+        redirect($base_url."/image_metadata/edit/".$image_id);
+    }
+    
     public function delete_es_image($image_id="0")
     {
         $this->load->helper('url');
@@ -985,6 +1034,62 @@ class Image_metadata extends CI_Controller
         }
         
         redirect($base_url."/image_metadata/edit/".$image_id);
+    }
+    
+    
+    public function publish_data_prod($image_id="0")
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        $cutil = new Curl_util();
+        if(strcmp($image_id, "0") == 0)
+        {
+            show_404();
+            return;
+        }
+        
+        $base_url = $this->config->item('base_url');
+        
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        if(is_null($login_hash))
+            redirect ($base_url."/login/auth_image/".$image_id);
+        
+        $json = $dbutil->getMetadata($image_id);
+        if(!$json->success)
+        {
+            show_404();
+            return;
+        }
+        else if(isset($json->metadata))
+        {
+            
+            $json_str = $json->metadata;
+            $mjson = json_decode($json_str);
+            $mjson->CIL_CCDB->Status->Publish_time = time();
+            $json_str = json_encode($mjson, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+           
+            if($gutil->startsWith($image_id, "CIL_"))
+            {
+                $data['numeric_id'] = str_replace("CIL_", "", $image_id);
+            }
+            $data['title'] = "CIL | Edit ".$image_id;
+            $data['staging_website_prefix'] = $this->config->item('staging_website_prefix');
+            $data['elasticsearch_host_prod'] = $this->config->item('elasticsearch_host_prod');
+            $esUrl = $data['elasticsearch_host_prod']."/ccdbv8/data/".$image_id;
+            //echo $esUrl."<br/><br/>";
+            //echo $json_str;
+
+            $response = $cutil->just_curl_put($esUrl, $json_str);
+            //echo $response;
+            //redirect($data['staging_website_prefix']."/images/".$image_id);
+            redirect($base_url."/image_metadata/edit/".$image_id);
+        }
+        else
+        {
+            redirect($base_url."/image_metadata/edit/".$image_id);
+        }
     }
     
     public function publish_data($image_id="0")
