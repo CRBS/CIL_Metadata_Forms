@@ -24,6 +24,92 @@ class CILContentUtil
          return $metadata;
     }
     
+    public function getCitationInfo($json, $id, $year)
+    {
+        /*
+        $json_str =  json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        $jsonFile = "C:/Users/wawong/Desktop/".$id.".json";
+        if(file_exists($jsonFile))
+        unlink($jsonFile);
+        error_log($json_str, 3, $jsonFile);
+        */        
+        
+        $citation = $this->getCreators($json);
+        $citation = $citation." (".$year.") CIL:".$id;
+        $species = $this->getSpecies($json);
+        //echo "\nSpecies:".$species;
+        if(!is_null($species))
+            $citation = $citation.", ".$species;
+        
+        $cellType = $this->getCellType($json);
+        if(!is_null($cellType))
+            $citation = $citation.", ".$cellType.". CIL. Dataset";
+        
+        $citation = $citation.". CIL. Dataset";
+        
+        
+        return $citation;
+    }
+    
+    
+    private function getCellType($json)
+    {
+        $cellType = NULL;
+        if(isset($json->CIL_CCDB->CIL->CORE->CELLTYPE) && is_array($json->CIL_CCDB->CIL->CORE->CELLTYPE) && count($json->CIL_CCDB->CIL->CORE->CELLTYPE) > 0)
+        {
+            if(isset($json->CIL_CCDB->CIL->CORE->CELLTYPE[0]->onto_name))
+                $cellType = $json->CIL_CCDB->CIL->CORE->CELLTYPE[0]->onto_name;
+
+            if(is_null($cellType))
+            {
+                if(isset($json->CIL_CCDB->CIL->CORE->CELLTYPE[0]->free_text))
+                    $cellType= $json->CIL_CCDB->CIL->CORE->CELLTYPE[0]->free_text;
+            }
+        }
+        else
+        {
+            if(isset($json->CIL_CCDB->CIL->CORE->CELLTYPE->onto_name))
+                $cellType = $json->CIL_CCDB->CIL->CORE->CELLTYPE->onto_name;
+
+            if(is_null($cellType))
+            {
+                if(isset($json->CIL_CCDB->CIL->CORE->CELLTYPE->free_text))
+                    $cellType= $json->CIL_CCDB->CIL->CORE->CELLTYPE->free_text;
+            }
+        }
+        return $cellType;
+    }
+    
+    
+    private function getSpecies($json)
+    {
+        $species = NULL;
+        
+        if(isset($json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION) && is_array($json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION) && count($json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION))
+        {
+            if(isset($json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION[0]->onto_name))
+                $species = $json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION[0]->onto_name;
+            
+            if(is_null($species))
+            {
+                if(isset($json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION[0]->free_text))
+                    $species= $json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION[0]->free_text;
+            }
+        }
+        else
+        {
+            if(isset($json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION->onto_name))
+                $species = $json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION->onto_name;
+
+            if(is_null($species))
+            {
+                if(isset($json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION->free_text))
+                    $species= $json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION->free_text;
+            }
+        }
+        return $species;
+    }
+    
     private function getCilID($filePath)
     {
         $fileName = basename($filePath);

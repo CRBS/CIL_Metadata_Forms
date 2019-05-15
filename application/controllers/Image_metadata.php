@@ -4,6 +4,7 @@ include_once 'General_util.php';
 include_once 'DB_util.php';
 include_once 'Ontology_util.php';
 include_once 'Dimension_util.php';
+include_once 'EZIDUtil.php';
 class Image_metadata extends CI_Controller
 {
     
@@ -1153,6 +1154,7 @@ class Image_metadata extends CI_Controller
         $dbutil = new DB_util();
         $gutil = new General_util();
         $cutil = new Curl_util();
+        $ezutil = new EZIDUtil();
         if(strcmp($image_id, "0") == 0)
         {
             show_404();
@@ -1174,6 +1176,9 @@ class Image_metadata extends CI_Controller
         }
         
         $json = $dbutil->getMetadata($image_id);
+        $mjson = json_decode($json->metadata);
+        $data['image_name'] = $json->image_name;
+        $data['json'] = $mjson;
         if(!$json->success)
         {
             show_404();
@@ -1194,19 +1199,33 @@ class Image_metadata extends CI_Controller
             $size_url = str_replace("metadata_service", "rest/file_size", $metadata_service_prefix);
             if(!is_null($image_size_json) && isset($image_size_json->jpeg_size))
             {
-                $filePath = "/var/www/html/media/images/".$data['numeric_id']."/".$data['numeric_id'].".jpg";
+                $filePath = "/var/www/html/media/images/".$data['numeric_id']."/".$data['numeric_id'].".jpg"; //Remote file path
                 $response = $cutil->auth_curl_get_with_data($metadata_auth, $size_url, $filePath);
                 $sjson = json_decode($response);
                 $image_size_json->jpeg_size = $sjson->Size;
             }
             if(!is_null($image_size_json) && isset($image_size_json->zip_size))
             {
-                $filePath = "/var/www/html/media/images/".$data['numeric_id']."/".$data['numeric_id'].".zip";
+                $filePath = "/var/www/html/media/images/".$data['numeric_id']."/".$data['numeric_id'].".zip"; //Remote file path
                 $response = $cutil->auth_curl_get_with_data($metadata_auth, $size_url, $filePath);
                 $sjson = json_decode($response);
                 $image_size_json->zip_size = $sjson->Size;
             }
             /****************End Updating image size**********************************/
+            
+            
+            /****************Saving the DOI Info*************************************/
+            $cilUtil = new CILContentUtil();
+            $ezid_production_shoulder = $this->config->item('ezid_production_shoulder');
+            $ezid_production_ark_shoulder = $this->config->item('ezid_production_ark_shoulder');
+            $targetDoi = $ezid_production_shoulder."CIL".$data['numeric_id'];
+            $ezMessage = $ezutil->getDoiInfo($doi);
+            if(!$gutil->startsWith($ezMessage,"error:") && !isset($mjson->CIL_CCDB->Citation))
+            {
+                $ezMetadata =  $cilUtil->getEzIdMetadata($mjson,$data['numeric_id'],date("Y"));
+                $citation = $cilUtil->getCitationInfo($mjson, $data['numeric_id'], date("Y"));
+            }
+            /****************End Saving the DOI Info*************************************/
             
             
             $data['title'] = "CIL | Edit ".$image_id;
@@ -1237,9 +1256,7 @@ class Image_metadata extends CI_Controller
             //$data['data_json'] = $json;
            
             $data['image_id'] = $image_id;
-            $mjson = json_decode($json->metadata);
-            $data['image_name'] = $json->image_name;
-            $data['json'] = $mjson;
+            
             $this->load->view('templates/header', $data);
             $this->load->view('edit/edit_main', $data);
             $this->load->view('templates/footer', $data);

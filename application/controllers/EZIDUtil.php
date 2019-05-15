@@ -1,5 +1,5 @@
 <?php
-require_once 'Constants.php';
+
 class EZIDUtil
 {
     private $success = "success";
@@ -7,12 +7,12 @@ class EZIDUtil
     private $doi  = "doi";
     private $ark = "ark";
     
-    public function createDOI($input,$shoulder,$id, $auth)
+    public function createDOI($input,$shoulder,$id, $doiAuth)
     {
         $ch = curl_init();
         $url = "https://ezid.cdlib.org/id/".$shoulder.$id;
         curl_setopt($ch, CURLOPT_URL,$url);
-        curl_setopt($ch, CURLOPT_USERPWD, $auth);
+        curl_setopt($ch, CURLOPT_USERPWD, $doiAuth);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
         curl_setopt($ch, CURLOPT_HTTPHEADER,
           array('Content-Type: text/plain; charset=UTF-8',
@@ -71,34 +71,14 @@ class EZIDUtil
     }
     
     
-    public function mintDOI($input, $shoulder)
-    {
-        $ch = curl_init();
-        $url = "https://ezid.cdlib.org/shoulder/".$shoulder;
-        echo "\n".$url;
-        curl_setopt($ch, CURLOPT_URL,$url);
-        curl_setopt($ch, CURLOPT_USERPWD, Constants::$auth);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER,
-          array('Content-Type: text/plain; charset=UTF-8',
-                'Content-Length: ' . strlen($input)));
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $input);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-        $output = curl_exec($ch);
-        //print curl_getinfo($ch, CURLINFO_HTTP_CODE) . "\n";
-        //print $output . "\n";
-        curl_close($ch);
-        echo "\nOUTPUT:".$output."------";
-    }
     
-    public function updateDOI($input, $doi)
+    public function updateDOI($input, $doi, $doiAuth)
     {
         $url = "https://ezid.cdlib.org/id/".$doi;
         echo "\n".$url;
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_USERPWD, Constants::$auth);
+        curl_setopt($ch, CURLOPT_USERPWD, $doiAuth);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER,
           array('Content-Type: text/plain; charset=UTF-8',
