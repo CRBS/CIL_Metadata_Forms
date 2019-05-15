@@ -1222,8 +1222,18 @@ class Image_metadata extends CI_Controller
             $ezMessage = $ezutil->getDoiInfo($doi);
             if(!$gutil->startsWith($ezMessage,"error:") && !isset($mjson->CIL_CCDB->Citation))
             {
-                $ezMetadata =  $cilUtil->getEzIdMetadata($mjson,$data['numeric_id'],date("Y"));
+                //$ezMetadata =  $cilUtil->getEzIdMetadata($mjson,$data['numeric_id'],date("Y"));
                 $citation = $cilUtil->getCitationInfo($mjson, $data['numeric_id'], date("Y"));
+                
+                $array = array();
+                $array['DOI'] = $ezid_production_shoulder."CIL".$id;
+                $array['ARK'] = $ezid_production_ark_shoulder."cil".$id;
+                $array['Title'] = $citation;
+                $citation_json_str = json_encode($array);
+                $citation_json = json_decode($citation_json_str);
+                $mjson->CIL_CCDB->Citation = $citation_json;
+                $mjson_str = json_encode($mjson, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+
             }
             /****************End Saving the DOI Info*************************************/
             
