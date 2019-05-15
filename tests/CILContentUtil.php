@@ -44,6 +44,10 @@ class CILContentUtil
         $cellType = $this->getCellType($json);
         if(!is_null($cellType))
             $citation = $citation.", ".$cellType.". CIL. Dataset";
+        
+        $citation = $citation.". CIL. Dataset";
+        
+        
         return $citation;
     }
     

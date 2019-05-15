@@ -7,12 +7,12 @@ class EZIDUtil
     private $doi  = "doi";
     private $ark = "ark";
     
-    public function createDOI($input,$shoulder,$id)
+    public function createDOI($input,$shoulder,$id, $auth)
     {
         $ch = curl_init();
         $url = "https://ezid.cdlib.org/id/".$shoulder.$id;
         curl_setopt($ch, CURLOPT_URL,$url);
-        curl_setopt($ch, CURLOPT_USERPWD, Constants::$auth);
+        curl_setopt($ch, CURLOPT_USERPWD, $auth);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
         curl_setopt($ch, CURLOPT_HTTPHEADER,
           array('Content-Type: text/plain; charset=UTF-8',
