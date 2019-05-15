@@ -1188,6 +1188,27 @@ class Image_metadata extends CI_Controller
             
             $image_size_json = $dbutil->getImageSizes($image_id);
             
+            /****************Updating image size**********************************/
+            $metadata_service_prefix = $this->config->item('metadata_service_prefix');
+            $metadata_auth = $this->config->item('metadata_auth');
+            $size_url = str_replace("metadata_service", "rest/file_size", $metadata_service_prefix);
+            if(!is_null($image_size_json) && isset($image_size_json->jpeg_size))
+            {
+                $filePath = "/var/www/html/media/images/".$data['numeric_id']."/".$data['numeric_id'].".jpg";
+                $response = $cutil->auth_curl_get_with_data($metadata_auth, $size_url, $filePath);
+                $sjson = json_decode($response);
+                $image_size_json->jpeg_size = $sjson->Size;
+            }
+            if(!is_null($image_size_json) && isset($image_size_json->zip_size))
+            {
+                $filePath = "/var/www/html/media/images/".$data['numeric_id']."/".$data['numeric_id'].".zip";
+                $response = $cutil->auth_curl_get_with_data($metadata_auth, $size_url, $filePath);
+                $sjson = json_decode($response);
+                $image_size_json->zip_size = $sjson->Size;
+            }
+            /****************End Updating image size**********************************/
+            
+            
             $data['title'] = "CIL | Edit ".$image_id;
             $data['staging_website_prefix'] = $this->config->item('staging_website_prefix');
             $data['elasticsearch_host_stage'] = $this->config->item('elasticsearch_host_stage');
