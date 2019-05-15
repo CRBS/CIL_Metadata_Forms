@@ -5,6 +5,7 @@ include_once 'DB_util.php';
 include_once 'Ontology_util.php';
 include_once 'Dimension_util.php';
 include_once 'EZIDUtil.php';
+include_once 'CILContentUtil.php';
 class Image_metadata extends CI_Controller
 {
     
@@ -1093,6 +1094,108 @@ class Image_metadata extends CI_Controller
         }
     }
     
+    
+    public function view_doi($image_id="0")
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        $cutil = new Curl_util();
+        $ezutil = new EZIDUtil();
+        if(strcmp($image_id, "0") == 0)
+        {
+            show_404();
+            return;
+        }
+        
+        $base_url = $this->config->item('base_url');
+        
+        $data['debug'] = $this->input->get('debug', TRUE);
+        
+        $login_hash = $this->session->userdata('login_hash');
+        $username = $this->session->userdata('username');
+        $data['username'] = $username;
+        $data['user_role'] = $dbutil->getUserRole($username);
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        $data['numeric_id'] = str_replace("CIL_", "", $image_id);
+        $cilUtil = new CILContentUtil();
+        $ezid_production_shoulder = $this->config->item('ezid_production_shoulder');
+        $ezid_production_ark_shoulder = $this->config->item('ezid_production_ark_shoulder');
+        $targetDoi = $ezid_production_shoulder."CIL".$data['numeric_id'];
+        $ezMessage = $ezutil->getDoiInfo($targetDoi);
+        
+        $data['title'] = "View the DOI information";
+        $data['targetDoi'] = $targetDoi;
+        $data['ezMessage'] = $ezMessage;
+        $this->load->view('templates/header', $data);
+        $this->load->view('edit/view_doi_display', $data);
+        $this->load->view('templates/footer', $data);
+    }
+    
+    public function create_doi($image_id="0")
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        $cutil = new Curl_util();
+        $ezutil = new EZIDUtil();
+        if(strcmp($image_id, "0") == 0)
+        {
+            show_404();
+            return;
+        }
+        
+        $base_url = $this->config->item('base_url');
+        
+        $data['debug'] = $this->input->get('debug', TRUE);
+        
+        $login_hash = $this->session->userdata('login_hash');
+        $username = $this->session->userdata('username');
+        $data['username'] = $username;
+        $data['user_role'] = $dbutil->getUserRole($username);
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        
+        $json = $dbutil->getMetadata($image_id);
+        $mjson = json_decode($json->metadata);
+        
+        /****************Saving the DOI Info*************************************/
+        $doiPostfixId = str_replace("_", "", $image_id);
+        $cilUtil = new CILContentUtil();
+        $ezid_production_shoulder = $this->config->item('ezid_production_shoulder');
+        $ezid_production_ark_shoulder = $this->config->item('ezid_production_ark_shoulder');
+        $ezid_auth = $this->config->item('ezid_auth');
+        $targetDoi = $ezid_production_shoulder."CIL".$data['numeric_id'];
+        $ezMessage = $ezutil->getDoiInfo($targetDoi);
+
+        if($gutil->startsWith("error:",$ezMessage))
+        {   
+            $ezMetadata =  $cilUtil->getEzIdMetadata($mjson,$data['numeric_id'],date("Y"));
+            $ezutil->createDOI($ezMetadata, $ezid_production_shoulder, $doiPostfixId, $ezid_auth);
+            $array = array();
+            $array['DOI'] = $targetDoi;
+            $array['ARK'] = $ezid_production_ark_shoulder."cil".$data['numeric_id'];
+            $array['Title'] = $citation;
+            $citation_json_str = json_encode($array);
+            $citation_json = json_decode($citation_json_str);
+            $mjson->CIL_CCDB->Citation = $citation_json;
+            $mjson_str = json_encode($mjson, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+                
+            $dbutil->submitMetadata($image_id, $mjson_str);
+         }
+         /****************End Saving the DOI Info*************************************/
+         
+         redirect($base_url."/image_metadata/edit/".$image_id);
+    }
+    
+    
     public function publish_data($image_id="0")
     {
         $this->load->helper('url');
@@ -1215,26 +1318,35 @@ class Image_metadata extends CI_Controller
             
             
             /****************Saving the DOI Info*************************************/
+            
             $cilUtil = new CILContentUtil();
             $ezid_production_shoulder = $this->config->item('ezid_production_shoulder');
             $ezid_production_ark_shoulder = $this->config->item('ezid_production_ark_shoulder');
             $targetDoi = $ezid_production_shoulder."CIL".$data['numeric_id'];
-            $ezMessage = $ezutil->getDoiInfo($doi);
-            if(!$gutil->startsWith($ezMessage,"error:") && !isset($mjson->CIL_CCDB->Citation))
+            $ezMessage = $ezutil->getDoiInfo($targetDoi);
+            
+            if(!$gutil->startsWith("error:",$ezMessage))
             {
-                //$ezMetadata =  $cilUtil->getEzIdMetadata($mjson,$data['numeric_id'],date("Y"));
-                $citation = $cilUtil->getCitationInfo($mjson, $data['numeric_id'], date("Y"));
-                
-                $array = array();
-                $array['DOI'] = $ezid_production_shoulder."CIL".$id;
-                $array['ARK'] = $ezid_production_ark_shoulder."cil".$id;
-                $array['Title'] = $citation;
-                $citation_json_str = json_encode($array);
-                $citation_json = json_decode($citation_json_str);
-                $mjson->CIL_CCDB->Citation = $citation_json;
-                $mjson_str = json_encode($mjson, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+                $data['doi_exists'] = true;
+                if(!isset($mjson->CIL_CCDB->Citation))
+                {
+                    //$ezMetadata =  $cilUtil->getEzIdMetadata($mjson,$data['numeric_id'],date("Y"));
+                    $citation = $cilUtil->getCitationInfo($mjson, $data['numeric_id'], date("Y"));
+
+                    $array = array();
+                    $array['DOI'] = $targetDoi;
+                    $array['ARK'] = $ezid_production_ark_shoulder."cil".$data['numeric_id'];
+                    $array['Title'] = $citation;
+                    $citation_json_str = json_encode($array);
+                    $citation_json = json_decode($citation_json_str);
+                    $mjson->CIL_CCDB->Citation = $citation_json;
+                    $mjson_str = json_encode($mjson, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+
+                    $dbutil->submitMetadata($image_id, $mjson_str);
+                }
 
             }
+            
             /****************End Saving the DOI Info*************************************/
             
             

@@ -27,7 +27,7 @@
         
     </div>
     
-    <div class="col-md-12">
+    <div class="col-md-6">
         <?php
             if(isset($enable_unpublish_button) && $enable_unpublish_button)
             {
@@ -36,6 +36,25 @@
                 <br/>
                 </div>
                 <a href="<?php echo $staging_website_prefix."/images/".$numeric_id; ?>" target="_blank" class="btn btn-primary">View image</a>      
+        <?php
+            }
+        ?>
+    </div>
+    <div class="col-md-6">
+        <div class="col-md-12">
+        <br/>
+        </div>
+        <?php
+            if(!isset($doi_exists))
+            {
+        ?>
+        <a href="<?php echo "/image_metadata/create_doi/".$image_id; ?>" target="_self" class="btn btn-info">Create DOI</a>
+        <?php
+            }
+            else
+            {
+        ?>
+        <a href="<?php echo "/image_metadata/view_doi/".$image_id; ?>" target="_blank" class="btn btn-info">View DOI Info</a>
         <?php
             }
         ?>
