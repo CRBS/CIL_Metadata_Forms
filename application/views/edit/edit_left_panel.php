@@ -35,7 +35,7 @@
                 <div class="col-md-12">
                 <br/>
                 </div>
-                <a href="<?php echo $staging_website_prefix."/images/".$numeric_id; ?>" target="_blank" class="btn btn-primary">View image</a>      
+                <a href="<?php echo $staging_website_prefix."/images/".$numeric_id; ?>" target="_blank" class="btn btn-primary">View image (stage)</a>      
         <?php
             }
         ?>
@@ -59,7 +59,20 @@
             }
         ?>
     </div>
-
+    <div class="col-md-12">
+        <?php
+            if(isset($enable_unpublish_button_prod) && $enable_unpublish_button_prod)
+            {
+        ?>      
+                <div class="col-md-12">
+                <br/>
+                </div>
+                <a href="<?php echo $prod_website_prefix."/images/".$numeric_id; ?>" target="_blank" class="btn btn-primary">View image (Prod)</a>      
+        <?php
+            }
+        ?>
+        
+    </div>
     
     <div class="col-md-12">
         <?php

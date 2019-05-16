@@ -1352,6 +1352,7 @@ class Image_metadata extends CI_Controller
             
             $data['title'] = "CIL | Edit ".$image_id;
             $data['staging_website_prefix'] = $this->config->item('staging_website_prefix');
+            $data['prod_website_prefix'] = $this->config->item('prod_website_prefix');
             $data['elasticsearch_host_stage'] = $this->config->item('elasticsearch_host_stage');
             $data['elasticsearch_host_prod'] = $this->config->item('elasticsearch_host_prod');
             $data['image_size_json'] = $image_size_json;
@@ -1367,11 +1368,14 @@ class Image_metadata extends CI_Controller
              /*************End Staging Elasticsearch****************************/
             
             /*************Production Elasticsearch****************************/
+             
+            $filePath = "C:/Users/wawong/Desktop/".$data['numeric_id'].".json";
             $esProdUrl = $data['elasticsearch_host_prod']."/ccdbv8/data/".$image_id;
             $epjson_str = $cutil->curl_get($esProdUrl);
+            file_put_contents($filePath, $epjson_str);
             $epjson = json_decode($epjson_str);
             if(!is_null($epjson) && isset($epjson->found) && $epjson->found)
-                $data['enable_unpublish_button_prod'] = false;
+                $data['enable_unpublish_button_prod'] = true;
             $data['esProdUrl'] = $esProdUrl;
             /*************End Production Elasticsearch****************************/
             
