@@ -1139,6 +1139,7 @@ class Image_metadata extends CI_Controller
     public function create_doi($image_id="0")
     {
         $this->load->helper('url');
+        $data['numeric_id'] = str_replace("CIL_", "", $image_id);
         $dbutil = new DB_util();
         $gutil = new General_util();
         $cutil = new Curl_util();
@@ -1167,7 +1168,11 @@ class Image_metadata extends CI_Controller
         $mjson = json_decode($json->metadata);
         
         /****************Saving the DOI Info*************************************/
+        
+            
         $doiPostfixId = str_replace("_", "", $image_id);
+        //$filePath = "C:/Users/wawong/Desktop/".$data['numeric_id']."_log.txt";
+        //error_log("\n".$doiPostfixId,3,$filePath);
         $cilUtil = new CILContentUtil();
         $ezid_production_shoulder = $this->config->item('ezid_production_shoulder');
         $ezid_production_ark_shoulder = $this->config->item('ezid_production_ark_shoulder');
@@ -1175,8 +1180,9 @@ class Image_metadata extends CI_Controller
         $targetDoi = $ezid_production_shoulder."CIL".$data['numeric_id'];
         $ezMessage = $ezutil->getDoiInfo($targetDoi);
 
-        if($gutil->startsWith("error:",$ezMessage))
+        if($gutil->startsWith($ezMessage,"error:"))
         {   
+            $citation = $cilUtil->getCitationInfo($mjson, $data['numeric_id'], date("Y"));
             $ezMetadata =  $cilUtil->getEzIdMetadata($mjson,$data['numeric_id'],date("Y"));
             $ezutil->createDOI($ezMetadata, $ezid_production_shoulder, $doiPostfixId, $ezid_auth);
             $array = array();
@@ -1325,10 +1331,18 @@ class Image_metadata extends CI_Controller
             $targetDoi = $ezid_production_shoulder."CIL".$data['numeric_id'];
             $ezMessage = $ezutil->getDoiInfo($targetDoi);
             
-            if(!$gutil->startsWith("error:",$ezMessage))
+            
+            $filePath = "C:/Users/wawong/Desktop/doi_exists.txt";
+             error_log("\n".$ezMessage, 3,$filePath);
+            
+            if(!$gutil->startsWith($ezMessage,"error:"))
             {
                 $data['doi_exists'] = true;
-                if(!isset($mjson->CIL_CCDB->Citation))
+                
+               
+                error_log( "\n".$image_id.":doi_exists", 3,$filePath);
+                //if(!isset($mjson->CIL_CCDB->Citation))
+                if(true)
                 {
                     //$ezMetadata =  $cilUtil->getEzIdMetadata($mjson,$data['numeric_id'],date("Y"));
                     $citation = $cilUtil->getCitationInfo($mjson, $data['numeric_id'], date("Y"));
@@ -1346,7 +1360,10 @@ class Image_metadata extends CI_Controller
                 }
 
             }
-            
+            else 
+            {
+                error_log( "\n".$image_id.":NOT doi_exists", 3,$filePath);
+            }
             /****************End Saving the DOI Info*************************************/
             
             
@@ -1369,10 +1386,10 @@ class Image_metadata extends CI_Controller
             
             /*************Production Elasticsearch****************************/
              
-            $filePath = "C:/Users/wawong/Desktop/".$data['numeric_id'].".json";
+            
             $esProdUrl = $data['elasticsearch_host_prod']."/ccdbv8/data/".$image_id;
             $epjson_str = $cutil->curl_get($esProdUrl);
-            file_put_contents($filePath, $epjson_str);
+
             $epjson = json_decode($epjson_str);
             if(!is_null($epjson) && isset($epjson->found) && $epjson->found)
                 $data['enable_unpublish_button_prod'] = true;
