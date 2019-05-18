@@ -265,6 +265,32 @@ class DB_util
         return true;
     }
     
+    public function updateJpegZipSize($image_id, $jpeg_size, $zip_size)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $array = array();
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+        {   
+            return false;
+        }
+        $sql = "update cil_metadata set jpeg_size = $1, zip_size = $2 where image_id = $3";
+        $input = array();
+        array_push($input, $jpeg_size);
+        array_push($input, $zip_size);
+        array_push($input, $image_id);
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        
+        pg_close($conn);
+        return true;
+    }
+    
     public function submitMetadata($image_id,$metadata)
     {
         $CI = CI_Controller::get_instance();
