@@ -538,7 +538,7 @@ $config['db_params']= $json->cil_pgsql_db;
 $config['test_output_folder'] = "C:/Test";
 //$config['test_output_folder'] = "/var/www/upload_dir";
 
-$config['upload_location'] = "C:/Test";
+$config['upload_location'] = "C:/Test2";
 //$config['upload_location'] = "/var/www/upload_dir";
 
 $config['metadata_service_prefix'] = $json->metadata_service_prefix;

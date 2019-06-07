@@ -28,15 +28,31 @@ class Upload_images extends CI_Controller
     function process_upload()
         {
                 // Taken from plupload - sample upload file
-                $targetDir = "C:/Test2/chunk";
-                if(file_exists($targetDir."/upload.log"))
-                    unlink ($targetDir."/upload.log");
+                //$targetDir = "C:/Test2/chunk";
+                $targetDir = $this->config->item('upload_location');
+                
+                //if(file_exists($targetDir."/upload.log"))
+                //    unlink ($targetDir."/upload.log");
                 $cleanupTargetDir = false; // Remove old files
                 $maxFileAge = 60 * 60*60; // Temp file age in seconds
                 
                 // 5 minutes execution time
                 set_time_limit(5 * 60*100);
                 
+                /*
+                if(!is_null($_REQUEST))
+                {
+                    $json_str = json_encode($_REQUEST);
+                    error_log($json_str, 3, $targetDir."/upload.log");
+                }
+                
+                if(!is_null($_FILES))
+                {
+                    $json_str = json_encode($_FILES);
+                    error_log($json_str, 3, $targetDir."/upload.log");
+                }
+                 * 
+                 */
                 
                 
                 // Get parameters

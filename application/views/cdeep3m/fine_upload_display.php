@@ -40,19 +40,40 @@ $(function() {
 		// General settings
 		runtimes : 'html5',
 		url : "/upload_images/process_upload",
-		chunk_size : '1mb',
-		unique_names : true,
+		chunk_size : '3mb',
+		//unique_names : true,
 		
 		filters : {
 			max_file_size : '20000mb',
 			mime_types: [
 				{title : "Image files", extensions : "jpg,gif,png,tif"},
-				{title : "Zip files", extensions : "zip"}
+				{title : "Zip files", extensions : "zip,tar"}
 			]
 		},
+                init : {
+                    FilesAdded: function(up, files) 
+                    {
+                         if (up.files.length == 1)
+                         {
+                             //console.log(up.files[0].name);
+                             //console.log(files[0].name);
+                             //gurl = "/upload_images/process_upload/"+files[0].name;
+                         }
+                        
+                         if (up.files.length > 1) 
+                         {
+                            up.removeFile(files[0]);
+                            alert("Only 1 file is allowed");
+                         }
+                    },
+                    FileUploaded: function(up, file, info) 
+                    {
+                        console.log("Uploaded:"+file.name);
+                    }
+                }
 
 		// Resize images on clientside if we can
-		resize : {width : 320, height : 240, quality : 90}
+		//resize : {width : 320, height : 240, quality : 90}
 	});
 
 
