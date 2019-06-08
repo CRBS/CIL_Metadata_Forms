@@ -90,13 +90,6 @@ $(function() {
 </section>
 
 
-<!--
-<script type="text/javascript" src="https://www.plupload.com/js/bootstrap.js" charset="UTF-8"></script>
-<script type="text/javascript" src="https://www.plupload.com/js/shCore.js" charset="UTF-8"></script>
-<script type="text/javascript" src="https://www.plupload.com/js/shBrushPhp.js" charset="UTF-8"></script>
-<script type="text/javascript" src="https://www.plupload.com/js/shBrushjScript.js" charset="UTF-8"></script>
--->
-
 
 
 
