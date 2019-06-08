@@ -558,7 +558,7 @@ $config['ezid_production_ark_shoulder'] = $json->ezid_production_ark_shoulder;
 
 
 
-$config['is_production'] = true;
+$config['is_production'] = false;
 
 if($config['is_production'])
     $config['data_location'] = $json->production_data_location;

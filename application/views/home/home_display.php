@@ -33,6 +33,11 @@
             <div class="col-md-12">
                 <a href="/upload_images" class="btn btn-primary">Upload images</a>
             </div>
+            <div class="col-md-12"><br/></div>
+            <div class="col-md-12">
+                <a href="/cdeep3m_models/new_model" class="btn btn-primary">Upload CDeep3M Model</a>
+            </div>
+            
         </div>
         <div class="col-md-4">
             
