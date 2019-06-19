@@ -56,6 +56,9 @@ $(function() {
                     FileUploaded: function(up, file, info) 
                     {
                         console.log("Uploaded:"+file.name);
+                        window.location.href = "<?php echo $base_url."/cdeep3m_models/edit/".$model_id ?>";
+                        
+                        
                     }
                 }
 

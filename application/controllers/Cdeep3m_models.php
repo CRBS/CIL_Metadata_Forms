@@ -25,7 +25,7 @@ class Cdeep3m_models extends CI_Controller
         $model_id = $dbutil->getNextID($is_prod);
         
         $base_url = $this->config->item('base_url');
-        redirect ($base_url."/cdeep3m_models/edit/".$model_id);
+        redirect ($base_url."/cdeep3m_models/upload/".$model_id);
     }
     
     public function edit($model_id=0)
@@ -40,6 +40,31 @@ class Cdeep3m_models extends CI_Controller
             return;
         }
         $data['user_role'] = $dbutil->getUserRole($data['username']);
+        
+        $data['title'] = 'CDeep3M Metadata Edit';
+        $data['base_url'] = $this->config->item('base_url');
+        $data['model_id'] = intval($model_id);
+        
+        $this->load->view('templates/header', $data);
+        $this->load->view('cdeep3m/edit/metadata_edit_display', $data);
+        $this->load->view('templates/footer', $data);
+    }
+    
+    public function upload($model_id=0)
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        $data['user_role'] = $dbutil->getUserRole($data['username']);
+        
+        $data['base_url'] = $this->config->item('base_url');
+        $data['model_id'] = intval($model_id);
         
         $data['title'] = 'CDeep3M Upload';
         $this->load->view('templates/header', $data);
