@@ -5,7 +5,7 @@
             <?php include_once 'edit_left_panel.php'; ?>
         </div>
         <div class="col-md-7">
-            <form action="/cdeep3m_models/submit/<?php echo $model_id; ?>" method="post">
+            <form action="/cdeep3m_models/submit/<?php echo $model_id; ?>" method="post" onsubmit="return check_model_form()">
             <?php include_once 'edit_right_panel.php'; ?>
             </form>
         </div>

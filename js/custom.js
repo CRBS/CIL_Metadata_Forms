@@ -89,3 +89,33 @@ function validate_cil_image_upload()
         return false;
     }
 }
+
+
+function check_model_form()
+{
+    //alert('check');
+    var trained_model_name = document.getElementById('trained_model_name').value;
+    if(!trained_model_name || trained_model_name.length === 0)
+    {
+        alert('Model name is required!');
+        return false;
+    }
+    
+    
+    var image_type = document.getElementById('image_search_parms[item_type_bim]').value;
+    if(!image_type || image_type.length === 0)
+    {
+        alert('Microscope type is required!');
+        return false;
+    }
+    
+    var voxelsize = document.getElementById('voxelsize').value;
+    if(!voxelsize || voxelsize.length === 0)
+    {
+        alert('Voxel size is required!');
+        return false;
+    }
+    
+    return true;
+    
+}

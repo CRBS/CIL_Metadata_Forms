@@ -8,9 +8,48 @@ include_once 'EZIDUtil.php';
 include_once 'CILContentUtil.php';
 class Cdeep3m_models extends CI_Controller
 {
-    public function submit($model_id)
+    public function submit($model_id="0")
     {
-        echo $model_id;
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        $cutil = new Curl_util();
+        $ezutil = new EZIDUtil();
+        if(strcmp($model_id, "0") == 0)
+        {
+            show_404();
+            return;
+        }
+        
+        $base_url = $this->config->item('base_url');
+        $data['debug'] = $this->input->get('debug', TRUE);
+        $login_hash = $this->session->userdata('login_hash');
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        $username = $this->session->userdata('username');
+        $data['username'] = $username;
+        $data['user_role'] = $dbutil->getUserRole($username);
+        
+        
+        $trained_model_name = $this->input->post('trained_model_name', TRUE);
+        $cell_type = $this->input->post('image_search_parms[cell_type]', TRUE);
+        $cell_component = $this->input->post('image_search_parms[cellular_component]', TRUE);
+        $image_type = $this->input->post('image_search_parms[item_type_bim]', TRUE);
+        $magnification = $this->input->post('magnification', TRUE);
+        $voxelsize = $this->input->post('voxelsize', TRUE);
+        $voxelsize_unit = $this->input->post('voxelsize_unit', TRUE);
+        
+        echo "<br/>trained_model_name:".$trained_model_name;
+        echo "<br/>cell_type:".$cell_type;
+        echo "<br/>cell_component:".$cell_component;
+        echo "<br/>image_type:".$image_type;
+        echo "<br/>magnification:".$magnification;
+        echo "<br/>voxelsize:".$voxelsize;
+        echo "<br/>voxelsize_unit:".$voxelsize_unit;
+        
     }
     public function upload_model_image($model_id)
     {
