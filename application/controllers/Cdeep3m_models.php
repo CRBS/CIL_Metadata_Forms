@@ -9,6 +9,66 @@ include_once 'CILContentUtil.php';
 class Cdeep3m_models extends CI_Controller
 {
     
+    public function upload_model_image($model_id)
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        $data['user_role'] = $dbutil->getUserRole($data['username']);
+        
+        
+        $cutil= new Curl_util();
+        $metadata_service_prefix = $this->config->item('metadata_service_prefix');
+        $metadata_auth = $this->config->item('metadata_auth');
+        $upload_location = $this->config->item('upload_location');
+        $config2 = array(
+        'upload_path' => $upload_location,
+        'allowed_types' => "gif|jpg|png|jpeg",
+        'overwrite' => TRUE,
+        'max_size' => "12048000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
+        'max_height' => "4000",
+        'max_width' => "4000"
+        );
+        $this->load->library('upload', $config2);
+        $url = $metadata_service_prefix."/model_image/".$model_id;
+        
+        if($this->upload->do_upload())
+        {
+            $img = array('upload_data' => $this->upload->data());
+            if(!is_null($img))
+            {
+                //echo "<br/>".$img->upload_data->full_path;
+                if(array_key_exists('upload_data',$img))
+                {
+                    $upload_metadata = $img['upload_data'];
+                    if(array_key_exists('full_path',$upload_metadata))
+                    {
+                        $full_path = $upload_metadata['full_path'];
+                        echo "<br/>". $full_path;
+                        $bin = file_get_contents($full_path);
+                        $hex = bin2hex($bin);
+                        $response = $cutil->auth_curl_post($url, $metadata_auth, $hex);
+                        echo "<br/>".$response;
+                        redirect($base_url."/cdeep3m_models/edit/".$model_id);
+                    }
+                   
+                }
+            }
+        }
+        else
+        {
+            $error = array('error' => $this->upload->display_errors());
+            var_dump($error);
+        }
+    }
+    
+    
     public function new_model()
     {
         $this->load->helper('url');
