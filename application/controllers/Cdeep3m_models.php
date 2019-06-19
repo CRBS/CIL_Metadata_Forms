@@ -8,7 +8,10 @@ include_once 'EZIDUtil.php';
 include_once 'CILContentUtil.php';
 class Cdeep3m_models extends CI_Controller
 {
-    
+    public function submit($model_id)
+    {
+        echo $model_id;
+    }
     public function upload_model_image($model_id)
     {
         $this->load->helper('url');

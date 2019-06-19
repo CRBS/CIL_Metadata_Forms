@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-            <label class="col-form-label" for="inputDefault">Name</label>
+            <label class="col-form-label" for="inputDefault">*Name</label>
             <input id="trained_model_name" name="trained_model_name" style="width: 100%" value="" class="form-control cil_san_regular_font"  type="text">
             </div>
         </div><div class="col-md-6"></div>
@@ -25,7 +25,7 @@
         </div><div class="col-md-6"></div>
         <div class="col-md-6">
             <div class="form-group">
-            <label class="col-form-label" for="inputDefault">Image Type</label>
+            <label class="col-form-label" for="inputDefault">*Image Type</label>
             <input id="image_search_parms_item_type_bim" name="image_search_parms[item_type_bim]" style="width: 100%" type="text" value="" class="acInput form-control cil_san_regular_font ui-autocomplete-input" autocomplete="off">
             </div>
         </div><div class="col-md-6"></div>
@@ -39,10 +39,18 @@
        
        <div class="col-md-6">
             <div class="form-group">
-            <label class="col-form-label" for="inputDefault">Voxelsize</label>
-            <input id="voxelsize" name="voxelsize" style="width: 100%" value="" class="form-control cil_san_regular_font"  type="text">
+            <label class="col-form-label" for="inputDefault">*Voxelsize</label>
+            <input id="voxelsize" name="voxelsize" style="width: 100%" value="" class="form-control cil_san_regular_font"  type="text"> 
             </div>
-       </div><div class="col-md-6"></div>
+       </div><div class="col-md-2">
+                <div class="form-group">
+                    <label class="col-form-label" for="inputDefault">&nbsp;</label>
+                       <select class="form-control cil_san_regular_font">
+                       <option value="µm">µm</option>
+                       <option value="nm">nm</option>
+                     </select>
+                </div>
+       </div><div class="col-md-4">
    </div>
     <div class="row">
         <div class="col-md-12">   
