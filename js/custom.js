@@ -102,7 +102,7 @@ function check_model_form()
     }
     
     
-    var image_type = document.getElementById('image_search_parms[item_type_bim]').value;
+    var image_type = document.getElementById('image_search_parms_item_type_bim').value;
     if(!image_type || image_type.length === 0)
     {
         alert('Microscope type is required!');

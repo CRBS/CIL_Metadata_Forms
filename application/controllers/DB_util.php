@@ -23,6 +23,70 @@ class DB_util
         return $tarray;
     }
     
+    
+    public function updateModelFile($model_id=0,$fileName="Unknown")
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "update models set file_name = $1 where id = $2";
+        $conn = pg_pconnect($db_params);
+        
+        $input = array();
+        array_push($input,$fileName);
+        array_push($input,$model_id);
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        pg_close($conn);
+        return true;
+    }
+    
+    public function insertModelFile($model_id=0,$fileName="Unknown")
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        
+        $sql = "insert into models(id, file_name, create_time) values($1, $2, now())";
+        $conn = pg_pconnect($db_params);
+        
+        $input = array();
+        array_push($input,$model_id);
+        array_push($input,$fileName);
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        pg_close($conn);
+        return true;
+    }
+    
+    
+    public function modelExists($model_id=0)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "select id from models where id = $1";
+        $conn = pg_pconnect($db_params);
+        $input = array();
+        array_push($input,$model_id);
+        
+        $result =  pg_query_params($conn,$sql,$input);
+        if($row = pg_fetch_row($result))
+        {
+             pg_close($conn);
+             return true;
+        }
+        pg_close($conn);
+        return false;
+    }
+    
     public function getNextID($is_prod)
     {
         $CI = CI_Controller::get_instance();

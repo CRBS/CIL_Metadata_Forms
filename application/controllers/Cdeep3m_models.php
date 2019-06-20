@@ -8,6 +8,50 @@ include_once 'EZIDUtil.php';
 include_once 'CILContentUtil.php';
 class Cdeep3m_models extends CI_Controller
 {
+    
+    public function add($model_id=0, $fileName="Unknown")
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        $cutil = new Curl_util();
+        $ezutil = new EZIDUtil();
+        if(strcmp($model_id, "0") == 0 || strcmp($fileName, "Unknown") ==0)
+        {
+            show_404();
+            return;
+        }
+        
+        $base_url = $this->config->item('base_url');
+        $data['debug'] = $this->input->get('debug', TRUE);
+        $login_hash = $this->session->userdata('login_hash');
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        $username = $this->session->userdata('username');
+        $data['username'] = $username;
+        $data['user_role'] = $dbutil->getUserRole($username);
+        
+        $db_params = $this->config->item('db_params');
+        //echo $db_params;
+        
+        $model_id = intval($model_id);
+        if($dbutil->modelExists($model_id))
+        {
+            $dbutil->updateModelFile($model_id, $fileName);
+            echo "Update path";
+        }
+        else
+        {
+            $dbutil->insertModelFile($model_id, $fileName);
+            echo "Insert path";
+        }
+        
+        //redirect($base_url."/cdeep3m_models/edit/".$model_id);
+    }
+    
     public function submit($model_id="0")
     {
         $this->load->helper('url');
@@ -49,6 +93,9 @@ class Cdeep3m_models extends CI_Controller
         echo "<br/>magnification:".$magnification;
         echo "<br/>voxelsize:".$voxelsize;
         echo "<br/>voxelsize_unit:".$voxelsize_unit;
+        
+        $array = array();
+        
         
     }
     public function upload_model_image($model_id)
