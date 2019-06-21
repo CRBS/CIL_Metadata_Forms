@@ -541,6 +541,10 @@ $config['test_output_folder'] = "C:/Test";
 $config['upload_location'] = "C:/Test2";
 //$config['upload_location'] = "/var/www/upload_dir";
 
+$config['model_upload_location'] = "C:/Test2";
+//$config['model_upload_location'] = "/var/www/upload_dir/models";
+
+
 $config['metadata_service_prefix'] = $json->metadata_service_prefix;
 $config['metadata_auth'] = $json->metadata_auth;
 $config['staging_website_prefix'] = $json->staging_website_prefix;

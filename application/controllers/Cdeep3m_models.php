@@ -37,19 +37,26 @@ class Cdeep3m_models extends CI_Controller
         $db_params = $this->config->item('db_params');
         //echo $db_params;
         
+        $upload_location = $this->config->item('model_upload_location');
+        $upload_location = $upload_location."/".$model_id;
+        $fileSize = filesize($upload_location."/".$fileName);
+        
+        
+        
         $model_id = intval($model_id);
         if($dbutil->modelExists($model_id))
         {
-            $dbutil->updateModelFile($model_id, $fileName);
+            $dbutil->updateModelFile($model_id, $fileName,$fileSize);
             echo "Update path";
         }
         else
         {
-            $dbutil->insertModelFile($model_id, $fileName);
+            $dbutil->insertModelFile($model_id, $fileName,$fileSize);
             echo "Insert path";
         }
         
         //redirect($base_url."/cdeep3m_models/edit/".$model_id);
+         
     }
     
     public function submit($model_id="0")
@@ -115,7 +122,10 @@ class Cdeep3m_models extends CI_Controller
         $cutil= new Curl_util();
         $metadata_service_prefix = $this->config->item('metadata_service_prefix');
         $metadata_auth = $this->config->item('metadata_auth');
-        $upload_location = $this->config->item('upload_location');
+        $upload_location = $this->config->item('model_upload_location');
+        $upload_location = $upload_location."/".$model_id;
+        mkdir($upload_location);
+        
         $config2 = array(
         'upload_path' => $upload_location,
         'allowed_types' => "gif|jpg|png|jpeg",
