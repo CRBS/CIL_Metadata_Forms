@@ -25,12 +25,16 @@ class Upload_images extends CI_Controller
         $this->load->view('templates/footer', $data);
     }
     
-    function process_upload()
-        {
+    function process_upload($model_id=0)
+    {
                 // Taken from plupload - sample upload file
                 //$targetDir = "C:/Test2/chunk";
-                $targetDir = $this->config->item('upload_location');
+                $targetDir = $this->config->item('model_upload_location');
+                if(!file_exists($targetDir))
+                    mkdir($targetDir);
                 
+                $targetDir = $targetDir."/".$model_id;
+                error_log("\ntargetDir:".$targetDir, 3, $targetDir."/upload.log");
                 //if(file_exists($targetDir."/upload.log"))
                 //    unlink ($targetDir."/upload.log");
                 $cleanupTargetDir = false; // Remove old files
@@ -100,8 +104,14 @@ class Upload_images extends CI_Controller
                         $in = fopen($_FILES['file']['tmp_name'], "rb");
                                 if ($in) 
                                 {
+                                    $index = 0;
                                         while ($buff = fread($in, 4096))
-                                        fwrite($out, $buff);
+                                        {
+                                            $index++;
+                                            //error_log("\nOutputing data:".$index, 3, $targetDir."/upload.log");
+                                            fwrite($out, $buff);
+                                            
+                                        }
                                 }
                                 else
                                 die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
@@ -109,10 +119,19 @@ class Upload_images extends CI_Controller
                                 unlink($_FILES['file']['tmp_name']);
                         }
                         else
-                        die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
+                        {
+                            $message = '{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}';
+                            error_log("\n".$message, 3, $targetDir."/upload.log");
+                            die($message);
+                            
+                        }
                     }
-                        else
-                                die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}');
+                    else
+                    {
+                        $message = '{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}';
+                        error_log("\n".$message, 3, $targetDir."/upload.log");
+                        die($message);
+                    }
                 }
                 else 
                 {

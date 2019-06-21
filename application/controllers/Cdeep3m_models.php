@@ -47,15 +47,15 @@ class Cdeep3m_models extends CI_Controller
         if($dbutil->modelExists($model_id))
         {
             $dbutil->updateModelFile($model_id, $fileName,$fileSize);
-            echo "Update path";
+            //echo "Update path";
         }
         else
         {
             $dbutil->insertModelFile($model_id, $fileName,$fileSize);
-            echo "Insert path";
+            //echo "Insert path";
         }
         
-        //redirect($base_url."/cdeep3m_models/edit/".$model_id);
+        redirect($base_url."/cdeep3m_models/edit/".$model_id);
          
     }
     

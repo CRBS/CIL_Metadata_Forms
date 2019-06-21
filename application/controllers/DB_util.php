@@ -51,7 +51,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         
-        $sql = "insert into models(id, file_name,file_size create_time) values($1, $2, $3 now())";
+        $sql = "insert into models(id, file_name,file_size, create_time) values($1, $2, $3, now())";
         $conn = pg_pconnect($db_params);
         
         $input = array();

@@ -26,7 +26,7 @@ $(function() {
 	$("#html5_uploader").pluploadQueue({
 		// General settings
 		runtimes : 'html5',
-		url : "/upload_images/process_upload",
+		url : "/upload_images/process_upload/<?php echo $model_id; ?>",
 		chunk_size : '3mb',
 		//unique_names : true,
 		
