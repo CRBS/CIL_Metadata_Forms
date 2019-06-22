@@ -1,8 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$json_str = file_get_contents("C:/data/cil_metadata_config.json");
-//$json_str = file_get_contents("/var/www/cil_metadata_config.json");
+$is_prod = false;
+
+if(!$is_prod)
+    $json_str = file_get_contents("C:/data/cil_metadata_config.json");
+else
+    $json_str = file_get_contents("/var/www/cil_metadata_config.json");
 $json = json_decode($json_str);
         
 /*
@@ -27,8 +31,10 @@ $json = json_decode($json_str);
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost';
-//$config['base_url'] = 'https://protozoa.crbs.ucsd.edu';     
+if(!$is_prod)
+    $config['base_url'] = 'http://localhost';
+else
+    $config['base_url'] = 'https://protozoa.crbs.ucsd.edu';     
 /*
 |--------------------------------------------------------------------------
 | Index File
@@ -385,8 +391,10 @@ $config['sess_driver'] = 'files';
 $config['sess_cookie_name'] = 'ci_session';
 $config['sess_expiration'] = 7200;
 //$config['sess_save_path'] = NULL;
-$config['sess_save_path'] = 'C:/Users/wawong/Documents/apache/CIL_Metadata_Forms/Apache24/temp';
-//$config['sess_save_path'] = '/var/www/temp';
+if(!$is_prod)
+    $config['sess_save_path'] = 'C:/Users/wawong/Documents/apache/CIL_Metadata_Forms/Apache24/temp';
+else
+    $config['sess_save_path'] = '/var/www/temp';
 $config['sess_match_ip'] = FALSE;
 $config['sess_time_to_update'] = 300;
 $config['sess_regenerate_destroy'] = FALSE;
@@ -535,14 +543,21 @@ $config['auth_key'] = $json->cil_auth;
 
 $config['db_params']= $json->cil_pgsql_db;
 
-$config['test_output_folder'] = "C:/Test";
-//$config['test_output_folder'] = "/var/www/upload_dir";
 
-$config['upload_location'] = "C:/Test2";
-//$config['upload_location'] = "/var/www/upload_dir";
+if(!$is_prod)
+    $config['test_output_folder'] = "C:/Test";
+else
+    $config['test_output_folder'] = "/var/www/upload_dir";
 
-$config['model_upload_location'] = "C:/Test2";
-//$config['model_upload_location'] = "/var/www/upload_dir/models";
+if(!$is_prod)
+    $config['upload_location'] = "C:/Test2";
+else
+    $config['upload_location'] = "/var/www/upload_dir";
+
+if(!$is_prod)
+    $config['model_upload_location'] = "C:/Test2";
+else
+    $config['model_upload_location'] = "/var/www/upload_dir/models";
 
 
 $config['metadata_service_prefix'] = $json->metadata_service_prefix;

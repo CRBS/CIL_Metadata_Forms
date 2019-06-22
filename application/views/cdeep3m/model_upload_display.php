@@ -27,7 +27,8 @@ $(function() {
 		// General settings
 		runtimes : 'html5',
 		url : "/upload_images/process_upload/<?php echo $model_id; ?>",
-		chunk_size : '3mb',
+		chunk_size : '1mb',
+                multipart : true,
 		//unique_names : true,
 		
 		filters : {

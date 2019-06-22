@@ -94,7 +94,18 @@ class Upload_images extends CI_Controller
                 {
                     error_log("\nStep 1", 3, $targetDir."/upload.log");
                    
-                    if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) 
+                    if(!isset($_FILES['file']['tmp_name']))
+                    {
+                        error_log("\n_FILES['file']['tmp_name'] does not exist", 3, $targetDir."/upload.log");
+                    }
+                    
+                    /*if(!is_uploaded_file($_FILES['file']['tmp_name']))
+                    {
+                        error_log("\nis_uploaded_file is false", 3, $targetDir."/upload.log");
+                    }*/
+                    
+                    //if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) 
+                    if (isset($_FILES['file']['tmp_name']))
                     {
                         // Open temp file
                         $out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
