@@ -35,29 +35,13 @@ class Upload_images extends CI_Controller
                 
                 $targetDir = $targetDir."/".$model_id;
                 error_log("\ntargetDir:".$targetDir, 3, $targetDir."/upload.log");
-                //if(file_exists($targetDir."/upload.log"))
-                //    unlink ($targetDir."/upload.log");
+
                 $cleanupTargetDir = false; // Remove old files
                 $maxFileAge = 60 * 60*60; // Temp file age in seconds
                 
                 // 5 minutes execution time
                 set_time_limit(5 * 60*100);
-                
-                /*
-                if(!is_null($_REQUEST))
-                {
-                    $json_str = json_encode($_REQUEST);
-                    error_log($json_str, 3, $targetDir."/upload.log");
-                }
-                
-                if(!is_null($_FILES))
-                {
-                    $json_str = json_encode($_FILES);
-                    error_log($json_str, 3, $targetDir."/upload.log");
-                }
-                 * 
-                 */
-                
+               
                 
                 // Get parameters
                 $chunk = isset($_REQUEST["chunk"]) ? $_REQUEST["chunk"] : 0;
@@ -69,8 +53,7 @@ class Upload_images extends CI_Controller
                    $fileName = $_REQUEST["name"];
                         
                 }
-                //$fileName = isset($REQUEST["name"]) ? $REQUEST["name"] : $FILES["file"]["name"];
-                
+
                 $fileName = preg_replace('/[^\w\._]+/', '', $fileName);
                 if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) 
                 error_log("\nStep 0: Filename:".$fileName, 3, $targetDir."/upload.log");
@@ -93,19 +76,8 @@ class Upload_images extends CI_Controller
                 if (strpos($contentType, "multipart") !== false) 
                 {
                     error_log("\nStep 1", 3, $targetDir."/upload.log");
-                   
-                    if(!isset($_FILES['file']['tmp_name']))
-                    {
-                        error_log("\n_FILES['file']['tmp_name'] does not exist", 3, $targetDir."/upload.log");
-                    }
-                    
-                    /*if(!is_uploaded_file($_FILES['file']['tmp_name']))
-                    {
-                        error_log("\nis_uploaded_file is false", 3, $targetDir."/upload.log");
-                    }*/
-                    
-                    //if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) 
-                    if (isset($_FILES['file']['tmp_name']))
+
+                    if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) 
                     {
                         // Open temp file
                         $out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
@@ -115,13 +87,9 @@ class Upload_images extends CI_Controller
                         $in = fopen($_FILES['file']['tmp_name'], "rb");
                                 if ($in) 
                                 {
-                                    $index = 0;
                                         while ($buff = fread($in, 4096))
                                         {
-                                            $index++;
-                                            //error_log("\nOutputing data:".$index, 3, $targetDir."/upload.log");
                                             fwrite($out, $buff);
-                                            
                                         }
                                 }
                                 else

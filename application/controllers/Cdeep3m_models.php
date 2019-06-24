@@ -66,11 +66,18 @@ class Cdeep3m_models extends CI_Controller
         $gutil = new General_util();
         $cutil = new Curl_util();
         $ezutil = new EZIDUtil();
-        if(strcmp($model_id, "0") == 0)
+        $outil = new Ontology_util();
+        
+        if(strcmp($model_id, "0") == 0 || !is_numeric($model_id))
         {
             show_404();
             return;
         }
+        
+        $model_id = intval($model_id);
+        $mjson = $dbutil->getModelJson($model_id);
+        
+        
         
         $base_url = $this->config->item('base_url');
         $data['debug'] = $this->input->get('debug', TRUE);
@@ -86,6 +93,7 @@ class Cdeep3m_models extends CI_Controller
         
         
         $trained_model_name = $this->input->post('trained_model_name', TRUE);
+        $ncbi = $this->input->post('image_search_parms[ncbi]', TRUE);
         $cell_type = $this->input->post('image_search_parms[cell_type]', TRUE);
         $cell_component = $this->input->post('image_search_parms[cellular_component]', TRUE);
         $image_type = $this->input->post('image_search_parms[item_type_bim]', TRUE);
@@ -94,6 +102,8 @@ class Cdeep3m_models extends CI_Controller
         $voxelsize_unit = $this->input->post('voxelsize_unit', TRUE);
         
         echo "<br/>trained_model_name:".$trained_model_name;
+        if(!is_null($trained_model_name))
+            $mjson->Name = $trained_model_name;
         echo "<br/>cell_type:".$cell_type;
         echo "<br/>cell_component:".$cell_component;
         echo "<br/>image_type:".$image_type;
@@ -101,8 +111,27 @@ class Cdeep3m_models extends CI_Controller
         echo "<br/>voxelsize:".$voxelsize;
         echo "<br/>voxelsize_unit:".$voxelsize_unit;
         
-        $array = array();
+        $targetDir = $this->config->item('model_upload_location');
+        if(!file_exists($targetDir))
+           mkdir($targetDir);
+                
+        $targetDir = $targetDir."/".$model_id;
+        if(!file_exists($targetDir))
+            mkdir($targetDir);
+                
+        if(!is_null($ncbi))
+        {   
+            $narray = array();
+            $ncbiJsonStr = json_encode($narray);
+            $ncbiJson = json_decode($ncbiJsonStr);
+            $ncbiJson=$outil->handleExistingOntoJSON($ncbiJson, "ncbi_organism", $ncbi);
+            
+            $mjson->NCBIORGANISMALCLASSIFICATION = $ncbiJson;
+        }
         
+        if(file_exists($targetDir."/model.json"))
+           unlink($targetDir."/model.json");
+        error_log(json_encode($mjson,  JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES), 3, $targetDir."/model.json");
         
     }
     public function upload_model_image($model_id)
@@ -232,6 +261,7 @@ class Cdeep3m_models extends CI_Controller
     }
     
     
+    /*
     public function process_model_upload()
     {
         
@@ -241,5 +271,5 @@ class Cdeep3m_models extends CI_Controller
             sleep(1);
         }
     }
-    
+    */
 }

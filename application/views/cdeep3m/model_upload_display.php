@@ -7,6 +7,12 @@
 
 <div class="container">
     <div class="row">
+        <div class="col-md-12">
+            <br/>
+            <span class="cil_title2">Step 1: Upload the model file</span>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-6">
             <div id="html5_uploader">Your browser doesn't support native upload.</div>
         </div>

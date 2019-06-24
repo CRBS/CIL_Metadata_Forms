@@ -172,6 +172,48 @@ class DB_util
         return $json;
     }
     
+    public function getModelJson($model_id=0)
+    {
+        $array = array();
+        $array['Name'] = 'Test';
+        $json = null;
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "select metadata_json from models where id = $1";
+        $conn = pg_pconnect($db_params);
+        $input = array();
+        array_push($input, $model_id);
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            $json_str = json_encode($array);
+            $json = json_decode($json_str);
+            return $json;
+        }
+        
+        if(($row = pg_fetch_row($result)))
+        {
+            $json_str = $row[0];
+            if(is_null($json_str))
+            {
+                $json_str = json_encode($array);
+                $json = json_decode($json_str); 
+            }
+            $json = json_decode($json_str);
+        }
+        
+        
+        pg_close($conn);
+        if(is_null($json))
+        {
+            $json_str = json_encode($array);
+            $json = json_decode($json_str);
+        }
+
+        return $json;
+    }
+    
     public function getAllAvailableImages()
     {
         $CI = CI_Controller::get_instance();
