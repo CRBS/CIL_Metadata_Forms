@@ -39,7 +39,9 @@ class Cdeep3m_models extends CI_Controller
         
         $upload_location = $this->config->item('model_upload_location');
         $upload_location = $upload_location."/".$model_id;
-        $fileSize = filesize($upload_location."/".$fileName);
+        $fileSize = 0;
+        if(file_exists($upload_location."/".$fileName))
+           $fileSize=filesize($upload_location."/".$fileName);
         
         
         
@@ -220,6 +222,14 @@ class Cdeep3m_models extends CI_Controller
     {
         $this->load->helper('url');
         $dbutil = new DB_util();
+        $cutil = new Curl_util();
+        
+        $jpg_path = "/export2/media/model_display/".$model_id."/".$model_id."_thumbnailx512.jpg";
+        $metadata_auth = $this->config->item('metadata_auth');
+        $filezize_str = $cutil->auth_curl_get_with_data($metadata_auth,"https://iruka.crbs.ucsd.edu/CIL-Storage-RS/index.php/rest/file_size", $jpg_path);
+        //echo "<br/>File:".$filezize_str;
+        $sjson = json_decode($filezize_str);
+
         $login_hash = $this->session->userdata('login_hash');
         $data['username'] = $this->session->userdata('username');
         if(is_null($login_hash))
@@ -233,6 +243,11 @@ class Cdeep3m_models extends CI_Controller
         $data['base_url'] = $this->config->item('base_url');
         $data['model_id'] = intval($model_id);
         
+        $hasImage = false;
+        if(!is_null($sjson) && isset($sjson->Size) && $sjson->Size > 0)
+            $hasImage = true;
+        
+        $data['hasDisplayImage'] = $hasImage;
         $this->load->view('templates/header', $data);
         $this->load->view('cdeep3m/edit/metadata_edit_display', $data);
         $this->load->view('templates/footer', $data);

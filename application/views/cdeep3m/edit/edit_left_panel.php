@@ -1,7 +1,21 @@
 <div class="row">
     <div class="col-md-12">
         <center>
+            
+            <?php
+                if($hasDisplayImage)
+                {
+            ?>
             <img src="https://cildata.crbs.ucsd.edu/media/model_display/<?php echo $model_id; ?>/<?php echo $model_id; ?>_thumbnailx512.jpg?<?php echo uniqid(); ?>" class="img-thumbnail pull-right" width="100%">
+            <?php
+                }
+                else
+                {
+            ?>
+            <img src="/pix/default_jpg2.png?<?php echo uniqid(); ?>" class="img-thumbnail pull-right" width="100%">
+            <?php
+                }
+            ?>
         </center>
     </div>
     <div class="col-md-12">

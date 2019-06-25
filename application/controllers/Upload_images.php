@@ -27,104 +27,105 @@ class Upload_images extends CI_Controller
     
     function process_upload($model_id=0)
     {
-                // Taken from plupload - sample upload file
-                //$targetDir = "C:/Test2/chunk";
-                $targetDir = $this->config->item('model_upload_location');
-                if(!file_exists($targetDir))
-                    mkdir($targetDir);
+        $targetDir = $this->config->item('model_upload_location');
+        if(!file_exists($targetDir))
+            mkdir($targetDir);
                 
-                $targetDir = $targetDir."/".$model_id;
-                error_log("\ntargetDir:".$targetDir, 3, $targetDir."/upload.log");
+        $targetDir = $targetDir."/".$model_id;
+        error_log("\ntargetDir:".$targetDir, 3, $targetDir."/upload.log");
 
-                $cleanupTargetDir = false; // Remove old files
-                $maxFileAge = 60 * 60*60; // Temp file age in seconds
-                
-                // 5 minutes execution time
-                set_time_limit(5 * 60*100);
+        $cleanupTargetDir = false; // Remove old files
+        $maxFileAge = 60 * 60*60; // Temp file age in seconds
+        set_time_limit(5 * 60*100);
                
                 
-                // Get parameters
-                $chunk = isset($_REQUEST["chunk"]) ? $_REQUEST["chunk"] : 0;
-                $chunks = isset($_REQUEST["chunks"]) ? $_REQUEST["chunks"] : 0;
-                // Clean the fileName for security reasons
-                $fileName = "";
-                if (isset($_REQUEST["name"])) 
-                {
-                   $fileName = $_REQUEST["name"];
-                        
-                }
+        // Get parameters
+        $chunk = isset($_REQUEST["chunk"]) ? $_REQUEST["chunk"] : 0;
+        $chunks = isset($_REQUEST["chunks"]) ? $_REQUEST["chunks"] : 0;
+        // Clean the fileName for security reasons
+        $fileName = "";
+        if (isset($_REQUEST["name"])) 
+        {
+            $fileName = $_REQUEST["name"];           
+        }
 
-                $fileName = preg_replace('/[^\w\._]+/', '', $fileName);
-                if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) 
-                error_log("\nStep 0: Filename:".$fileName, 3, $targetDir."/upload.log");
-                $fileName2 = $_FILES["file"]["name"];
-                error_log("\nStep 0.1: Filename:".$fileName2, 3, $targetDir."/upload.log");
-                // Create target dir
-                if (!file_exists($targetDir))
-                        mkdir($targetDir);
-                // Remove old temp files
-                if (!file_exists($targetDir))
-                    die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Failed to open temp directory."}, "id" : "id"}');
-                // Look for the content type header
-                if (isset($_SERVER["HTTP_CONTENT_TYPE"]))
-                        $contentType = $_SERVER["HTTP_CONTENT_TYPE"];
-                if (isset($_SERVER["CONTENT_TYPE"]))
-                        $contentType = $_SERVER["CONTENT_TYPE"];
+        $fileName = preg_replace('/[^\w\._]+/', '', $fileName);
+        if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) 
+            error_log("\nStep 0: Filename:".$fileName, 3, $targetDir."/upload.log");
                 
-                error_log("\nStep 0", 3, $targetDir."/upload.log");
+        $fileName2 = $_FILES["file"]["name"];
+        error_log("\nStep 0.1: Filename:".$fileName2, 3, $targetDir."/upload.log");
                 
-                if (strpos($contentType, "multipart") !== false) 
-                {
-                    error_log("\nStep 1", 3, $targetDir."/upload.log");
+        // Create target dir
+        if (!file_exists($targetDir))
+            mkdir($targetDir);
+                
+        // Remove old temp files
+        if (!file_exists($targetDir))
+            die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Failed to open temp directory."}, "id" : "id"}');
+                
+        // Look for the content type header
+        if (isset($_SERVER["HTTP_CONTENT_TYPE"]))
+            $contentType = $_SERVER["HTTP_CONTENT_TYPE"];
+                
+        if (isset($_SERVER["CONTENT_TYPE"]))
+            $contentType = $_SERVER["CONTENT_TYPE"];
+                
+        error_log("\nStep 0", 3, $targetDir."/upload.log");
+                
+        if (strpos($contentType, "multipart") !== false) 
+        {
+            error_log("\nStep 1", 3, $targetDir."/upload.log");
 
-                    if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) 
-                    {
-                        // Open temp file
-                        $out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
-                        if ($out) 
-                        {
-                        // Read binary input stream and append it to temp file
-                        $in = fopen($_FILES['file']['tmp_name'], "rb");
-                                if ($in) 
-                                {
-                                        while ($buff = fread($in, 4096))
-                                        {
-                                            fwrite($out, $buff);
-                                        }
-                                }
-                                else
-                                die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
-                                fclose($out);
-                                unlink($_FILES['file']['tmp_name']);
-                        }
-                        else
-                        {
-                            $message = '{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}';
-                            error_log("\n".$message, 3, $targetDir."/upload.log");
-                            die($message);
-                            
-                        }
-                    }
-                    else
-                    {
-                        $message = '{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}';
-                        error_log("\n".$message, 3, $targetDir."/upload.log");
-                        die($message);
-                    }
-                }
-                else 
-                {
-                    error_log("\nStep 2", 3, $targetDir."/upload.log");
+            if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) 
+            {
                 // Open temp file
                 $out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
                 if ($out) 
                 {
+                    // Read binary input stream and append it to temp file
+                    $in = fopen($_FILES['file']['tmp_name'], "rb");
+                    if ($in) 
+                    {
+                        while ($buff = fread($in, 4096))
+                        {
+                            fwrite($out, $buff);
+                        }
+                    }
+                    else
+                        die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+                    
+                    fclose($out);
+                    unlink($_FILES['file']['tmp_name']);
+                }
+                else
+                {
+                    $message = '{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}';
+                    error_log("\n".$message, 3, $targetDir."/upload.log");
+                    die($message);
+                            
+                }
+            }
+            else
+            {
+                $message = '{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}';
+                error_log("\n".$message, 3, $targetDir."/upload.log");
+                die($message);
+            }
+        }
+        else 
+        {
+            error_log("\nStep 2", 3, $targetDir."/upload.log");
+            // Open temp file
+            $out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
+            if ($out) 
+            {
                 // Read binary input stream and append it to temp file
                 $in = fopen("php://input", "rb");
                 if ($in) 
                 {
-                        while ($buff = fread($in, 4096))
-                                fwrite($out, $buff);
+                    while ($buff = fread($in, 4096))
+                        fwrite($out, $buff);
                 }
             }
         }

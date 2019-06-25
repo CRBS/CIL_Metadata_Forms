@@ -33,6 +33,7 @@ $(function() {
 		// General settings
 		runtimes : 'html5',
 		url : "/upload_images/process_upload/<?php echo $model_id; ?>",
+                //url:"https://iruka.crbs.ucsd.edu/CIL-Storage-RS/index.php/image_upload_service/upload_cdeep3m_model/<?php //echo $model_id; ?>",
 		chunk_size : '1mb',
                 multipart : true,
 		//unique_names : true,
