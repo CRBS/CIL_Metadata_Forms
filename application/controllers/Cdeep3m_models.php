@@ -221,13 +221,14 @@ class Cdeep3m_models extends CI_Controller
     public function edit($model_id=0)
     {
         $this->load->helper('url');
+        $remote_service_prefix =  $this->config->item('remote_service_prefix');
         $dbutil = new DB_util();
         $cutil = new Curl_util();
         
         $jpg_path = "/export2/media/model_display/".$model_id."/".$model_id."_thumbnailx512.jpg";
         $metadata_auth = $this->config->item('metadata_auth');
-        $filezize_str = $cutil->auth_curl_get_with_data($metadata_auth,"https://iruka.crbs.ucsd.edu/CIL-Storage-RS/index.php/rest/file_size", $jpg_path);
-        //echo "<br/>File:".$filezize_str;
+        $filezize_str = $cutil->auth_curl_get_with_data($metadata_auth,$remote_service_prefix."/rest/file_size", $jpg_path);
+        //echo "<br/>File JSON STR:".$filezize_str;
         $sjson = json_decode($filezize_str);
 
         $login_hash = $this->session->userdata('login_hash');
