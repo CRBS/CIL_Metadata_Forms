@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-            <label class="col-form-label" for="inputDefault">*Name</label>
+            <label class="col-form-label" for="inputDefault">*Model Name</label>
             <input id="trained_model_name" name="trained_model_name" style="width: 100%" value="<?php 
             
             if(!is_null($mjson) && isset($mjson->Cdeepdm_model->Name))
@@ -31,7 +31,20 @@
             <ul>
                 
                 <li>
-                    <a href="#" data-toggle="tooltip" title="<?php echo $ncbi->onto_id; ?>"><?php echo $ncbi->onto_name; ?></a><a href="/cdeep3m_models/delete_field/<?php echo $model_id; ?>/NCBIORGANISMALCLASSIFICATION/<?php echo $ncbi->onto_name; ?>" target="_self"> ✖</a>
+                    <?php 
+                        if(isset($ncbi->onto_id) && isset($ncbi->onto_name))
+                        {
+                    ?>        
+                    <a href="#" data-toggle="tooltip" title="<?php echo $ncbi->onto_id; ?>"><?php echo $ncbi->onto_name;  ?></a><a href="/cdeep3m_models/delete_field/<?php echo $model_id; ?>/NCBIORGANISMALCLASSIFICATION/<?php echo $ncbi->onto_name; ?>" target="_self"> ✖</a>
+                    <?php
+                        }
+                        else if(isset($ncbi->free_text))
+                        {
+                    ?>
+                    <?php echo $ncbi->free_text; ?><a href="/cdeep3m_models/delete_field/<?php echo $model_id; ?>/NCBIORGANISMALCLASSIFICATION/<?php  echo $ncbi->free_text; ?>" target="_self"> ✖</a>
+                    <?php
+                        }
+                    ?>
                 </li>
             </ul>
 
@@ -56,10 +69,24 @@
                     foreach($ncbiArray as $ncbi)
                     {
             ?>      
+            
             <ul>
                 
                 <li>
-                    <a href="#" data-toggle="tooltip" title="<?php echo $ncbi->onto_id; ?>"><?php echo $ncbi->onto_name; ?></a><a href="/cdeep3m_models/delete_field/<?php echo $model_id; ?>/CELLTYPE/<?php echo $ncbi->onto_name; ?>" target="_self"> ✖</a>
+                    <?php 
+                        if(isset($ncbi->onto_id) && isset($ncbi->onto_name))
+                        {
+                    ?>        
+                    <a href="#" data-toggle="tooltip" title="<?php echo $ncbi->onto_id; ?>"><?php echo $ncbi->onto_name;  ?></a><a href="/cdeep3m_models/delete_field/<?php echo $model_id; ?>/CELLTYPE/<?php echo $ncbi->onto_name; ?>" target="_self"> ✖</a>
+                    <?php
+                        }
+                        else if(isset($ncbi->free_text))
+                        {
+                    ?>
+                    <?php echo $ncbi->free_text; ?><a href="/cdeep3m_models/delete_field/<?php echo $model_id; ?>/CELLTYPE/<?php  echo $ncbi->free_text; ?>" target="_self"> ✖</a>
+                    <?php
+                        }
+                    ?>
                 </li>
             </ul>
 
@@ -84,10 +111,23 @@
                     foreach($ncbiArray as $ncbi)
                     {
             ?>      
+            
             <ul>
-                
                 <li>
-                    <a href="#" data-toggle="tooltip" title="<?php echo $ncbi->onto_id; ?>"><?php echo $ncbi->onto_name; ?></a><a href="/cdeep3m_models/delete_field/<?php echo $model_id; ?>/CELLULARCOMPONENT/<?php echo $ncbi->onto_name; ?>" target="_self"> ✖</a>
+                    <?php 
+                        if(isset($ncbi->onto_id) && isset($ncbi->onto_name))
+                        {
+                    ?>        
+                    <a href="#" data-toggle="tooltip" title="<?php echo $ncbi->onto_id; ?>"><?php echo $ncbi->onto_name;  ?></a><a href="/cdeep3m_models/delete_field/<?php echo $model_id; ?>/CELLULARCOMPONENT/<?php echo $ncbi->onto_name; ?>" target="_self"> ✖</a>
+                    <?php
+                        }
+                        else if(isset($ncbi->free_text))
+                        {
+                    ?>
+                    <?php echo $ncbi->free_text; ?><a href="/cdeep3m_models/delete_field/<?php echo $model_id; ?>/CELLULARCOMPONENT/<?php  echo $ncbi->free_text; ?>" target="_self"> ✖</a>
+                    <?php
+                        }
+                    ?>
                 </li>
             </ul>
 
@@ -111,13 +151,26 @@
                     foreach($ncbiArray as $ncbi)
                     {
             ?>      
+
             <ul>
-                
                 <li>
-                    <a href="#" data-toggle="tooltip" title="<?php echo $ncbi->onto_id; ?>"><?php echo $ncbi->onto_name; ?></a><a href="/cdeep3m_models/delete_field/<?php echo $model_id; ?>/ITEMTYPE/<?php echo $ncbi->onto_name; ?>" target="_self"> ✖</a>
+                    <?php 
+                        if(isset($ncbi->onto_id) && isset($ncbi->onto_name))
+                        {
+                    ?>        
+                    <a href="#" data-toggle="tooltip" title="<?php echo $ncbi->onto_id; ?>"><?php echo $ncbi->onto_name;  ?></a><a href="/cdeep3m_models/delete_field/<?php echo $model_id; ?>/ITEMTYPE/<?php echo $ncbi->onto_name; ?>" target="_self"> ✖</a>
+                    <?php
+                        }
+                        else if(isset($ncbi->free_text))
+                        {
+                    ?>
+                    <?php echo $ncbi->free_text; ?><a href="/cdeep3m_models/delete_field/<?php echo $model_id; ?>/ITEMTYPE/<?php  echo $ncbi->free_text; ?>" target="_self"> ✖</a>
+                    <?php
+                        }
+                    ?>
                 </li>
             </ul>
-
+            
             <?php
                     }
                 }
@@ -152,7 +205,42 @@
                 </div>
        </div><div class="col-md-4">
        </div>
-    </div>       
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+            <label class="col-form-label" for="inputDefault">Authors</label>
+            <?php
+                if(isset($mjson->Cdeepdm_model->Contributors) && count($mjson->Cdeepdm_model->Contributors)>0)
+                {
+                    $ncbiArray = $mjson->Cdeepdm_model->Contributors;
+                    foreach($ncbiArray as $ncbi)
+                    {
+            ?>      
+            <ul>
+                <li>
+                    
+                    <?php
+                        if(!is_null($ncbi))
+                        {
+                    ?>
+                    <?php echo $ncbi; ?><a href="/cdeep3m_models/delete_field/<?php echo $model_id; ?>/Authors/<?php  echo $ncbi; ?>" target="_self"> ✖</a>
+                    <?php
+                        }
+                    ?>
+                </li>
+            </ul>
+
+            <?php
+                    }
+                }
+            ?>
+            
+            <input id="contributor" name="contributor" style="width: 100%" value="" class="form-control cil_san_regular_font" autocomplete="off" type="text">
+            </div>
+        </div><div class="col-md-6"></div>
+    </div>
        
 
      <div class="row">

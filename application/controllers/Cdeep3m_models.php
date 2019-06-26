@@ -165,10 +165,12 @@ class Cdeep3m_models extends CI_Controller
         $magnification = $this->input->post('magnification', TRUE);
         $voxelsize = $this->input->post('voxelsize', TRUE);
         $voxelsize_unit = $this->input->post('voxelsize_unit', TRUE);
+        $contributor = $this->input->post('contributor', TRUE);
         
         echo "<br/>trained_model_name:".$trained_model_name;
         if(!is_null($trained_model_name))
             $mjson->Cdeepdm_model->Name = $trained_model_name;
+        echo "<br/>NCBI:".$ncbi;
         echo "<br/>cell_type:".$cell_type;
         echo "<br/>cell_component:".$cell_component;
         echo "<br/>image_type:".$image_type;
@@ -255,6 +257,24 @@ class Cdeep3m_models extends CI_Controller
             $vjson = json_decode($vjson_str);
             $mjson->Cdeepdm_model->Voxelsize = $vjson;
         }
+        
+        if(!is_null($contributor)&& strlen(trim($contributor)) > 0)
+        {
+            
+            if(isset($mjson->Cdeepdm_model->Contributors))
+            {
+                array_push($mjson->Cdeepdm_model->Contributors, $contributor);
+            }
+            else
+            {
+                $carray = array();
+                array_push($carray, $contributor);
+                $cjson_str = json_encode($carray, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+                $cjson = json_decode($cjson_str);
+                $mjson->Cdeepdm_model->Contributors = $cjson;
+            }
+        }
+        
         
         if(!is_null($mjson))
         {
@@ -351,6 +371,14 @@ class Cdeep3m_models extends CI_Controller
         redirect ($base_url."/cdeep3m_models/upload/".$model_id);
     }
     
+    private  function formatBytes($size) 
+    { 
+        $base = log($size) / log(1024);
+        $suffix = array("", "KB", "MB", "GB", "TB");
+        $f_base = floor($base);
+        return round(pow(1024, $base - floor($base)), 1) . $suffix[$f_base];
+    } 
+    
     public function edit($model_id=0)
     {
         $this->load->helper('url');
@@ -375,6 +403,16 @@ class Cdeep3m_models extends CI_Controller
             return;
         }
         $data['user_role'] = $dbutil->getUserRole($data['username']);
+        
+        
+        $model_info = $dbutil->getModelInfo($model_id);
+        if(!is_null($model_info))
+        {
+            if(isset($model_info->file_size) && !is_null($model_info->file_size))
+                $model_info->file_size = $this->formatBytes ($model_info->file_size);
+            $data['model_info'] = $model_info;
+            //var_dump($model_info);   
+        }
         
         $data['title'] = 'CDeep3M Metadata Edit';
         $data['base_url'] = $this->config->item('base_url');

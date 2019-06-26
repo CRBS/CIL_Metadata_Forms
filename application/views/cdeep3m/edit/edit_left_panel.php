@@ -12,7 +12,7 @@
                 else
                 {
             ?>
-            <img src="/pix/default_jpg2.png?<?php echo uniqid(); ?>" class="img-thumbnail pull-right" width="100%">
+            <img src="/pix/default_jpg3.png?<?php echo uniqid(); ?>" class="img-thumbnail pull-right" width="100%">
             <?php
                 }
             ?>

@@ -480,6 +480,44 @@ class DB_util
         return $id_array;
     }
     
+    public function getModelInfo($model_id)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+            return NULL;
+        
+        $sql = "select file_name, file_size from models where id = $1";
+        $input = array();
+        array_push($input, $model_id);
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+            return NULL;
+        
+        $array = array();
+        $hasResult = false;
+        if($row = pg_fetch_row($result))
+        {
+            if(!is_null($row[0]) && !is_null($row[1]) && is_numeric($row[1]))
+            {
+                $hasResult = true;
+                $array['file_name'] = $row[0];
+                $array['file_size'] = intval($row[1]);
+            }
+        }
+        
+        pg_close($conn);
+        if(!$hasResult)
+            return NULL;
+       
+        $json_str = json_encode($array, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        $json = json_decode($json_str);
+        return $json;
+        
+    }
+    
+    
     public function getMetadata($image_id)
     {
         $CI = CI_Controller::get_instance();

@@ -1,9 +1,18 @@
 <br/>
 <div class="container">
+    
     <div class="row">
         <div class="col-md-12">
             <span class="cil_title2">Step 2: Enter metadata</span>
             <br/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <?php 
+                if(isset($model_info) && isset($model_info->file_name) && isset($model_info->file_size))
+                    echo $model_info->file_name." (".$model_info->file_size.")";
+            ?>
         </div>
     </div>
     <div class="row">
