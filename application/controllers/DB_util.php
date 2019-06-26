@@ -23,6 +23,26 @@ class DB_util
         return $tarray;
     }
     
+    public function updateModelJson($model_id,$json_str)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "update models set metadata_json = $1 where id = $2";
+        $conn = pg_pconnect($db_params);
+        
+        $input = array();
+        array_push($input,$json_str);
+        array_push($input,$model_id);
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        pg_close($conn);
+        return true;
+        
+    }
     
     public function updateModelFile($model_id=0,$fileName="Unknown", $fileSize=0)
     {
@@ -175,7 +195,7 @@ class DB_util
     public function getModelJson($model_id=0)
     {
         $array = array();
-        $array['Name'] = 'Test';
+        //$array['Name'] = 'Test';
         $json = null;
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
@@ -197,7 +217,7 @@ class DB_util
             $json_str = $row[0];
             if(is_null($json_str))
             {
-                $json_str = json_encode($array);
+                $json_str = "{ \"Cdeepdm_model\":{ \"Name\":\"\" } }";
                 $json = json_decode($json_str); 
             }
             $json = json_decode($json_str);
@@ -207,7 +227,8 @@ class DB_util
         pg_close($conn);
         if(is_null($json))
         {
-            $json_str = json_encode($array);
+            
+            $json_str = "{ \"Cdeepdm_model\":{ \"Name\":\"\" } }";
             $json = json_decode($json_str);
         }
 

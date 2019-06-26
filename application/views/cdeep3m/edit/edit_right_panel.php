@@ -7,7 +7,12 @@
         <div class="col-md-6">
             <div class="form-group">
             <label class="col-form-label" for="inputDefault">*Name</label>
-            <input id="trained_model_name" name="trained_model_name" style="width: 100%" value="" class="form-control cil_san_regular_font"  type="text">
+            <input id="trained_model_name" name="trained_model_name" style="width: 100%" value="<?php 
+            
+            if(!is_null($mjson) && isset($mjson->Name))
+                echo $mjson->Name;
+            
+            ?>" class="form-control cil_san_regular_font"  type="text">
             </div>
         </div><div class="col-md-6"></div>
     </div>

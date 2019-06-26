@@ -105,7 +105,7 @@ class Cdeep3m_models extends CI_Controller
         
         echo "<br/>trained_model_name:".$trained_model_name;
         if(!is_null($trained_model_name))
-            $mjson->Name = $trained_model_name;
+            $mjson->Cdeepdm_model->Name = $trained_model_name;
         echo "<br/>cell_type:".$cell_type;
         echo "<br/>cell_component:".$cell_component;
         echo "<br/>image_type:".$image_type;
@@ -127,8 +127,15 @@ class Cdeep3m_models extends CI_Controller
             $ncbiJsonStr = json_encode($narray);
             $ncbiJson = json_decode($ncbiJsonStr);
             $ncbiJson=$outil->handleExistingOntoJSON($ncbiJson, "ncbi_organism", $ncbi);
-            
-            $mjson->NCBIORGANISMALCLASSIFICATION = $ncbiJson;
+            //echo json_encode($ncbiJson,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            $mjson->Cdeepdm_model->NCBIORGANISMALCLASSIFICATION = $ncbiJson;
+        }
+        
+        
+        if(!is_null($mjson))
+        {
+            $json_str = json_encode($mjson, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+            $dbutil->updateModelJson($model_id,$json_str);
         }
         
         if(file_exists($targetDir."/model.json"))
@@ -224,6 +231,9 @@ class Cdeep3m_models extends CI_Controller
         $remote_service_prefix =  $this->config->item('remote_service_prefix');
         $dbutil = new DB_util();
         $cutil = new Curl_util();
+        
+        $mjson = $dbutil->getModelJson($model_id);
+        $data['mjson'] = $mjson;
         
         $jpg_path = "/export2/media/model_display/".$model_id."/".$model_id."_thumbnailx512.jpg";
         $metadata_auth = $this->config->item('metadata_auth');
