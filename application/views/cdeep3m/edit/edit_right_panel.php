@@ -1,3 +1,14 @@
+<?php
+
+    function formatIput($input)
+    {
+        $input = str_replace("(", "%28", $input);
+        $input = str_replace(")", "%29", $input);
+        return $input;     
+    }
+
+?>
+
     <div class="row">
         <div class="col-md-12">
             <span class="cil_title2">Trained model metadata</span>
@@ -35,13 +46,13 @@
                         if(isset($ncbi->onto_id) && isset($ncbi->onto_name))
                         {
                     ?>        
-                    <a href="#" data-toggle="tooltip" title="<?php echo $ncbi->onto_id; ?>"><?php echo $ncbi->onto_name;  ?></a><a href="/cdeep3m_models/delete_field/<?php echo $model_id; ?>/NCBIORGANISMALCLASSIFICATION/<?php echo $ncbi->onto_name; ?>" target="_self"> ✖</a>
+                    <a href="#" data-toggle="tooltip" title="<?php echo $ncbi->onto_id; ?>"><?php echo $ncbi->onto_name;  ?></a><a href="/cdeep3m_models/delete_field/<?php echo $model_id; ?>/NCBIORGANISMALCLASSIFICATION/<?php echo formatIput($ncbi->onto_name); ?>" target="_self"> ✖</a>
                     <?php
                         }
                         else if(isset($ncbi->free_text))
                         {
                     ?>
-                    <?php echo $ncbi->free_text; ?><a href="/cdeep3m_models/delete_field/<?php echo $model_id; ?>/NCBIORGANISMALCLASSIFICATION/<?php  echo $ncbi->free_text; ?>" target="_self"> ✖</a>
+                    <?php echo $ncbi->free_text; ?><a href="/cdeep3m_models/delete_field/<?php echo $model_id; ?>/NCBIORGANISMALCLASSIFICATION/<?php  echo formatIput($ncbi->free_text); ?>" target="_self"> ✖</a>
                     <?php
                         }
                     ?>
@@ -111,7 +122,6 @@
                     foreach($ncbiArray as $ncbi)
                     {
             ?>      
-            
             <ul>
                 <li>
                     <?php 
@@ -130,7 +140,6 @@
                     ?>
                 </li>
             </ul>
-
             <?php
                     }
                 }
@@ -139,6 +148,9 @@
             </div>
         </div><div class="col-md-6"></div>
     </div>
+
+
+    
 
     <div class="row">
         <div class="col-md-6">
@@ -158,13 +170,13 @@
                         if(isset($ncbi->onto_id) && isset($ncbi->onto_name))
                         {
                     ?>        
-                    <a href="#" data-toggle="tooltip" title="<?php echo $ncbi->onto_id; ?>"><?php echo $ncbi->onto_name;  ?></a><a href="/cdeep3m_models/delete_field/<?php echo $model_id; ?>/ITEMTYPE/<?php echo $ncbi->onto_name; ?>" target="_self"> ✖</a>
+                    <a href="#" data-toggle="tooltip" title="<?php echo $ncbi->onto_id; ?>"><?php echo $ncbi->onto_name;  ?></a><a href="/cdeep3m_models/delete_field/<?php echo $model_id; ?>/ITEMTYPE/<?php echo formatIput($ncbi->onto_name); ?>" target="_self"> ✖</a>
                     <?php
                         }
                         else if(isset($ncbi->free_text))
                         {
                     ?>
-                    <?php echo $ncbi->free_text; ?><a href="/cdeep3m_models/delete_field/<?php echo $model_id; ?>/ITEMTYPE/<?php  echo $ncbi->free_text; ?>" target="_self"> ✖</a>
+                    <?php echo $ncbi->free_text; ?><a href="/cdeep3m_models/delete_field/<?php echo $model_id; ?>/ITEMTYPE/<?php  echo formatIput($ncbi->free_text); ?>" target="_self"> ✖</a>
                     <?php
                         }
                     ?>
@@ -241,7 +253,18 @@
             </div>
         </div><div class="col-md-6"></div>
     </div>
-       
+
+    <div class="row">
+        
+        <div class="col-md-12">
+             <label class="col-form-label" for="inputDefault">*Description</label>
+            <textarea rows="4" cols="50" class="form-control cil_san_regular_font" name="description" id="description"><?php
+            if(!is_null($mjson) && isset($mjson->Cdeepdm_model->Description))
+                echo $mjson->Cdeepdm_model->Description;
+            
+            ?></textarea> 
+        </div>
+    </div>
 
      <div class="row">
            <div class="col-md-12">
@@ -269,8 +292,14 @@
 
        
     <div class="row">
-        <div class="col-md-12">   
+        <div class="col-md-12"> <br/></div>
+        <div class="col-md-3">
+           
            <input type="submit" name="submit" class="btn btn-primary" value="Submit">
+        </div>
+        <div class="col-md-6"></div>
+        <div class="col-md-3">
+            <a href="#" target="_self" class="btn btn-warning">Exit</a>
         </div>
     </div>
 

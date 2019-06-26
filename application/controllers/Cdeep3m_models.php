@@ -13,6 +13,9 @@ class Cdeep3m_models extends CI_Controller
     {
         $this->load->helper('url');
         $input=str_replace("%20", " ", $input);
+        $input = str_replace("%28","(", $input);
+        $input = str_replace("%29",")", $input);
+        
         $input= str_replace("_single_quote_", "'", $input);
         echo "<br/>Model_id:".$model_id;
         echo "<br/>Type:".$field;
@@ -124,6 +127,8 @@ class Cdeep3m_models extends CI_Controller
          
     }
     
+
+    
     public function submit($model_id="0")
     {
         $this->load->helper('url');
@@ -166,10 +171,15 @@ class Cdeep3m_models extends CI_Controller
         $voxelsize = $this->input->post('voxelsize', TRUE);
         $voxelsize_unit = $this->input->post('voxelsize_unit', TRUE);
         $contributor = $this->input->post('contributor', TRUE);
+        $desc = $this->input->post('description', TRUE);
         
         echo "<br/>trained_model_name:".$trained_model_name;
         if(!is_null($trained_model_name))
             $mjson->Cdeepdm_model->Name = $trained_model_name;
+        
+        if(!is_null($desc))
+            $mjson->Cdeepdm_model->Description = $desc;
+        
         echo "<br/>NCBI:".$ncbi;
         echo "<br/>cell_type:".$cell_type;
         echo "<br/>cell_component:".$cell_component;
