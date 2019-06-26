@@ -9,6 +9,69 @@ include_once 'CILContentUtil.php';
 class Cdeep3m_models extends CI_Controller
 {
     
+    public function delete_field($model_id,$field, $input)
+    {
+        $this->load->helper('url');
+        $input=str_replace("%20", " ", $input);
+        $input= str_replace("_single_quote_", "'", $input);
+        echo "<br/>Model_id:".$model_id;
+        echo "<br/>Type:".$field;
+        echo "<br/>Name:".$input;
+        
+        $dbutil = new DB_util();
+        
+        
+        $json = $dbutil->getModelJson($model_id);
+       
+        $coreJson= $json->Cdeepdm_model;
+        foreach($coreJson as $key => $val) 
+        {
+            if(strcmp($key,$field) == 0)
+            {
+                echo "<br/>Match field";
+                if(is_array($coreJson->{$key}))
+                {
+                    $i = 0;
+                    $removeIndex = null;
+                    $jsonArray = $coreJson->{$key};
+                    foreach($jsonArray as $item)
+                    {
+                        if(isset($item->onto_name))
+                        {
+                            if(strcmp($input,$item->onto_name)==0)
+                            {
+                                $removeIndex = $i;
+                            }
+                        }
+                        else if(isset($item->free_text))
+                        {
+                            if(strcmp($input,$item->free_text)==0)
+                            {
+
+                                $removeIndex = $i;
+                            }
+                        }
+                            $i++;
+                    }
+                    
+                    if(!is_null($removeIndex))
+                    {
+                        unset($jsonArray[$removeIndex]);
+                        $jsonArray=array_values ($jsonArray);
+                    }
+                        
+                    $coreJson->{$key} = $jsonArray;
+                        
+                }
+            } 
+        }
+        
+        
+        $json_str = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        $dbutil->updateModelJson($model_id, $json_str);
+        redirect($base_url."/cdeep3m_models/edit/".$model_id);
+    }
+    
     public function add($model_id=0, $fileName="Unknown")
     {
         $this->load->helper('url');
@@ -120,17 +183,78 @@ class Cdeep3m_models extends CI_Controller
         $targetDir = $targetDir."/".$model_id;
         if(!file_exists($targetDir))
             mkdir($targetDir);
-                
-        if(!is_null($ncbi))
+        
+       
+          
+        if(!is_null($ncbi) && strlen(trim($ncbi)) > 0)
         {   
             $narray = array();
             $ncbiJsonStr = json_encode($narray);
             $ncbiJson = json_decode($ncbiJsonStr);
+            if(isset($mjson->Cdeepdm_model->NCBIORGANISMALCLASSIFICATION))
+                $ncbiJson = $mjson->Cdeepdm_model->NCBIORGANISMALCLASSIFICATION;
+            
             $ncbiJson=$outil->handleExistingOntoJSON($ncbiJson, "ncbi_organism", $ncbi);
             //echo json_encode($ncbiJson,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
             $mjson->Cdeepdm_model->NCBIORGANISMALCLASSIFICATION = $ncbiJson;
         }
         
+        if(!is_null($cell_type) && strlen(trim($cell_type)) > 0)
+        {   
+            $narray = array();
+            $ncbiJsonStr = json_encode($narray);
+            $ncbiJson = json_decode($ncbiJsonStr);
+            if(isset($mjson->Cdeepdm_model->CELLTYPE))
+                $ncbiJson = $mjson->Cdeepdm_model->CELLTYPE;
+            
+            $ncbiJson=$outil->handleExistingOntoJSON($ncbiJson, "cell_types", $cell_type);
+            //echo json_encode($ncbiJson,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            $mjson->Cdeepdm_model->CELLTYPE = $ncbiJson;
+        }
+        
+        if(!is_null($cell_component) && strlen(trim($cell_component)) > 0)
+        {   
+            $narray = array();
+            $ncbiJsonStr = json_encode($narray);
+            $ncbiJson = json_decode($ncbiJsonStr);
+            if(isset($mjson->Cdeepdm_model->CELLULARCOMPONENT))
+                $ncbiJson = $mjson->Cdeepdm_model->CELLULARCOMPONENT;
+            
+            $ncbiJson=$outil->handleExistingOntoJSON($ncbiJson, "cellular_components", $cell_component);
+            //echo json_encode($ncbiJson,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            $mjson->Cdeepdm_model->CELLULARCOMPONENT = $ncbiJson;
+        }
+        
+        
+        if(!is_null($image_type) && strlen(trim($image_type)) > 0)
+        {   
+            $narray = array();
+            $ncbiJsonStr = json_encode($narray);
+            $ncbiJson = json_decode($ncbiJsonStr);
+            if(isset($mjson->Cdeepdm_model->ITEMTYPE))
+                $ncbiJson = $mjson->Cdeepdm_model->ITEMTYPE;
+            
+            $ncbiJson=$outil->handleExistingOntoJSON($ncbiJson, "imaging_methods", $image_type);
+            //echo json_encode($ncbiJson,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            $mjson->Cdeepdm_model->ITEMTYPE = $ncbiJson;
+        }
+        
+        if(!is_null($magnification) && strlen(trim($magnification)) > 0)
+        { 
+            $mjson->Cdeepdm_model->Magnification = $magnification;
+        }
+        
+        
+                
+        if(!is_null($voxelsize) && strlen(trim($voxelsize)) > 0)
+        { 
+            $varray = array();
+            $varray['Value'] = doubleval($voxelsize);
+            $varray['Unit'] = $voxelsize_unit;
+            $vjson_str = json_encode($varray);
+            $vjson = json_decode($vjson_str);
+            $mjson->Cdeepdm_model->Voxelsize = $vjson;
+        }
         
         if(!is_null($mjson))
         {
@@ -138,9 +262,11 @@ class Cdeep3m_models extends CI_Controller
             $dbutil->updateModelJson($model_id,$json_str);
         }
         
-        if(file_exists($targetDir."/model.json"))
-           unlink($targetDir."/model.json");
-        error_log(json_encode($mjson,  JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES), 3, $targetDir."/model.json");
+        //if(file_exists($targetDir."/model.json"))
+        //   unlink($targetDir."/model.json");
+        //error_log(json_encode($mjson,  JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES), 3, $targetDir."/model.json");
+        
+        redirect($base_url."/cdeep3m_models/edit/".$model_id);
         
     }
     public function upload_model_image($model_id)

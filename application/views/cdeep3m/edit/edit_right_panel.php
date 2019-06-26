@@ -9,8 +9,8 @@
             <label class="col-form-label" for="inputDefault">*Name</label>
             <input id="trained_model_name" name="trained_model_name" style="width: 100%" value="<?php 
             
-            if(!is_null($mjson) && isset($mjson->Name))
-                echo $mjson->Name;
+            if(!is_null($mjson) && isset($mjson->Cdeepdm_model->Name))
+                echo $mjson->Cdeepdm_model->Name;
             
             ?>" class="form-control cil_san_regular_font"  type="text">
             </div>
@@ -21,6 +21,25 @@
         <div class="col-md-6">
             <div class="form-group">
             <label class="col-form-label" for="inputDefault">NCBI Organismal Classification</label>
+            <?php
+                if(isset($mjson->Cdeepdm_model->NCBIORGANISMALCLASSIFICATION) && count($mjson->Cdeepdm_model->NCBIORGANISMALCLASSIFICATION)>0)
+                {
+                    $ncbiArray = $mjson->Cdeepdm_model->NCBIORGANISMALCLASSIFICATION;
+                    foreach($ncbiArray as $ncbi)
+                    {
+            ?>      
+            <ul>
+                
+                <li>
+                    <a href="#" data-toggle="tooltip" title="<?php echo $ncbi->onto_id; ?>"><?php echo $ncbi->onto_name; ?></a><a href="/cdeep3m_models/delete_field/<?php echo $model_id; ?>/NCBIORGANISMALCLASSIFICATION/<?php echo $ncbi->onto_name; ?>" target="_self"> ✖</a>
+                </li>
+            </ul>
+
+            <?php
+                    }
+                }
+            ?>
+            
             <input id="image_search_parms_ncbi" name="image_search_parms[ncbi]" style="width: 100%" value="" class="form-control cil_san_regular_font ui-autocomplete-input" autocomplete="off" type="text">
             </div>
         </div><div class="col-md-6"></div>
@@ -30,6 +49,25 @@
         <div class="col-md-6">
             <div class="form-group">
             <label class="col-form-label" for="inputDefault">Cell Type</label>
+            <?php
+                if(isset($mjson->Cdeepdm_model->CELLTYPE) && count($mjson->Cdeepdm_model->CELLTYPE)>0)
+                {
+                    $ncbiArray = $mjson->Cdeepdm_model->CELLTYPE;
+                    foreach($ncbiArray as $ncbi)
+                    {
+            ?>      
+            <ul>
+                
+                <li>
+                    <a href="#" data-toggle="tooltip" title="<?php echo $ncbi->onto_id; ?>"><?php echo $ncbi->onto_name; ?></a><a href="/cdeep3m_models/delete_field/<?php echo $model_id; ?>/CELLTYPE/<?php echo $ncbi->onto_name; ?>" target="_self"> ✖</a>
+                </li>
+            </ul>
+
+            <?php
+                    }
+                }
+            ?>
+            
             <input id="image_search_parms_cell_type" name="image_search_parms[cell_type]" style="width: 100%" type="text" value="" class="form-control cil_san_regular_font ui-autocomplete-input" autocomplete="off"> 
             </div>
         </div><div class="col-md-6"></div>
@@ -39,6 +77,24 @@
         <div class="col-md-6">
             <div class="form-group">
             <label class="col-form-label" for="inputDefault"> Cell Component (GO)</label>
+            <?php
+                if(isset($mjson->Cdeepdm_model->CELLULARCOMPONENT) && count($mjson->Cdeepdm_model->CELLULARCOMPONENT)>0)
+                {
+                    $ncbiArray = $mjson->Cdeepdm_model->CELLULARCOMPONENT;
+                    foreach($ncbiArray as $ncbi)
+                    {
+            ?>      
+            <ul>
+                
+                <li>
+                    <a href="#" data-toggle="tooltip" title="<?php echo $ncbi->onto_id; ?>"><?php echo $ncbi->onto_name; ?></a><a href="/cdeep3m_models/delete_field/<?php echo $model_id; ?>/CELLULARCOMPONENT/<?php echo $ncbi->onto_name; ?>" target="_self"> ✖</a>
+                </li>
+            </ul>
+
+            <?php
+                    }
+                }
+            ?>
             <input id="image_search_parms_cellular_component" name="image_search_parms[cellular_component]" style="width: 100%" type="text" value="" class="form-control cil_san_regular_font ui-autocomplete-input" autocomplete="off">
             </div>
         </div><div class="col-md-6"></div>
@@ -47,7 +103,25 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-            <label class="col-form-label" for="inputDefault">*Microscope Type</label>
+            <label class="col-form-label" for="inputDefault">Microscope Type</label>
+            <?php
+                if(isset($mjson->Cdeepdm_model->ITEMTYPE) && count($mjson->Cdeepdm_model->ITEMTYPE)>0)
+                {
+                    $ncbiArray = $mjson->Cdeepdm_model->ITEMTYPE;
+                    foreach($ncbiArray as $ncbi)
+                    {
+            ?>      
+            <ul>
+                
+                <li>
+                    <a href="#" data-toggle="tooltip" title="<?php echo $ncbi->onto_id; ?>"><?php echo $ncbi->onto_name; ?></a><a href="/cdeep3m_models/delete_field/<?php echo $model_id; ?>/ITEMTYPE/<?php echo $ncbi->onto_name; ?>" target="_self"> ✖</a>
+                </li>
+            </ul>
+
+            <?php
+                    }
+                }
+            ?>
             <input id="image_search_parms_item_type_bim" name="image_search_parms[item_type_bim]" style="width: 100%" type="text" value="" class="acInput form-control cil_san_regular_font ui-autocomplete-input" autocomplete="off">
             </div>
         </div><div class="col-md-6"></div>
@@ -57,7 +131,7 @@
         <div class="col-md-6">
             <div class="form-group">
             <label class="col-form-label" for="inputDefault">Magnification</label>
-            <input id="magnification" name="magnification" style="width: 100%" value="" class="form-control cil_san_regular_font"  type="text">
+            <input id="magnification" name="magnification" style="width: 100%" value="<?php if(isset($mjson->Cdeepdm_model->Magnification)) echo $mjson->Cdeepdm_model->Magnification; ?>" class="form-control cil_san_regular_font"  type="text">
             </div>
        </div><div class="col-md-6"></div>
     </div>
@@ -66,14 +140,14 @@
        <div class="col-md-6">
             <div class="form-group">
             <label class="col-form-label" for="inputDefault">*Voxelsize</label>
-            <input id="voxelsize" name="voxelsize" style="width: 100%" value="" class="form-control cil_san_regular_font"  type="text"> 
+            <input id="voxelsize" name="voxelsize" style="width: 100%" value="<?php if(isset($mjson->Cdeepdm_model->Voxelsize) && isset($mjson->Cdeepdm_model->Voxelsize->Value)) echo $mjson->Cdeepdm_model->Voxelsize->Value; ?>" class="form-control cil_san_regular_font"  type="text"> 
             </div>
        </div><div class="col-md-2">
                 <div class="form-group">
                     <label class="col-form-label" for="voxelsize_unit">&nbsp;</label>
                        <select class="form-control cil_san_regular_font" id="voxelsize_unit" name="voxelsize_unit">
-                       <option value="µm">µm</option>
-                       <option value="nm">nm</option>
+                       <option value="µm" <?php if(isset($mjson->Cdeepdm_model->Voxelsize) && isset($mjson->Cdeepdm_model->Voxelsize->Unit) && strcmp($mjson->Cdeepdm_model->Voxelsize->Unit, "µm")==0) echo "selected"; ?>>µm</option>
+                       <option value="nm" <?php if(isset($mjson->Cdeepdm_model->Voxelsize) && isset($mjson->Cdeepdm_model->Voxelsize->Unit) && strcmp($mjson->Cdeepdm_model->Voxelsize->Unit, "nm")==0) echo "selected"; ?>>nm</option>
                      </select>
                 </div>
        </div><div class="col-md-4">

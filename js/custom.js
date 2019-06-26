@@ -102,12 +102,12 @@ function check_model_form()
     }
     
     
-    var image_type = document.getElementById('image_search_parms_item_type_bim').value;
+    /*var image_type = document.getElementById('image_search_parms_item_type_bim').value;
     if(!image_type || image_type.length === 0)
     {
         alert('Microscope type is required!');
         return false;
-    }
+    }*/
     
     var voxelsize = document.getElementById('voxelsize').value;
     if(!voxelsize || voxelsize.length === 0)
