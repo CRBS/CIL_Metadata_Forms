@@ -7,14 +7,59 @@ class DB_util
     private $metadata = "metadata";
     private $image_name = "image_name";
     
+    public function getModelList()
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "select id, file_name, file_size,has_display_image from models where delete_time is NULL order by id desc";
+        $conn = pg_pconnect($db_params);
+        $mainArray = array();
+        
+         if(!$conn)
+         {
+             $json_str = json_encode($mainArray);
+             $json = json_decode($json_str);
+             return json;
+         }
+         
+        $result = pg_query($conn, $sql);
+        
+        while($row = pg_fetch_row($result))
+        {
+            $array = array();
+            $array['model_id'] =intval($row[0]);
+            $array['file_name'] = $row[1];
+            $file_size = 0;
+            $temp = $row[2];
+            if(!is_null($temp) && is_numeric($temp))
+                $file_size=intval($temp);
+            
+            $array['file_size'] = $file_size;
+            
+            $has_display_image = false;
+            $temp = $row[3];
+            if(!is_null($temp) && strcmp($temp, "t") ==0)
+               $has_display_image = true; 
+            $array['has_display_image'] = $has_display_image;
+            array_push($mainArray, $array);
+        }
+        pg_close($conn);
+        $json_str = json_encode($mainArray);
+        $json = json_decode($json_str);
+        return $json;
+    }
+    
     public function getStandardTags()
     {
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "select tag from cil_tags order by order_number asc";
         $conn = pg_pconnect($db_params);
-        $result = pg_query($conn, $sql);
         $tarray = array();
+        if(!$conn)
+            return $tarray;
+        $result = pg_query($conn, $sql);
+        
         while($row = pg_fetch_row($result))
         {
             array_push($tarray,$row[0]);
@@ -42,6 +87,26 @@ class DB_util
         pg_close($conn);
         return true;
         
+    }
+    
+    
+    public function updateModelDisplayImageStatus($model_id)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "update models has_display_image set has_display_image = true where id = $1";
+        $conn = pg_pconnect($db_params);
+        
+        $input = array();
+        array_push($input,$model_id);
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        pg_close($conn);
+        return true;
     }
     
     public function updateModelFile($model_id=0,$fileName="Unknown", $fileSize=0)

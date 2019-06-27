@@ -299,7 +299,7 @@
         </div>
         <div class="col-md-6"></div>
         <div class="col-md-3">
-            <a href="#" target="_self" class="btn btn-warning">Exit</a>
+           <!-- <a href="#" target="_self" class="btn btn-warning">Exit</a> -->
         </div>
     </div>
 

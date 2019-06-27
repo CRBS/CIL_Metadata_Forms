@@ -348,6 +348,7 @@ class Cdeep3m_models extends CI_Controller
                         $hex = bin2hex($bin);
                         $response = $cutil->auth_curl_post($url, $metadata_auth, $hex);
                         echo "<br/>".$response;
+                        $dbutil->updateModelDisplayImageStatus($model_id);
                         redirect($base_url."/cdeep3m_models/edit/".$model_id);
                     }
                    
@@ -436,6 +437,28 @@ class Cdeep3m_models extends CI_Controller
         $this->load->view('templates/header', $data);
         $this->load->view('cdeep3m/edit/metadata_edit_display', $data);
         $this->load->view('templates/footer', $data);
+    }
+    
+    
+    public function list_models()
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        $data['user_role'] = $dbutil->getUserRole($data['username']);
+        $data['title'] = 'All trained models';
+        $mjson = $dbutil->getModelList();
+        $data['mjson'] = $mjson;
+        $this->load->view('templates/header', $data);
+        $this->load->view('cdeep3m/models/model_list_display', $data);
+        $this->load->view('templates/footer', $data);
+        
     }
     
     public function upload($model_id=0)

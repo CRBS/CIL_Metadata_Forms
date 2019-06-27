@@ -28,4 +28,17 @@
         </form>
         
     </div>
+    <div class="col-md-12">
+        <br/><br/>
+        <a href="/cdeep3m_models/list_models" target="_self" class="btn btn-primary"> Close </a>
+    </div>
+    <div class="col-md-12">
+        <form action="/cdeep3m_models/delete_model/<?php echo $model_id; ?>"  method="post">
+        <br/>
+        <input type="submit" name="submit" class="btn btn-danger" value="Delete this model">
+        </form>
+    </div>
+    
+    
+    
 </div>
