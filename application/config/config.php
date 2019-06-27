@@ -557,7 +557,7 @@ else
 if(!$is_prod)
     $config['model_upload_location'] = "C:/Test2";
 else
-    $config['model_upload_location'] = "/var/www/upload_dir/models";
+    $config['model_upload_location'] = "/export2/media/model_display"; //"/var/www/upload_dir/models";
 
 
 $config['metadata_service_prefix'] = $json->metadata_service_prefix;
@@ -587,3 +587,11 @@ else
 $config['remote_upload_prefix'] = $json->remote_upload_prefix;    
 
 $config['remote_service_prefix'] = $json->remote_service_prefix;
+
+$config['google_reCAPTCHA_site_key'] = $json->google_reCAPTCHA_site_key;
+
+$config['google_reCAPTCHA_secret_key'] = $json->google_reCAPTCHA_secret_key;
+
+$config['google_reCAPTCHA_verify_url'] = 'https://www.google.com/recaptcha/api/siteverify';
+
+$config['google_reCAPTCHA_threshold'] = 0.5;

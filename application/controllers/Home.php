@@ -19,6 +19,10 @@ class Home extends CI_Controller
         $login_hash = $this->session->userdata('login_hash');
         
         $data['username'] = $this->session->userdata('username');
+        
+        $data['google_reCAPTCHA_site_key'] = $this->config->item('google_reCAPTCHA_site_key');
+        $data['google_reCAPTCHA_secret_key'] = $this->config->item('google_reCAPTCHA_secret_key');
+        
         if(is_null($login_hash))
         {
             $data['title'] = "Home login";
@@ -41,6 +45,7 @@ class Home extends CI_Controller
     public function login()
     {
         $this->load->helper('url');
+        
         $dbutil = new DB_util();
         $hasher = new PasswordHash(8, TRUE);
         $username = $this->input->post('username', TRUE);
@@ -49,7 +54,41 @@ class Home extends CI_Controller
         //echo "<br/>Password:".$password;
         $base_url = $this->config->item('base_url');
         $data['base_url'] = $base_url;
-
+        /*-------------------reCAPTCHA v3 check  ----------------------------------*/
+        $cutil = new Curl_util();
+        $google_reCAPTCHA_site_key = $this->config->item('google_reCAPTCHA_site_key');
+        $google_reCAPTCHA_secret_key = $this->config->item('google_reCAPTCHA_secret_key');
+        $google_reCAPTCHA_verify_url = $this->config->item('google_reCAPTCHA_verify_url');
+        $google_reCAPTCHA_threshold = $this->config->item('google_reCAPTCHA_threshold');
+        if(isset($google_reCAPTCHA_site_key) && !is_null($google_reCAPTCHA_site_key))
+        {
+            $recaptcha_token = $this->input->post('recaptcha_token', TRUE);
+            if(isset($recaptcha_token) && strlen($recaptcha_token) > 0)
+            {
+                $url = $google_reCAPTCHA_verify_url."?secret=".$google_reCAPTCHA_secret_key."&response=".$recaptcha_token."";
+                
+                $response = $cutil->curl_get($url);
+                if(!is_null($response))
+                {
+                    $json = json_decode($response);
+                    if(isset($json->success) && $json->success)
+                    {
+                        if(isset($json->score) && $json->score >= $google_reCAPTCHA_threshold)
+                        {
+                            //echo "<br/>Pass!";
+                        }
+                        else
+                        {
+                            redirect($base_url."/home");
+                            return;
+                        }
+                    }
+                }
+            }
+            
+        }
+        /*-------------------End reCAPTCHA v3 check  ----------------------------------*/
+        
         if(!is_null($username) && !is_null($password))
         {
             $stored_hash = $dbutil->getPassHash($username);

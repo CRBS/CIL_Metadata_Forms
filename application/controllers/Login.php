@@ -43,12 +43,17 @@ class Login extends CI_Controller
     public function auth_tag($tag="0")
     {
         $this->load->helper('url');
+        $base_url = $this->config->item('base_url');
+        redirect($base_url."/home");
+        return;
+        
+        /*
         $hasher = new PasswordHash(8, TRUE);
         $dbutil = new DB_util();
         
         
         
-        $base_url = $this->config->item('base_url');
+       
         $data['base_url'] = $base_url;
         $data['tag']=$tag;
         
@@ -62,7 +67,7 @@ class Login extends CI_Controller
             $this->load->view('login/login_display', $data);
             $this->load->view('templates/footer', $data);
             return;
-        
+        */
         
          
          
@@ -72,15 +77,24 @@ class Login extends CI_Controller
     {
         //$this->load->library('session');
         $this->load->helper('url');
+        $base_url = $this->config->item('base_url');
+        redirect($base_url."/home");
+        return;
+        
+        /*
         $hasher = new PasswordHash(8, TRUE);
         $dbutil = new DB_util();
         
         
         $username = $this->input->post('username', TRUE);
         $password = $this->input->post('password', TRUE);
-        $base_url = $this->config->item('base_url');
+        
         $data['base_url'] = $base_url;
         $data['image_id']=$image_id;
+        
+        $data['google_reCAPTCHA_site_key'] = $this->config->item('google_reCAPTCHA_site_key');
+        $data['google_reCAPTCHA_secret_key'] = $this->config->item('google_reCAPTCHA_secret_key');
+        
         if(is_null($username) && is_null($password))
         {
             $data['title'] = "CIL login";
@@ -90,6 +104,9 @@ class Login extends CI_Controller
             $this->load->view('templates/footer', $data);
             return;
         }
+        
+       
+        
         $stored_hash = $dbutil->getPassHash($username);
         
         if($hasher->CheckPassword($password, $stored_hash))
@@ -100,14 +117,16 @@ class Login extends CI_Controller
         }
         else 
         {
+
             $data['title'] = "CIL login";
             $data['try_login'] = true;
             $this->load->view('templates/header', $data);
             $this->load->view('login/login_display', $data);
             $this->load->view('templates/footer', $data);
             return;
+
         }
-        
+        */
     }
     
     
