@@ -127,7 +127,26 @@ class Cdeep3m_models extends CI_Controller
          
     }
     
-
+    public function delete_model($model_id="0")
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        $cutil = new Curl_util();
+        $ezutil = new EZIDUtil();
+        $outil = new Ontology_util();
+        
+        if(strcmp($model_id, "0") == 0 || !is_numeric($model_id))
+        {
+            show_404();
+            return;
+        }
+        
+        $model_id = intval($model_id);
+        $dbutil->deleteModel($model_id);
+        $base_url = $this->config->item('base_url');
+        redirect ($base_url."/cdeep3m_models/list_models");
+    }
     
     public function submit($model_id="0")
     {

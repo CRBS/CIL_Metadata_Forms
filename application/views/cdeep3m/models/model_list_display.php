@@ -2,6 +2,11 @@
 <div class="row">
     <div class="col-md-12"><br/></div>
 <?php
+    if(count($mjson) ==0)
+        echo "Empty result!";
+?>
+
+<?php
 
 foreach($mjson as $item)
 {

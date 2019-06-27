@@ -354,6 +354,30 @@ class DB_util
     }
     
     
+    public function deleteModel($model_id)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "update models set delete_time = now() where id = $1";
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+        {   
+            return false;
+        }
+        
+        $input = array();
+        array_push($input, $model_id);
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        
+        pg_close($conn);
+        return true;
+    }
+    
     public function updateImageDeleteTime($image_id="0")
     {
         $CI = CI_Controller::get_instance();
