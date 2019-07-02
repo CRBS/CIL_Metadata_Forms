@@ -469,6 +469,14 @@ class Cdeep3m_models extends CI_Controller
         $mjson = $dbutil->getModelJson($model_id);
         $data['mjson'] = $mjson;
         
+        $trainingDataJson = $dbutil->getTrainingInfo($model_id);
+        if(!is_null($trainingDataJson) && isset($trainingDataJson->file_name))
+        {
+            if(isset($trainingDataJson->file_size) && $trainingDataJson->file_size > 0)
+                $trainingDataJson->file_size = $this->formatBytes ($trainingDataJson->file_size);
+            $data['training_data_json'] = $trainingDataJson;
+        }
+        
         $jpg_path = "/export2/media/model_display/".$model_id."/".$model_id."_thumbnailx512.jpg";
         $metadata_auth = $this->config->item('metadata_auth');
         $filezize_str = $cutil->auth_curl_get_with_data($metadata_auth,$remote_service_prefix."/rest/file_size", $jpg_path);

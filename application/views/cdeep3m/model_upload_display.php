@@ -39,6 +39,21 @@
 
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-6">
+            <br/><br/>
+        <?php
+        if(isset($model_info_json) && isset($model_info_json->file_name))
+        {
+        ?>
+            <a class="btn btn-primary" href="/cdeep3m_models/upload_training_data/<?php echo $model_id; ?>">Next step</a>
+        <?php
+
+        }
+        ?>
+
+        </div><div class="col-md-6"></div>
+    </div>
     
 </div>
 
@@ -59,7 +74,7 @@ $(function() {
 		filters : {
 			max_file_size : '20000mb',
 			mime_types: [
-				{title : "Image files", extensions : "jpg,gif,png,tif"},
+				//{title : "Image files", extensions : "jpg,gif,png,tif"},
 				{title : "Zip files", extensions : "zip,tar"}
 			]
 		},

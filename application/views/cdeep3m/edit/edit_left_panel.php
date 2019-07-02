@@ -35,7 +35,7 @@
     <div class="col-md-12">
         <form action="/cdeep3m_models/delete_model/<?php echo $model_id; ?>"  method="post">
         <br/>
-        <input type="submit" name="submit" class="btn btn-danger" value="Delete this model">
+        <input type="submit" name="submit" class="btn btn-danger" value="Delete this model" onclick="return confirm('Are you sure you want to delete this model?')">
         </form>
     </div>
     

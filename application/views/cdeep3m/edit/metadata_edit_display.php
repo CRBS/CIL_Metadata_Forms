@@ -19,7 +19,15 @@
         <div class="col-md-12">
             <?php 
                 if(isset($model_info) && isset($model_info->file_name) && isset($model_info->file_size))
-                    echo $model_info->file_name." (".$model_info->file_size.")";
+                    echo "Model file: ".$model_info->file_name." (".$model_info->file_size.")";
+            ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <?php 
+                if(isset($training_data_json) && isset($training_data_json->file_name) && isset($training_data_json->file_size))
+                    echo "Training file: ".$training_data_json->file_name." (".$training_data_json->file_size.")";
             ?>
         </div>
     </div>

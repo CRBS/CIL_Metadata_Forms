@@ -14,7 +14,7 @@
     <div class="row">
         <div class="col-md-12">
             <br/>
-            <span class="cil_title2">Step 2: Upload the trainging data</span>
+            <span class="cil_title2">Step 2: Upload the trainging data (Optional)</span>
         </div>
     </div>
     <div class="row">
@@ -39,7 +39,15 @@
 
         </div>
     </div>
-    
+    <div class="row">
+        <div class="col-md-6">
+            <br/><br/>
+        
+            <a class="btn btn-primary" href="/cdeep3m_models/edit/<?php echo $model_id; ?>">Next step</a>
+        
+
+        </div><div class="col-md-6"></div>
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -59,7 +67,7 @@ $(function() {
 		filters : {
 			max_file_size : '20000mb',
 			mime_types: [
-				{title : "Image files", extensions : "jpg,gif,png,tif"},
+				//{title : "Image files", extensions : "jpg,gif,png,tif"},
 				{title : "Zip files", extensions : "zip,tar"}
 			]
 		},
