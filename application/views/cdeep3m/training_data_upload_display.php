@@ -14,7 +14,7 @@
     <div class="row">
         <div class="col-md-12">
             <br/>
-            <span class="cil_title2">Step 2: Upload the trainging data (Optional)</span>
+            <span class="cil_title2" style="color:#FFA500">Step 2: Upload the trainging data (Optional)</span>
         </div>
     </div>
     <div class="row">

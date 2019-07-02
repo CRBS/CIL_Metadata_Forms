@@ -153,18 +153,19 @@ class DB_util
         return true;
     }
     
-    public function insertModelFile($model_id=0,$fileName="Unknown",$fileSize=0)
+    public function insertModelFile($model_id=0,$fileName="Unknown",$fileSize=0,$username)
     {
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         
-        $sql = "insert into models(id, file_name,file_size, create_time) values($1, $2, $3, now())";
+        $sql = "insert into models(id, file_name,file_size, username, create_time) values($1, $2, $3, $4, now())";
         $conn = pg_pconnect($db_params);
         
         $input = array();
         array_push($input,$model_id);
         array_push($input,$fileName);
         array_push($input,$fileSize);
+        array_push($input, $username);
         
         $result = pg_query_params($conn,$sql,$input);
         if(!$result) 

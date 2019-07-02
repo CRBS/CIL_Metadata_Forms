@@ -168,7 +168,7 @@ class Cdeep3m_models extends CI_Controller
         }
         else
         {
-            $dbutil->insertModelFile($model_id, $fileName,$fileSize);
+            $dbutil->insertModelFile($model_id, $fileName,$fileSize,$username);
             //echo "Insert path";
         }
         
