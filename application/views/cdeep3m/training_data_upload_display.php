@@ -6,15 +6,15 @@
 
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-12">
+     <div class="row">
+         <div class="col-md-12">
              <?php include_once 'model_breadcrumb.php'; ?>
          </div>
-    </div>
+     </div>
     <div class="row">
         <div class="col-md-12">
             <br/>
-            <span class="cil_title2">Step 1: Upload the model file</span>
+            <span class="cil_title2">Step 2: Upload the trainging data</span>
         </div>
     </div>
     <div class="row">
@@ -25,19 +25,6 @@
             
         </div>
         
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <br/>
-        <?php
-        if(isset($model_info_json) && isset($model_info_json->file_name))
-        {
-          echo "<b>Current model file:</b> ".$model_info_json->file_name." (".$model_info_json->file_size.")";
-
-        }
-        ?>
-
-        </div>
     </div>
     
 </div>

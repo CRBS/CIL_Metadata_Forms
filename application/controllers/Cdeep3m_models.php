@@ -123,7 +123,8 @@ class Cdeep3m_models extends CI_Controller
             //echo "Insert path";
         }
         
-        redirect($base_url."/cdeep3m_models/edit/".$model_id);
+        //redirect($base_url."/cdeep3m_models/edit/".$model_id);
+        redirect($base_url."/cdeep3m_models/upload_training_data/".$model_id);
          
     }
     
@@ -447,6 +448,7 @@ class Cdeep3m_models extends CI_Controller
         $data['title'] = 'CDeep3M Metadata Edit';
         $data['base_url'] = $this->config->item('base_url');
         $data['model_id'] = intval($model_id);
+        $data['step'] = 3;
         
         $hasImage = false;
         if(!is_null($sjson) && isset($sjson->Size) && $sjson->Size > 0)
@@ -491,6 +493,17 @@ class Cdeep3m_models extends CI_Controller
             redirect ($base_url."/login/auth_image/".$image_id);
             return;
         }
+        
+        $miJson = $dbutil->getModelInfo($model_id);
+        if(!is_null($miJson) && isset($miJson->file_name))
+        {
+            $data['model_info_json'] = $miJson;
+            
+            if(isset($miJson->file_size) && $miJson->file_size > 0)
+               $miJson->file_size= $this->formatBytes($miJson->file_size);
+        }
+        
+        $data['step'] = 1;
         $data['user_role'] = $dbutil->getUserRole($data['username']);
         
         $data['base_url'] = $this->config->item('base_url');
@@ -501,6 +514,32 @@ class Cdeep3m_models extends CI_Controller
         $this->load->view('cdeep3m/model_upload_display', $data);
         $this->load->view('templates/footer', $data);
     }
+    
+    
+    public function upload_training_data($model_id=0)
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        $data['user_role'] = $dbutil->getUserRole($data['username']);
+        
+        $data['step'] = 2;
+        
+        $data['base_url'] = $this->config->item('base_url');
+        $data['model_id'] = intval($model_id);
+        
+        $data['title'] = 'CDeep3M Upload';
+        $this->load->view('templates/header', $data);
+        $this->load->view('cdeep3m/training_data_upload_display', $data);
+        $this->load->view('templates/footer', $data);
+    }
+    
     
     
     /*
