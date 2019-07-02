@@ -83,6 +83,7 @@ $(function() {
                     {
                         console.log("Uploaded:"+file.name);
                         var addUrl = "<?php echo $base_url."/cdeep3m_models/add/".$model_id ?>";
+                        
                         addUrl = addUrl+"/"+file.name;
                         window.location.href = addUrl;
                         
@@ -90,8 +91,7 @@ $(function() {
                     }
                 }
 
-		// Resize images on clientside if we can
-		//resize : {width : 320, height : 240, quality : 90}
+		
 	});
 
 

@@ -109,6 +109,28 @@ class DB_util
         return true;
     }
     
+    public function updateTrainingFile($model_id,$fileName,$fileSize)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "update models set training_data_filename = $1, training_data_filesize = $2 where id = $3";
+        $conn = pg_pconnect($db_params);
+        
+        $input = array();
+        array_push($input,$fileName);
+        array_push($input,$fileSize);
+        array_push($input,$model_id);
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        pg_close($conn);
+        return true;
+    }
+    
     public function updateModelFile($model_id=0,$fileName="Unknown", $fileSize=0)
     {
         $CI = CI_Controller::get_instance();
@@ -567,6 +589,43 @@ class DB_util
         
         pg_close($conn);
         return $id_array;
+    }
+    
+    
+    public function getTrainingInfo($model_id)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+            return NULL;
+        $sql = "select training_data_filename, training_data_filesize from models where id = $1 and training_data_filename is not NULL ".
+               " and training_data_filesize is not NULL";
+        $input = array();
+        array_push($input, $model_id);
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+            return NULL;
+        
+        $array = array();
+        $hasResult = false;
+        if($row = pg_fetch_row($result))
+        {
+            if(!is_null($row[0]) && !is_null($row[1]) && is_numeric($row[1]))
+            {
+                $hasResult = true;
+                $array['file_name'] = $row[0];
+                $array['file_size'] = intval($row[1]);
+            }
+        }
+        
+        pg_close($conn);
+        if(!$hasResult)
+            return NULL;
+       
+        $json_str = json_encode($array, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        $json = json_decode($json_str);
+        return $json;
     }
     
     public function getModelInfo($model_id)

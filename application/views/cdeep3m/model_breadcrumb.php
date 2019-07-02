@@ -24,7 +24,7 @@
     if(!$step_1)
     {
 ?>
-    <li class="breadcrumb-item <?php if($step ==1) echo "active"; ?>" ><a href="/cdeep3m_models/upload/<?php echo $model_id; ?>" target="_self">Step 1. Upload model</a></li>
+    <li class="breadcrumb-item <?php if($step ==1) echo "active"; ?>" ><a style="color:#4287f5" href="/cdeep3m_models/upload/<?php echo $model_id; ?>" target="_self">Step 1. Upload model</a></li>
     
 <?php
     }
@@ -39,7 +39,7 @@
     if(($step_1 && $date_exist) || $step_3)
     {
 ?>
-    <li class="breadcrumb-item <?php if($step ==2) echo "active"; ?>"><a href="/cdeep3m_models/upload_training_data/<?php echo $model_id; ?>" target="_self">Step 2. Upload trainging data</a></li>
+    <li class="breadcrumb-item <?php if($step ==2) echo "active"; ?>"><a style="color:#4287f5" href="/cdeep3m_models/upload_training_data/<?php echo $model_id; ?>" target="_self">Step 2. Upload trainging data</a></li>
    
 <?php
     }
@@ -55,7 +55,7 @@
     if(($step_1 && $date_exist) || $step_2)
     {
 ?>
-     <li class="breadcrumb-item <?php if($step ==3) echo "active"; ?>"><a href="/cdeep3m_models/edit/<?php echo $model_id; ?>" target="_self">Step 3. Edit metadata</a></li>
+     <li class="breadcrumb-item <?php if($step ==3) echo "active"; ?>"><a style="color:#4287f5" href="/cdeep3m_models/edit/<?php echo $model_id; ?>" target="_self">Step 3. Edit metadata</a></li>
 <?php
     }
     else

@@ -26,6 +26,19 @@
         </div>
         
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <br/>
+        <?php
+        if(isset($training_data_json) && isset($training_data_json->file_name))
+        {
+          echo "<b>Current model file:</b> ".$training_data_json->file_name." (".$training_data_json->file_size.")";
+
+        }
+        ?>
+
+        </div>
+    </div>
     
 </div>
 
@@ -69,7 +82,7 @@ $(function() {
                     FileUploaded: function(up, file, info) 
                     {
                         console.log("Uploaded:"+file.name);
-                        var addUrl = "<?php echo $base_url."/cdeep3m_models/add/".$model_id ?>";
+                        var addUrl = "<?php echo $base_url."/cdeep3m_models/add_training/".$model_id ?>";
                         addUrl = addUrl+"/"+file.name;
                         window.location.href = addUrl;
                         

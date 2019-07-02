@@ -75,6 +75,55 @@ class Cdeep3m_models extends CI_Controller
         redirect($base_url."/cdeep3m_models/edit/".$model_id);
     }
     
+    
+    public function add_training($model_id=0, $fileName="Unknown")
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        $cutil = new Curl_util();
+        $ezutil = new EZIDUtil();
+        if(strcmp($model_id, "0") == 0 || strcmp($fileName, "Unknown") ==0)
+        {
+            show_404();
+            return;
+        }
+        
+        $base_url = $this->config->item('base_url');
+        $data['debug'] = $this->input->get('debug', TRUE);
+        $login_hash = $this->session->userdata('login_hash');
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        $username = $this->session->userdata('username');
+        $data['username'] = $username;
+        $data['user_role'] = $dbutil->getUserRole($username);
+        
+        $db_params = $this->config->item('db_params');
+        //echo $db_params;
+        
+        $upload_location = $this->config->item('model_upload_location');
+        $upload_location = $upload_location."/".$model_id;
+        $fileSize = 0;
+        if(file_exists($upload_location."/".$fileName))
+           $fileSize=filesize($upload_location."/".$fileName);
+        
+        
+        
+        $model_id = intval($model_id);
+        if($dbutil->modelExists($model_id))
+        {
+            $dbutil->updateTrainingFile($model_id, $fileName,$fileSize);
+
+        }
+
+        
+        redirect($base_url."/cdeep3m_models/edit/".$model_id);
+   
+    }
+    
     public function add($model_id=0, $fileName="Unknown")
     {
         $this->load->helper('url');
@@ -535,6 +584,15 @@ class Cdeep3m_models extends CI_Controller
         $data['model_id'] = intval($model_id);
         
         $data['title'] = 'CDeep3M Upload';
+        $trainingInfoJson = $dbutil->getTrainingInfo($model_id);
+        if(!is_null($trainingInfoJson) && isset($trainingInfoJson->file_name))
+        {
+            if(isset($trainingInfoJson->file_size) && $trainingInfoJson->file_size > 0)
+                $trainingInfoJson->file_size = $this->formatBytes ($trainingInfoJson->file_size);
+            $data['training_data_json'] = $trainingInfoJson;
+            
+        }
+        
         $this->load->view('templates/header', $data);
         $this->load->view('cdeep3m/training_data_upload_display', $data);
         $this->load->view('templates/footer', $data);
