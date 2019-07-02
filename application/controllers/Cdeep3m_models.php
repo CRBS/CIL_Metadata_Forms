@@ -440,7 +440,7 @@ class Cdeep3m_models extends CI_Controller
         $data['username'] = $this->session->userdata('username');
         if(is_null($login_hash))
         {
-            redirect ($base_url."/login/auth_image/".$image_id);
+            redirect ($base_url."/home");
             return;
         }
         $data['user_role'] = $dbutil->getUserRole($data['username']);
