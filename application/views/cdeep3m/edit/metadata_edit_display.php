@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col-md-12">
              <br/>
-            <span class="cil_title2">Step 2: Enter metadata</span>
+            <span class="cil_title2">Step 3: Enter metadata</span>
            
         </div>
     </div>

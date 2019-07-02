@@ -295,7 +295,7 @@
         <div class="col-md-12"> <br/></div>
         <div class="col-md-3">
            
-           <input type="submit" name="submit" class="btn btn-primary" value="Submit">
+           <input type="submit" name="submit" class="btn btn-primary" value="Update">
         </div>
         <div class="col-md-6"></div>
         <div class="col-md-3">
