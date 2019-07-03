@@ -10,8 +10,12 @@
 ?>
 
     <div class="row">
+        
         <div class="col-md-12">
             <span class="cil_title2">Trained model metadata</span>
+        </div>
+        <div class="col-md-12">
+            <input type="submit" name="submit" class="btn btn-primary float-right" value="Update">
         </div>
     </div>
     <div class="row">
@@ -201,28 +205,92 @@
        </div><div class="col-md-6"></div>
     </div>
 
-    <div class="row">
+    <!------ Old Voxel size --->
+    <!-- <div class="row">
        <div class="col-md-6">
             <div class="form-group">
-            <label class="col-form-label" for="inputDefault">*Voxelsize</label>
-            <input id="voxelsize" name="voxelsize" style="width: 100%" value="<?php if(isset($mjson->Cdeepdm_model->Voxelsize) && isset($mjson->Cdeepdm_model->Voxelsize->Value)) echo $mjson->Cdeepdm_model->Voxelsize->Value; ?>" class="form-control cil_san_regular_font"  type="text"> 
+            <label class="col-form-label" for="inputDefault">*Voxel size</label>
+            <input id="voxelsize" name="voxelsize" style="width: 100%" value="<?php //if(isset($mjson->Cdeepdm_model->Voxelsize) && isset($mjson->Cdeepdm_model->Voxelsize->Value)) echo $mjson->Cdeepdm_model->Voxelsize->Value; ?>" class="form-control cil_san_regular_font"  type="text"> 
             </div>
        </div><div class="col-md-2">
                 <div class="form-group">
                     <label class="col-form-label" for="voxelsize_unit">&nbsp;</label>
                        <select class="form-control cil_san_regular_font" id="voxelsize_unit" name="voxelsize_unit">
-                       <option value="µm" <?php if(isset($mjson->Cdeepdm_model->Voxelsize) && isset($mjson->Cdeepdm_model->Voxelsize->Unit) && strcmp($mjson->Cdeepdm_model->Voxelsize->Unit, "µm")==0) echo "selected"; ?>>µm</option>
-                       <option value="nm" <?php if(isset($mjson->Cdeepdm_model->Voxelsize) && isset($mjson->Cdeepdm_model->Voxelsize->Unit) && strcmp($mjson->Cdeepdm_model->Voxelsize->Unit, "nm")==0) echo "selected"; ?>>nm</option>
+                       <option value="µm" <?php //if(isset($mjson->Cdeepdm_model->Voxelsize) && isset($mjson->Cdeepdm_model->Voxelsize->Unit) && strcmp($mjson->Cdeepdm_model->Voxelsize->Unit, "µm")==0) echo "selected"; ?>>µm</option>
+                       <option value="nm" <?php //if(isset($mjson->Cdeepdm_model->Voxelsize) && isset($mjson->Cdeepdm_model->Voxelsize->Unit) && strcmp($mjson->Cdeepdm_model->Voxelsize->Unit, "nm")==0) echo "selected"; ?>>nm</option>
+                     </select>
+                </div>
+       </div><div class="col-md-4">
+       </div>
+    </div> -->
+    <!------End Old Voxel size --->
+
+    
+    <!-----X voxel size --->
+    <div class="row">
+       <div class="col-md-6">
+            <div class="form-group">
+            <label class="col-form-label" for="inputDefault">*X Voxel size</label>
+            <input id="x_voxelsize" name="x_voxelsize" style="width: 100%" value="<?php if(isset($mjson->Cdeepdm_model->X_voxelsize) && isset($mjson->Cdeepdm_model->X_voxelsize->Value)) echo $mjson->Cdeepdm_model->X_voxelsize->Value; ?>" class="form-control cil_san_regular_font"  type="text"> 
+            </div>
+       </div><div class="col-md-2">
+                <div class="form-group">
+                    <label class="col-form-label" for="x_voxelsize_unit">&nbsp;</label>
+                       <select class="form-control cil_san_regular_font" id="x_voxelsize_unit" name="x_voxelsize_unit">
+                       <option value="µm" <?php if(isset($mjson->Cdeepdm_model->X_voxelsize) && isset($mjson->Cdeepdm_model->X_voxelsize->Unit) && strcmp($mjson->Cdeepdm_model->X_voxelsize->Unit, "µm")==0) echo "selected"; ?>>µm</option>
+                       <option value="nm" <?php if(isset($mjson->Cdeepdm_model->X_voxelsize) && isset($mjson->Cdeepdm_model->X_voxelsize->Unit) && strcmp($mjson->Cdeepdm_model->X_voxelsize->Unit, "nm")==0) echo "selected"; ?>>nm</option>
                      </select>
                 </div>
        </div><div class="col-md-4">
        </div>
     </div>
-
+    <!-----End X voxel size --->
+    
+    <!-----Y voxel size --->
+    <div class="row">
+       <div class="col-md-6">
+            <div class="form-group">
+            <label class="col-form-label" for="inputDefault">*Y Voxel size</label>
+            <input id="y_voxelsize" name="y_voxelsize" style="width: 100%" value="<?php if(isset($mjson->Cdeepdm_model->Y_voxelsize) && isset($mjson->Cdeepdm_model->Y_voxelsize->Value)) echo $mjson->Cdeepdm_model->Y_voxelsize->Value; ?>" class="form-control cil_san_regular_font"  type="text"> 
+            </div>
+       </div><div class="col-md-2">
+                <div class="form-group">
+                    <label class="col-form-label" for="y_voxelsize_unit">&nbsp;</label>
+                       <select class="form-control cil_san_regular_font" id="y_voxelsize_unit" name="y_voxelsize_unit">
+                       <option value="µm" <?php if(isset($mjson->Cdeepdm_model->Y_voxelsize) && isset($mjson->Cdeepdm_model->Y_voxelsize->Unit) && strcmp($mjson->Cdeepdm_model->Y_voxelsize->Unit, "µm")==0) echo "selected"; ?>>µm</option>
+                       <option value="nm" <?php if(isset($mjson->Cdeepdm_model->Y_voxelsize) && isset($mjson->Cdeepdm_model->Y_voxelsize->Unit) && strcmp($mjson->Cdeepdm_model->Y_voxelsize->Unit, "nm")==0) echo "selected"; ?>>nm</option>
+                     </select>
+                </div>
+       </div><div class="col-md-4">
+       </div>
+    </div>
+    <!-----End Y voxel size --->
+    
+    <!-----Z voxel size --->
+    <div class="row">
+       <div class="col-md-6">
+            <div class="form-group">
+            <label class="col-form-label" for="inputDefault">Z Voxel size</label>
+            <input id="z_voxelsize" name="z_voxelsize" style="width: 100%" value="<?php if(isset($mjson->Cdeepdm_model->Z_voxelsize) && isset($mjson->Cdeepdm_model->Z_voxelsize->Value)) echo $mjson->Cdeepdm_model->Z_voxelsize->Value; ?>" class="form-control cil_san_regular_font"  type="text"> 
+            </div>
+       </div><div class="col-md-2">
+                <div class="form-group">
+                    <label class="col-form-label" for="z_voxelsize_unit">&nbsp;</label>
+                       <select class="form-control cil_san_regular_font" id="z_voxelsize_unit" name="z_voxelsize_unit">
+                       <option value="µm" <?php if(isset($mjson->Cdeepdm_model->Z_voxelsize) && isset($mjson->Cdeepdm_model->Z_voxelsize->Unit) && strcmp($mjson->Cdeepdm_model->Z_voxelsize->Unit, "µm")==0) echo "selected"; ?>>µm</option>
+                       <option value="nm" <?php if(isset($mjson->Cdeepdm_model->Z_voxelsize) && isset($mjson->Cdeepdm_model->Z_voxelsize->Unit) && strcmp($mjson->Cdeepdm_model->Z_voxelsize->Unit, "nm")==0) echo "selected"; ?>>nm</option>
+                     </select>
+                </div>
+       </div><div class="col-md-4">
+       </div>
+    </div>
+    <!-----End Z voxel size --->
+    
+    
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-            <label class="col-form-label" for="inputDefault">Authors</label>
+            <label class="col-form-label" for="inputDefault">Contributor</label>
             <?php
                 if(isset($mjson->Cdeepdm_model->Contributors) && count($mjson->Cdeepdm_model->Contributors)>0)
                 {

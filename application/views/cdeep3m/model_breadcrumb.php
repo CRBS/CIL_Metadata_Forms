@@ -39,14 +39,14 @@
     if(($step_1 && $date_exist) || $step_3)
     {
 ?>
-    <li class="breadcrumb-item <?php if($step ==2) echo "active"; ?>"><a style="color:#4287f5" href="/cdeep3m_models/upload_training_data/<?php echo $model_id; ?>" target="_self">Step 2. Upload trainging data</a></li>
+    <li class="breadcrumb-item <?php if($step ==2) echo "active"; ?>"><a style="color:#4287f5" href="/cdeep3m_models/upload_training_data/<?php echo $model_id; ?>" target="_self">Step 2. Upload trainging data (Optional)</a></li>
    
 <?php
     }
     else
     {
 ?>
-     <li class="breadcrumb-item <?php if($step ==2) echo "active"; ?>">Step 2. Upload trainging data</li>
+     <li class="breadcrumb-item <?php if($step ==2) echo "active"; ?>">Step 2. Upload trainging data (Optional)</li>
 <?php
     }
 ?>

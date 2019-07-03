@@ -109,12 +109,69 @@ function check_model_form()
         return false;
     }*/
     
+    /*
     var voxelsize = document.getElementById('voxelsize').value;
     if(!voxelsize || voxelsize.length === 0)
     {
         alert('Voxel size is required!');
         return false;
+    } 
+    */
+   
+    var x_voxelsize = document.getElementById('x_voxelsize').value;
+    if(!x_voxelsize || x_voxelsize.length === 0)
+    {
+        alert('X voxel size is required!');
+        return false;
+    } 
+    else
+    {
+        if(isNaN(x_voxelsize))
+        {
+            alert('X voxel size is Not a number!');
+            return false;
+        }
     }
+    
+    var y_voxelsize = document.getElementById('y_voxelsize').value;
+    if(!y_voxelsize || y_voxelsize.length === 0)
+    {
+        alert('Y voxel size is required!');
+        return false;
+    }
+    else
+    {
+        if(isNaN(y_voxelsize))
+        {
+            alert('Y voxel size is Not a number!');
+            return false;
+        }
+    }
+    
+    
+    if(!z_voxelsize || z_voxelsize.length === 0)
+    {
+        //Do nothing
+        alert('Do nothing');
+    }
+    else
+    {
+        if(z_voxelsize.length > 0 && isNaN(z_voxelsize))
+        {
+            alert('Z voxel size is Not a number!');
+            return false;
+        }
+    }
+        
+    
+    var description = document.getElementById('description').value;
+    if(!description || description.length === 0)
+    {
+        alert('Description is required!');
+        return false;
+    }
+    
+    
     
     return true;
     

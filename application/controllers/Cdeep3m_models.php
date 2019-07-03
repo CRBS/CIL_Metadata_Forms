@@ -237,10 +237,22 @@ class Cdeep3m_models extends CI_Controller
         $cell_component = $this->input->post('image_search_parms[cellular_component]', TRUE);
         $image_type = $this->input->post('image_search_parms[item_type_bim]', TRUE);
         $magnification = $this->input->post('magnification', TRUE);
-        $voxelsize = $this->input->post('voxelsize', TRUE);
-        $voxelsize_unit = $this->input->post('voxelsize_unit', TRUE);
         $contributor = $this->input->post('contributor', TRUE);
         $desc = $this->input->post('description', TRUE);
+        
+        //$voxelsize = $this->input->post('voxelsize', TRUE);
+        //$voxelsize_unit = $this->input->post('voxelsize_unit', TRUE);
+        
+        /********Voxel sizes******************/
+        $x_voxelsize = $this->input->post('x_voxelsize', TRUE);
+        $x_voxelsize_unit = $this->input->post('x_voxelsize_unit', TRUE);
+        
+        $y_voxelsize = $this->input->post('y_voxelsize', TRUE);
+        $y_voxelsize_unit = $this->input->post('y_voxelsize_unit', TRUE);
+        
+        $z_voxelsize = $this->input->post('z_voxelsize', TRUE);
+        $z_voxelsize_unit = $this->input->post('z_voxelsize_unit', TRUE);
+        /********End voxel sizes**************/
         
         echo "<br/>trained_model_name:".$trained_model_name;
         if(!is_null($trained_model_name))
@@ -254,9 +266,12 @@ class Cdeep3m_models extends CI_Controller
         echo "<br/>cell_component:".$cell_component;
         echo "<br/>image_type:".$image_type;
         echo "<br/>magnification:".$magnification;
-        echo "<br/>voxelsize:".$voxelsize;
-        echo "<br/>voxelsize_unit:".$voxelsize_unit;
-        
+        echo "<br/>x_voxelsize:".$x_voxelsize;
+        echo "<br/>x_voxelsize_unit:".$x_voxelsize_unit;
+        echo "<br/>y_voxelsize:".$y_voxelsize;
+        echo "<br/>y_voxelsize_unit:".$y_voxelsize_unit;
+        echo "<br/>z_voxelsize:".$z_voxelsize;
+        echo "<br/>z_voxelsize_unit:".$z_voxelsize_unit;
         $targetDir = $this->config->item('model_upload_location');
         if(!file_exists($targetDir))
            mkdir($targetDir);
@@ -326,7 +341,7 @@ class Cdeep3m_models extends CI_Controller
         }
         
         
-                
+        /*        
         if(!is_null($voxelsize) && strlen(trim($voxelsize)) > 0)
         { 
             $varray = array();
@@ -336,6 +351,42 @@ class Cdeep3m_models extends CI_Controller
             $vjson = json_decode($vjson_str);
             $mjson->Cdeepdm_model->Voxelsize = $vjson;
         }
+        */
+        if(!is_null($x_voxelsize) && strlen(trim($x_voxelsize)) > 0 && is_numeric($x_voxelsize))
+        { 
+            $varray = array();
+            $varray['Value'] = doubleval($x_voxelsize);
+            $varray['Unit'] = $x_voxelsize_unit;
+            $vjson_str = json_encode($varray);
+            $vjson = json_decode($vjson_str);
+            $mjson->Cdeepdm_model->X_voxelsize = $vjson;
+        }
+        if(!is_null($y_voxelsize) && strlen(trim($y_voxelsize)) > 0 && is_numeric($y_voxelsize))
+        { 
+            $varray = array();
+            $varray['Value'] = doubleval($y_voxelsize);
+            $varray['Unit'] = $y_voxelsize_unit;
+            $vjson_str = json_encode($varray);
+            $vjson = json_decode($vjson_str);
+            $mjson->Cdeepdm_model->Y_voxelsize = $vjson;
+        }
+        if(!is_null($z_voxelsize) && strlen(trim($z_voxelsize)) > 0 && is_numeric($z_voxelsize))
+        { 
+            $varray = array();
+            $varray['Value'] = doubleval($z_voxelsize);
+            $varray['Unit'] = $z_voxelsize_unit;
+            $vjson_str = json_encode($varray);
+            $vjson = json_decode($vjson_str);
+            $mjson->Cdeepdm_model->Z_voxelsize = $vjson;
+        }
+        else
+        {
+            
+            if(isset($mjson->Cdeepdm_model->Z_voxelsize))
+                //unset($mjson['Cdeepdm_model']['Z_voxelsize']);
+                unset($mjson->Cdeepdm_model->Z_voxelsize);
+        }
+
         
         if(!is_null($contributor)&& strlen(trim($contributor)) > 0)
         {
