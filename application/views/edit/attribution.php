@@ -1,6 +1,10 @@
 <br/>
 <span class="cil_title2">Attribution</span>
 <div class="row">
+    
+    
+    
+    <!---------------- Name------------------------------------->
     <div class="col-md-6">
         <div class="form-group">
             <label class="col-form-label" for="inputDefault">Name</label>
@@ -28,6 +32,42 @@
     <div class="col-md-6">
         
     </div>
+    <!---------------End Name------------------------------>
+    
+    
+    
+     <!---------------- OTHER ------------------------------------->
+    <div class="col-md-12">
+        <div class="form-group">
+            <label class="col-form-label" for="inputDefault">Other</label>
+            <?php
+            
+                if(isset($json->CIL_CCDB->CIL->CORE->ATTRIBUTION->OTHER) && 
+                        is_array($json->CIL_CCDB->CIL->CORE->ATTRIBUTION->OTHER) &&
+                        count($json->CIL_CCDB->CIL->CORE->ATTRIBUTION->OTHER) > 0)
+                {
+                    $contributors = $json->CIL_CCDB->CIL->CORE->ATTRIBUTION->OTHER;
+                    
+                    
+                    echo "<ul>";
+                    foreach($contributors as $contributor)
+                    {
+                        $cname = str_replace(" ", "%20", $contributor);
+                        
+                        echo "<li>".$contributor."<a  href=\"/image_metadata/delete_attribution/".$image_id."/OTHER/".$cname."\" target=\"_self\"> &#x2716;</a></li>";
+                    }
+                    echo "</ul>";
+
+                }
+            
+            ?>
+            <input id="attribution_other" name="attribution_other" style="width: 100%" type="text" value="" class="form-control cil_san_regular_font" >
+        </div>
+    </div>
+
+    <!---------------End OTHER------------------------------>
+    
+    
     
     <div class="col-md-12">
         <div class="form-group">

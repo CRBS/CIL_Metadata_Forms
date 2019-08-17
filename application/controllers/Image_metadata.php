@@ -99,6 +99,17 @@ class Image_metadata extends CI_Controller
         $dbutil = new DB_util();
         $test_output_folder = $this->config->item('test_output_folder');
         $mjson = $dbutil->getMetadata($image_id);
+        
+        
+        error_log($mjson_str, 3, $test_output_folder."/metadata.json");
+        
+        
+        /*$tempArray=array();
+        $tempArray['input']=$input;
+        $tempJsonStr = json_encode($tempArray, JSON_UNESCAPED_SLASHES);
+        $tempJson = json_decode($tempJsonStr);
+        $input = $tempJson->input;*/
+        
         if(!$mjson->success)
         {
             show_404();
@@ -113,6 +124,13 @@ class Image_metadata extends CI_Controller
                 )
         {
             $json = json_decode($mjson->metadata);
+            
+            $json_str = json_encode($json,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            if(file_exists($test_output_folder."/metadata.json"))
+                unlink($test_output_folder."/metadata.json");
+            error_log($json_str, 3, $test_output_folder."/metadata.json");
+            
+            
             $coreJson= $json->CIL_CCDB->CIL->CORE;
             
             if(strcmp($field, "Contributors") == 0)
@@ -137,6 +155,42 @@ class Image_metadata extends CI_Controller
                     {
                         unset($contributors[$removeIndex]);
                         $coreJson->ATTRIBUTION->Contributors=array_values($contributors);
+                    }
+                }
+            }
+            else if(strcmp($field, "OTHER") == 0)
+            {
+                if(file_exists($test_output_folder."/delete.json"))
+                    unlink ($test_output_folder."/delete.json");
+                error_log("OTHER\n", 3, $test_output_folder."/delete.json");
+                    
+                    
+                if(isset($coreJson->ATTRIBUTION->OTHER))
+                {
+                    error_log("OTHER2\n", 3, $test_output_folder."/delete.json");
+                    $others = $coreJson->ATTRIBUTION->OTHER;
+                    $removeIndex = null;
+                    $i = 0;
+                    foreach($others as $other)
+                    {
+                        
+                        
+                        error_log("OTHER:".$other."\n", 3, $test_output_folder."/delete.json");
+                        error_log("Input:".$input."\n", 3, $test_output_folder."/delete.json");
+                        //if(strcmp($other, $input) == 0)
+                        if(true)
+                        {
+                            $removeIndex = $i;
+                            
+                        }
+                        
+                        $i++;
+                    }
+                    
+                    if(!is_null($removeIndex))
+                    {
+                        unset($others[$removeIndex]);
+                        $coreJson->ATTRIBUTION->OTHER=array_values($others);
                     }
                 }
             }
@@ -332,6 +386,11 @@ class Image_metadata extends CI_Controller
         $attribution_name = $this->input->post('attribution_name', TRUE);
         $attribution_url_label = $this->input->post('attribution_url_label', TRUE);
         $attribution_url = $this->input->post('attribution_url', TRUE);
+        $attribution_other = $this->input->post('attribution_other', TRUE);
+        //$attribution_other=str_replace("'", "&#8217;", $attribution_other);
+        
+        //echo "Other:".$attribution_other;
+        //return;
         /*************End Attribution**************************************/
         
         //Dimensions
@@ -739,7 +798,7 @@ class Image_metadata extends CI_Controller
         /***********End Parameter Imaged *******************/
         
         
-        /***********Attribution***************************/
+        /***********Attribution name***************************/
         if(!is_null($attribution_name) && strlen(trim($attribution_name))>0)
         {
             //echo "<br/>Attribution:".$attribution_name;
@@ -752,7 +811,23 @@ class Image_metadata extends CI_Controller
             $json->CIL_CCDB->CIL->CORE->ATTRIBUTION->Contributors = $name_array;
             
         }
-        /***********End Attribution**********************/
+        /***********End Attribution name**********************/
+        
+        
+        /***********Attribution other***************************/
+        if(!is_null($attribution_other) && strlen(trim($attribution_other))>0)
+        {
+            
+            $other_array = array();
+            if(isset($json->CIL_CCDB->CIL->CORE->ATTRIBUTION->OTHER))
+            {
+                $other_array = $json->CIL_CCDB->CIL->CORE->ATTRIBUTION->OTHER;      
+            }
+            array_push($other_array, $attribution_other);
+            $json->CIL_CCDB->CIL->CORE->ATTRIBUTION->OTHER = $other_array;
+            
+        }
+        /***********End Attribution name**********************/
         
         
         /**********Data type*********************************/
@@ -909,7 +984,7 @@ class Image_metadata extends CI_Controller
         $json = $dim_util->handle_pixel("Z", $json, $z_pixel_size, $z_pixel_unit);
         /*********End X size****************************/
         
-        $json_str = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        $json_str = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES  );
         //file_put_contents($test_output_folder."/".$image_id.".json", $json_str);
         
         
@@ -1375,15 +1450,15 @@ class Image_metadata extends CI_Controller
             $ezMessage = $ezutil->getDoiInfo($targetDoi);
             
             
-            $filePath = "C:/Users/wawong/Desktop/doi_exists.txt";
-             error_log("\n".$ezMessage, 3,$filePath);
+            //$filePath = "C:/Users/wawong/Desktop/doi_exists.txt";
+             //error_log("\n".$ezMessage, 3,$filePath);
             
             if(!$gutil->startsWith($ezMessage,"error:"))
             {
                 $data['doi_exists'] = true;
                 
                
-                error_log( "\n".$image_id.":doi_exists", 3,$filePath);
+                //error_log( "\n".$image_id.":doi_exists", 3,$filePath);
                 //if(!isset($mjson->CIL_CCDB->Citation))
                 if(true)
                 {
@@ -1405,7 +1480,7 @@ class Image_metadata extends CI_Controller
             }
             else 
             {
-                error_log( "\n".$image_id.":NOT doi_exists", 3,$filePath);
+                //error_log( "\n".$image_id.":NOT doi_exists", 3,$filePath);
             }
             /****************End Saving the DOI Info*************************************/
             
