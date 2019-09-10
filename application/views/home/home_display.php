@@ -50,7 +50,14 @@
             
         </div>
         <div class="col-md-4">
-            
+            <div class="row">
+                <div class="col-md-12">
+                   <span class="cil_title2">User</span>
+                </div>
+                <div class="col-md-12">
+                    <a href="/user/change_password" class="btn btn-primary">Change password</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
