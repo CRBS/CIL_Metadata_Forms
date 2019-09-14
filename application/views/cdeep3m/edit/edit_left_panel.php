@@ -29,6 +29,10 @@
         
     </div>
     <div class="col-md-12">
+        <br/>
+        <a href="/cdeep3m_models/create_doi/<?php echo $model_id; ?>" target="_self" class="btn btn-primary">Publish</a>
+    </div>
+    <div class="col-md-12">
         <br/><br/>
         <a href="/cdeep3m_models/list_models" target="_self" class="btn btn-primary"> Close </a>
     </div>

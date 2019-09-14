@@ -659,15 +659,78 @@ class Cdeep3m_models extends CI_Controller
     
     
     
-    /*
-    public function process_model_upload()
+    public function create_doi($model_id="0")
     {
+        $this->load->helper('url');
         
-        for($i=0;$i<10;$i++)
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        $cutil = new Curl_util();
+        $ezutil = new EZIDUtil();
+        if(strcmp($model_id, "0") == 0)
         {
-            
-            sleep(1);
+            show_404();
+            return;
         }
+        
+        $base_url = $this->config->item('base_url');
+        
+        $data['debug'] = $this->input->get('debug', TRUE);
+        
+        $login_hash = $this->session->userdata('login_hash');
+        $username = $this->session->userdata('username');
+        $data['username'] = $username;
+        $data['user_role'] = $dbutil->getUserRole($username);
+        if(is_null($login_hash))
+        {
+            redirect ($base_url);
+            return;
+        }
+        
+        $json = $dbutil->getModelJson($model_id);
+        $json_str = json_encode($json, JSON_PRETTY_PRINT  |JSON_UNESCAPED_SLASHES);
+        
+        
+        $doiPostfixId = str_replace("_", "", $model_id);
+        $filePath = "C:/Users/wawong/Desktop/Test/".$doiPostfixId."_log.txt";
+        if(file_exists($filePath))
+            unlink ($filePath);
+        //error_log($json_str,3,$filePath);
+        
+        /****************Saving the DOI Info*************************************/
+        
+   
+        $cilUtil = new CILContentUtil();
+        $ezid_production_shoulder = $this->config->item('ezid_production_shoulder');
+        $ezid_production_ark_shoulder = $this->config->item('ezid_production_ark_shoulder');
+        $ezid_auth = $this->config->item('ezid_auth');
+        $targetDoi = $ezid_production_shoulder."CDEEP3M".$model_id;
+        
+        
+        $ezMessage = $ezutil->getDoiInfo($targetDoi);
+
+        
+        $modelInfoJson = $dbutil->getModelInfo($model_id);
+        if($gutil->startsWith($ezMessage,"error:"))
+        {   
+           error_log("\n\n".$targetDoi,3,$filePath);
+            $ezMetadata =  $cilUtil->getEzIdMetadataForTrainedModel($json,$model_id,$modelInfoJson->file_name);
+            
+            error_log("\n\n".$ezMetadata,3,$filePath);
+            /*$ezutil->createDOI($ezMetadata, $ezid_production_shoulder, $doiPostfixId, $ezid_auth);
+            $array = array();
+            $array['DOI'] = $targetDoi;
+            $array['ARK'] = $ezid_production_ark_shoulder."cdeep3m".$model_id;
+            $array['Title'] = $citation;
+            $citation_json_str = json_encode($array);
+            $citation_json = json_decode($citation_json_str);
+            $mjson->CIL_CCDB->Citation = $citation_json;
+            $mjson_str = json_encode($mjson, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);*/
+                
+            
+         }
+         /****************End Saving the DOI Info*************************************/
+         
+         redirect($base_url."/cdeep3m_models/edit/".$model_id);
     }
-    */
 }

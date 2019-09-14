@@ -1,6 +1,31 @@
 <?php
 class CILContentUtil
 {
+    
+    public function getEzIdMetadataForTrainedModel($json, $id,$filename)
+    {
+        $creators = $this->getModelCreators($json);
+        
+        $year = date("Y");
+        
+        $title = "";
+        if(isset($json->Cdeepdm_model->Name))
+            $title = $json->Cdeepdm_model->Name;
+        $this->getTitle($id, $json);
+        $metadata = "\ndatacite.publisher: CIL".
+         "\n_profile: datacite".
+         "\n_export: yes".
+         "\ndatacite.creator: ".$creators.
+         "\ndatacite.publicationyear: ".$year.
+         "\ndatacite.resourcetype: Model".
+         "\n_target: https://cildata.crbs.ucsd.edu/media/cdeep3m/".$filename.
+         "\ndatacite.title: ".$title;
+         "\n_owner: ucsd_crbs".
+         "\n_status: public";
+         
+         return $metadata;
+    }
+    
 
     public function getEzIdMetadata($json, $id, $year)
     {
@@ -144,6 +169,30 @@ class CILContentUtil
         $json = json_decode($content);
         return $json;
     }
+    
+    private function getModelCreators($json)
+    {
+        $creators = "";
+        if(isset($json->Cdeepdm_model->Contributors))
+        {
+            $contributors = $json->Cdeepdm_model->Contributors;
+            $count = count($contributors);
+            $index = 0;
+            foreach($contributors as $contributor)
+            {
+                $creators = $creators.$contributor;
+                if($index+1<$count)
+                    $creators = $creators.", ";
+                $index++;
+            }
+        }
+        if(strlen($creators)>0)
+            return $creators;
+        else
+            return "CIL";
+    }
+    
+    
     
     private function getCreators($json)
     {
