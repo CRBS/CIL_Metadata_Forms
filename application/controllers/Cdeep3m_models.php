@@ -713,12 +713,14 @@ class Cdeep3m_models extends CI_Controller
         $modelInfoJson = $dbutil->getModelInfo($model_id);
         if($gutil->startsWith($ezMessage,"error:"))
         {   
-           error_log("\n\n".$targetDoi,3,$filePath);
+           //error_log("\n\n".$targetDoi,3,$filePath);
             $ezMetadata =  $cilUtil->getEzIdMetadataForTrainedModel($json,$model_id,$modelInfoJson->file_name);
             
-            error_log("\n\n".$ezMetadata,3,$filePath);
-            /*$ezutil->createDOI($ezMetadata, $ezid_production_shoulder, $doiPostfixId, $ezid_auth);
-            $array = array();
+            //error_log("\n\n".$ezMetadata,3,$filePath);
+            $doiPostfixId = "CDEEP3M".$model_id;
+            $ezutil->createDOI($ezMetadata, $ezid_production_shoulder, $doiPostfixId, $ezid_auth);
+            $dbutil->updateModelPublishDate($model_id);
+            /*$array = array();
             $array['DOI'] = $targetDoi;
             $array['ARK'] = $ezid_production_ark_shoulder."cdeep3m".$model_id;
             $array['Title'] = $citation;
