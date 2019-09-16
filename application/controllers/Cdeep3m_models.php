@@ -551,6 +551,9 @@ class Cdeep3m_models extends CI_Controller
                 $model_info->file_size = $this->formatBytes ($model_info->file_size);
             $data['model_info'] = $model_info;
             //var_dump($model_info);   
+            
+            if(isset($model_info->publish_date) && !is_null($model_info->publish_date))
+                $data['publish_date']= $model_info->publish_date;
         }
         
         $data['title'] = 'CDeep3M Metadata Edit';

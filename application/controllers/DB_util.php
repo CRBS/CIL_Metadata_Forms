@@ -662,7 +662,7 @@ class DB_util
         if (!$conn) 
             return NULL;
         
-        $sql = "select file_name, file_size from models where id = $1";
+        $sql = "select file_name, file_size, publish_date from models where id = $1";
         $input = array();
         array_push($input, $model_id);
         $result = pg_query_params($conn,$sql,$input);
@@ -678,6 +678,7 @@ class DB_util
                 $hasResult = true;
                 $array['file_name'] = $row[0];
                 $array['file_size'] = intval($row[1]);
+                $array['publish_date'] = $row[2];
             }
         }
         
