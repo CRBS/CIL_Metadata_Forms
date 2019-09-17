@@ -543,6 +543,7 @@ $config['auth_key'] = $json->cil_auth;
 
 $config['db_params']= $json->cil_pgsql_db;
 
+$config['image_viewer_db_params'] = $json->cil_annotation_pgsql_db;
 
 if(!$is_prod)
     $config['test_output_folder'] = "C:/Test";

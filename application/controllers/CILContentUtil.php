@@ -7,7 +7,7 @@ class CILContentUtil
         $creators = $this->getModelCreators($json);
         
         $year = date("Y");
-        
+        //https://cildata.crbs.ucsd.edu/media/model_display/50683/Tomography_Membranes.zip
         $title = "";
         if(isset($json->Cdeepdm_model->Name))
             $title = $json->Cdeepdm_model->Name;
@@ -18,7 +18,7 @@ class CILContentUtil
          "\ndatacite.creator: ".$creators.
          "\ndatacite.publicationyear: ".$year.
          "\ndatacite.resourcetype: Model".
-         "\n_target: https://cildata.crbs.ucsd.edu/media/cdeep3m/".$filename.
+         "\n_target: https://cildata.crbs.ucsd.edu/media/model_display/".$id."/".$filename.
          "\ndatacite.title: ".$title;
          "\n_owner: ucsd_crbs".
          "\n_status: public";

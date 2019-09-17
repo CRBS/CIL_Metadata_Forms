@@ -6,6 +6,9 @@ include_once 'Ontology_util.php';
 include_once 'Dimension_util.php';
 include_once 'EZIDUtil.php';
 include_once 'CILContentUtil.php';
+include_once 'Image_dbutil.php';
+
+
 class Cdeep3m_models extends CI_Controller
 {
     
@@ -723,6 +726,14 @@ class Cdeep3m_models extends CI_Controller
             $doiPostfixId = "CDEEP3M".$model_id;
             $ezutil->createDOI($ezMetadata, $ezid_production_shoulder, $doiPostfixId, $ezid_auth);
             $dbutil->updateModelPublishDate($model_id);
+            
+            $idbutil = new Image_dbutil();
+            
+            if(isset($json->Cdeepdm_model->Name))
+            {
+                $doi = "https://doi.org/10.7295/W9CDEEP3M".$model_id;
+                $idbutil->insertTrainedModel($json->Cdeepdm_model->Name, $doi);
+            }
             /*$array = array();
             $array['DOI'] = $targetDoi;
             $array['ARK'] = $ezid_production_ark_shoulder."cdeep3m".$model_id;
