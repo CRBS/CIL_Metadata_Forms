@@ -42,6 +42,23 @@ class Home extends CI_Controller
         $this->load->view('templates/footer', $data);
     }
     
+    public function retract_image()
+    {
+        $image_id = $this->input->post('image_id', TRUE);
+        if(is_null($image_id) || !is_numeric($image_id))
+        {
+            $data['title'] = "Retract image";
+            $this->load->view('templates/header', $data);
+            $this->load->view('home/restract_image_display', $data);
+            $this->load->view('templates/footer', $data);
+        }
+        else
+        {
+            echo "Do something else";
+        }
+    }
+    
+    
     public function login()
     {
         $this->load->helper('url');
