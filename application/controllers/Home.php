@@ -44,17 +44,41 @@ class Home extends CI_Controller
     
     public function retract_image()
     {
+        $this->load->helper('url');
+        $base_url = $this->config->item('base_url');
+        $cutil = new Curl_util();
+        
+        $elasticsearch_host_prod = $this->config->item('elasticsearch_host_prod');
         $image_id = $this->input->post('image_id', TRUE);
+        $data['title'] = "Retract image";
         if(is_null($image_id) || !is_numeric($image_id))
         {
-            $data['title'] = "Retract image";
+            
             $this->load->view('templates/header', $data);
             $this->load->view('home/restract_image_display', $data);
             $this->load->view('templates/footer', $data);
         }
         else
         {
-            echo "Do something else";
+            $response = $cutil->curl_get($elasticsearch_host_prod."/ccdbv8/data/CIL_".$image_id);
+            //echo $response;
+            if(is_null($response))
+            {
+                $this->load->view('templates/header', $data);
+                $this->load->view('home/restract_image_display', $data);
+                $this->load->view('templates/footer', $data);
+                return;
+            }
+            
+            $json = json_decode($response);
+            if(is_null($json) || !isset($json->found) || !$json->found)
+            {
+                $this->load->view('templates/header', $data);
+                $this->load->view('home/restract_image_display', $data);
+                $this->load->view('templates/footer', $data);
+                return;
+            }
+            
         }
     }
     

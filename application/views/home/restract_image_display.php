@@ -1,4 +1,4 @@
-<form action="/home/retract_image" method="post">
+<form action="/home/retract_image" method="post" onsubmit="return check_retract_image_format()">
     <div class="container">
         <br/><br/>
         <div class="row">
@@ -20,3 +20,20 @@
         </div>
     </div>
 </form>
+
+<script>
+    function check_retract_image_format()
+    {
+        var image_id = document.getElementById('image_id').value;
+        if(!isNaN(image_id))
+        {
+            return true;
+        }
+        else
+        {
+            alert ('The image ID is not a number');
+            return false;
+        }
+    }
+    
+</script>
