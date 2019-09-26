@@ -137,6 +137,8 @@ class DB_util
         $db_params = $CI->config->item('db_params');
         $sql = "update models set file_name = $1, file_size =$2 where id = $3";
         $conn = pg_pconnect($db_params);
+        if(!$conn)
+            return false;
         
         $input = array();
         array_push($input,$fileName);
@@ -152,6 +154,28 @@ class DB_util
         pg_close($conn);
         return true;
     }
+    
+    public function updateUserPassword($username,$pass_hash)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "update cil_users set pass_hash  = $1 where username = $2";
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+            return false;
+        $input = array();
+        array_push($input, $pass_hash);
+        array_push($input, $username);
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        pg_close($conn);
+        return true;        
+    }
+    
     
     public function insertModelFile($model_id=0,$fileName="Unknown",$fileSize=0,$username)
     {

@@ -2,6 +2,17 @@
 <div class="container">
     <br/><br/>
     <div class="row">
+        
+        <?php
+            if(isset($update_sucess))
+            {
+        ?>
+        <div class="alert alert-dismissible alert-success">
+            <strong>Success!</strong> Your password has been updated.
+        </div>
+        <?php
+            }
+        ?>
         <div class="col-md-12">
             <span class="cil_title2">Change password</span>
         </div>

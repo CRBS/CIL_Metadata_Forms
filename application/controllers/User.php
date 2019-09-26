@@ -1,9 +1,10 @@
 <?php
 include_once 'General_util.php';
 include_once 'DB_util.php';
+include_once 'PasswordHash.php';
 class User extends CI_Controller
 {
-    public function change_password()
+    public function change_password($success = "0")
     {
         $this->load->helper('url');
         $dbutil = new DB_util();
@@ -19,6 +20,13 @@ class User extends CI_Controller
             return;
         }
         
+        
+        if(strcmp($success, "success")==0)
+           $data['update_sucess'] = true;
+        
+        if(strcmp($success, "fail")==0)
+           $data['update_sucess'] = false;
+        
        $data['host'] = $base_url;
        $data['title'] = "Change password";
        $this->load->view('templates/header', $data);
@@ -28,7 +36,19 @@ class User extends CI_Controller
     
     public function update_password()
     {
-        
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $username = $this->session->userdata('username');
+        $password = $this->input->post('new_password', TRUE);
+        $hasher = new PasswordHash(8, TRUE);
+        $pass_hash = $hasher->HashPassword($password);
+        //echo "----".$password."-----<br/>";
+        //echo $pass_hash;
+        $success = $dbutil->updateUserPassword($username, $pass_hash);
+        if($success)
+            redirect($base_url."/user/change_password/success");
+        else
+            redirect($base_url."/user/change_password/fail");
     }
     
     
