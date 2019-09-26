@@ -1,7 +1,10 @@
-<form action="/user/update_password" method="post" onsubmit="check_password()">
+<form action="/user/update_password" method="post" onsubmit="return check_password()">
 <div class="container">
     <br/><br/>
     <div class="row">
+        <div class="col-md-12">
+            <span class="cil_title2">Change password</span>
+        </div>
         <div class="col-md-2">New password</div>
         <div class="col-md-4">
             <input type="password" id="new_password" name="new_password" class="form-control">
@@ -33,7 +36,7 @@
         var confirm_password = document.getElementById('confirm_password').value;
         if(new_password != confirm_password)
         {
-            alert("Both passwords are different.")
+            alert("The confirmed password is different.")
             return false;
         }
         
