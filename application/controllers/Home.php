@@ -42,6 +42,27 @@ class Home extends CI_Controller
         $this->load->view('templates/footer', $data);
     }
     
+    public function add_tag()
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        
+        
+        $data['title'] = "Add a new tag";
+        $this->load->view('templates/header', $data);
+        $this->load->view('home/add_tag_display', $data);
+        $this->load->view('templates/footer', $data);
+        
+    }
+    
+    
     public function retract_image()
     {
         $this->load->helper('url');

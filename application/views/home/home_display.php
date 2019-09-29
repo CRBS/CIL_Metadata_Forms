@@ -41,7 +41,11 @@
                 <div class="col-md-12">
                    <span class="cil_title2">Manage</span>
                 </div>
-                
+                <div class="col-md-12">
+                    <a href="/home/add_tag" class="btn btn-primary">Add Tag</a>
+                </div>
+                <div class="col-md-12"><br/></div>
+  
                 <div class="col-md-12">
                     <a href="/upload_images" class="btn btn-primary">Upload images</a>
                 </div>

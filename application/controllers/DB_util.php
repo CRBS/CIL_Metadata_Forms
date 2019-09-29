@@ -474,6 +474,35 @@ class DB_util
         return true;
     }
     
+    public function addTag($tag)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $array = array();
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+        {   
+            return false;
+        }
+        $sql = "insert into cil_tags(tag,order_number) ".
+                    " values($1 , (select max(order_number)+1 from cil_tags))";
+        
+        $input = array();
+        array_push($input, $tag);
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        
+        pg_close($conn);
+        return true;
+        
+    }
+    
+    
     public function unpublish($image_id="0")
     {
         $CI = CI_Controller::get_instance();
