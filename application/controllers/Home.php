@@ -42,7 +42,7 @@ class Home extends CI_Controller
         $this->load->view('templates/footer', $data);
     }
     
-    public function add_tag()
+    public function add_tag($success="0")
     {
         $this->load->helper('url');
         $dbutil = new DB_util();
@@ -54,12 +54,42 @@ class Home extends CI_Controller
             return;
         }
         
+        if(strcmp($success,"fail") == 0)
+           $data['add_tag_success'] = false;
+        
+        if(strcmp($success,"success") == 0)
+           $data['add_tag_success'] = true;
         
         $data['title'] = "Add a new tag";
         $this->load->view('templates/header', $data);
         $this->load->view('home/add_tag_display', $data);
         $this->load->view('templates/footer', $data);
         
+    }
+    
+    public function new_tag()
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        
+        $new_tag_name = $this->input->post('new_tag_name', TRUE);
+        $tagExist = $dbutil->tagExist($new_tag_name);
+        if($tagExist)
+        {
+            redirect ($base_url."/home/add_tag/fail");
+            return;
+        }
+        
+        $dbutil->addTag($new_tag_name);
+        redirect ($base_url."/home/add_tag/success");
+        return;
     }
     
     

@@ -347,6 +347,34 @@ class DB_util
         return $json;
     }
     
+    
+    public function tagExist($tag)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "select tag from cil_tags where tag = $1";
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+            return false;
+        $input = array();
+        array_push($input, $tag);
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+             pg_close($conn);
+             return false;
+        }
+        
+        if($row = pg_fetch_row($result))
+        {
+            pg_close($conn);
+            return true;
+        }
+        
+        pg_close($conn);
+        return false;
+    }
+    
     public function getAllAvailableImages()
     {
         $CI = CI_Controller::get_instance();
