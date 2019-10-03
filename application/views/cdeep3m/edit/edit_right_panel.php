@@ -305,7 +305,7 @@
                         if(!is_null($ncbi))
                         {
                     ?>
-                    <?php echo $ncbi; ?><a href="/cdeep3m_models/delete_field/<?php echo $model_id; ?>/Authors/<?php  echo $ncbi; ?>" target="_self"> ✖</a>
+                    <?php echo $ncbi; ?><a href="/cdeep3m_models/delete_field/<?php echo $model_id; ?>/Contributors/<?php  echo $ncbi; ?>" target="_self"> ✖</a>
                     <?php
                         }
                     ?>

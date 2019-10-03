@@ -12,6 +12,10 @@ include_once 'Image_dbutil.php';
 class Cdeep3m_models extends CI_Controller
 {
     
+    
+    
+    
+    
     public function delete_field($model_id,$field, $input)
     {
         $this->load->helper('url');
@@ -57,6 +61,13 @@ class Cdeep3m_models extends CI_Controller
                                 $removeIndex = $i;
                             }
                         }
+                        else 
+                        {
+                            if(strcmp($input,$item)==0)
+                            {
+                                $removeIndex = $i;
+                            }
+                        }
                             $i++;
                     }
                     
@@ -76,6 +87,7 @@ class Cdeep3m_models extends CI_Controller
         $json_str = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         $dbutil->updateModelJson($model_id, $json_str);
         redirect($base_url."/cdeep3m_models/edit/".$model_id);
+         
     }
     
     
