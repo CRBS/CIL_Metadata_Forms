@@ -54,7 +54,8 @@ class Image_metadata extends CI_Controller
                         $bin = file_get_contents($full_path);
                         $hex = bin2hex($bin);
                         $response = $cutil->auth_curl_post($url, $metadata_auth, $hex);
-                        echo "<br/>".$response;
+                        echo "<br/>2nd upload URL:".$url;
+                        echo "<br/>Response".$response;
                         
                     }
                    
