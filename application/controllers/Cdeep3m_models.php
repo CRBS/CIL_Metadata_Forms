@@ -139,6 +139,27 @@ class Cdeep3m_models extends CI_Controller
    
     }
     
+    
+    public function release_model_to_website($server_type="stage",$model_id="0")
+    {
+        if(strcmp($model_id, "0") == 0)
+        {
+            show_404();
+            return;
+        }
+        
+        $base_url = $this->config->item('base_url');
+        $data['debug'] = $this->input->get('debug', TRUE);
+        $login_hash = $this->session->userdata('login_hash');
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        
+        echo $server_type."----".$model_id;
+    }
+    
     public function add($model_id=0, $fileName="Unknown")
     {
         $this->load->helper('url');
@@ -675,7 +696,64 @@ class Cdeep3m_models extends CI_Controller
         $this->load->view('templates/footer', $data);
     }
     
-    
+    public function manage_trained_models($model_id="0")
+    {
+        $base_url = $this->config->item('base_url');
+        $dbutil = new DB_util();
+        $data['debug'] = $this->input->get('debug', TRUE);
+        
+        $login_hash = $this->session->userdata('login_hash');
+        $username = $this->session->userdata('username');
+        $data['username'] = $username;
+        $data['user_role'] = $dbutil->getUserRole($username);
+        if(is_null($login_hash))
+        {
+            redirect ($base_url);
+            return;
+        }
+        
+        if(strcmp($model_id, "0")==0)
+        {
+            $data['title'] = 'Home > Manage trained models';
+            $mjson = $dbutil->getModelList();
+            $data['mjson'] = $mjson;
+            $this->load->view('templates/header', $data);
+            $this->load->view('cdeep3m/models/manage_model_list_display', $data);
+            $this->load->view('templates/footer', $data);
+        }
+        else if(is_numeric($model_id))
+        {
+            $model_info = $dbutil->getModelInfo($model_id);
+            $modelJson = $dbutil->getModelJson($model_id);
+            if(is_null($model_info) || is_null($modelJson))
+            {
+                //echo $model_id."===getModelInfo is NULL";
+                show_404();
+                return;
+            }
+            
+            
+            
+            //$json_str = json_encode($model_info, JSON_PRETTY_PRINT);
+            //echo $json_str;
+            //echo "<br/><br/>";
+            $data['model_id'] = $model_id;
+            $data['model_info'] = $model_info;
+            $json_str = json_encode($modelJson, JSON_PRETTY_PRINT);
+            $data['model_json'] = $json_str;
+            
+            $data['title'] = 'Home > Manage model '.$model_id;
+            $this->load->view('templates/header', $data);
+            $this->load->view('cdeep3m/models/manage_model_display', $data);
+            $this->load->view('templates/footer', $data);
+        }
+        else 
+        {
+            show_404();
+            return;
+        }
+        
+    }
     
     public function create_doi($model_id="0")
     {

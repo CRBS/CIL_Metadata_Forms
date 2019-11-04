@@ -53,6 +53,11 @@
                 <div class="col-md-12">
                     <a href="/cdeep3m_models/new_model" class="btn btn-primary">Upload CDeep3M Model</a>
                 </div>
+                <div class="col-md-12"><br/></div>
+                <div class="col-md-12">
+                    <a href="/cdeep3m_models/manage_trained_models" class="btn btn-primary">Manage trained models</a>
+                </div>
+                
             </div>
             <!-- <div class="row">
                 <div class="col-md-12">
