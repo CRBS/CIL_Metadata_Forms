@@ -142,6 +142,10 @@ class Cdeep3m_models extends CI_Controller
     
     public function release_model_to_website($server_type="stage",$model_id="0")
     {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        $cutil = new Curl_util();
         if(strcmp($model_id, "0") == 0)
         {
             show_404();
@@ -157,7 +161,41 @@ class Cdeep3m_models extends CI_Controller
             return;
         }
         
-        echo $server_type."----".$model_id;
+        
+        $modelJson = $dbutil->getModelJson($model_id);
+        
+        if(is_null($modelJson))
+        {
+            show_404();
+            return;
+        }
+        $json_str = json_encode($modelJson,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        //echo $server_type."----".$model_id;
+        if(strcmp($server_type, "stage")==0)
+        {
+            $elasticsearch_host_stage = $this->config->item('elasticsearch_host_stage');  
+            $eurl = $elasticsearch_host_stage."/ccdbv8/trained_models/".$model_id;
+            echo $eurl;
+            
+            $response = $cutil->curl_put($eurl, $json_str);
+            echo $response;
+            
+            redirect($base_url."/cdeep3m_models/manage_trained_models/".$model_id);
+        }
+        else if(strcmp($server_type, "prod")==0)
+        {
+            $elasticsearch_host_prod = $this->config->item('elasticsearch_host_prod');
+            $eurl = $elasticsearch_host_prod."/ccdbv8/trained_models/".$model_id;
+            echo $eurl;
+            $response = $cutil->curl_put($eurl, $json_str);
+            echo $response;
+            redirect($base_url."/cdeep3m_models/manage_trained_models/".$model_id);
+        }
+        else
+        {
+            show_404();
+            return;
+        }
     }
     
     public function add($model_id=0, $fileName="Unknown")
