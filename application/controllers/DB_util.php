@@ -11,7 +11,7 @@ class DB_util
     {
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
-        $sql = "select id, file_name, file_size,has_display_image from models where delete_time is NULL order by id desc";
+        $sql = "select id, file_name, file_size,has_display_image,publish_date from models where delete_time is NULL order by id desc";
         $conn = pg_pconnect($db_params);
         $mainArray = array();
         
@@ -41,6 +41,8 @@ class DB_util
             if(!is_null($temp) && strcmp($temp, "t") ==0)
                $has_display_image = true; 
             $array['has_display_image'] = $has_display_image;
+            $array['publish_date'] = $row[4];
+            
             array_push($mainArray, $array);
         }
         pg_close($conn);

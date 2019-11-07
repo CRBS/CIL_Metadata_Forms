@@ -26,6 +26,18 @@ foreach($mjson as $item)
         <div class="col-md-12">
             <?php echo  $item->model_id; ?> - <?php echo $item->file_name; ?>
         </div>
+         <div class="col-md-6">
+            <?php 
+                if(isset($item->publish_date) && !is_null($item->publish_date))
+                {
+                    echo "<div class=\"alert alert-dismissible alert-success\">Published</div>";
+                
+                    //echo "Published";
+                  
+                }
+            ?>
+        </div>
+            <div class="col-md-6"></div>
         <?php
             }
             else
@@ -40,11 +52,27 @@ foreach($mjson as $item)
         <div class="col-md-12">
             <?php echo  $item->model_id; ?> - <?php echo $item->file_name; ?>
         </div>
+        <div class="col-md-6">
+            <?php 
+                if(isset($item->publish_date) && !is_null($item->publish_date))
+                {
+                    echo "<div class=\"alert alert-dismissible alert-success\">Published</div>";
+                
+                    //echo "Published";
+                  
+                }
+            ?>
+        </div>
+            <div class="col-md-6"></div>    
         <?php
         
             }
         ?>
+            <div class="col-md-12">
+                <br/>
+            </div>
         </div>
+        
     </div>
 
 <?php    
