@@ -1525,6 +1525,16 @@ class Image_metadata extends CI_Controller
         }
     }
     
+    
+    public function upload_zipped_image($image_id)
+    {
+        $data['title'] = "CIL | Upload the main image ".$image_id;
+        $this->load->view('templates/header', $data);
+        $this->load->view('edit/upload_main_image_display', $data);
+        $this->load->view('templates/footer', $data);
+    }
+    
+    
     /*
     public function edit($image_id="0")
     {

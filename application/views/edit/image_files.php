@@ -38,6 +38,14 @@ if(isset($image_size_json) && isset($image_size_json->jpeg_size) && isset($image
         ?>
         <!-- <input type="hidden" id="zip_size" name="zip_size" value="<?php //echo $image_size_json->zip_size; ?>"> -->
     </div>
+    <div class="col-md-12">
+        <br/>
+    </div>
+    <div class="col-md-12">
+        <center>
+            <a href="/image_metadata/upload_zipped_image/<?php echo $numeric_id; ?>" class="btn btn-primary">Replace the zipped image</a>
+        </center>
+    </div>
 </div>
 
 
