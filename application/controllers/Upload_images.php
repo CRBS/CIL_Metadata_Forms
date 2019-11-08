@@ -18,7 +18,7 @@ class Upload_images extends CI_Controller
         $data['user_role'] = $dbutil->getUserRole($data['username']);
                 
         $tarray = $dbutil->getStandardTags();
-        $data['title'] = "Upload image";
+        $data['title'] = "Upload Display Image";
         $data['tag_array'] = $tarray;
         $this->load->view('templates/header', $data);
         $this->load->view('upload/upload_main_display', $data);

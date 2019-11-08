@@ -2,7 +2,7 @@
     <br/><br/>
     <div class="row">
         <div class="col-md-12">
-            <span class="cil_title2">Upload image</span>
+            <span class="cil_title2">Upload display image (Jpeg Image ONLY)</span>
         </div>
         <form action="/upload_images/do_upload" enctype="multipart/form-data" method="post" accept-charset="utf-8" onsubmit="return validate_cil_image_upload();">
         <div class="col-md-12">            
