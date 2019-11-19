@@ -36,7 +36,7 @@ if(isset($image_size_json) && isset($image_size_json->jpeg_size) && isset($image
                 echo $image_size_json->zip_size." bytes";
             }
         ?>
-        <!-- <input type="hidden" id="zip_size" name="zip_size" value="<?php //echo $image_size_json->zip_size; ?>"> -->
+         <input type="hidden" id="zip_size" name="zip_size" value="<?php echo $image_size_json->zip_size; ?>"> 
     </div>
     <div class="col-md-12">
         <br/>

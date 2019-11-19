@@ -1380,7 +1380,7 @@ class Image_metadata extends CI_Controller
         }
         
         $base_url = $this->config->item('base_url');
-        
+        $test_output_folder = $this->config->item('test_output_folder');
         $data['debug'] = $this->input->get('debug', TRUE);
         
         $login_hash = $this->session->userdata('login_hash');
@@ -1392,9 +1392,15 @@ class Image_metadata extends CI_Controller
             redirect ($base_url."/login/auth_image/".$image_id);
             return;
         }
-        
+        $log_path = $test_output_folder."/edit_".$image_id.".txt";
+        if(file_exists($log_path))
+            unlink ($log_path);
         $json = $dbutil->getMetadata($image_id);
         $mjson = json_decode($json->metadata);
+        
+        error_log($json->metadata, 3, $log_path);
+        
+        
         $data['image_name'] = $json->image_name;
         $data['json'] = $mjson;
         if(!$json->success)
