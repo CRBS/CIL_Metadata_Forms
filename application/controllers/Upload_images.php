@@ -176,7 +176,7 @@ class Upload_images extends CI_Controller
         echo "<br/>Tag:".$tag;
         $config2 = array(
         'upload_path' => $upload_location,
-        'allowed_types' => "gif|jpg|png|jpeg",
+        'allowed_types' => "gif|jpg|png|jpeg|tiff|tif",
         'overwrite' => TRUE,
         'max_size' => "12048000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
         'max_height' => "4000",
