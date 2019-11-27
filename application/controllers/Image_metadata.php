@@ -312,6 +312,7 @@ class Image_metadata extends CI_Controller
     
     private function updateJpegZipSize($image_id, $json, $jpeg_size, $zip_size)
     {
+        //echo "in updateJpegZipSize";
         $id = str_replace("CIL_", "", $image_id);
         if(is_numeric($id))
             $id = intval($id);
@@ -322,6 +323,7 @@ class Image_metadata extends CI_Controller
         $itemArray['File_path'] = $id.".jpg";
         $itemArray['Size'] = intval($jpeg_size);
         $ijson_str = json_encode($itemArray, JSON_UNESCAPED_SLASHES);
+        //echo "<br/>".$ijson_str;
         $ijson = json_decode($ijson_str);
         array_push($json->CIL_CCDB->CIL->Image_files,$ijson);
         
@@ -334,6 +336,8 @@ class Image_metadata extends CI_Controller
         $ijson_str = json_encode($itemArray, JSON_UNESCAPED_SLASHES);
         $ijson = json_decode($ijson_str);
         array_push($json->CIL_CCDB->CIL->Image_files,$ijson);
+        //echo "<br/>after updateJpegZipSize";
+        //echo json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         
         return $json;
     }
@@ -427,8 +431,9 @@ class Image_metadata extends CI_Controller
         }
         
         $json->CIL_CCDB->CIL->Image_files = array();
-        //if(!is_null($jpeg_size))
         $json = $this->updateJpegZipSize($image_id, $json, $jpeg_size,$zip_size);
+        
+        
         //if(!is_null($zip_size))
           //  $json = $this->updateZipSize($image_id, $json, $zip_size);
         
@@ -891,8 +896,8 @@ class Image_metadata extends CI_Controller
             $json->CIL_CCDB->CIL->Image_files = $i_array;
         }
         
-        
-        
+
+        /*
         if(isset($json->CIL_CCDB->Data_type->Still_image) && $json->CIL_CCDB->Data_type->Still_image)
         {
             $json->CIL_CCDB->CIL->Image_files = array();
@@ -952,9 +957,9 @@ class Image_metadata extends CI_Controller
             
             
             $json->CIL_CCDB->CIL->Image_files = $i_array;
-        }
+        }*/
         /***********End Image files****************************/
-        
+
         
         /***********Licensing*********************************/
         $public_domain = $this->input->post('public_domain', TRUE);
@@ -988,7 +993,8 @@ class Image_metadata extends CI_Controller
         
         $json_str = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES  );
         //file_put_contents($test_output_folder."/".$image_id.".json", $json_str);
-        
+        //echo $json_str;
+        //return;
         
         $dbutil->submitMetadata($image_id, $json_str);
         
@@ -1424,7 +1430,8 @@ class Image_metadata extends CI_Controller
             $metadata_service_prefix = $this->config->item('metadata_service_prefix');
             $metadata_auth = $this->config->item('metadata_auth');
             $size_url = str_replace("metadata_service", "rest/file_size", $metadata_service_prefix);
-            if(!is_null($image_size_json) && isset($image_size_json->jpeg_size))
+            //if(!is_null($image_size_json) && isset($image_size_json->jpeg_size))
+            if(!is_null($image_size_json))
             {
                 $filePath = "/var/www/html/media/images/".$data['numeric_id']."/".$data['numeric_id'].".jpg"; //Remote file path
                 $response = $cutil->auth_curl_get_with_data($metadata_auth, $size_url, $filePath);
@@ -1432,7 +1439,9 @@ class Image_metadata extends CI_Controller
                 $jpeg_size = $sjson->Size;
                 $image_size_json->jpeg_size = $sjson->Size;
             }
-            if(!is_null($image_size_json) && isset($image_size_json->zip_size))
+            
+            //if(!is_null($image_size_json) && isset($image_size_json->zip_size))
+            if(!is_null($image_size_json))
             {
                 $filePath = "/var/www/html/media/images/".$data['numeric_id']."/".$data['numeric_id'].".zip"; //Remote file path
                 $response = $cutil->auth_curl_get_with_data($metadata_auth, $size_url, $filePath);
@@ -1447,6 +1456,9 @@ class Image_metadata extends CI_Controller
                 
             }
             /****************End Updating image size**********************************/
+            
+            
+            /*****************************Updating *******************************************/
             
             
             /****************Saving the DOI Info*************************************/
@@ -1563,6 +1575,27 @@ class Image_metadata extends CI_Controller
         $copy_id = $this->input->post('copy_metadata_from_id', TRUE);
         
         
+        if(!$gutil->startsWith($copy_id, "CIL_"))
+            $copy_id = "CIL_".$copy_id;
+        
+        
+        
+        $result = $dbutil->getMetadata($copy_id);
+        if(is_null($result))
+        {
+            redirect ($base_url."/image_metadata/edit/".$image_id);
+            return;
+        }
+     
+        if(is_null($result->metadata) || strlen($result->metadata) == 0)
+        {
+            redirect ($base_url."/image_metadata/edit/".$image_id);
+            return;
+        }
+        
+        $dbutil->updateMetadata($result->metadata, $image_id);
+        redirect ($base_url."/image_metadata/edit/".$image_id);
+        return;
     }
     
     public function upload_zipped_image($image_id)

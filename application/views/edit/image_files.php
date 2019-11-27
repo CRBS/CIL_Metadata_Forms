@@ -1,7 +1,7 @@
 <?php
 
-if(isset($image_size_json) && isset($image_size_json->jpeg_size) && isset($image_size_json->zip_size)
-        && isset($numeric_id))
+//if(isset($image_size_json) && isset($image_size_json->jpeg_size) && isset($image_size_json->zip_size) && isset($numeric_id))
+if(isset($image_size_json) && isset($numeric_id))
 {
 ?>
 <br/>
