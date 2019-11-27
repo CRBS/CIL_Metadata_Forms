@@ -283,6 +283,7 @@ class Image_metadata extends CI_Controller
                             }
                             $i++;
                         }
+                        //$removeIndex = 0;
                         if(!is_null($removeIndex))
                         {
                             unset($jsonArray[$removeIndex]);
@@ -1531,6 +1532,38 @@ class Image_metadata extends CI_Controller
         }
     }
     
+    
+    public function copy_metadata($image_id="0")
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        $cutil = new Curl_util();
+        $ezutil = new EZIDUtil();
+        if(strcmp($image_id, "0") == 0)
+        {
+            show_404();
+            return;
+        }
+        
+        $base_url = $this->config->item('base_url');
+        $test_output_folder = $this->config->item('test_output_folder');
+        $data['debug'] = $this->input->get('debug', TRUE);
+        
+        $login_hash = $this->session->userdata('login_hash');
+        $username = $this->session->userdata('username');
+        $data['username'] = $username;
+        $data['user_role'] = $dbutil->getUserRole($username);
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        
+        $copy_id = $this->input->post('copy_metadata_from_id', TRUE);
+        
+        
+    }
     
     public function upload_zipped_image($image_id)
     {

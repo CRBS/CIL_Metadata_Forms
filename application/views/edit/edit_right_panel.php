@@ -10,7 +10,13 @@
     include_once 'attribution.php';
     include_once 'image_files.php';
     include_once 'licensing.php';
+    
     include_once 'bottom_panel.php';
     
 ?>
 </form>
+
+<?php
+include_once 'copy_from.php';
+
+?>

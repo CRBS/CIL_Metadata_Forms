@@ -161,6 +161,7 @@
         ?>
     </div>
     
+
     <div class="col-md-12"><br/></div>
     <div class="col-md-12">
         <a href="/image_metadata/delete_db_image/CIL_<?php echo $numeric_id; ?>"  class="btn btn-danger">Delete image</a>
