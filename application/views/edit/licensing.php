@@ -18,7 +18,7 @@
             if(isset($json->CIL_CCDB->CIL->CORE->TERMSANDCONDITIONS->free_text))
             {
                 $term = $json->CIL_CCDB->CIL->CORE->TERMSANDCONDITIONS->free_text;
-                if(strcmp($term, "attribution_cc") == 0)
+                if(strcmp($term, "attribution_cc_by") == 0)
                         echo " checked";
             }
         ?>>
