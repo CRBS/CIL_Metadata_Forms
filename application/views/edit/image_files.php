@@ -41,11 +41,11 @@ if(isset($image_size_json) && isset($numeric_id))
     <div class="col-md-12">
         <br/>
     </div>
-    <div class="col-md-12">
+    <!-- <div class="col-md-12">
         <center>
             <a href="/image_metadata/upload_zipped_image/<?php echo $numeric_id; ?>" class="btn btn-primary">Replace the zipped image</a>
         </center>
-    </div>
+    </div> -->
 </div>
 
 
