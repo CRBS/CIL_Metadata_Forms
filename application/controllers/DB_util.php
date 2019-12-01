@@ -7,6 +7,35 @@ class DB_util
     private $metadata = "metadata";
     private $image_name = "image_name";
     
+    public function getGroupId($image_id)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "select group_id from cil_metadata m, cil_tags t where m.tags = t.tag and image_id = $1";
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return NULL;
+        }
+        $input = array();
+        array_push($input,$image_id);
+        $result = pg_query_params($conn, $sql, $input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return NULL;
+        }
+        $group_id = NULL;
+        if($row = pg_fetch_row($result))
+        {
+            $group_id = $row[0];
+        }
+        
+        pg_close($conn);
+        return $group_id;
+    }
+    
+    
     public function getModelList()
     {
         $CI = CI_Controller::get_instance();

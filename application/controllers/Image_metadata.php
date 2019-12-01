@@ -413,6 +413,8 @@ class Image_metadata extends CI_Controller
         $z_pixel_unit = $this->input->post('z_pixel_unit', TRUE);
         
         
+        $group_check = $this->input->post('group_check', TRUE);
+        
         $json_str = "{\"CIL_CCDB\": {\"Status\": {\"Deleted\": false,\"Is_public\": true },\"CIL\":{\"CORE\":{\"IMAGEDESCRIPTION\":{  }}}}}";
         
         if($mjson->success && isset($mjson->metadata)
@@ -453,6 +455,23 @@ class Image_metadata extends CI_Controller
             $djson = json_decode($djson_str);
             $json->CIL_CCDB->CIL->CORE->TECHNICALDETAILS = $djson;
         }
+        
+        /***************GROUP************/
+        if(!is_null($group_check))
+        {
+            $group_id = $dbutil->getGroupId($image_id);
+            if(!is_null($group_id))
+            {
+                $json->CIL_CCDB->CIL->CORE->GROUP_ID = $group_id;
+            }
+            //echo "GROUP checked";
+        }
+        else
+        {
+            //echo "GROUP not checked";
+        }
+        //return;
+        /***************End group**********/
         
         
         /***********Start NCBI *******************/
