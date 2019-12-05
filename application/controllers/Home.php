@@ -19,6 +19,7 @@ class Home extends CI_Controller
         $login_hash = $this->session->userdata('login_hash');
         
         $data['username'] = $this->session->userdata('username');
+        $username = $data['username'];
         
         $data['google_reCAPTCHA_site_key'] = $this->config->item('google_reCAPTCHA_site_key');
         $data['google_reCAPTCHA_secret_key'] = $this->config->item('google_reCAPTCHA_secret_key');
@@ -33,12 +34,16 @@ class Home extends CI_Controller
             return;
         }
         
+        $isAdmin = $dbutil->isAdmin($username);
         
         $tarray = $dbutil->getStandardTags();
         $data['tag_array'] = $tarray;
         $data['title'] = "Home";
         $this->load->view('templates/header', $data);
-        $this->load->view('home/home_display', $data);
+        if($isAdmin)
+            $this->load->view('home/home_display', $data);
+        else
+            $this->load->view('home/member_home_display', $data);
         $this->load->view('templates/footer', $data);
     }
     

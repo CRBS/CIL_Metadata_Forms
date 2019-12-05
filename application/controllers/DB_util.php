@@ -7,6 +7,37 @@ class DB_util
     private $metadata = "metadata";
     private $image_name = "image_name";
     
+    public function isAdmin($username)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "select role from cil_users u, cil_roles r where u.user_role = r.id and username = $1 and role = 'admin'";
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return false;
+        }
+        
+        $input = array();
+        array_push($input,$username);
+        $result = pg_query_params($conn, $sql, $input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        $isAdmin = false;
+        
+        if($row = pg_fetch_row($result))
+        {
+            $isAdmin = true;
+        }
+        pg_close($conn);
+        return $isAdmin;
+        
+    }
+    
+    
     public function getGroupId($image_id)
     {
         $CI = CI_Controller::get_instance();
