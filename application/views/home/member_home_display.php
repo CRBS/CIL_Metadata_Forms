@@ -15,6 +15,9 @@
             <div class="col-md-12">
                     <a href="/cdeep3m_models/new_model" class="btn btn-primary">Upload CDeep3M Model</a>
             </div>
+            <div class="col-md-12">
+                    <a href="/cdeep3m_models/new_model" class="btn btn-primary">Upload CDeep3M Model</a>
+            </div>
         </div>
         <div class="col-md-4"></div>
     </div>
