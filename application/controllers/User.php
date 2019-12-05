@@ -4,6 +4,16 @@ include_once 'DB_util.php';
 include_once 'PasswordHash.php';
 class User extends CI_Controller
 {
+    
+    public function create_user()
+    {
+       $data['title'] = "Create user";
+       $this->load->view('templates/header', $data);
+       $this->load->view('user/create_user_display', $data);
+       $this->load->view('templates/footer', $data);
+    }
+    
+    
     public function change_password($success = "0")
     {
         $this->load->helper('url');
