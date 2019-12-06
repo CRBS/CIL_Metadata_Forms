@@ -13,6 +13,9 @@
         </div>
         <div class="col-md-4">
             <div class="col-md-12">
+                <img src="https://cildata.crbs.ucsd.edu/media/model_display/50685/50685_thumbnailx512.jpg" />
+            </div>
+            <div class="col-md-12">
                     <a href="/cdeep3m_models/new_model" class="btn btn-primary">Upload CDeep3M Model</a>
             </div>
             <div class="col-md-12">

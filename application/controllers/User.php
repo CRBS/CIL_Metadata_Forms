@@ -4,6 +4,39 @@ include_once 'DB_util.php';
 include_once 'PasswordHash.php';
 class User extends CI_Controller
 {
+    public function do_create_user()
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        
+        $base_url = $this->config->item('base_url');
+        $login_hash = $this->session->userdata('login_hash');
+        
+        $data['username'] = $this->session->userdata('username');
+        if(is_null($login_hash))
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        
+
+        $create_username = $this->input->post('create_username', TRUE);
+        $create_password = $this->input->post('create_password', TRUE);
+        $create_fullname = $this->input->post('create_fullname', TRUE);
+        $create_email = $this->input->post('create_email', TRUE);
+        
+        $userExists = $dbutil->userExists($create_username);
+        
+        echo "<br/>User name:".$create_username;
+        echo "<br/>Password:".$create_password;
+        echo "<br/>Full name:".$create_fullname;
+        echo "<br/>Email:".$create_email;
+        if($userExists)
+            echo "<br/>User exists true";
+        else
+           echo "<br/>User exists false"; 
+    }
     
     public function create_user()
     {

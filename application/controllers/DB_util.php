@@ -7,6 +7,37 @@ class DB_util
     private $metadata = "metadata";
     private $image_name = "image_name";
     
+    
+    public function userExists($username)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "select * from cil_users where username = $1";
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return false;
+        }
+        
+        $input = array();
+        array_push($input,$username);
+        $result = pg_query_params($conn, $sql, $input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        
+        $userExist = false;
+        if($row = pg_fetch_row($result))
+        {
+            $userExist = true;
+        }
+        pg_close($conn);
+        return $userExist;
+    }
+    
+    
     public function isAdmin($username)
     {
         $CI = CI_Controller::get_instance();
