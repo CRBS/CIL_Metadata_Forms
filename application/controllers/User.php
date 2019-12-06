@@ -27,7 +27,16 @@ class User extends CI_Controller
         $create_email = $this->input->post('create_email', TRUE);
         
         $userExists = $dbutil->userExists($create_username);
-        
+        if($userExists)
+        {
+            $this->session->set_userdata('create_user_error', "Please choose a different user name.");
+            $this->session->set_userdata('create_username', $create_username);
+            $this->session->set_userdata('create_password', $create_password);
+            $this->session->set_userdata('create_fullname', $create_fullname);
+            $this->session->set_userdata('create_email', $create_email);
+            redirect($base_url."/user/create_user");
+            return;
+        }
         echo "<br/>User name:".$create_username;
         echo "<br/>Password:".$create_password;
         echo "<br/>Full name:".$create_fullname;
@@ -40,7 +49,25 @@ class User extends CI_Controller
     
     public function create_user()
     {
-       $data['title'] = "Create user";
+       
+        $data['title'] = "Create user";
+       
+        $create_user_error =  $this->session->userdata('create_user_error');
+        if(!is_null($create_user_error))
+        {
+            $data['create_user_error'] = $create_user_error;
+            $this->session->set_userdata('create_user_error', NULL);
+            $data['create_username'] = $this->session->userdata('create_username');
+            $data['create_password'] = $this->session->userdata('create_password');
+            $data['create_fullname'] = $this->session->userdata('create_fullname');
+            $data['create_email'] = $this->session->userdata('create_email');
+            $this->session->set_userdata('create_username', NULL);
+            $this->session->set_userdata('create_password', NULL);
+            $this->session->set_userdata('create_fullname', NULL);
+            $this->session->set_userdata('create_email', NULL);
+ 
+        }
+       
        $this->load->view('templates/header', $data);
        $this->load->view('user/create_user_display', $data);
        $this->load->view('templates/footer', $data);
@@ -62,6 +89,7 @@ class User extends CI_Controller
             redirect($base_url."/home");
             return;
         }
+        
         
         
         if(strcmp($success, "success")==0)

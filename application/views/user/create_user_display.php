@@ -3,26 +3,41 @@
     <br/><br/>
     <div class="row">
         <div class="col-md-12">
+        <?php
+            $error = false;
+            if(isset($create_user_error) && !is_null($create_user_error))
+            {
+                $error = true;
+        ?>
+        <div class="alert alert-dismissible alert-danger">
+            <strong>Error:</strong> <?php echo $create_user_error; ?>
+        </div>
+        <?php
+            }
+        ?>
+        </div>
+        
+        <div class="col-md-12">
             <span class="cil_title2">Create user</span>
         </div>
         
         <div class="col-md-2">User name</div>
         <div class="col-md-4">
-            <input type="text" id="create_username" name="create_username" class="form-control">
+            <input type="text" id="create_username" name="create_username" class="form-control" value="<?php if($error & isset($create_username) && !is_null($create_username)) echo $create_username;   ?>">
         </div>
         <div class="col-md-6">(At least 6 characters)</div>
         <hr style="height:10px; visibility:hidden;" />
         
         <div class="col-md-2">Password</div>
         <div class="col-md-4">
-            <input type="password" id="create_password" name="create_password" class="form-control">
+            <input type="password" id="create_password" name="create_password" class="form-control" value="<?php if($error & isset($create_password) && !is_null($create_password)) echo $create_password;   ?>">
         </div>
         <div class="col-md-6">(At least 6 characters)</div>
         
         <hr style="height:10px; visibility:hidden;" />
         <div class="col-md-2">Full name</div>
         <div class="col-md-4">
-            <input type="text" id="create_fullname" name="create_fullname" class="form-control">
+            <input type="text" id="create_fullname" name="create_fullname" class="form-control" value="<?php if($error & isset($create_fullname) && !is_null($create_fullname)) echo $create_fullname;   ?>">
         </div>
         <div class="col-md-6"></div>
         
@@ -30,7 +45,7 @@
         <hr style="height:10px; visibility:hidden;" />
         <div class="col-md-2">Email</div>
         <div class="col-md-4">
-            <input type="text" id="create_email" name="create_email" class="form-control">
+            <input type="text" id="create_email" name="create_email" class="form-control" value="<?php if($error & isset($create_email) && !is_null($create_email)) echo $create_email;   ?>">
         </div>
         <div class="col-md-6"></div>
         
