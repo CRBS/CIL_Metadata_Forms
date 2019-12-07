@@ -2,6 +2,7 @@
 <div class="container">
     <br/><br/>
     <div class="row">
+        
         <div class="col-md-12">
         <?php
             $error = false;
@@ -11,6 +12,23 @@
         ?>
         <div class="alert alert-dismissible alert-danger">
             <strong>Error:</strong> <?php echo $create_user_error; ?>
+        </div>
+        <?php
+            }
+        ?>
+        </div>
+        
+        
+        
+        <div class="col-md-12">
+        <?php
+            
+            if(!$error && isset($create_user_success) && !is_null($create_user_success))
+            {
+               
+        ?>
+        <div class="alert alert-dismissible alert-success">
+            <strong>Success:</strong> User account has been created successfully.
         </div>
         <?php
             }

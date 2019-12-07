@@ -591,6 +591,35 @@ class DB_util
     }
     
     
+    public function createNewWebUser($username, $pass_hash,$email,$full_name)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $array = array();
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+        {   
+            return false;
+        }
+        $sql = "insert into cil_users(id, username, pass_hash, email, create_time, user_role, full_name) ".
+               " values(nextval('general_seq'), $1,$2,$3,now(),2, $4)";
+        $input = array();
+        array_push($input, $username);
+        array_push($input, $pass_hash);
+        array_push($input, $email);
+        array_push($input, $full_name);
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        
+        pg_close($conn);
+        return true;
+    }
+    
     public function updateImageDeleteTime($image_id="0")
     {
         $CI = CI_Controller::get_instance();

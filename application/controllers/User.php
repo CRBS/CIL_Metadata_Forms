@@ -45,14 +45,48 @@ class User extends CI_Controller
             echo "<br/>User exists true";
         else
            echo "<br/>User exists false"; 
+        $hasher = new PasswordHash(8, TRUE);
+        $pass_hash = $hasher->HashPassword($create_password);
+        $success = $dbutil->createNewWebUser($create_username, $pass_hash, $create_email, $create_fullname);
+        
+        if($success)
+        {
+            $this->session->set_userdata('create_user_success', "Success");
+            redirect($base_url."/user/create_user");
+            return;
+        }
+        else 
+        {
+            $this->session->set_userdata('create_user_error', "Cannot create a record in the database.");
+            $this->session->set_userdata('create_username', $create_username);
+            $this->session->set_userdata('create_password', $create_password);
+            $this->session->set_userdata('create_fullname', $create_fullname);
+            $this->session->set_userdata('create_email', $create_email);
+            redirect($base_url."/user/create_user");
+            return;
+        }
     }
     
     public function create_user()
     {
-       
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        
+        $base_url = $this->config->item('base_url');
+        $login_hash = $this->session->userdata('login_hash');
+        
+        $data['username'] = $this->session->userdata('username');
+        if(is_null($login_hash))
+        {
+            redirect($base_url."/home");
+            return;
+        }
         $data['title'] = "Create user";
        
         $create_user_error =  $this->session->userdata('create_user_error');
+        $create_user_success = $this->session->userdata('create_user_success');
+        
         if(!is_null($create_user_error))
         {
             $data['create_user_error'] = $create_user_error;
@@ -67,6 +101,14 @@ class User extends CI_Controller
             $this->session->set_userdata('create_email', NULL);
  
         }
+        
+        if(!is_null($create_user_success))
+        {
+            $data['create_user_success'] = true;
+            $this->session->set_userdata('create_user_success', NULL);
+        }
+        
+        
        
        $this->load->view('templates/header', $data);
        $this->load->view('user/create_user_display', $data);
