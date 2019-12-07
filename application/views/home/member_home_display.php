@@ -11,7 +11,9 @@
                     <img src="https://cildata.crbs.ucsd.edu/media/model_display/50685/50685_thumbnailx512.jpg" width="100%" />
                 </div>
                  <div class="col-md-12"><hr style="height:1px; visibility:hidden;" /></div>
+                 
                 <div class="col-md-12">
+                   
                     A new trained model is generated based on training images and labels. For 3D segmentation tasks CDeep3M trains three different models seeing one frame (1 fm), seeing three frames (3 fm), and seeing five frames (5 fm) that are applied to image data.
                 </div>
                  <div class="col-md-12"><hr style="height:1px; visibility:hidden;" /></div>
