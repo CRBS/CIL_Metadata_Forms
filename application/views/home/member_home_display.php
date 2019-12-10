@@ -24,13 +24,21 @@
             </div>
         </div>
         <div class="col-md-4">
-            <!--
             <div class="col-md-12">
-                    <a href="/cdeep3m_models/new_model" class="btn btn-primary">Upload CDeep3M Model</a>
+                <span class="cil_title2">Try the CDeep3M Preview function</span>
             </div>
             <div class="col-md-12">
-                    <a href="/cdeep3m_models/new_model" class="btn btn-primary">Upload CDeep3M Model</a>
-            </div> -->
+                <img src="https://iruka.crbs.ucsd.edu/cdeep3m_results/4962/overlay/overlay_002.png" width="100%" />
+            </div>
+            <div class="col-md-12"><hr style="height:1px; visibility:hidden;" /></div>
+            <div class="col-md-12"><hr style="height:1px; visibility:hidden;" /></div>
+            <div class="col-md-12">
+                Upload small images and try the CDeep3M preview function. Select a trained model, augspeed , and frames to run the CDeep3M remotely.
+            </div>
+            <div class="col-md-12"><hr style="height:1px; visibility:hidden;" /></div>
+            <div class="col-md-12"> 
+               <a href="/cdeep3m_preview/upload_images" class="btn btn-primary">Run CDeep3M Preview</a>
+            </div>
         </div>
         <div class="col-md-4"></div>
     </div>

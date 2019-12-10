@@ -596,3 +596,4 @@ $config['google_reCAPTCHA_secret_key'] = $json->google_reCAPTCHA_secret_key;
 $config['google_reCAPTCHA_verify_url'] = 'https://www.google.com/recaptcha/api/siteverify';
 
 $config['google_reCAPTCHA_threshold'] = 0.5;
+
