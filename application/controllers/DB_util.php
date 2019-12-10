@@ -355,6 +355,28 @@ class DB_util
         return $id;
     }
     
+    public function getNextCropID()
+    {
+        $db_params = $CI->config->item('image_viewer_db_params');
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+            return null;
+        $sql = "select nextval('general_sequence')";
+        $result = pg_query($conn,$sql);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return null;
+        }
+        $id = null;
+        if($row = pg_fetch_row($result))
+        {
+            $id = $row[0];
+        }
+        pg_close($conn);
+        return $id;
+    }
+    
     public function getTags()
     {
         $CI = CI_Controller::get_instance();

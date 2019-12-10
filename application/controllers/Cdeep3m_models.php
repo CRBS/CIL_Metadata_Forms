@@ -560,6 +560,7 @@ class Cdeep3m_models extends CI_Controller
     public function new_model()
     {
         $this->load->helper('url');
+        
         $dbutil = new DB_util();
         $login_hash = $this->session->userdata('login_hash');
         $data['username'] = $this->session->userdata('username');

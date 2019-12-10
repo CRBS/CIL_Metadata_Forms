@@ -37,7 +37,7 @@
             </div>
             <div class="col-md-12"><hr style="height:1px; visibility:hidden;" /></div>
             <div class="col-md-12"> 
-               <a href="/cdeep3m_preview/upload_images" class="btn btn-primary">Run CDeep3M Preview</a>
+               <a href="/cdeep3m_preview/new_images" class="btn btn-primary">Run CDeep3M Preview</a>
             </div>
         </div>
         <div class="col-md-4"></div>
