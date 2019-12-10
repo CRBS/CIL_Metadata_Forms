@@ -30,6 +30,11 @@ class Cdeep3m_preview extends CI_Controller
         
     }
     
+    public function select_parameters($crop_id)
+    {
+        echo "select_parameters";
+    }
+    
     public function upload_images($crop_id)
     {
         $this->load->helper('url');

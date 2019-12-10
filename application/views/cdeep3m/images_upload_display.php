@@ -65,7 +65,7 @@ $(function() {
 	$("#html5_uploader").pluploadQueue({
 		// General settings
 		runtimes : 'html5',
-		url : "/upload_images/process_upload/<?php echo $crop_id; ?>",
+		url : "/upload_images/process_images_upload/<?php echo $crop_id; ?>",
                 //url:"https://iruka.crbs.ucsd.edu/CIL-Storage-RS/index.php/image_upload_service/upload_cdeep3m_model/<?php //echo $model_id; ?>",
 		chunk_size : '1mb',
                 multipart : true,
@@ -100,8 +100,12 @@ $(function() {
                         var addUrl = "<?php echo $base_url."/cdeep3m_preview/select_parameters/".$crop_id ?>";
                         
                         addUrl = addUrl+"/"+file.name;
-                        window.location.href = addUrl;
-                        
+                        //window.location.href = addUrl;
+                         if( (up.total.uploaded) == up.files.length)
+                         {
+                            //alert("DONE");
+                            window.location.href = addUrl;
+                         }
                         
                     }
                 }
