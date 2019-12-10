@@ -6,6 +6,7 @@
 
 
 <div class="container">
+
     <div class="row">
         <div class="col-md-12">
              <?php include_once 'images_breadcrumb.php'; ?>
@@ -14,7 +15,7 @@
     <div class="row">
         <div class="col-md-12">
             <br/>
-            <span class="cil_title2">Step 1: Upload the model file</span>
+            <span class="cil_title2">Run CDeep3M Preview Step 1: Upload the model file</span>
         </div>
     </div>
     <div class="row">

@@ -8,6 +8,89 @@ class DB_util
     private $image_name = "image_name";
     
     
+    public function getUserInfo($username)
+    {
+        $sql = "select email, user_role, full_name from cil_users where username = $1";
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return NULL;
+        }
+        
+        $input = array();
+        array_push($input,$username);
+        $result = pg_query_params($conn, $sql, $input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return NULL;
+        }
+        
+        $userInfo = NULL;
+        if($row = pg_fetch_row($result))
+        {
+            $userInfo = array();
+            $userInfo['email'] = $row[0];
+            $userInfo['user_role'] = intval($row[1]);
+            $userInfo['full_name'] = $row[2];
+        }
+        
+        pg_close($conn);
+        return $userInfo;
+    }
+    
+    public function insertCroppingInfoWithTraining($contact_email, $training_model_url, $augspeed, $frame)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('image_viewer_db_params');
+        
+        $id = $this->getNextId($db_params);
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+            return false;
+
+        $contrast_enhancement = 'true';
+        $is_cdeep3m_preview = 'true';
+        $is_cdeep3m_run = 'false';
+        
+        $sql = "insert into cropping_processes(id,image_id,upper_left_x, upper_left_y,width,height, ".
+               "\n contact_email,original_file_location,submit_time,starting_z,ending_z,contrast_enhancement, ".
+               "\n is_cdeep3m_preview,is_cdeep3m_run,training_model_url,augspeed,frame,use_prp) ".
+               "\n values(".$id.",$1,$2,$3,$4,$5, ".
+               "\n $6, $7, now(), $8, $9, ".$contrast_enhancement.", ".
+               "\n ".$is_cdeep3m_preview.", ".$is_cdeep3m_run.", $10,$11, $12, $13)";
+        
+        $input = array();
+        array_push($input,"CIL_0");  //1
+        array_push($input,0); //2
+        array_push($input,0); //3
+        array_push($input,1000); //4
+        array_push($input,1000); //5
+        array_push($input,$contact_email); //6
+        array_push($input,"NA"); //7
+        array_push($input,intval(0)); //8
+        array_push($input,intval(10)); //9
+        array_push($input,$training_model_url); //10
+        array_push($input,$augspeed); //11
+        array_push($input,$frame); //12
+        array_push($input,"true"); //13
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        
+        pg_close($conn);
+        return $id;
+    }
+    
+    
+    
     public function userExists($username)
     {
         $CI = CI_Controller::get_instance();
