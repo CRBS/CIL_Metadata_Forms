@@ -26,6 +26,7 @@ class Cdeep3m_preview extends CI_Controller
         
         $crop_id = $dbutil->getNextCropID();
         redirect ($base_url."/cdeep3m_preview/upload_images/".$crop_id);
+        //echo $crop_id;
         
     }
     
@@ -44,8 +45,8 @@ class Cdeep3m_preview extends CI_Controller
         
         $data['base_url'] = $this->config->item('base_url');
         $data['crop_id'] = intval($crop_id);
-        
-        $data['title'] = 'Upload images';
+        $data['step'] = 1;
+        $data['title'] = 'Home > Upload images';
         $this->load->view('templates/header', $data);
         $this->load->view('cdeep3m/images_upload_display', $data);
         $this->load->view('templates/footer', $data);

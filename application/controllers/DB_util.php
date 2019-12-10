@@ -357,6 +357,7 @@ class DB_util
     
     public function getNextCropID()
     {
+        $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('image_viewer_db_params');
         $conn = pg_pconnect($db_params);
         if (!$conn) 
