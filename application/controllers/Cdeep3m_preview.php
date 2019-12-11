@@ -27,10 +27,10 @@ class Cdeep3m_preview extends CI_Controller
         }
         $targetDir = $this->config->item('images_upload_location');
         $imageFolder = $targetDir."/".$crop_id;
-        $zip = new ZipArchive();
-        $zipPath = $imageFolder."/".$crop_id.".zip";
-        $err=$zip->open($zipPath,ZipArchive::CREATE);
-        echo $err;
+        
+        $tarPath = $imageFolder."/".$crop_id.".tar";
+         $tar = new PharData($tarPath);
+
         
             $files = scandir($imageFolder);
             foreach($files as $file)
@@ -40,11 +40,10 @@ class Cdeep3m_preview extends CI_Controller
                 if($gutil->endsWith($file, ".tif") || $gutil->endsWith($file, ".png"))
                 {
                     $filePath = $imageFolder."/".$file;
-                    $zip->addFile($filePath, $file);
+                    $tar->addFile($filePath,$file);
+                    
                 }
             }
-            $zip->close();
-           
        
         
         
