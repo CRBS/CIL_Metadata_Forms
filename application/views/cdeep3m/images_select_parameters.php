@@ -1,5 +1,5 @@
 
-<form action="/cdeep3m_preview/submit_preview" method="POST">
+<form action="/cdeep3m_preview/submit_preview/<?php echo $crop_id; ?>" method="POST">
 <div class="container">
     
     <div class="row">

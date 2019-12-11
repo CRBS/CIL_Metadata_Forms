@@ -42,12 +42,12 @@ class DB_util
         return $userInfo;
     }
     
-    public function insertCroppingInfoWithTraining($contact_email, $training_model_url, $augspeed, $frame)
+    public function insertCroppingInfoWithTraining($id,$contact_email, $training_model_url, $augspeed, $frame)
     {
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('image_viewer_db_params');
         
-        $id = $this->getNextId($db_params);
+        
         $conn = pg_pconnect($db_params);
         if (!$conn) 
             return false;
@@ -58,10 +58,10 @@ class DB_util
         
         $sql = "insert into cropping_processes(id,image_id,upper_left_x, upper_left_y,width,height, ".
                "\n contact_email,original_file_location,submit_time,starting_z,ending_z,contrast_enhancement, ".
-               "\n is_cdeep3m_preview,is_cdeep3m_run,training_model_url,augspeed,frame,use_prp) ".
+               "\n is_cdeep3m_preview,is_cdeep3m_run,training_model_url,augspeed,frame,use_prp, crop_finish_time) ".
                "\n values(".$id.",$1,$2,$3,$4,$5, ".
                "\n $6, $7, now(), $8, $9, ".$contrast_enhancement.", ".
-               "\n ".$is_cdeep3m_preview.", ".$is_cdeep3m_run.", $10,$11, $12, $13)";
+               "\n ".$is_cdeep3m_preview.", ".$is_cdeep3m_run.", $10,$11, $12, $13, now())";
         
         $input = array();
         array_push($input,"CIL_0");  //1

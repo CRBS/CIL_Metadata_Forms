@@ -100,7 +100,7 @@ $(function() {
                         console.log("Uploaded:"+file.name);
                         var addUrl = "<?php echo $base_url."/cdeep3m_preview/select_parameters/".$crop_id ?>";
                         
-                        addUrl = addUrl+"/"+file.name;
+                        
                         //window.location.href = addUrl;
                          if( (up.total.uploaded) == up.files.length)
                          {

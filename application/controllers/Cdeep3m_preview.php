@@ -11,6 +11,55 @@ include_once 'Image_dbutil.php';
 
 class Cdeep3m_preview extends CI_Controller
 {
+    public function submit_preview($crop_id)
+    {
+        $this->load->helper('url');
+        $base_url = $this->config->item('base_url');
+        $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        
+        
+        $ct_training_models = $this->input->post('ct_training_models', TRUE);
+        $ct_augmentation = $this->input->post('ct_augmentation', TRUE);
+        
+        $frame = "";
+        $fm1 = $this->input->post('fm1',TRUE);
+        $fm3 = $this->input->post('fm3',TRUE);
+        $fm5 = $this->input->post('fm5',TRUE);
+            
+            if(!is_null($fm1))
+                $frame = "1fm";
+            
+            if(!is_null($frame) && !is_null($fm3))
+                $frame = $frame.",3fm";
+            else if(is_null($frame) && !is_null($fm3))
+                $frame = "3fm";
+            
+            if(!is_null($frame) && !is_null($fm5))
+                $frame = $frame.",5fm";
+            else if(is_null($frame) && !is_null($fm5))
+                $frame = "5fm";
+        $email = $this->input->post('email', TRUE);
+        
+        
+        echo "<br/>Model:".$ct_training_models;
+        echo "<br/>augspeed:".$ct_augmentation;
+        echo "<br/>Frames:".$frame;
+        echo "<br/>Email:".$email;
+        
+        $crop_id = intval($crop_id);
+        
+        $dbutil->insertCroppingInfoWithTraining($crop_id, $email, $ct_training_models, $ct_augmentation, $frame);
+        
+    }
+    
+    
     public function new_images()
     {
         $this->load->helper('url');
