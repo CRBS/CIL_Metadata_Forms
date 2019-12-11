@@ -17,7 +17,7 @@ class Upload_images extends CI_Controller
             die($message);
         }
         
-        $targetDir = $this->config->item('model_upload_location');
+        $targetDir = $this->config->item('images_upload_location');
         if(!file_exists($targetDir))
             mkdir($targetDir);
                 

@@ -16,6 +16,8 @@ class Cdeep3m_preview extends CI_Controller
         $this->load->helper('url');
         $base_url = $this->config->item('base_url');
         $dbutil = new DB_util();
+        $cutil = new Curl_util();
+        $gutil = new General_util();
         $login_hash = $this->session->userdata('login_hash');
         $data['username'] = $this->session->userdata('username');
         if(is_null($login_hash))
@@ -23,6 +25,28 @@ class Cdeep3m_preview extends CI_Controller
             redirect ($base_url."/home");
             return;
         }
+        $targetDir = $this->config->item('images_upload_location');
+        $imageFolder = $targetDir."/".$crop_id;
+        $zip = new ZipArchive();
+        $zipPath = $imageFolder."/".$crop_id.".zip";
+        $err=$zip->open($zipPath,ZipArchive::CREATE);
+        echo $err;
+        
+            $files = scandir($imageFolder);
+            foreach($files as $file)
+            {
+                if(strcmp($file, ".")==0 || strcmp($file, "..")==0)
+                    continue;
+                if($gutil->endsWith($file, ".tif") || $gutil->endsWith($file, ".png"))
+                {
+                    $filePath = $imageFolder."/".$file;
+                    $zip->addFile($filePath, $file);
+                }
+            }
+            $zip->close();
+           
+       
+        
         
         
         $ct_training_models = $this->input->post('ct_training_models', TRUE);
@@ -57,6 +81,12 @@ class Cdeep3m_preview extends CI_Controller
         
         $dbutil->insertCroppingInfoWithTraining($crop_id, $email, $ct_training_models, $ct_augmentation, $frame);
         
+        $image_service_auth = $this->config->item('image_service_auth');
+        $image_service_prefix = $this->config->item('image_service_prefix');
+        $image_service_url = $image_service_prefix."/cdeep3m_prp_service/image_preview_step2/stage/".$crop_id;
+        echo "<br/>image_service_url:".$image_service_url;
+        $response = $cutil->auth_curl_post($image_service_url, $image_service_auth,"");
+        echo "<br/>Response:".$response;
     }
     
     

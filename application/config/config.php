@@ -562,7 +562,7 @@ else
 
 
 if(!$is_prod)
-    $config['images_upload_location'] = "C:/Test2";
+    $config['images_upload_location'] = "C:/Test3";
 else
     $config['images_upload_location'] = "/export2/temp/crop"; 
 
@@ -603,3 +603,6 @@ $config['google_reCAPTCHA_verify_url'] = 'https://www.google.com/recaptcha/api/s
 
 $config['google_reCAPTCHA_threshold'] = 0.5;
 
+$config['image_service_auth'] = $json->image_service_auth;
+
+$config['image_service_prefix'] = $json->image_service_prefix;
