@@ -70,12 +70,12 @@ class Cdeep3m_preview extends CI_Controller
                 $frame = "5fm";
         $email = $this->input->post('email', TRUE);
         
-        
+        /*
         echo "<br/>Model:".$ct_training_models;
         echo "<br/>augspeed:".$ct_augmentation;
         echo "<br/>Frames:".$frame;
         echo "<br/>Email:".$email;
-        
+        */
         $crop_id = intval($crop_id);
         
         $dbutil->insertCroppingInfoWithTraining($crop_id, $email, $ct_training_models, $ct_augmentation, $frame);
@@ -83,9 +83,17 @@ class Cdeep3m_preview extends CI_Controller
         $image_service_auth = $this->config->item('image_service_auth');
         $image_service_prefix = $this->config->item('image_service_prefix');
         $image_service_url = $image_service_prefix."/cdeep3m_prp_service/image_preview_step2/stage/".$crop_id;
-        echo "<br/>image_service_url:".$image_service_url;
+        //echo "<br/>image_service_url:".$image_service_url;
         $response = $cutil->auth_curl_post($image_service_url, $image_service_auth,"");
-        echo "<br/>Response:".$response;
+        //echo "<br/>Response:".$response;
+        
+        $data['crop_id'] = intval($crop_id);
+        $data['step'] = 3;
+        $data['title'] = 'Home > Upload images > Select parameters > Submitted';
+        $data['email'] = $email;
+        $this->load->view('templates/header', $data);
+        $this->load->view('cdeep3m/submitted_parameters_display', $data);
+        $this->load->view('templates/footer', $data);
     }
     
     
@@ -105,6 +113,8 @@ class Cdeep3m_preview extends CI_Controller
         $crop_id = $dbutil->getNextCropID();
         redirect ($base_url."/cdeep3m_preview/upload_images/".$crop_id);
         //echo $crop_id;
+        
+        
         
     }
     

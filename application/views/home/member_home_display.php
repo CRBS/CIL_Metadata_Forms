@@ -40,6 +40,22 @@
                <a href="/cdeep3m_preview/new_images" class="btn btn-primary">Run CDeep3M Preview</a>
             </div>
         </div>
-        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="col-md-12">
+                <span class="cil_title2">Run CDeep3M on the high-def image</span>
+            </div>
+            <div class="col-md-12">
+                <img src="/pix/cil_image_viewer.jpg" width="100%" />
+            </div>
+            <div class="col-md-12"><hr style="height:1px; visibility:hidden;" /></div>
+            <div class="col-md-12"><hr style="height:1px; visibility:hidden;" /></div>
+            <div class="col-md-12">
+                The CIL Image Viewer utilizes the Leaflet library and the CodeIgniter PHP library for browsing the high definition images. This image viewer is capable of displaying confocal images, electron tomography z-stack images, and time-series images. This user-interface includes image controls such as zooming, panning, contrast adjustment, brightness adjustment, moving Z-stack location, moving the time location.
+            </div>
+            <div class="col-md-12"><hr style="height:1px; visibility:hidden;" /></div>
+            <div class="col-md-12"> 
+               <a href="http://cellimagelibrary.org/cdeep3m/prp_demo" class="btn btn-primary">Run CDeep3M Preview</a>
+            </div>
+        </div>
     </div>
 </div>
