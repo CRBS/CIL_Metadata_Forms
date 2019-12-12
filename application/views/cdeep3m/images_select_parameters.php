@@ -1,5 +1,5 @@
 
-<form action="/cdeep3m_preview/submit_preview/<?php echo $crop_id; ?>" method="POST">
+<form action="/cdeep3m_preview/submit_preview/<?php echo $crop_id; ?>" method="POST" onsubmit="do_submit_tasks()">
 <div class="container">
     
     <div class="row">
@@ -92,7 +92,8 @@
                                 <center><button id="prp_submit" name="prp_submit" type="submit" class="btn btn-info">Submit</button></center>
                             </div>
                             <div id="after_submit" name="after_submit" class="col-md-12">
-                                
+                                <br/>
+                                <center><span style="color:#00b300">Waiting...</span></center>
                             </div>
                 
                 </div>
@@ -101,3 +102,14 @@
     </div>
 </div>
 </form>
+
+
+<script>
+    document.getElementById('after_submit').style.display = "none";
+   function do_submit_tasks()
+   {
+       document.getElementById('prp_submit').disabled = true;
+       document.getElementById('after_submit').style.display = "block";
+   }
+   
+</script>
