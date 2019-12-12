@@ -606,3 +606,7 @@ $config['google_reCAPTCHA_threshold'] = 0.5;
 $config['image_service_auth'] = $json->image_service_auth;
 
 $config['image_service_prefix'] = $json->image_service_prefix;
+
+$config['sendgrid_api_url'] = $json->sendgrid_api_url;
+
+$config['sendgrid_api_key'] = $json->sendgrid_api_key;
