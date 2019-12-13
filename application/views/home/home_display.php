@@ -11,19 +11,23 @@
                 </div>
                 <div class="col-md-12"><br/><?php //var_dump($tag_array); ?></div>
                 <?php
-                    foreach($tag_array as $tag)
+                /*    foreach($tag_array as $tag)
                     {
                         if(strcmp($tag,"none") !=0)
-                        {
+                        { */
+                ?>
+                <!-- <div class="col-md-12">
+                <a href="/tagged/images/<?php //echo $tag; ?>" class="btn btn-info"><?php //echo $tag; ?> datasets</a>
+                </div>
+                <div class="col-md-12"><br/></div> -->
+                <?php
+                    /*    }
+                    } */
                 ?>
                 <div class="col-md-12">
-                <a href="/tagged/images/<?php echo $tag; ?>" class="btn btn-info"><?php echo $tag; ?> datasets</a>
+                <a href="/tagged_images" class="btn btn-info">Tagged images</a>
                 </div>
                 <div class="col-md-12"><br/></div>
-                <?php
-                        }
-                    }
-                ?>
             </div>
             
             <div class="row">
