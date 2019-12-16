@@ -457,6 +457,7 @@ class Image_metadata extends CI_Controller
         }
         
         /***************GROUP************/
+     
         if(!is_null($group_check))
         {
             $group_id = $dbutil->getGroupId($image_id);
@@ -468,7 +469,10 @@ class Image_metadata extends CI_Controller
         }
         else
         {
+            unset($json->CIL_CCDB->CIL->CORE->GROUP_ID);
             //echo "GROUP not checked";
+            //return;
+            
         }
         //return;
         /***************End group**********/
