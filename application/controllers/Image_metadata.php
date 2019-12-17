@@ -15,11 +15,26 @@ class Image_metadata extends CI_Controller
         $dbutil = new DB_util();
         $login_hash = $this->session->userdata('login_hash');
         $data['username'] = $this->session->userdata('username');
+        $base_url = $this->config->item('base_url');
+        /***********Checking login****************/
         if(is_null($login_hash))
         {
             redirect ($base_url."/login/auth_image/".$image_id);
             return;
         }
+        /***********End Checking login****************/
+        
+        /***********Checking Permission************/
+        $username = $data['username'];
+        if(!$dbutil->isAdmin($username))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        /***********End Checking Permission************/
+ 
+        
+        
         $data['user_role'] = $dbutil->getUserRole($data['username']);
         
         
@@ -71,7 +86,27 @@ class Image_metadata extends CI_Controller
     
     public function test($image_id)
     {
+        $this->load->helper('url');
         $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        $base_url = $this->config->item('base_url');
+        /***********Checking login****************/
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        /***********End Checking login****************/
+        
+        /***********Checking Permission************/
+        $username = $data['username'];
+        if(!$dbutil->isAdmin($username))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        /***********End Checking Permission************/
         $json = $dbutil->getMetadata($image_id);
         //$json_str = json_encode($json);
         //echo $json_str;
@@ -87,15 +122,59 @@ class Image_metadata extends CI_Controller
     
     public function clean($image_id="0")
     {
+        
+        $this->load->helper('url');
         $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        $base_url = $this->config->item('base_url');
+        /***********Checking login****************/
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        /***********End Checking login****************/
+        
+        /***********Checking Permission************/
+        $username = $data['username'];
+        if(!$dbutil->isAdmin($username))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        /***********End Checking Permission************/
         $dbutil->submitMetadata($image_id, "");
         $this->load->helper('url');
-        $base_url = $this->config->item('base_url');
+        
         redirect ($base_url."/image_metadata/edit/".$image_id);
     }
     
     public function delete_attribution($image_id="0",$field="0",$input="0")
     {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        $base_url = $this->config->item('base_url');
+        /***********Checking login****************/
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        /***********End Checking login****************/
+        
+        /***********Checking Permission************/
+        $username = $data['username'];
+        if(!$dbutil->isAdmin($username))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        /***********End Checking Permission************/
+        
+        
         $input=str_replace("%20", " ", $input);
         $dbutil = new DB_util();
         $test_output_folder = $this->config->item('test_output_folder');
@@ -228,6 +307,27 @@ class Image_metadata extends CI_Controller
     
     public function delete_field($image_id="0",$field="0",$input="0")
     {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        $base_url = $this->config->item('base_url');
+        /***********Checking login****************/
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        /***********End Checking login****************/
+        
+        /***********Checking Permission************/
+        $username = $data['username'];
+        if(!$dbutil->isAdmin($username))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        /***********End Checking Permission************/
         $input=str_replace("%20", " ", $input);
         $input= str_replace("_single_quote_", "'", $input);
         $dbutil = new DB_util();
@@ -344,7 +444,27 @@ class Image_metadata extends CI_Controller
     
     public function submit($image_id="0")
     {
+        $this->load->helper('url');
         $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        $base_url = $this->config->item('base_url');
+        /***********Checking login****************/
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        /***********End Checking login****************/
+        
+        /***********Checking Permission************/
+        $username = $data['username'];
+        if(!$dbutil->isAdmin($username))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        /***********End Checking Permission************/
         $outil = new Ontology_util();
         $mjson = $dbutil->getMetadata($image_id);
         
@@ -354,8 +474,7 @@ class Image_metadata extends CI_Controller
             return;
         }
 
-        $this->load->helper('url');
-        $base_url = $this->config->item('base_url');
+        
         $test_output_folder = $this->config->item('test_output_folder');
         $desc = $this->input->post('description', TRUE);
         $tech_details = $this->input->post('tech_details', TRUE);
@@ -1040,6 +1159,25 @@ class Image_metadata extends CI_Controller
     {
         $this->load->helper('url');
         $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        $base_url = $this->config->item('base_url');
+        /***********Checking login****************/
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        /***********End Checking login****************/
+        
+        /***********Checking Permission************/
+        $username = $data['username'];
+        if(!$dbutil->isAdmin($username))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        /***********End Checking Permission************/
         $gutil = new General_util();
         $cutil = new Curl_util();
         if(strcmp($image_id, "0") == 0)
@@ -1047,8 +1185,7 @@ class Image_metadata extends CI_Controller
             show_404();
             return;
         }
-        
-        $base_url = $this->config->item('base_url');
+
         
         $login_hash = $this->session->userdata('login_hash');
         $data['username'] = $this->session->userdata('username');
@@ -1083,6 +1220,25 @@ class Image_metadata extends CI_Controller
     {
         $this->load->helper('url');
         $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        $base_url = $this->config->item('base_url');
+        /***********Checking login****************/
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        /***********End Checking login****************/
+        
+        /***********Checking Permission************/
+        $username = $data['username'];
+        if(!$dbutil->isAdmin($username))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        /***********End Checking Permission************/
         $gutil = new General_util();
         $cutil = new Curl_util();
         if(strcmp($image_id, "0") == 0)
@@ -1091,7 +1247,6 @@ class Image_metadata extends CI_Controller
             return;
         }
         
-        $base_url = $this->config->item('base_url');
         
         $login_hash = $this->session->userdata('login_hash');
         $data['username'] = $this->session->userdata('username');
@@ -1132,6 +1287,25 @@ class Image_metadata extends CI_Controller
     {
         $this->load->helper('url');
         $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        $base_url = $this->config->item('base_url');
+        /***********Checking login****************/
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        /***********End Checking login****************/
+        
+        /***********Checking Permission************/
+        $username = $data['username'];
+        if(!$dbutil->isAdmin($username))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        /***********End Checking Permission************/
         $gutil = new General_util();
         $cutil = new Curl_util();
         if(strcmp($image_id, "0") == 0)
@@ -1139,8 +1313,7 @@ class Image_metadata extends CI_Controller
             show_404();
             return;
         }
-        
-        $base_url = $this->config->item('base_url');
+
         
         $login_hash = $this->session->userdata('login_hash');
         $data['username'] = $this->session->userdata('username');
@@ -1182,6 +1355,25 @@ class Image_metadata extends CI_Controller
     {
         $this->load->helper('url');
         $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        $base_url = $this->config->item('base_url');
+        /***********Checking login****************/
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        /***********End Checking login****************/
+        
+        /***********Checking Permission************/
+        $username = $data['username'];
+        if(!$dbutil->isAdmin($username))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        /***********End Checking Permission************/
         $gutil = new General_util();
         $cutil = new Curl_util();
         if(strcmp($image_id, "0") == 0)
@@ -1190,7 +1382,6 @@ class Image_metadata extends CI_Controller
             return;
         }
         
-        $base_url = $this->config->item('base_url');
         
         $login_hash = $this->session->userdata('login_hash');
         $data['username'] = $this->session->userdata('username');
@@ -1238,6 +1429,27 @@ class Image_metadata extends CI_Controller
     {
         $this->load->helper('url');
         $dbutil = new DB_util();
+        $base_url = $this->config->item('base_url');
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        $base_url = $this->config->item('base_url');
+        /***********Checking login****************/
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        /***********End Checking login****************/
+        
+        /***********Checking Permission************/
+        $username = $data['username'];
+        if(!$dbutil->isAdmin($username))
+        {
+
+            redirect ($base_url."/home");
+            
+        }
+        /***********End Checking Permission************/
         $gutil = new General_util();
         $cutil = new Curl_util();
         $ezutil = new EZIDUtil();
@@ -1247,7 +1459,7 @@ class Image_metadata extends CI_Controller
             return;
         }
         
-        $base_url = $this->config->item('base_url');
+        
         
         $data['debug'] = $this->input->get('debug', TRUE);
         
@@ -1278,6 +1490,26 @@ class Image_metadata extends CI_Controller
     public function create_doi($image_id="0")
     {
         $this->load->helper('url');
+        $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        $base_url = $this->config->item('base_url');
+        /***********Checking login****************/
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        /***********End Checking login****************/
+        
+        /***********Checking Permission************/
+        $username = $data['username'];
+        if(!$dbutil->isAdmin($username))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        /***********End Checking Permission************/
         $data['numeric_id'] = str_replace("CIL_", "", $image_id);
         $dbutil = new DB_util();
         $gutil = new General_util();
@@ -1289,7 +1521,7 @@ class Image_metadata extends CI_Controller
             return;
         }
         
-        $base_url = $this->config->item('base_url');
+        
         
         $data['debug'] = $this->input->get('debug', TRUE);
         
@@ -1297,11 +1529,7 @@ class Image_metadata extends CI_Controller
         $username = $this->session->userdata('username');
         $data['username'] = $username;
         $data['user_role'] = $dbutil->getUserRole($username);
-        if(is_null($login_hash))
-        {
-            redirect ($base_url."/login/auth_image/".$image_id);
-            return;
-        }
+        
         
         $json = $dbutil->getMetadata($image_id);
         $mjson = json_decode($json->metadata);
@@ -1345,6 +1573,25 @@ class Image_metadata extends CI_Controller
     {
         $this->load->helper('url');
         $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        $base_url = $this->config->item('base_url');
+        /***********Checking login****************/
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        /***********End Checking login****************/
+        
+        /***********Checking Permission************/
+        $username = $data['username'];
+        if(!$dbutil->isAdmin($username))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        /***********End Checking Permission************/
         $gutil = new General_util();
         $cutil = new Curl_util();
         if(strcmp($image_id, "0") == 0)
@@ -1353,7 +1600,6 @@ class Image_metadata extends CI_Controller
             return;
         }
         
-        $base_url = $this->config->item('base_url');
         
         $login_hash = $this->session->userdata('login_hash');
         $data['username'] = $this->session->userdata('username');
@@ -1400,6 +1646,25 @@ class Image_metadata extends CI_Controller
     {
         $this->load->helper('url');
         $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        $base_url = $this->config->item('base_url');
+        /***********Checking login****************/
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        /***********End Checking login****************/
+        
+        /***********Checking Permission************/
+        $username = $data['username'];
+        if(!$dbutil->isAdmin($username))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        /***********End Checking Permission************/
         $gutil = new General_util();
         $cutil = new Curl_util();
         $ezutil = new EZIDUtil();
@@ -1409,7 +1674,6 @@ class Image_metadata extends CI_Controller
             return;
         }
         
-        $base_url = $this->config->item('base_url');
         $test_output_folder = $this->config->item('test_output_folder');
         $data['debug'] = $this->input->get('debug', TRUE);
         
@@ -1572,6 +1836,27 @@ class Image_metadata extends CI_Controller
     {
         $this->load->helper('url');
         $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        $base_url = $this->config->item('base_url');
+        /***********Checking login****************/
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        /***********End Checking login****************/
+        
+        /***********Checking Permission************/
+        $username = $data['username'];
+        if(!$dbutil->isAdmin($username))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        /***********End Checking Permission************/
+        
+        
         $gutil = new General_util();
         $cutil = new Curl_util();
         $ezutil = new EZIDUtil();
@@ -1581,19 +1866,15 @@ class Image_metadata extends CI_Controller
             return;
         }
         
-        $base_url = $this->config->item('base_url');
+        
         $test_output_folder = $this->config->item('test_output_folder');
         $data['debug'] = $this->input->get('debug', TRUE);
         
-        $login_hash = $this->session->userdata('login_hash');
+        
         $username = $this->session->userdata('username');
         $data['username'] = $username;
         $data['user_role'] = $dbutil->getUserRole($username);
-        if(is_null($login_hash))
-        {
-            redirect ($base_url."/login/auth_image/".$image_id);
-            return;
-        }
+
         
         $copy_id = $this->input->post('copy_metadata_from_id', TRUE);
         
@@ -1623,6 +1904,27 @@ class Image_metadata extends CI_Controller
     
     public function upload_zipped_image($image_id)
     {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        $base_url = $this->config->item('base_url');
+        /***********Checking login****************/
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        /***********End Checking login****************/
+        
+        /***********Checking Permission************/
+        $username = $data['username'];
+        if(!$dbutil->isAdmin($username))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        /***********End Checking Permission************/
         $data['title'] = "CIL | Upload the main image ".$image_id;
         $this->load->view('templates/header', $data);
         $this->load->view('edit/upload_main_image_display', $data);
