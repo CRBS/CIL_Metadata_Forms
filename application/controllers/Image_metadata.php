@@ -532,6 +532,8 @@ class Image_metadata extends CI_Controller
         $z_pixel_unit = $this->input->post('z_pixel_unit', TRUE);
         
         
+        $citation_title = $this->input->post('citation_title', TRUE);
+        
         $group_check = $this->input->post('group_check', TRUE);
         
         $json_str = "{\"CIL_CCDB\": {\"Status\": {\"Deleted\": false,\"Is_public\": true },\"CIL\":{\"CORE\":{\"IMAGEDESCRIPTION\":{  }}}}}";
@@ -1132,6 +1134,24 @@ class Image_metadata extends CI_Controller
         $json = $dim_util->handle_pixel("Y", $json, $y_pixel_size, $y_pixel_unit);
         $json = $dim_util->handle_pixel("Z", $json, $z_pixel_size, $z_pixel_unit);
         /*********End X size****************************/
+        
+        
+        /*********Citation title************************/
+        if(!is_null($citation_title) && isset($json->CIL_CCDB->Citation->Title))
+        {
+            $citation_title = trim($citation_title);
+            $json->CIL_CCDB->Citation->Title = $citation_title;
+            //echo "<br/>Setting";
+            //echo $json->CIL_CCDB->Citation->Title;
+            //return;
+        }
+        else
+        {
+            echo "Not setting";
+            return;
+        }
+        
+        /*********End Citation title************************/
         
         $json_str = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES  );
         //file_put_contents($test_output_folder."/".$image_id.".json", $json_str);
@@ -1765,8 +1785,7 @@ class Image_metadata extends CI_Controller
                 $data['doi_exists'] = true;
                 
                
-                //error_log( "\n".$image_id.":doi_exists", 3,$filePath);
-                //if(!isset($mjson->CIL_CCDB->Citation))
+                /*
                 if(true)
                 {
                     //$ezMetadata =  $cilUtil->getEzIdMetadata($mjson,$data['numeric_id'],date("Y"));
@@ -1783,7 +1802,7 @@ class Image_metadata extends CI_Controller
 
                     $dbutil->submitMetadata($image_id, $mjson_str);
                 }
-
+                */
             }
             else 
             {

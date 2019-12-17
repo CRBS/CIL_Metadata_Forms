@@ -10,6 +10,10 @@
     include_once 'attribution.php';
     include_once 'image_files.php';
     include_once 'licensing.php';
+    if(isset($json->CIL_CCDB->Citation->Title))
+    {
+        include_once 'citation_info.php';
+    }
     include_once 'group.php';
     include_once 'bottom_panel.php';
     
