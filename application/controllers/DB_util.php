@@ -8,6 +8,51 @@ class DB_util
     private $image_name = "image_name";
     
     
+    public function getModelListByUsername($username)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "select id, file_name, file_size,has_display_image,publish_date from models where delete_time is NULL and username = $1 order by id desc";
+        $conn = pg_pconnect($db_params);
+        $mainArray = array();
+        
+         if(!$conn)
+         {
+             $json_str = json_encode($mainArray);
+             $json = json_decode($json_str);
+             return json;
+         }
+         
+        $input = array();
+        array_push($input, $username);
+        $result = pg_query_params($conn,$sql,$input);
+        while($row = pg_fetch_row($result))
+        {
+            $array = array();
+            $array['model_id'] =intval($row[0]);
+            $array['file_name'] = $row[1];
+            $file_size = 0;
+            $temp = $row[2];
+            if(!is_null($temp) && is_numeric($temp))
+                $file_size=intval($temp);
+            
+            $array['file_size'] = $file_size;
+            
+            $has_display_image = false;
+            $temp = $row[3];
+            if(!is_null($temp) && strcmp($temp, "t") ==0)
+               $has_display_image = true; 
+            $array['has_display_image'] = $has_display_image;
+            $array['publish_date'] = $row[4];
+            
+            array_push($mainArray, $array);
+        }
+        pg_close($conn);
+        $json_str = json_encode($mainArray);
+        $json = json_decode($json_str);
+        return $json;
+    }
+    
     public function getUserInfo($username)
     {
         $sql = "select email, user_role, full_name from cil_users where username = $1";

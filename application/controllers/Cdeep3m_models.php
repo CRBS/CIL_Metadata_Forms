@@ -13,7 +13,25 @@ class Cdeep3m_models extends CI_Controller
 {
     
     
-    
+    public function my_models()
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        $data['user_role'] = $dbutil->getUserRole($data['username']);
+        $data['title'] = 'Home > My models';
+        $mjson = $dbutil->getModelListByUsername($data['username']);
+        $data['mjson'] = $mjson;
+        $this->load->view('templates/header', $data);
+        $this->load->view('cdeep3m/models/model_list_display', $data);
+        $this->load->view('templates/footer', $data);
+    }
     
     
     public function delete_field($model_id,$field, $input)

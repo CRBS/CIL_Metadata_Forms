@@ -21,6 +21,11 @@
                     
                     <a href="/cdeep3m_models/new_model" class="btn btn-primary">Upload CDeep3M Model</a>
                 </div>
+                 <div class="col-md-12"><br/></div>
+                 <div class="col-md-12">
+                     <a href="/cdeep3m_models/my_models" class="btn btn-primary">My trained Models</a>
+                 </div>
+                 
             </div>
         </div>
         <div class="col-md-4">
@@ -54,7 +59,7 @@
             </div>
             <div class="col-md-12"><hr style="height:1px; visibility:hidden;" /></div>
             <div class="col-md-12"> 
-               <a href="http://cellimagelibrary.org/cdeep3m/prp_demo" class="btn btn-primary">Run CDeep3M Preview</a>
+               <a href="http://cellimagelibrary.org/cdeep3m/prp_demo" class="btn btn-primary">CDeep3M Demo on the CIL viewer</a>
             </div>
         </div>
     </div>
