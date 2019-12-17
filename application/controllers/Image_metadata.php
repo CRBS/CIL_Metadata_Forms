@@ -1447,7 +1447,7 @@ class Image_metadata extends CI_Controller
         {
 
             redirect ($base_url."/home");
-            
+            return;
         }
         /***********End Checking Permission************/
         $gutil = new General_util();

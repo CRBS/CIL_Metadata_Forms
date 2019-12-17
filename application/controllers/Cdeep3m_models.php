@@ -605,9 +605,33 @@ class Cdeep3m_models extends CI_Controller
     
     public function edit($model_id=0)
     {
+        
         $this->load->helper('url');
-        $remote_service_prefix =  $this->config->item('remote_service_prefix');
         $dbutil = new DB_util();
+        $base_url = $this->config->item('base_url');
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        $base_url = $this->config->item('base_url');
+        /***********Checking login****************/
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        /***********End Checking login****************/
+        
+        /***********Checking Permission************/
+        $username = $data['username'];
+        if(!$dbutil->isAdmin($username) && !$dbutil->isModelOwner($model_id, $username))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        /***********End Checking Permission************/
+        
+        
+        $remote_service_prefix =  $this->config->item('remote_service_prefix');
+
         $cutil = new Curl_util();
         
         $mjson = $dbutil->getModelJson($model_id);
