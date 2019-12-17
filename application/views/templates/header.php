@@ -32,7 +32,22 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                   <ul class="navbar-nav">
+                    <!---------Navbar----------------------> 
                     
+                    <li class="nav-item active">
+                        &nbsp;&nbsp;&nbsp;
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Gallery</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Pre-trained models</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">FAQ</a>
+                    </li>
+                  
+                    <!---------End Navbar------------------>
                   </ul>
                    
                 </div>

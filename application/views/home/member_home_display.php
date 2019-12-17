@@ -25,7 +25,7 @@
         </div>
         <div class="col-md-4">
             <div class="col-md-12">
-                <span class="cil_title2">Try the CDeep3M Preview function</span>
+                <span class="cil_title2">CDeep3M Preview (import test images)</span>
             </div>
             <div class="col-md-12">
                 <img src="https://iruka.crbs.ucsd.edu/cdeep3m_results/4962/overlay/overlay_002.png" width="100%" />
@@ -42,7 +42,7 @@
         </div>
         <div class="col-md-4">
             <div class="col-md-12">
-                <span class="cil_title2">Run CDeep3M on the high-def image</span>
+                <span class="cil_title2">CDeep3M Demo (use public CIL image volumes)</span>
             </div>
             <div class="col-md-12">
                 <img src="/pix/cil_image_viewer.jpg" width="100%" />
