@@ -8,6 +8,37 @@ class DB_util
     private $image_name = "image_name";
     
     
+    public function isModelOwner($id,$username)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "select id from models where delete_time is NULL and username = $1 and id = $2";
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return false;
+        }
+        
+        $input = array();
+        array_push($input,$username);
+        array_push($input,$id);
+        $result = pg_query_params($conn, $sql, $input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        $isOwner = false;
+        
+        if($row = pg_fetch_row($result))
+        {
+            $isOwner = true;
+        }
+        pg_close($conn);
+        return $isOwner;
+        
+    }
+    
     public function getModelListByUsername($username)
     {
         $CI = CI_Controller::get_instance();
