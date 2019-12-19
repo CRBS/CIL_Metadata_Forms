@@ -38,6 +38,9 @@
                         &nbsp;&nbsp;&nbsp;
                     </li>
                     <li class="nav-item">
+                      <a class="nav-link" href="#">About us</a>
+                    </li>
+                    <li class="nav-item">
                       <a class="nav-link" href="#">Gallery</a>
                     </li>
                     <li class="nav-item">
@@ -46,7 +49,9 @@
                     <li class="nav-item">
                       <a class="nav-link" href="#">FAQ</a>
                     </li>
-                  
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://github.com/CRBS/cdeep3m" target="_self">Open source</a>
+                    </li>
                     <!---------End Navbar------------------>
                   </ul>
                    
@@ -70,6 +75,12 @@
                  ?>
                    <span style="color:white"><?php if(isset($username)) echo $username.":"; ?></span>&nbsp;&nbsp;<a href="/login/signout_home" target="_self">Log out</a>
                   <?php
+                    }
+                    else
+                    {
+                    ?>
+                    <a href="/home" target="_self">Log in</a>
+                    <?php
                     }
                     ?>
                 </div> 
