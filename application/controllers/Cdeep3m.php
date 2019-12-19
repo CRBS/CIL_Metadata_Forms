@@ -6,7 +6,7 @@ include_once 'DB_util.php';
 include_once 'Ontology_util.php';
 include_once 'Dimension_util.php';
 include_once 'PasswordHash.php';
-class Cdeep3m_home extends CI_Controller
+class Cdeep3m extends CI_Controller
 {
     public function index()
     {
@@ -17,14 +17,11 @@ class Cdeep3m_home extends CI_Controller
         
         $base_url = $this->config->item('base_url');
         
-        /*
         $data['title'] = "CDeep3M | Welcome";
         $this->load->view('templates/header', $data);
         $this->load->view('home/cdeep3m_home_display', $data);
         $this->load->view('templates/footer', $data);
-         * 
-         */
-        redirect($base_url."/cdeep3m");
     }
     
 }
+

@@ -2,7 +2,7 @@
 <footer>
     <center>
     <div class="row footer_background">
-        <div class="col-md-12 "><<br/></div>
+        <div class="col-md-12 "><br/></div>
         
         <div class="col-md-4 pull-right">
     <!-- <a href="http://crbs.ucsd.edu/" class="grid_3 suffix_1" target="_blank"><img alt="crbs" src="/pix/CRBS_LOGO.png"></a> -->
@@ -20,7 +20,7 @@
             
             <strong>Voice</strong>: (858) 534-0276<br>
             <strong>Fax</strong>: (858) 534-7497<br>
-            <strong>Email</strong>: dorloff@ncmir.ucsd.edu
+            <strong>Email</strong>: cdeep3m@ucsd.edu
             
         </address>
         </div>
