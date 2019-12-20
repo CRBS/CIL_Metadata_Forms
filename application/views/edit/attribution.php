@@ -53,7 +53,7 @@
                     foreach($contributors as $contributor)
                     {
                         $cname = str_replace(" ", "%20", $contributor);
-                        
+                        $cname = str_replace(",", "_COMMA_", $contributor);
                         echo "<li>".$contributor."<a  href=\"/image_metadata/delete_attribution/".$image_id."/OTHER/".$cname."\" target=\"_self\"> &#x2716;</a></li>";
                     }
                     echo "</ul>";

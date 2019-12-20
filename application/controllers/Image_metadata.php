@@ -330,6 +330,7 @@ class Image_metadata extends CI_Controller
         /***********End Checking Permission************/
         $input=str_replace("%20", " ", $input);
         $input= str_replace("_single_quote_", "'", $input);
+        $input= str_replace("_COMMA_", ",", $input);
         $dbutil = new DB_util();
         $outil = new Ontology_util();
         $test_output_folder = $this->config->item('test_output_folder');
