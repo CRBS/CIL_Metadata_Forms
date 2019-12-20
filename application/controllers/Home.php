@@ -141,6 +141,18 @@ class Home extends CI_Controller
         }
     }
     
+    public function create_user()
+    {
+        $base_url = $this->config->item('base_url');
+        $data['base_url'] = $base_url;
+        $data['google_reCAPTCHA_site_key'] = $this->config->item('google_reCAPTCHA_site_key');
+        $data['google_reCAPTCHA_secret_key'] = $this->config->item('google_reCAPTCHA_secret_key');
+        
+        $data['title'] = "CDeep3M create user";
+        $this->load->view('templates/header', $data);
+        $this->load->view('home/cdeep3m_create_user_display', $data);
+        $this->load->view('templates/footer', $data);
+    }
     
     public function login()
     {
