@@ -154,6 +154,66 @@ class Home extends CI_Controller
         $this->load->view('templates/footer', $data);
     }
     
+    
+    public function do_create_user()
+    {
+        $this->load->helper('url');
+        
+        $dbutil = new DB_util();
+        $hasher = new PasswordHash(8, TRUE);
+        $username = $this->input->post('create_username', TRUE);
+        $password = $this->input->post('create_password', TRUE);
+        $fullname = $this->input->post('create_fullname', TRUE);
+        $create_email  = $this->input->post('create_email', TRUE);
+  
+        $base_url = $this->config->item('base_url');
+        $data['base_url'] = $base_url;
+        
+        
+        /*-------------------reCAPTCHA v3 check  ----------------------------------*/
+        /*$cutil = new Curl_util();
+        $google_reCAPTCHA_site_key = $this->config->item('google_reCAPTCHA_site_key');
+        $google_reCAPTCHA_secret_key = $this->config->item('google_reCAPTCHA_secret_key');
+        $google_reCAPTCHA_verify_url = $this->config->item('google_reCAPTCHA_verify_url');
+        $google_reCAPTCHA_threshold = $this->config->item('google_reCAPTCHA_threshold');
+        if(isset($google_reCAPTCHA_site_key) && !is_null($google_reCAPTCHA_site_key))
+        {
+            $recaptcha_token = $this->input->post('recaptcha_token', TRUE);
+            if(isset($recaptcha_token) && strlen($recaptcha_token) > 0)
+            {
+                $url = $google_reCAPTCHA_verify_url."?secret=".$google_reCAPTCHA_secret_key."&response=".$recaptcha_token."";
+                
+                $response = $cutil->curl_get($url);
+                if(!is_null($response))
+                {
+                    $json = json_decode($response);
+                    if(isset($json->success) && $json->success)
+                    {
+                        if(isset($json->score) && $json->score >= $google_reCAPTCHA_threshold)
+                        {
+                            echo "<br/>Pass!";
+                        }
+                        else
+                        {
+                            //redirect($base_url."/home");
+                            //return;
+                            echo "<br/>Not Pass!";
+                        }
+                    }
+                }
+            }
+            
+        }*/
+        /*-------------------End reCAPTCHA v3 check  ----------------------------------*/
+        
+        echo "<br/>".$username;
+        echo "<br/>".$password;
+        echo "<br/>".$fullname;
+        echo "<br/>".$create_email;
+        
+    }
+    
+    
     public function login()
     {
         $this->load->helper('url');
