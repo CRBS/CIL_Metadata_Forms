@@ -587,7 +587,9 @@ class Image_metadata extends CI_Controller
             {
                 $json->CIL_CCDB->CIL->CORE->GROUP_ID = $group_id;
             }
-            //echo "GROUP checked";
+            echo "GROUP checked:".$group_id."---";
+        
+            //return;
         }
         else
         {

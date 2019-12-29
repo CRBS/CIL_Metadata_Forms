@@ -836,8 +836,8 @@ class DB_util
         {   
             return false;
         }
-        $sql = "insert into cil_tags(tag,order_number) ".
-                    " values($1 , (select max(order_number)+1 from cil_tags))";
+        $sql = "insert into cil_tags(tag,order_number,group_id) ".
+                    " values($1 , (select max(order_number)+1 from cil_tags), nextval('group_id'))";
         
         $input = array();
         array_push($input, $tag);

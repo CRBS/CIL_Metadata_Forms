@@ -28,7 +28,7 @@
                 <?php 
                     $homeUrl = "/cdeep3m";
                     if(isset($username)) 
-                        $homeUrl = "home";
+                        $homeUrl = "/home";
                                             
                  ?>
                   <a href="<?php echo$homeUrl; ?>" target="_self"><img width="40" src="/pix/logo2.png"></a>
