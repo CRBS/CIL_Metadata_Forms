@@ -1,4 +1,4 @@
-<form action="/user/do_create_user" method="post" onsubmit="return check_password()">
+<form action="/home/do_create_user" method="post" onsubmit="return check_password()">
 <div class="container">
     <br/><br/>
     <div class="row">
