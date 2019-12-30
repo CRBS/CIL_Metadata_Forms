@@ -13,7 +13,9 @@ class Cdeep3m extends CI_Controller
         $this->load->helper('url');
         $dbutil = new DB_util();
         $gutil = new General_util();
-        
+        $username = $this->session->userdata('username');
+        if(!is_null($username))
+            $data['my_account'] = $username;
         
         $base_url = $this->config->item('base_url');
         

@@ -82,10 +82,16 @@
                    <span style="color:white"><?php if(isset($username)) echo $username.":"; ?></span>&nbsp;&nbsp;<a href="/login/signout_home" target="_self">Log out</a>
                   <?php
                     }
+                    else if(isset($my_account)) 
+                    {
+                    ?>
+                    <a href="/home" target="_self">My account</a>
+                    <?php
+                    }
                     else
                     {
                     ?>
-                    <a href="/home" target="_self">Log in</a>
+                    <a href="/home" target="_self">Sign in</a>
                     <?php
                     }
                     ?>
