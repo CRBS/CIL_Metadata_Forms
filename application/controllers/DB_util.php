@@ -256,6 +256,38 @@ class DB_util
         return $group_id;
     }
     
+    public function getGroupMemebers($tag)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "select image_id from cil_metadata where tags = $1 order by create_time";
+       
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return NULL;
+        }
+        $input = array();
+        array_push($input,$tag);
+        $result = pg_query_params($conn, $sql, $input);
+        if(!$result) 
+        {
+            
+            pg_close($conn);
+            return NULL;
+        }
+        $array = array();
+
+        while($row = pg_fetch_row($result))
+        {
+           
+           $image_id = $row[0];
+           array_push($array, $image_id);
+        }
+
+        pg_close($conn);
+        return $array;
+    }
     
     public function getGroupInfo($image_id)
     {

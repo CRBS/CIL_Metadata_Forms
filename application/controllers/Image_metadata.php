@@ -1624,6 +1624,13 @@ class Image_metadata extends CI_Controller
         {
             echo "<br/>".$groupInfo->tag;
             echo "<br/>".$groupInfo->group_id;
+            
+            $idArray = $dbutil->getGroupMemebers($groupInfo->tag);
+            foreach($idArray as $id)
+            {
+                echo "<br/>".$id;
+            }
+            
         }
     }
     
