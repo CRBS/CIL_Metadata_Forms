@@ -148,16 +148,16 @@
     
     <div class="col-md-12">
         <?php
-            if(isset($user_role) && strcmp($user_role,'admin') ==0)
-            {
+            //if(isset($user_role) && strcmp($user_role,'admin') ==0)
+            //{
                 
         ?>
-            <div class="col-md-12">
+           <!-- <div class="col-md-12">
                 <br/>
             </div>
-            <a href="" target="_blank" class="btn btn-primary">Create the DOI</a> 
+            <a href="" target="_blank" class="btn btn-primary">Create the DOI</a> -->
         <?php
-            }
+            //}
         ?>
     </div>
     
