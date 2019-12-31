@@ -161,6 +161,25 @@
         ?>
     </div>
     
+    
+    <?php
+        if(isset($json->CIL_CCDB->CIL->CORE->GROUP_ID))
+        {
+    ?>
+        <div class="col-md-12">
+            <br/>
+                
+                <a href="/image_metadata/publish_group/stage/CIL_<?php echo $numeric_id; ?>" target="_blank" class="btn btn-primary">Publish group(stage)</a>
+        </div>
+    
+        <div class="col-md-12">
+            <br/>
+                
+                <a href="/image_metadata/publish_group/prod/CIL_<?php echo $numeric_id; ?>" target="_blank" class="btn btn-primary">Publish group(prod)</a>
+        </div>
+    <?php
+        }
+    ?>
 
     <div class="col-md-12"><br/></div>
     <div class="col-md-12">

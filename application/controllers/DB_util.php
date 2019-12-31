@@ -257,6 +257,54 @@ class DB_util
     }
     
     
+    public function getGroupInfo($image_id)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "select tag,group_id from cil_metadata m, cil_tags t where m.tags = t.tag and image_id = $1";
+       
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return NULL;
+        }
+        $input = array();
+        array_push($input,$image_id);
+        $result = pg_query_params($conn, $sql, $input);
+        if(!$result) 
+        {
+            
+            pg_close($conn);
+            return NULL;
+        }
+        $array = NULL;
+        
+        
+        if($row = pg_fetch_row($result))
+        {
+           $array = array();
+           $array['tag'] = $row[0];
+           $array['group_id'] = $row[1];
+           
+           
+        }
+
+        
+        $json = NULL;
+        if(!is_null($array))
+        {
+            $json_str = json_encode($array);
+            if(!is_null($json_str))
+                $json = json_decode ($json_str);
+        }
+        
+        
+        pg_close($conn);
+        return $json;
+    }
+    
+    
+    
     public function getModelList()
     {
         $CI = CI_Controller::get_instance();

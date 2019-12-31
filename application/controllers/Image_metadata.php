@@ -1592,6 +1592,41 @@ class Image_metadata extends CI_Controller
     }
     
     
+    public function publish_group($stage_prod, $image_id)
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        $base_url = $this->config->item('base_url');
+        /***********Checking login****************/
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        /***********End Checking login****************/
+        
+        /***********Checking Permission************/
+        $username = $data['username'];
+        if(!$dbutil->isAdmin($username))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        /***********End Checking Permission************/
+        
+        
+        echo "<br/>".$stage_prod;
+        echo "<br/>".$image_id;
+        $groupInfo = $dbutil->getGroupInfo($image_id);
+        if(!is_null($groupInfo))
+        {
+            echo "<br/>".$groupInfo->tag;
+            echo "<br/>".$groupInfo->group_id;
+        }
+    }
+    
     public function publish_data($image_id="0")
     {
         $this->load->helper('url');
