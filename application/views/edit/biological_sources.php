@@ -103,13 +103,15 @@
         <div class="form-group">
             <label class="col-form-label" for="inputDefault"> Cell Component (GO)</label>
             <?php 
+            
+                
                 if(isset($json->CIL_CCDB->CIL->CORE->CELLULARCOMPONENT))
                 {
                     $itemsJson = $json->CIL_CCDB->CIL->CORE->CELLULARCOMPONENT;
                     if(is_array($itemsJson))
                     {
                         echo "<ul>";
-                        foreach($itemsJson as $item)
+                        /*foreach($itemsJson as $item)
                         {
                             if(isset($item->free_text))
                                 echo "<li>".$item->free_text."<a  href=\"/image_metadata/delete_field/".$image_id."/CELLULARCOMPONENT/".$item->free_text."\" target=\"_self\"> &#x2716;</a></li>";
@@ -117,6 +119,18 @@
                             {
                                 echo "<li><a href=\"#\" data-toggle=\"tooltip\" title=\"".$item->onto_id."\">".$item->onto_name."</a><a  href=\"/image_metadata/delete_field/".$image_id."/CELLULARCOMPONENT/".$item->onto_name."\" target=\"_self\"> &#x2716;</a></li>";
                             }
+                        }*/
+                        $i = 0;
+                        foreach($itemsJson as $item)
+                        {
+                            if(isset($item->free_text))
+                                echo "<li>".$item->free_text."<a  href=\"/image_metadata/delete_field_by_index/".$image_id."/CELLULARCOMPONENT/".$i."\" target=\"_self\"> &#x2716;</a></li>";
+                            else if(isset($item->onto_name) && isset($item->onto_id))
+                            {
+                                echo "<li><a href=\"#\" data-toggle=\"tooltip\" title=\"".$item->onto_id."\">".$item->onto_name."</a><a  href=\"/image_metadata/delete_field_by_index/".$image_id."/CELLULARCOMPONENT/".$i."\" target=\"_self\"> &#x2716;</a></li>";
+                            }
+                            
+                            $i++;
                         }
                         echo "</ul>";
                     }

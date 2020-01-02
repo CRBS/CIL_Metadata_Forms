@@ -409,6 +409,90 @@ class Image_metadata extends CI_Controller
         }
         
     }
+    
+    
+    
+    public function delete_field_by_index($image_id="0",$field="0",$index="0")
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        $base_url = $this->config->item('base_url');
+        
+        $index = intval($index);
+        /***********Checking login****************/
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        /***********End Checking login****************/
+        
+        /***********Checking Permission************/
+        $username = $data['username'];
+        if(!$dbutil->isAdmin($username))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        /***********End Checking Permission************/
+
+        $dbutil = new DB_util();
+        $outil = new Ontology_util();
+        $test_output_folder = $this->config->item('test_output_folder');
+        $mjson = $dbutil->getMetadata($image_id);
+        if(!$mjson->success)
+        {
+            show_404();
+            return;
+        }
+        $this->load->helper('url');
+        $base_url = $this->config->item('base_url');
+        
+        if($mjson->success && isset($mjson->metadata)
+                && !is_null($mjson->metadata)
+                && strlen(trim($mjson->metadata)) > 0
+                )
+        {
+
+            $json = json_decode($mjson->metadata);
+            $coreJson= $json->CIL_CCDB->CIL->CORE;
+            foreach($coreJson as $key => $val) 
+            {
+                if(strcmp($key,$field) == 0)
+                {
+                    if(is_array($coreJson->{$key}))
+                    {
+                        
+                        $removeIndex = $index;
+                        $jsonArray = $coreJson->{$key};
+                        
+                        //$removeIndex = 0;
+                        if(!is_null($removeIndex))
+                        {
+                            unset($jsonArray[$removeIndex]);
+                            $jsonArray=array_values ($jsonArray);
+                        }
+                        
+                        $coreJson->{$key} = $jsonArray;
+                        
+                    }
+                } 
+            }
+            //header('Content-Type: application/json');
+            $json_str = json_encode($json,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            //echo $json_str;
+            
+            //file_put_contents($test_output_folder."/".$image_id.".json", $json_str);
+        
+        
+            $dbutil->submitMetadata($image_id, $json_str);
+        
+            redirect ($base_url."/image_metadata/edit/".$image_id);
+        }
+        
+    }
 
     
     private function updateJpegZipSize($image_id, $json, $jpeg_size, $zip_size)
