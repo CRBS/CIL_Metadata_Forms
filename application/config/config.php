@@ -591,6 +591,11 @@ if($config['is_production'])
 else 
     $config['data_location'] = $json->staging_data_location;
 
+if($is_prod)
+    $config['group_data_location'] = "/tmp";
+else
+    $config['group_data_location'] = "C:/CIL_GIT/CIL-CCDB_JSON/Version8_9/GROUPS";
+
 $config['remote_upload_prefix'] = $json->remote_upload_prefix;    
 
 $config['remote_service_prefix'] = $json->remote_service_prefix;

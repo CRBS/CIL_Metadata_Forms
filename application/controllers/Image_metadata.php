@@ -1596,9 +1596,11 @@ class Image_metadata extends CI_Controller
     {
         $this->load->helper('url');
         $dbutil = new DB_util();
+        $cutil = new Curl_util();
         $login_hash = $this->session->userdata('login_hash');
         $data['username'] = $this->session->userdata('username');
         $base_url = $this->config->item('base_url');
+        $group_data_location = $this->config->item('group_data_location');
         /***********Checking login****************/
         if(is_null($login_hash))
         {
@@ -1631,7 +1633,51 @@ class Image_metadata extends CI_Controller
                 echo "<br/>".$id;
             }
             
+            $group_template = "{\"Group\": { ".
+            "\"Name\": \"pubgroup\",".
+            "\"Description\": \"".$groupInfo->tag."\",".
+            "\"Group_members\": [".
+            " ]}}";
+            
+            $json = json_decode($group_template);
+            
+            if(!is_null($json) && isset($json->Group->Group_members))
+            {
+                foreach($idArray as $id)
+                {
+                    $id = str_replace("CIL_", "", $id."");
+                    array_push($json->Group->Group_members, $id."");
+                }
+            
+                $json_str = json_encode($json,JSON_PRETTY_PRINT);
+                $file_path = $group_data_location."/".$groupInfo->group_id.".json";
+                
+                if(file_exists($file_path))
+                    unlink ($file_path);
+                
+                file_put_contents($file_path, $json_str);
+                
+                if(strcmp($stage_prod, "stage") == 0)
+                {
+                    $data['elasticsearch_host_stage'] = $this->config->item('elasticsearch_host_stage');
+                    $esUrl = $data['elasticsearch_host_stage']."/ccdbv8/groups/".$groupInfo->group_id;
+                    $response = $cutil->just_curl_put($esUrl, $json_str);
+                    echo "<br/>".$response;
+                }
+                else if(strcmp($stage_prod, "prod") == 0)
+                {
+                    $data['elasticsearch_host_prod'] = $this->config->item('elasticsearch_host_prod');
+                    $esUrl = $data['elasticsearch_host_prod']."/ccdbv8/groups/".$groupInfo->group_id;
+                    $response = $cutil->just_curl_put($esUrl, $json_str);
+                    echo "<br/>".$response;
+                }
+            }
+
         }
+
+        redirect($base_url."/image_metadata/edit/".$image_id);
+        
+        
     }
     
     public function publish_data($image_id="0")
