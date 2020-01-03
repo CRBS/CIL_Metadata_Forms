@@ -2026,6 +2026,104 @@ class Image_metadata extends CI_Controller
     }
     
     
+    public function copy_biological_sources($image_id="0")
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        $base_url = $this->config->item('base_url');
+        /***********Checking login****************/
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        /***********End Checking login****************/
+        
+        /***********Checking Permission************/
+        $username = $data['username'];
+        if(!$dbutil->isAdmin($username))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        /***********End Checking Permission************/
+        
+        
+        $gutil = new General_util();
+        $cutil = new Curl_util();
+        $ezutil = new EZIDUtil();
+        if(strcmp($image_id, "0") == 0)
+        {
+            show_404();
+            return;
+        }
+        
+        
+        $test_output_folder = $this->config->item('test_output_folder');
+        $data['debug'] = $this->input->get('debug', TRUE);
+        
+        
+        $username = $this->session->userdata('username');
+        $data['username'] = $username;
+        $data['user_role'] = $dbutil->getUserRole($username);
+
+        
+        $copy_cell_component_id = $this->input->post('copy_cell_component_id', TRUE);
+        
+        echo "<br/>".$copy_cell_component_id;
+        
+        
+        if(!$gutil->startsWith($copy_cell_component_id, "CIL_"))
+            $copy_cell_component_id = "CIL_".$copy_cell_component_id;
+        
+        
+        
+        $result = $dbutil->getMetadata($copy_cell_component_id);
+        if(is_null($result))
+        {
+            redirect ($base_url."/image_metadata/edit/".$image_id);
+            return;
+        }
+     
+        if(is_null($result->metadata) || strlen($result->metadata) == 0)
+        {
+            redirect ($base_url."/image_metadata/edit/".$image_id);
+            return;
+        }
+        
+        //echo "<br/>".$result->metadata;
+        $copy_json = json_decode($result->metadata);
+        $copy_cc_json = $copy_json->CIL_CCDB->CIL->CORE->CELLULARCOMPONENT;
+        $copy_ct_json = $copy_json->CIL_CCDB->CIL->CORE->CELLTYPE;
+        $copy_noc_json = $copy_json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION;
+        $result0 = $dbutil->getMetadata($image_id);
+        if(is_null($result0))
+        {
+            redirect ($base_url."/image_metadata/edit/".$image_id);
+            return;
+        }
+     
+        if(is_null($result0->metadata) || strlen($result0->metadata) == 0)
+        {
+            redirect ($base_url."/image_metadata/edit/".$image_id);
+            return;
+        }
+        
+        $json = json_decode($result0->metadata);
+        $json->CIL_CCDB->CIL->CORE->CELLULARCOMPONENT = $copy_cc_json;
+        $json->CIL_CCDB->CIL->CORE->CELLTYPE = $copy_ct_json;
+        $json->CIL_CCDB->CIL->CORE->NCBIORGANISMALCLASSIFICATION = $copy_noc_json;
+        $json_str = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        
+        $dbutil->updateMetadata($json_str, $image_id);
+        redirect ($base_url."/image_metadata/edit/".$image_id);
+        return;
+        
+        
+    }
+    
     public function copy_metadata($image_id="0")
     {
         $this->load->helper('url');
