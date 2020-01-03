@@ -26,3 +26,18 @@
     </div>
 </div>
 </form>
+
+
+<br/>
+<form action="/image_metadata/copy_imaging_methods/<?php echo $image_id; ?>" method="post">
+<span class="cil_title2">Copy Imaging Method</span>
+<div class="row">
+    <div class="col-md-6">Copy Imaging Method from another image:</div>
+    <div class="col-md-6">
+        <input type="text" name="copy_imaging_methods_id" id="copy_imaging_methods_id">
+    </div>
+    <div class="col-md-12">
+        <button type="submit" class="btn btn-primary">Copy Imaging Method</button>
+    </div>
+</div>
+</form>
