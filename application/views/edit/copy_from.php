@@ -41,3 +41,18 @@
     </div>
 </div>
 </form>
+
+
+<br/>
+<form action="/image_metadata/copy_attribution_names/<?php echo $image_id; ?>" method="post">
+<span class="cil_title2">Copy Attribution Names</span>
+<div class="row">
+    <div class="col-md-6">Copy Attribution Names from another image:</div>
+    <div class="col-md-6">
+        <input type="text" name="copy_attribution_names_id" id="copy_attribution_names_id">
+    </div>
+    <div class="col-md-12">
+        <button type="submit" class="btn btn-primary">Copy Attribution Names</button>
+    </div>
+</div>
+</form>
