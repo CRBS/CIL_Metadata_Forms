@@ -148,6 +148,34 @@ class Home extends CI_Controller
         $data['google_reCAPTCHA_site_key'] = $this->config->item('google_reCAPTCHA_site_key');
         $data['google_reCAPTCHA_secret_key'] = $this->config->item('google_reCAPTCHA_secret_key');
         
+        
+        
+        $create_user_error =  $this->session->userdata('create_user_error');
+        $create_user_success = $this->session->userdata('create_user_success');
+        
+        if(!is_null($create_user_error))
+        {
+            $data['create_user_error'] = $create_user_error;
+            $this->session->set_userdata('create_user_error', NULL);
+            $data['create_username'] = $this->session->userdata('create_username');
+            $data['create_password'] = $this->session->userdata('create_password');
+            $data['create_fullname'] = $this->session->userdata('create_fullname');
+            $data['create_email'] = $this->session->userdata('create_email');
+            $this->session->set_userdata('create_username', NULL);
+            $this->session->set_userdata('create_password', NULL);
+            $this->session->set_userdata('create_fullname', NULL);
+            $this->session->set_userdata('create_email', NULL);
+ 
+        }
+        
+        if(!is_null($create_user_success))
+        {
+            $data['create_user_success'] = true;
+            $this->session->set_userdata('create_user_success', NULL);
+        }
+        
+
+        
         $data['title'] = "CDeep3M create user";
         $this->load->view('templates/header', $data);
         $this->load->view('home/cdeep3m_create_user_display', $data);
@@ -171,7 +199,7 @@ class Home extends CI_Controller
         
         
         /*-------------------reCAPTCHA v3 check  ----------------------------------*/
-        /*$cutil = new Curl_util();
+        $cutil = new Curl_util();
         $google_reCAPTCHA_site_key = $this->config->item('google_reCAPTCHA_site_key');
         $google_reCAPTCHA_secret_key = $this->config->item('google_reCAPTCHA_secret_key');
         $google_reCAPTCHA_verify_url = $this->config->item('google_reCAPTCHA_verify_url');
@@ -203,7 +231,7 @@ class Home extends CI_Controller
                 }
             }
             
-        }*/
+        }
         /*-------------------End reCAPTCHA v3 check  ----------------------------------*/
         
         echo "<br/>".$username;
@@ -211,6 +239,42 @@ class Home extends CI_Controller
         echo "<br/>".$fullname;
         echo "<br/>".$create_email;
         
+        $userExists = $dbutil->userExists($username);
+        $emailExist = $dbutil->emailExists($create_email);
+        if($userExists || $emailExist)
+        {
+            if($userExists)
+                $this->session->set_userdata('create_user_error', "Please choose a different user name.");
+            else
+                $this->session->set_userdata('create_user_error', "Email address, ".$create_email." already exists in our database.");
+            $this->session->set_userdata('create_username', $username);
+            $this->session->set_userdata('create_password', $password);
+            $this->session->set_userdata('create_fullname', $fullname);
+            $this->session->set_userdata('create_email', $create_email);
+            redirect($base_url."/home/create_user");
+            return;
+        }
+        
+        $hasher = new PasswordHash(8, TRUE);
+        $pass_hash = $hasher->HashPassword($create_password);
+        $success = $dbutil->createNewWebUser($username, $pass_hash, $create_email, $fullname);
+        
+        if($success)
+        {
+            $this->session->set_userdata('create_user_success', "Success");
+            redirect($base_url."/home/create_user");
+            return;
+        }
+        else 
+        {
+            $this->session->set_userdata('create_user_error', "Cannot create a record in the database.");
+            $this->session->set_userdata('create_username', $username);
+            $this->session->set_userdata('create_password', $password);
+            $this->session->set_userdata('create_fullname', $fullname);
+            $this->session->set_userdata('create_email', $create_email);
+            redirect($base_url."/home/create_user");
+            return;
+        }
     }
     
     

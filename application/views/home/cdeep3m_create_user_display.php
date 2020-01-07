@@ -28,7 +28,7 @@
                
         ?>
         <div class="alert alert-dismissible alert-success">
-            <strong>Success:</strong> User account has been created successfully.
+            <strong>Success:</strong> User account request has been submitted. You will receive an email when our staff members approve and activate your account.
         </div>
         <?php
             }
@@ -36,7 +36,7 @@
         </div>
         
         <div class="col-md-12">
-            <span class="cil_title2">Create Account</span>
+            <span class="cil_title2">Request an account</span>
         </div>
         
         <div class="col-md-2">User name</div>
