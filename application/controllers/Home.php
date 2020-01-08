@@ -193,7 +193,10 @@ class Home extends CI_Controller
         $this->load->helper('url');
         
         $dbutil = new DB_util();
+        
         $hasher = new PasswordHash(8, TRUE);
+        
+        
         $username = $this->input->post('create_username', TRUE);
         $password = $this->input->post('create_password', TRUE);
         $fullname = $this->input->post('create_fullname', TRUE);
@@ -266,6 +269,11 @@ class Home extends CI_Controller
         
         if($success)
         {
+            $sendgrid_api_key = $this->config->item('sendgrid_api_key');
+            $sendgrid_api_url = $this->config->item('sendgrid_api_url');
+            $mailutil = new MailUtil();
+            
+            
             $this->session->set_userdata('create_user_success', "Success");
             redirect($base_url."/home/create_user");
             return;
@@ -361,7 +369,7 @@ class Home extends CI_Controller
             else 
             {
                 if(!$error_message_set)
-                    $this->session->set_userdata('login_error', "Incorrect login information:".$stored_hash."----".$password);
+                    $this->session->set_userdata('login_error', "Incorrect login information.");
             }
         }
         

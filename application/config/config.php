@@ -615,3 +615,5 @@ $config['image_service_prefix'] = $json->image_service_prefix;
 $config['sendgrid_api_url'] = $json->sendgrid_api_url;
 
 $config['sendgrid_api_key'] = $json->sendgrid_api_key;
+
+$config['email_from'] = 'wawong@gmail.com';
