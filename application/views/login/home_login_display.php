@@ -3,11 +3,8 @@
         <br/>
         <div class="row">
             <div class="col-md-6">
-                <div class="card border-dark mb-3">
-                    <div class="card-header" style="background-color:#d3d3d3">Login</div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-12">
+                <div clas="row">
+                    <div class="col-md-12">
                             <?php
                                 $error = false;
                                 if(isset($login_error) && !is_null($login_error))
@@ -20,7 +17,13 @@
                             <?php
                                 }
                             ?>
-                            </div>
+                    </div>
+                </div>
+                <div class="card border-dark mb-3">
+                    <div class="card-header" style="background-color:#d3d3d3">Login</div>
+                    <div class="card-body">
+                        <div class="row">
+                            
                             <div class="col-md-4">User name</div>
                             <div class="col-md-8">
                                 <input type="text" name="username" class="form-control">

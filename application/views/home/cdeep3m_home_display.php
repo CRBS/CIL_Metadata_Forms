@@ -62,7 +62,7 @@
                 </div>
                 <div class="col-md-12"><hr style="height:1px; visibility:hidden;" /></div>
                 <div class="col-md-12"> 
-                   <a href="/home/create_user" class="btn btn-primary">Create an account</a>
+                   <a href="/home/create_user" class="btn btn-primary">Request an account</a>
                 </div>
             </div>
         </div>
