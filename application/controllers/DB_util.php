@@ -1195,6 +1195,44 @@ class DB_util
         return $json;
     }
     
+    public function listInactivatedAccounts()
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+            return NULL;
+        
+        $sql = "select id, username, full_name, email, create_time from cil_users where activated_time is NULL order by id asc";
+        $result = pg_query($conn,$sql);
+        
+        if(!$result) 
+            return NULL;
+        
+        $mainArray = array();
+        $hasResult = false;
+        while($row = pg_fetch_row($result))
+        {
+            $hasResult = true;
+            $array = array();
+            $array['id'] = intval($row[0]);
+            $array['username'] = $row[1];
+            $array['full_name'] = $row[2];
+            $array['email'] = $row[3];
+            $array['create_time'] = $row[4];
+        
+            array_push($mainArray, $array);
+        }
+        pg_close($conn);
+        
+        if(!$hasResult)
+            return NULL;
+       
+        $json_str = json_encode($mainArray, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        $json = json_decode($json_str);
+        return $json;
+    }
+    
     public function getModelInfo($model_id)
     {
         $CI = CI_Controller::get_instance();
