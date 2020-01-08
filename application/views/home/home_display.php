@@ -84,9 +84,10 @@
                     <a href="/user/change_password" class="btn btn-primary">Change password</a>
                 </div>
                 <div class="col-md-12"><br/></div>
-                <!--<div class="col-md-12">
+                <!-- <div class="col-md-12">
                     <a href="/user/create_user" class="btn btn-primary">Create user</a>
-                </div>-->
+                </div>
+                <div class="col-md-12"><br/></div> -->
                 <div class="col-md-12">
                     <a href="/user/approve_users" class="btn btn-primary">Approve web user accounts</a>
                 </div>

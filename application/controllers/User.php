@@ -4,7 +4,46 @@ include_once 'DB_util.php';
 include_once 'PasswordHash.php';
 class User extends CI_Controller
 {
-    
+    public function do_approve($id)
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        
+        $base_url = $this->config->item('base_url');
+        $login_hash = $this->session->userdata('login_hash');
+        
+        $data['username'] = $this->session->userdata('username');
+        if(is_null($login_hash))
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        
+        $username = $data['username'];
+        if(is_null($username))
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        $isAdmin = $dbutil->isAdmin($username);
+        if(!$isAdmin)
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        
+        if(!is_numeric($id))
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        
+        $id = intval($id);
+        $dbutil->updateUserActivatedTime($id);
+        
+        redirect($base_url."/user/approve_users");
+    }
     
     public function approve_users()
     {
@@ -29,11 +68,20 @@ class User extends CI_Controller
             return;
         }
         $isAdmin = $dbutil->isAdmin($username);
-        if($isAdmin)
+        if(!$isAdmin)
         {
             redirect($base_url."/home");
             return;
         }
+        
+        $inActiveUserlist = $dbutil->listInactivatedAccounts();
+        if(!is_null($inActiveUserlist))
+            $data['inactive_user_list'] =$inActiveUserlist;
+        
+        $data['title'] = "Home > Approve users";
+        $this->load->view('templates/header', $data);
+        $this->load->view('user/approve_users_display', $data);
+        $this->load->view('templates/footer', $data);
     }
     
     

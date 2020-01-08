@@ -261,7 +261,7 @@ class Home extends CI_Controller
         }
         
         $hasher = new PasswordHash(8, TRUE);
-        $pass_hash = $hasher->HashPassword($create_password);
+        $pass_hash = $hasher->HashPassword($password);
         $success = $dbutil->createNewWebUser($username, $pass_hash, $create_email, $fullname);
         
         if($success)
@@ -361,7 +361,7 @@ class Home extends CI_Controller
             else 
             {
                 if(!$error_message_set)
-                    $this->session->set_userdata('login_error', "Incorrect login information.");
+                    $this->session->set_userdata('login_error', "Incorrect login information:".$stored_hash."----".$password);
             }
         }
         
