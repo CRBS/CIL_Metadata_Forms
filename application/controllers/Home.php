@@ -6,6 +6,7 @@ include_once 'DB_util.php';
 include_once 'Ontology_util.php';
 include_once 'Dimension_util.php';
 include_once 'PasswordHash.php';
+include_once 'MailUtil.php';
 class Home extends CI_Controller
 {
     public function index()
@@ -26,6 +27,10 @@ class Home extends CI_Controller
         
         if(is_null($login_hash))
         {
+            
+            $data['login_error'] = $this->session->userdata('login_error');
+            $this->session->set_userdata('login_error', NULL);
+            
             $data['title'] = "Home login";
             $this->load->view('templates/header', $data);
             $this->load->view('login/home_login_display', $data);
@@ -325,6 +330,24 @@ class Home extends CI_Controller
         }
         /*-------------------End reCAPTCHA v3 check  ----------------------------------*/
         
+        $userExist = $dbutil->userExists($username);
+        $error_message_set = false;
+        if($userExist)
+        {
+            $isNotActivated = $dbutil->isNotActivated($username);
+            if($isNotActivated)
+            {
+                $this->session->set_userdata('login_error', "Your account has not been activated by our staff member yet. Please contact us at cdeep3m@ucsd.edu");
+                $error_message_set = true;
+            }
+            
+        }
+        else
+        {
+            $this->session->set_userdata('login_error', "Your account does not exist");
+            $error_message_set = true;
+        }
+        
         if(!is_null($username) && !is_null($password))
         {
             $stored_hash = $dbutil->getPassHash($username);
@@ -335,7 +358,14 @@ class Home extends CI_Controller
                 $this->session->set_userdata('login_hash', $stored_hash);
                 
             }
+            else 
+            {
+                if(!$error_message_set)
+                    $this->session->set_userdata('login_error', "Incorrect login information.");
+            }
         }
+        
+        
               
         redirect($base_url."/home");
         return;

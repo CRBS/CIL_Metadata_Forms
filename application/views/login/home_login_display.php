@@ -7,13 +7,29 @@
                     <div class="card-header" style="background-color:#d3d3d3">Login</div>
                     <div class="card-body">
                         <div class="row">
+                            <div class="col-md-12">
+                            <?php
+                                $error = false;
+                                if(isset($login_error) && !is_null($login_error))
+                                {
+                                    $error = true;
+                            ?>
+                            <div class="alert alert-dismissible alert-danger">
+                                <strong>Error:</strong> <?php echo $login_error; ?>
+                            </div>
+                            <?php
+                                }
+                            ?>
+                            </div>
                             <div class="col-md-4">User name</div>
                             <div class="col-md-8">
                                 <input type="text" name="username" class="form-control">
                             </div>
+                            <hr style="height:10px; visibility:hidden;" />
                         </div>
-
+                        
                         <div class="row">
+                             
                             <div class="col-md-4">Password</div>
                             <div class="col-md-8">
                                 <input type="password" name="password" class="form-control">
@@ -35,7 +51,7 @@
         </div>
         <div class="row">
             <div class="col-md-12 ">
-                                <a href="#">Create account</a>
+                                <a href="/home/create_user">Request an account</a>
                             </div>
         </div>
         
