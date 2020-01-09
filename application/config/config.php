@@ -616,4 +616,4 @@ $config['sendgrid_api_url'] = $json->sendgrid_api_url;
 
 $config['sendgrid_api_key'] = $json->sendgrid_api_key;
 
-$config['email_from'] = 'wawong@gmail.com';
+$config['email_from'] = 'cdeep3m@ucsd.edu';

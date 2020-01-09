@@ -269,10 +269,13 @@ class Home extends CI_Controller
         
         if($success)
         {
+            $email_from = $this->config->item('email_from');
             $sendgrid_api_key = $this->config->item('sendgrid_api_key');
             $sendgrid_api_url = $this->config->item('sendgrid_api_url');
-            $mailutil = new MailUtil();
+            $mutil = new MailUtil();
             
+            $message = "Go to https://protozoa.crbs.ucsd.edu and approve this user.<br/>Username:".$username."<br/>Email:".$create_email;
+            $mutil->sendGridMail($email_from, $email_from, "Account request:".$username, $message, $sendgrid_api_url, $sendgrid_api_key);
             
             $this->session->set_userdata('create_user_success', "Success");
             redirect($base_url."/home/create_user");
