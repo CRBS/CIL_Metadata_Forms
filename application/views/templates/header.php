@@ -47,7 +47,7 @@
                       <a class="nav-link" href="#">About us</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="#">Gallery</a>
+                      <a class="nav-link" href="/home/gallery">Gallery</a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" href="#">Pre-trained models</a>
