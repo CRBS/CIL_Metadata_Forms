@@ -9,6 +9,28 @@ include_once 'PasswordHash.php';
 include_once 'MailUtil.php';
 class Home extends CI_Controller
 {
+    public function pre_trained_models()
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        
+        
+        $base_url = $this->config->item('base_url');
+        $login_hash = $this->session->userdata('login_hash');
+        
+        $data['username'] = $this->session->userdata('username');
+        $username = $data['username'];
+        
+        $publishedModelArray = $dbutil->getPublishedModelList();
+        $data['publishedModelArray'] = $publishedModelArray;
+        
+        $data['title'] = "Cdeep3M Pre-trained models";
+        $this->load->view('templates/header', $data);
+        $this->load->view('home/pre_trained_models_display', $data);
+        $this->load->view('templates/footer', $data);
+    }
+    
     public function gallery()
     {
         $this->load->helper('url');

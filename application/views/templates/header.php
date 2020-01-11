@@ -50,7 +50,7 @@
                       <a class="nav-link" href="/home/gallery">Gallery</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="#">Pre-trained models</a>
+                      <a class="nav-link" href="/home/pre_trained_models">Pre-trained models</a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" href="#">FAQ</a>

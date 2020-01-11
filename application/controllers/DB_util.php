@@ -39,6 +39,40 @@ class DB_util
         
     }
     
+    public function getPublishedModelList()
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "select id, metadata_json, file_size from models where publish_date is not NULL and delete_time is NULL";
+        $conn = pg_pconnect($db_params);
+        $mainArray = array();
+        
+        if(!$conn)
+        {
+             $json_str = json_encode($mainArray);
+             $json = json_decode($json_str);
+             return json;
+        }
+        
+        $result = pg_query($conn,$sql);
+        while($row = pg_fetch_row($result))
+        {
+            $array = array();
+            $array['model_id'] =intval($row[0]);
+            $array['metadata_json'] = $row[1];
+            $file_size = 0;
+            $temp = $row[2];
+            if(!is_null($temp) && is_numeric($temp))
+                $file_size=intval($temp);
+            $array['file_size'] = $file_size;
+            array_push($mainArray, $array);
+        }
+        pg_close($conn);
+        return $mainArray;
+        
+    }
+    
+    
     public function getModelListByUsername($username)
     {
         $CI = CI_Controller::get_instance();
