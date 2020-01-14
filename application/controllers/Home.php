@@ -409,6 +409,11 @@ class Home extends CI_Controller
                 $this->session->set_userdata('username', $username);
                 $this->session->set_userdata('login_hash', $stored_hash);
                 
+                $dbutil->deleteAuthToken($username);
+                $dbutil->insertAuthToken($username);
+                
+                //echo "Here";
+                //return;
             }
             else 
             {

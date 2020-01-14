@@ -7,6 +7,7 @@ class DB_util
     private $metadata = "metadata";
     private $image_name = "image_name";
     
+
     
     public function isModelOwner($id,$username)
     {
@@ -150,6 +151,69 @@ class DB_util
         
         pg_close($conn);
         return $userInfo;
+    }
+    
+    private function generateRandomString($length = 10) 
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+    
+    
+    public function deleteAuthToken($username)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+            return false;
+        $sql = "delete from cil_auth_tokens where username = $1";
+        $input = array();
+        array_push($input, $username);
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        
+        pg_close($conn);
+        return true;
+    }
+    
+    public function insertAuthToken($username)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        
+        
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+            return false;
+        $sql = "insert into cil_auth_tokens(id,username,token,token_create_time) ".
+               " values(nextval('general_seq'),$1,$2, now())";
+        
+        $random_str = $this->generateRandomString(15);
+        $input = array();
+        array_push($input, $username);
+        array_push($input,$random_str);
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        
+        pg_close($conn);
+        return true;
+        
     }
     
     public function insertCroppingInfoWithTraining($id,$contact_email, $training_model_url, $augspeed, $frame)
@@ -838,6 +902,32 @@ class DB_util
         
         pg_close($conn);
         return false;
+    }
+    
+    
+    public function getAuthToken($username)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "select token from cil_auth_tokens where username = $1";
+        $conn = pg_pconnect($db_params);
+        $input = array();
+        array_push($input,$username);
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return NULL;
+        }
+        $token = NULL;
+        if($row = pg_fetch_row($result))
+        {
+            $token = $row[0];
+        }
+        pg_close($conn);
+        return $token;
+        
     }
     
     public function getAllAvailableImages()
