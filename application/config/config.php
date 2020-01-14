@@ -34,7 +34,8 @@ $json = json_decode($json_str);
 if(!$is_prod)
     $config['base_url'] = 'http://localhost';
 else
-    $config['base_url'] = 'https://protozoa.crbs.ucsd.edu';     
+    $config['base_url'] = 'https://cdeep3m-stage.crbs.ucsd.edu';
+    //$config['base_url'] = 'https://protozoa.crbs.ucsd.edu';     
 /*
 |--------------------------------------------------------------------------
 | Index File
