@@ -11,6 +11,44 @@ include_once 'Image_dbutil.php';
 
 class Cdeep3m_preview extends CI_Controller
 {
+    public function prp_demo()
+    {
+        
+        $this->load->helper('url');
+        $base_url = $this->config->item('base_url');
+        $data['image_viewer_prefix'] = $this->config->item('image_viewer_prefix');
+        
+        $dbutil = new DB_util();
+        $cutil = new Curl_util();
+        $gutil = new General_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        
+        $image_array = array();
+        array_push($image_array, "CIL_50451");
+        array_push($image_array, "CCDB_8192");
+        array_push($image_array, "CCDB_8246");
+        array_push($image_array, "CIL_50584");
+        array_push($image_array,"CIL_50585");
+        array_push($image_array,"CIL_50582");
+        array_push($image_array,"CIL_50643");
+        array_push($image_array,"CIL_50644");
+        array_push($image_array,"CIL_50581");
+        array_push($image_array,"CIL_50667");
+        array_push($image_array,"CIL_50668");
+        array_push($image_array,"CIL_50669");
+        $data['image_array'] = $image_array;
+        $data['title'] = "Home > CIL volume demo";
+        $this->load->view('templates/header', $data);
+        $this->load->view('cdeep3m/prp_demo_display', $data);
+        $this->load->view('templates/footer', $data); 
+    }
+    
     public function submit_preview($crop_id)
     {
         $this->load->helper('url');

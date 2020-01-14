@@ -36,6 +36,13 @@ if(!$is_prod)
 else
     $config['base_url'] = 'https://cdeep3m-stage.crbs.ucsd.edu';
     //$config['base_url'] = 'https://protozoa.crbs.ucsd.edu';     
+
+if(!$is_prod)
+    $config['image_viewer_prefix'] = 'https://cdeep3m-viewer-stage.crbs.ucsd.edu';
+else 
+    $config['image_viewer_prefix'] = 'https://cdeep3m-viewer.crbs.ucsd.edu';
+
+
 /*
 |--------------------------------------------------------------------------
 | Index File

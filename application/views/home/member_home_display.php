@@ -59,7 +59,7 @@
             </div>
             <div class="col-md-12"><hr style="height:1px; visibility:hidden;" /></div>
             <div class="col-md-12"> 
-               <a href="http://cellimagelibrary.org/cdeep3m/prp_demo" class="btn btn-primary">CDeep3M Demo on the CIL viewer</a>
+               <a href="/cdeep3m_preview/prp_demo" class="btn btn-primary">CDeep3M Demo on the CIL viewer</a>
             </div>
         </div>
     </div>
