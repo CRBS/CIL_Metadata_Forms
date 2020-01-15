@@ -23,6 +23,9 @@ class Cdeep3m_preview extends CI_Controller
         $gutil = new General_util();
         $login_hash = $this->session->userdata('login_hash');
         $data['username'] = $this->session->userdata('username');
+        //echo $data['username'];
+        $data['token'] = $dbutil->getAuthToken($data['username']);
+        //echo "<br/>Token:".$data['token']."----";
         if(is_null($login_hash))
         {
             redirect ($base_url."/home");

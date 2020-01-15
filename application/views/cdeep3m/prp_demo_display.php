@@ -41,7 +41,7 @@
                     $id = str_replace("CIL_", "", $image);
             ?>
             <center><div class="thumbnail-kenburn">
-                <a alt="<?php echo $image ?>" title="<?php echo $image ?>" href="<?php echo $image_viewer_prefix ?>/cdeep3m_prp/<?php echo $image; ?>" target="_blank" >
+                <a alt="<?php echo $image ?>" title="<?php echo $image ?>" href="<?php echo $image_viewer_prefix ?>/cdeep3m_prp/<?php echo $image; ?>?token=<?php echo $token ?>" target="_blank" >
                     <img src="https://cildata.crbs.ucsd.edu/media/thumbnail_display/<?php echo $id; ?>/<?php echo $id; ?>_thumbnailx140.jpg" />
                 </a>
                 </div></center>
@@ -53,7 +53,7 @@
                     $id = str_replace("CCDB_", "", $image);
             ?>
              <center><div class="thumbnail-kenburn">
-                <a alt="<?php echo $image ?>" title="<?php echo $image ?>" href="<?php echo $image_viewer_prefix ?>/cdeep3m_prp/<?php echo $image; ?>" target="_blank" >
+                <a alt="<?php echo $image ?>" title="<?php echo $image ?>" href="<?php echo $image_viewer_prefix ?>/cdeep3m_prp/<?php echo $image; ?>?token=<?php echo $token ?>" target="_blank" >
                     <img src="https://cildata.crbs.ucsd.edu/display_images/ccdb/ccdb_512/<?php echo $id; ?>_512v.jpg" width="140">
                 </a>
             </div></center>
