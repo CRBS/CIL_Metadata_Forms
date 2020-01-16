@@ -33,7 +33,7 @@
                 </div>
                 
                 <div class="col-md-12">
-                    <img src="https://cildata.crbs.ucsd.edu/media/model_display/50685/50685_thumbnailx512.jpg" width="100%" />
+                    <img src="/pix/50685_thumbnailx512.jpg" width="100%" />
                 </div>
                  <div class="col-md-12"><hr style="height:1px; visibility:hidden;" /></div>
                  

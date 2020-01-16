@@ -14,8 +14,23 @@
     </div>
     <div class="row">
         <div class="col-md-12">
+            <b>Accepted Filetypes:</b> .PNG or .TIF
+        </div>
+        <div class="col-md-12">
+            <b>Sizelimit per file:</b> 20MB
+        </div>
+        <div class="col-md-12">
+            <b>Max number of files:</b> 10
+        </div>
+        <div class="col-md-12">
+            <b>Note:</b>
+             For best results upload acquired electron micrographs as TIFs (without lowering bit-depth or histogram adjustments). Automatic image adjustments will be applied.
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
             <br/>
-            <span class="cil_title2">Run CDeep3M Preview Step 1: Upload the model file</span>
+            <span class="cil_title2">Run CDeep3M Preview Step 1: Upload the images</span>
         </div>
     </div>
     <div class="row">
