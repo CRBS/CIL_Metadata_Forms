@@ -119,6 +119,47 @@ class DB_util
         return $json;
     }
     
+    
+    
+    public function getUserInfoByID($id)
+    {
+        $sql = "select email, user_role, full_name from cil_users where id = $1";
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        
+        if(!is_numeric($id))
+            return NULL;
+        
+        $id = intval($id);
+ 
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return NULL;
+        }
+        
+        $input = array();
+        array_push($input,$id);
+        $result = pg_query_params($conn, $sql, $input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return NULL;
+        }
+        
+        $userInfo = NULL;
+        if($row = pg_fetch_row($result))
+        {
+            $userInfo = array();
+            $userInfo['email'] = $row[0];
+            $userInfo['user_role'] = intval($row[1]);
+            $userInfo['full_name'] = $row[2];
+        }
+        
+        pg_close($conn);
+        return $userInfo;
+    }
+    
     public function getUserInfo($username)
     {
         $sql = "select email, user_role, full_name from cil_users where username = $1";

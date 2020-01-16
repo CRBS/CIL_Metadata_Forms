@@ -2,6 +2,7 @@
 include_once 'General_util.php';
 include_once 'DB_util.php';
 include_once 'PasswordHash.php';
+include_once 'MailUtil.php';
 class User extends CI_Controller
 {
     public function do_approve($id)
@@ -9,9 +10,15 @@ class User extends CI_Controller
         $this->load->helper('url');
         $dbutil = new DB_util();
         $gutil = new General_util();
-        
+        $mutil = new MailUtil();
         $base_url = $this->config->item('base_url');
         $login_hash = $this->session->userdata('login_hash');
+        
+        /***********Email key**************************/
+        $sendgrid_api_url = $this->config->item('sendgrid_api_url');
+        $sendgrid_api_key = $this->config->item('sendgrid_api_key');
+        $email_from = $this->config->item('email_from');
+        /***********End Email key**********************/
         
         $data['username'] = $this->session->userdata('username');
         if(is_null($login_hash))
@@ -41,6 +48,13 @@ class User extends CI_Controller
         
         $id = intval($id);
         $dbutil->updateUserActivatedTime($id);
+        $userInfo = $dbutil->getUserInfoByID($id);
+        if(!is_null($userInfo))
+        {
+            $email_to = $userInfo['email'];
+            $message = "Go to ".$base_url;
+            $mutil->sendGridMail($email_to, $email_from, "Your CDeep3M account has been approved", $message, $sendgrid_api_url, $sendgrid_api_key);
+        }
         
         redirect($base_url."/user/approve_users");
     }
