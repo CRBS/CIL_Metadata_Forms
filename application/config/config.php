@@ -40,7 +40,7 @@ else
 if(!$is_prod)
     $config['image_viewer_prefix'] = 'https://cdeep3m-viewer-stage.crbs.ucsd.edu';
 else 
-    $config['image_viewer_prefix'] = 'https://cdeep3m-viewer.crbs.ucsd.edu';
+    $config['image_viewer_prefix'] = 'https://cdeep3m-viewer-stage.crbs.ucsd.edu';
 
 
 /*
