@@ -14,8 +14,16 @@
     <div class="row">
         <div class="col-md-12">
             <br/>
-            <span class="cil_title2">Step 1: Upload the model file</span>
+            <span class="cil_title2">Step 1: Upload trained model</span>
         </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+        Upload your trained CDeep3M model/s and share it to contribute to the database. Each trained model receives a DOI for citations.<br/>
+        (Info: Follow these steps to <a href="https://github.com/CRBS/cdeep3m/wiki/Demorun-2-Running-small-training-and-prediction-with-mito-testsample-dataset" target="_blank">generate a new trained model</a> or 
+        <a href="https://github.com/CRBS/cdeep3m/wiki/How-to-retrain-a-pretrained-network" target="_blank">re-train a previously trained model</a>)
+        </div>
+        <div class="col-md-12"><br/></div>
     </div>
     <div class="row">
         <div class="col-md-6">
