@@ -44,7 +44,7 @@
                         &nbsp;&nbsp;&nbsp;
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="#">About us</a>
+                      <a class="nav-link" href="/home/about_us">About us</a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" href="/home/gallery">Gallery</a>
