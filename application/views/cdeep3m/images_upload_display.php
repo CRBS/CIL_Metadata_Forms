@@ -16,9 +16,9 @@
         <div class="col-md-12">
             <b>Accepted Filetypes:</b> .PNG or .TIF
         </div>
-        <div class="col-md-12">
+        <!-- <div class="col-md-12">
             <b>Sizelimit per file:</b> 20MB
-        </div>
+        </div> -->
         <div class="col-md-12">
             <b>Max number of files:</b> 10
         </div>
@@ -88,7 +88,7 @@ $(function() {
 		//unique_names : true,
 		
 		filters : {
-			max_file_size : '20mb',
+			max_file_size : '999999999mb',
 			mime_types: [
 				//{title : "Image files", extensions : "jpg,gif,png,tif"},
 				{title : "png & tif", extensions : "png,tif"}
