@@ -20,7 +20,7 @@
             <b>Sizelimit per file:</b> 20MB
         </div> -->
         <div class="col-md-12">
-            <b>Max number of files:</b> 10
+            <b>Max number of files:</b> 20
         </div>
         <div class="col-md-12">
             <b>Note:</b>
@@ -104,11 +104,14 @@ $(function() {
                              //gurl = "/upload_images/process_upload/"+files[0].name;
                          }
                         
-                         if (up.files.length > 1) 
+                         if (up.files.length > 20) 
                          {
                             //up.removeFile(files[0]);
                             //alert("Only 1 file is allowed");
+                            alert('You are allowed to add only 20 files.');
+                            up.splice(); // reset the queue to zero);
                          }
+                         
                     },
                     FileUploaded: function(up, file, info) 
                     {
