@@ -882,7 +882,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $conn = pg_pconnect($db_params);
-        $sql = "select id, metadata_json from models where publish_date is not null order by id asc";
+        $sql = "select id, metadata_json from models where publish_date is not null order by  display_order desc";
         $result = pg_query($conn,$sql);
         if(!$result) 
         {
