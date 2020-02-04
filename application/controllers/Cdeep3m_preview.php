@@ -179,7 +179,7 @@ class Cdeep3m_preview extends CI_Controller
             
             $data['email'] = $userInfo['email'];
         }
-        
+        $data['all_model_json'] = $dbutil->getAllModelJsonList();
         $data['crop_id'] = intval($crop_id);
         $data['step'] = 2;
         $data['title'] = 'Home > Upload images > Select parameters';

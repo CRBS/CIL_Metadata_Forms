@@ -6,6 +6,23 @@ require_once 'DB_util.php';
 
 class Rest extends REST_Controller
 {
+    
+    public function all_model_json_get()
+    {
+        $dbutil = new DB_util();
+        $mjsonList = $dbutil->getAllModelJsonList();
+        if(!is_null($mjsonList))
+        {
+            $this->response($mjsonList);
+        }
+        else
+        {
+            $array = array();
+            $array['Error'] = "Cannot find the result";
+            $this->response($array);   
+        }
+    }
+    
     public function model_json_get($model_id)
     {
         $dbutil = new DB_util();

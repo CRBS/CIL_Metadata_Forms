@@ -874,6 +874,42 @@ class DB_util
         return $json;
     }
     
+    public function getAllModelJsonList()
+    {
+        $array = array();
+        //$array['Name'] = 'Test';
+        $json = null;
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $conn = pg_pconnect($db_params);
+        $sql = "select id, metadata_json from models where publish_date is not null order by id asc";
+        $result = pg_query($conn,$sql);
+        if(!$result) 
+        {
+            pg_close($conn);
+            $json_str = json_encode($array);
+            $json = json_decode($json_str);
+            return $json;
+        }
+        
+        while(($row = pg_fetch_row($result)))
+        {
+            $id = $row[0];
+            $json = null;
+            $json_str = $row[1];
+            if(!is_null($json_str))
+            {
+                $json = json_decode($json_str);
+                $json->id = intval($id);
+                array_push($array, $json);
+            }
+            
+        }
+        pg_close($conn);
+        return $array;
+    }
+    
+    
     public function getModelJson($model_id=0)
     {
         $array = array();

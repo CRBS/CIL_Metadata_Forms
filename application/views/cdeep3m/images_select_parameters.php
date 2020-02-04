@@ -24,8 +24,29 @@
                             </div>
                             <div class="col-md-6">
                                 <select name="ct_training_models" id="ct_training_models" class="form-control" onchange="showRuntime()">
-                                   
-                                    <option value="https://doi.org/10.7295/W9CDEEP3M50682">SBEM synaptic vesicles (50682)</option><option value="https://doi.org/10.7295/W9CDEEP3M50681">SBEM and ssTEM Mitochondria  (50681)</option><option value="https://doi.org/10.7295/W9CDEEP3M50673">SEMTEM membranes (50673)</option><option value="https://doi.org/10.7295/W9CDEEP3M50685">Synapses (50685)</option><option value="https://doi.org/10.7295/W9CDEEP3M50687">SBEM Membranes (denoised) (50687)</option><option value="https://doi.org/10.7295/W9CDEEP3M50689">SBEM Mitochondria (denoised) (50689)</option><option value="https://doi.org/10.7295/W9CDEEP3M50692">SBEM Membranes (denoised, resize augm.) (50692)</option>                                 </select> 
+                                    <!--
+                                    <option value="https://doi.org/10.7295/W9CDEEP3M50682">SBEM synaptic vesicles (50682)</option>
+                                    <option value="https://doi.org/10.7295/W9CDEEP3M50681">SBEM and ssTEM Mitochondria  (50681)</option>
+                                    <option value="https://doi.org/10.7295/W9CDEEP3M50673">SEMTEM membranes (50673)</option>
+                                    <option value="https://doi.org/10.7295/W9CDEEP3M50685">Synapses (50685)</option>
+                                    <option value="https://doi.org/10.7295/W9CDEEP3M50687">SBEM Membranes (denoised) (50687)</option>
+                                    <option value="https://doi.org/10.7295/W9CDEEP3M50689">SBEM Mitochondria (denoised) (50689)</option>
+                                    <option value="https://doi.org/10.7295/W9CDEEP3M50692">SBEM Membranes (denoised, resize augm.) (50692)</option>  
+                                    -->
+                                    <?php
+                                        if(isset($all_model_json) && is_array($all_model_json))
+                                        {
+                                            foreach($all_model_json as $mjson)
+                                            {
+                                    ?>
+                                            <option value="https://doi.org/10.7295/W9CDEEP3M<?php echo $mjson->id ?>"><?php  if(isset($mjson->Cdeepdm_model->Name)) echo $mjson->Cdeepdm_model->Name." (".$mjson->id.")"; ?> </option>
+                                    <?php
+                                            }
+                                        }
+                                    
+                                    
+                                    ?>
+                                </select> 
                             </div>
                             <div class="col-md-2"><a href="http://cellimagelibrary.org/cdeep3m" target="_blank">Details</a></div>
                             <!-----End Training model-------------->
