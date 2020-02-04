@@ -44,7 +44,7 @@ class DB_util
     {
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
-        $sql = "select id, metadata_json, file_size from models where publish_date is not NULL and delete_time is NULL";
+        $sql = "select id, metadata_json, file_size from models where publish_date is not NULL and delete_time is NULL order by id desc";
         $conn = pg_pconnect($db_params);
         $mainArray = array();
         

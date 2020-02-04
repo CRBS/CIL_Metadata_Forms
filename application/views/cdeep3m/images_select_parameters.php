@@ -50,21 +50,28 @@
                             </div>
                             <div class="col-md-2"><a href="http://cellimagelibrary.org/cdeep3m" target="_blank">Details</a></div>
                             <!-----End Training model-------------->
-                            
+                            <hr style="height:10px; visibility:hidden;" />
                             <!------------------Augmentation---------------->
-                                                        <div class="col-md-4">
+                            <div class="col-md-4">
                                 Augspeed:
                             </div>
                             <div class="col-md-6">
-                                <select name="ct_augmentation" id="ct_augmentation" class="form-control" onchange="showRuntime()">
+                                <select name="ct_augmentation" id="ct_augmentation" class="form-control" onchange="showRuntime()"> 
                                     <option value="10">10</option>
                                     <!-- <option value="8">8</option> -->
                                     <option value="4">4</option>
                                     <option value="2">2</option>
                                     <option value="1">1</option>
-                                </select>
+                                </select> 
+                                
                             </div> 
-                            <div class="col-md-2"></div>
+                            <div class="col-md-2"> 
+                                <!-- <a href="#"  data-toggle="tooltip" data-placement="left" data-html="true" title="Augspeed 10: fastest, no addtl augmentation <br/>Augspeed 1: slowest, 16x augmented (8x for 1fm), higher accuracy">Help</a>  -->
+                                <a href="#" style="color:#00aaff" title="Augspeed 10: fastest, no addtl augmentation
+Augspeed 1: slowest, 16x augmented (8x for 1fm), higher accuracy" >Info</a> 
+                                   
+                            </div> 
+                                   
                             <div class="col-md-4">
                                 Neural net:
                             </div>
@@ -76,7 +83,11 @@
                                 <input type="checkbox" id="fm3" name="fm3" value="3fm" onchange="showRuntime()">3fm&nbsp;&nbsp;
                                 <input type="checkbox" id="fm5" name="fm5" value="5fm" onchange="showRuntime()">5fm
                             </div> 
-                            <div class="col-md-2"></div> 
+                            <div class="col-md-2">
+                                <a href="#" style="color:#00aaff" title="1fm (1 frame) = 2D model
+3fm (3 frames) = 3D model
+5fm (5 frames) = 3D model" >Info</a>
+                            </div> 
                             <div class="col-md-12"><br/></div>
                                                         <!------------------End Augmentation---------------->
 
@@ -126,6 +137,14 @@
 
 
 <script>
+   /* $(function () {
+  $('[data-toggle="tooltip"]').tooltip({html: true});
+  
+   $('.example').tooltip({html: true}); 
+})*/
+    
+    
+    
     document.getElementById('after_submit').style.display = "none";
    function do_submit_tasks()
    {
