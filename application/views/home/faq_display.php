@@ -34,6 +34,13 @@
         6) Submit<br/>
 
         </div>
+        
+        <div class="col-md-12">
+            <video controls=""   width="100%" >
+                <source src="/pix/cdeep3m_demo.mp4" type="video/mp4">
+           </video>
+        </div>
+        
         <div class="col-md-12"><br/></div>
         <div class="col-md-12">
             <span class="cil_title2">What is Augspeed:</span>
