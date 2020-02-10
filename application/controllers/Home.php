@@ -385,6 +385,7 @@ class Home extends CI_Controller
         //echo "<br/>Password:".$password;
         $base_url = $this->config->item('base_url');
         $data['base_url'] = $base_url;
+        $error_message_set = false;
         /*-------------------reCAPTCHA v3 check  ----------------------------------*/
         $cutil = new Curl_util();
         $google_reCAPTCHA_site_key = $this->config->item('google_reCAPTCHA_site_key');
@@ -406,22 +407,47 @@ class Home extends CI_Controller
                     {
                         if(isset($json->score) && $json->score >= $google_reCAPTCHA_threshold)
                         {
-                            //echo "<br/>Pass!";
+                            echo "<br/>Pass!";
                         }
                         else
                         {
+                            $this->session->set_userdata('login_error', "Your recaptcha score is too low.");
+                            $error_message_set = true;
                             redirect($base_url."/home");
                             return;
                         }
                     }
+                    else
+                    {
+                        $this->session->set_userdata('login_error', "Your recaptcha check failed.");
+                        $error_message_set = true;
+                        redirect($base_url."/home");
+                        return;
+                    }
                 }
+            }
+            else
+            {
+                $this->session->set_userdata('login_error', "Your recaptcha token is wrong or does not exist.");
+                $error_message_set = true;
+                redirect($base_url."/home");
+                return;
             }
             
         }
+        else
+        {
+            $this->session->set_userdata('login_error', "The server recaptcha configuration is wrong.");
+            $error_message_set = true;
+            redirect($base_url."/home");
+            return;
+        }
+        
+       
         /*-------------------End reCAPTCHA v3 check  ----------------------------------*/
         
         $userExist = $dbutil->userExists($username);
-        $error_message_set = false;
+        
         if($userExist)
         {
             $isNotActivated = $dbutil->isNotActivated($username);
