@@ -564,6 +564,11 @@ else
     $config['upload_location'] = "/var/www/upload_dir";
 
 if(!$is_prod)
+    $config['log_location'] = "C:/Test2";
+else
+    $config['log_location'] = "/var/www/logs";
+
+if(!$is_prod)
     $config['model_upload_location'] = "C:/Test2";
 else
     $config['model_upload_location'] = "/export2/media/model_display"; //"/var/www/upload_dir/models";
@@ -625,3 +630,12 @@ $config['sendgrid_api_url'] = $json->sendgrid_api_url;
 $config['sendgrid_api_key'] = $json->sendgrid_api_key;
 
 $config['email_from'] = 'cdeep3m@ucsd.edu';
+
+
+/***********Gmail config*******************************/
+$config['gmail_sender'] = $json->gmail_sender;
+$config['gmail_sender_name'] = $json->gmail_sender_name;
+$config['gmail_sender_pwd'] = $json->gmail_sender_pwd;
+$config['gmail_reply_to'] = $json->gmail_reply_to;
+$config['gmail_reply_to_name'] = $json->gmail_reply_to_name;
+/***********End Gmail config***************************/

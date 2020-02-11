@@ -299,6 +299,8 @@ class Home extends CI_Controller
                 $url = $google_reCAPTCHA_verify_url."?secret=".$google_reCAPTCHA_secret_key."&response=".$recaptcha_token."";
                 
                 $response = $cutil->curl_get($url);
+                echo "<br/>".$url;
+                echo "<br/>".$response;
                 if(!is_null($response))
                 {
                     $json = json_decode($response);
@@ -310,15 +312,39 @@ class Home extends CI_Controller
                         }
                         else
                         {
-                            //redirect($base_url."/home");
-                            //return;
-                            echo "<br/>Not Pass!";
+                            $this->session->set_userdata('login_error', "Your recaptcha score is too low.");
+                            $error_message_set = true;
+                            redirect($base_url."/home");
+                            return;
                         }
+                    }
+                    else
+                    {
+                        $this->session->set_userdata('login_error', "Your recaptcha check failed.");
+                        $error_message_set = true;
+                        redirect($base_url."/home");
+                        return;
                     }
                 }
             }
+            else
+            {
+                $this->session->set_userdata('login_error', "Your recaptcha token is wrong or does not exist.");
+                $error_message_set = true;
+                redirect($base_url."/home");
+                return;
+            }
             
         }
+        else
+        {
+            $this->session->set_userdata('login_error', "The server recaptcha configuration is wrong.");
+            $error_message_set = true;
+            redirect($base_url."/home");
+            return;
+        }
+        
+       
         /*-------------------End reCAPTCHA v3 check  ----------------------------------*/
         
         echo "<br/>".$username;
@@ -348,13 +374,31 @@ class Home extends CI_Controller
         
         if($success)
         {
-            $email_from = $this->config->item('email_from');
-            $sendgrid_api_key = $this->config->item('sendgrid_api_key');
-            $sendgrid_api_url = $this->config->item('sendgrid_api_url');
             $mutil = new MailUtil();
             
+            $email_from = $this->config->item('email_from');
+            /*$sendgrid_api_key = $this->config->item('sendgrid_api_key');
+            $sendgrid_api_url = $this->config->item('sendgrid_api_url');
+            
             $message = "Go to https://protozoa.crbs.ucsd.edu and approve this user.<br/>Username:".$username."<br/>Email:".$create_email;
-            $mutil->sendGridMail($email_from, $email_from, "Account request:".$username, $message, $sendgrid_api_url, $sendgrid_api_key);
+            $mutil->sendGridMail($email_from, $email_from, "Account request:".$username, $message, $sendgrid_api_url, $sendgrid_api_key);             
+            */
+            
+            /***************Send Gmail*******************/
+            $log_location = $this->config->item('log_location');
+            $email_log_file = $log_location."/email_error.log";
+            $subject = "Account request:".$username;
+            $message = "Go to ".$base_url." and approve this user.<br/>Username:".$username."<br/>Email:".$create_email;
+            
+            $gmail_sender = $this->config->item('gmail_sender');
+            $gmail_sender_name = $this->config->item('gmail_sender_name');
+            $gmail_sender_pwd = $this->config->item('gmail_sender_pwd');
+            $gmail_reply_to = $this->config->item('gmail_reply_to');
+            $gmail_reply_to_name = $this->config->item('gmail_reply_to_name');
+            
+            $mutil->sendGmail($gmail_sender, $gmail_sender_name, $gmail_sender_pwd,$email_from, $gmail_reply_to, $gmail_reply_to_name, $subject, $message, $email_log_file);
+            /***************End send Gmail***************/
+            
             
             $this->session->set_userdata('create_user_success', "Success");
             redirect($base_url."/home/create_user");
