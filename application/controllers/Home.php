@@ -9,6 +9,18 @@ include_once 'PasswordHash.php';
 include_once 'MailUtil.php';
 class Home extends CI_Controller
 {
+    private function generateRandomString($length = 10) 
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) 
+        {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+    
     public function faq()
     {
         $this->load->helper('url');
@@ -267,6 +279,143 @@ class Home extends CI_Controller
     }
     
     
+    public function do_forgot_password()
+    {
+        $this->load->helper('url');
+        
+        $dbutil = new DB_util();
+        
+        $hasher = new PasswordHash(8, TRUE);
+        
+        
+        $email = $this->input->post('email', TRUE);
+  
+        $base_url = $this->config->item('base_url');
+        $data['base_url'] = $base_url;
+        
+        
+        /*-------------------reCAPTCHA v3 check  ----------------------------------*/
+        $cutil = new Curl_util();
+        $google_reCAPTCHA_site_key = $this->config->item('google_reCAPTCHA_site_key');
+        $google_reCAPTCHA_secret_key = $this->config->item('google_reCAPTCHA_secret_key');
+        $google_reCAPTCHA_verify_url = $this->config->item('google_reCAPTCHA_verify_url');
+        $google_reCAPTCHA_threshold = $this->config->item('google_reCAPTCHA_threshold');
+        if(isset($google_reCAPTCHA_site_key) && !is_null($google_reCAPTCHA_site_key))
+        {
+            $recaptcha_token = $this->input->post('recaptcha_token', TRUE);
+            if(isset($recaptcha_token) && strlen($recaptcha_token) > 0)
+            {
+                $url = $google_reCAPTCHA_verify_url."?secret=".$google_reCAPTCHA_secret_key."&response=".$recaptcha_token."";
+                
+                $response = $cutil->curl_get($url);
+                //echo "<br/>".$url;
+                //echo "<br/>".$response;
+                if(!is_null($response))
+                {
+                    $json = json_decode($response);
+                    if(isset($json->success) && $json->success)
+                    {
+                        if(isset($json->score) && $json->score >= $google_reCAPTCHA_threshold)
+                        {
+                            //echo "<br/>Pass!";
+                        }
+                        else
+                        {
+                            $this->session->set_userdata('login_error', "Your recaptcha score is too low.");
+                            $error_message_set = true;
+                            redirect($base_url."/home/forgot_password");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        $this->session->set_userdata('login_error', "Please try again.");
+                        $error_message_set = true;
+                        redirect($base_url."/home/forgot_password");
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                $this->session->set_userdata('login_error', "Your recaptcha token is wrong or does not exist.");
+                $error_message_set = true;
+                redirect($base_url."/home/forgot_password");
+                return;
+            }
+            
+        }
+        else
+        {
+            $this->session->set_userdata('login_error', "The server recaptcha configuration is wrong.");
+            $error_message_set = true;
+            redirect($base_url."/home/forgot_password");
+            return;
+        }
+        /*-------------------End reCAPTCHA v3 check  ----------------------------------*/
+        
+        
+        echo "<br/>".$email;
+        if(is_null($email) || strlen($email) == 0)
+        {
+            $this->session->set_userdata('login_error', "The email is empty.");
+            $error_message_set = true;
+            redirect($base_url."/home/forgot_password");
+            return;
+        }
+        $json = $dbutil->getUserInfoByEmail($email);
+        if(is_null($json))
+        {
+            $this->session->set_userdata('login_error', "Your email,".$email." does not exist in our system.");
+            $error_message_set = true;
+            redirect($base_url."/home/forgot_password");
+            return;
+        }
+        
+        $json_str = json_encode($json,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        //echo "<br/>".$json_str;
+        $new_password = $this->generateRandomString(10);
+        $username = $json->username;
+        echo "<br/>".$username;
+        echo "<br/>".$new_password;
+        $hash_value = $hasher->HashPassword($new_password);
+        echo "<br/>".$hash_value;
+        $success = $dbutil->updateUserPassword($username, $hash_value);
+        if(!$success)
+        {
+            $this->session->set_userdata('login_error', "The system could not update your password. Please try again.");
+            $error_message_set = true;
+            redirect($base_url."/home/forgot_password");
+            return;
+        }
+        
+        $mutil = new MailUtil();
+        /***************Send Gmail*******************/
+        $log_location = $this->config->item('log_location');
+        $email_log_file = $log_location."/email_error.log";
+        
+        $subject = "CDeep3M - Password reset";
+        $message = "Username:".$username."<br/>Password:".$new_password;
+            
+        $gmail_sender = $this->config->item('gmail_sender');
+        $gmail_sender_name = $this->config->item('gmail_sender_name');
+        $gmail_sender_pwd = $this->config->item('gmail_sender_pwd');
+        $gmail_reply_to = $this->config->item('gmail_reply_to');
+        $gmail_reply_to_name = $this->config->item('gmail_reply_to_name');
+            
+        $mutil->sendGmail($gmail_sender, $gmail_sender_name, $gmail_sender_pwd,$email, $gmail_reply_to, $gmail_reply_to_name, $subject, $message, $email_log_file);
+        /***************End send Gmail***************/
+        
+        $data['email'] = $email;
+        $data['title'] = "Cdeep3M | Password reset";
+        $this->load->view('templates/header', $data);
+        $this->load->view('home/success_forgot_password_display', $data);
+        $this->load->view('templates/footer', $data);
+        
+        
+    }
+    
+    
     public function do_create_user()
     {
         $this->load->helper('url');
@@ -432,7 +581,12 @@ class Home extends CI_Controller
         
         $data['google_reCAPTCHA_site_key'] = $this->config->item('google_reCAPTCHA_site_key');
         $data['google_reCAPTCHA_secret_key'] = $this->config->item('google_reCAPTCHA_secret_key');
-        
+        /***************Login error**************/
+        $login_error  = $this->session->userdata('login_error');
+        if(!is_null($login_error))
+            $data['login_error'] = $login_error;
+        $this->session->set_userdata('login_error', NULL);
+        /***************End Login error**************/
         
         $data['title'] = "Forgot Username or Password";
         $this->load->view('templates/header', $data);
@@ -478,7 +632,7 @@ class Home extends CI_Controller
                         }
                         else
                         {
-                            $this->session->set_userdata('login_error', "Your recaptcha score is too low.");
+                            $this->session->set_userdata('login_error', "Please try again.");
                             $error_message_set = true;
                             redirect($base_url."/home");
                             return;

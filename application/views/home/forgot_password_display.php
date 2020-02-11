@@ -1,5 +1,5 @@
 <div class="container">
-    <form action="/home/reset_password" method="POST" onsubmit="return validateEmailAddress()">
+    <form action="/home/do_forgot_password" method="POST" onsubmit="return validateEmailAddress()">
         <br/>
         <div class="row">
             <div class="col-md-6">
@@ -69,8 +69,9 @@
             } 
         ?>
         <script> 
-            function validateEmailAddress(email) 
+            function validateEmailAddress() 
             {
+                var email = document.getElementById('email').value;
                 var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                 
                 var result = re.test(String(email).toLowerCase());
@@ -80,6 +81,17 @@
                 }
                 return result;
             }
+            /*function ValidateEmail() 
+            {
+                var email = document.getElementById('email');
+                alert(email);
+             if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(myForm.emailAddr.value))
+              {
+                return (true)
+              }
+                alert("You have entered an invalid email address!")
+                return (false)
+            }*/
         </script>
         
     </form>

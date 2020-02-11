@@ -7,7 +7,44 @@ class DB_util
     private $metadata = "metadata";
     private $image_name = "image_name";
     
-
+    public function getUserInfoByEmail($email)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "select id, username, full_name, user_role, create_time, activated_time from cil_users where email = $1";
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return NULL;
+        }
+        
+        $input = array();
+        array_push($input,$email);
+        
+        $result = pg_query_params($conn, $sql, $input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return NULL;
+        }
+        
+        $array = NULL;
+        if($row = pg_fetch_row($result))
+        {
+            $array = array();
+            $array['id'] = intval($row[0]);
+            $array['username'] = $row[1];
+            $array['full_name'] = $row[2];
+            $array['user_role'] =intval($row[3]);
+            $array['create_time'] = $row[4];
+            $array['activated_time'] = $row[5];
+        }
+        
+        pg_close($conn);
+        $json_str = json_encode($array, JSON_UNESCAPED_SLASHES);
+        $json = json_decode($json_str);
+        return $json;
+    }
     
     public function isModelOwner($id,$username)
     {
