@@ -1,5 +1,5 @@
 <div class="container">
-     <form action="/home/login" method="POST">
+    <form action="/home/reset_password" method="POST" onsubmit="return validateEmailAddress()">
         <br/>
         <div class="row">
             <div class="col-md-6">
@@ -20,24 +20,18 @@
                     </div>
                 </div>
                 <div class="card border-dark mb-3">
-                    <div class="card-header" style="background-color:#d3d3d3">Login</div>
+                    <div class="card-header" style="background-color:#d3d3d3">Reset your password</div>
                     <div class="card-body">
                         <div class="row">
                             
-                            <div class="col-md-4">User name</div>
+                            <div class="col-md-4">Email:</div>
                             <div class="col-md-8">
-                                <input type="text" name="username" class="form-control">
+                                <input id="email" type="text" name="email" class="form-control">
                             </div>
-                            <hr style="height:10px; visibility:hidden;" />
+                            
                         </div>
                         
-                        <div class="row">
-                             
-                            <div class="col-md-4">Password</div>
-                            <div class="col-md-8">
-                                <input type="password" name="password" class="form-control">
-                            </div>
-                        </div>
+                        
                         <br/>
                         <div class="row">
                             <div class="col-md-12 ">
@@ -52,23 +46,7 @@
             <div class="col-md-6">
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="row">
-                    <div class="col-md-5">
-                        <a href="/home/create_user">Request an account</a>
-                    </div>
-                    <div class="col-md-2"></div>
-                    <div class="col-md-5">
-                        <a href="/home/forgot_password">Forgot Username or Password</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                &nbsp;
-            </div>
-            
-        </div>
+        
         
         
         <?php 
@@ -90,7 +68,20 @@
         <?php
             } 
         ?>
-        
+        <script> 
+            function validateEmailAddress(email) 
+            {
+                var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                
+                var result = re.test(String(email).toLowerCase());
+                if(!result)
+                {
+                    alert('Invalid email format');
+                }
+                return result;
+            }
+        </script>
         
     </form>
 </div>
+

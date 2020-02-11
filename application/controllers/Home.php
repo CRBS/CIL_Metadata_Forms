@@ -417,6 +417,29 @@ class Home extends CI_Controller
     }
     
     
+    public function forgot_password()
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        
+        
+        $base_url = $this->config->item('base_url');
+        $login_hash = $this->session->userdata('login_hash');
+        
+        $data['username'] = $this->session->userdata('username');
+        $username = $data['username'];
+        
+        $data['google_reCAPTCHA_site_key'] = $this->config->item('google_reCAPTCHA_site_key');
+        $data['google_reCAPTCHA_secret_key'] = $this->config->item('google_reCAPTCHA_secret_key');
+        
+        
+        $data['title'] = "Forgot Username or Password";
+        $this->load->view('templates/header', $data);
+        $this->load->view('home/forgot_password_display', $data);
+        $this->load->view('templates/footer', $data);
+    }
+    
     public function login()
     {
         $this->load->helper('url');
