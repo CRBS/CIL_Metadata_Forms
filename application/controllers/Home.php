@@ -278,6 +278,7 @@ class Home extends CI_Controller
         $this->load->view('templates/footer', $data);
     }
     
+
     
     public function do_forgot_password()
     {

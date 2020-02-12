@@ -43,7 +43,7 @@
                         </div>
                     </div>
                     <hr>
-                    <form action="/home/reset_password" method="POST" onsubmit="return validate_password()">
+                    <form action="/cdeep3m_preview/do_reset_password" method="POST" onsubmit="return validate_password()">
                     <div class="row">
                         <div class="col-md-8">
                             <div class="card border-dark mb-3">

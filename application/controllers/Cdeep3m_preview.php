@@ -7,10 +7,53 @@ include_once 'Dimension_util.php';
 include_once 'EZIDUtil.php';
 include_once 'CILContentUtil.php';
 include_once 'Image_dbutil.php';
-
+include_once 'PasswordHash.php';
 
 class Cdeep3m_preview extends CI_Controller
 {
+    
+    public function do_reset_password()
+    {        
+        $this->load->helper('url');
+        $base_url = $this->config->item('base_url');
+        $data['image_viewer_prefix'] = $this->config->item('image_viewer_prefix');
+        
+        $dbutil = new DB_util();
+        $cutil = new Curl_util();
+        $gutil = new General_util();
+        $hasher = new PasswordHash(8, TRUE);
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        $username = $data['username'];
+        //echo $data['username'];
+        $data['token'] = $dbutil->getAuthToken($data['username']);
+        //echo "<br/>Token:".$data['token']."----";
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        
+        $new_password = $this->input->post('new_password', TRUE);
+        $pass_hash = $hasher->HashPassword($new_password);
+        $success = $dbutil->updateUserPassword($username, $pass_hash);
+        if($success)
+        {
+            $data['success'] = true;
+        }
+        else 
+        {
+            $data['success'] = false;
+        }
+        
+       $data['title'] = "Home | Password reset";
+       $this->load->view('templates/header', $data);
+       $this->load->view('home/password_reset_success_display', $data);
+       $this->load->view('templates/footer', $data); 
+    }
+    
+    
+    
     public function prp_demo()
     {
         
