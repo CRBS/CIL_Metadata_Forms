@@ -58,6 +58,16 @@
                     <li class="nav-item">
                         <a class="nav-link" href="https://github.com/CRBS/cdeep3m" target="_self">Open source</a>
                     </li>
+                    <?php
+                    if(isset($username))
+                    {
+                    ?>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/home/my_account">My Account</a>
+                    </li>
+                    <?php
+                    }
+                    ?>
                     <!---------End Navbar------------------>
                   </ul>
                    

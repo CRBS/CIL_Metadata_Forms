@@ -376,10 +376,10 @@ class Home extends CI_Controller
         //echo "<br/>".$json_str;
         $new_password = $this->generateRandomString(10);
         $username = $json->username;
-        echo "<br/>".$username;
-        echo "<br/>".$new_password;
+        //echo "<br/>".$username;
+        //echo "<br/>".$new_password;
         $hash_value = $hasher->HashPassword($new_password);
-        echo "<br/>".$hash_value;
+        //echo "<br/>".$hash_value;
         $success = $dbutil->updateUserPassword($username, $hash_value);
         if(!$success)
         {
@@ -565,6 +565,32 @@ class Home extends CI_Controller
         }
     }
     
+    public function my_account()
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        
+        
+        $base_url = $this->config->item('base_url');
+        $login_hash = $this->session->userdata('login_hash');
+        
+        $data['username'] = $this->session->userdata('username');
+        $username = $data['username'];
+        
+        $userInfo = $dbutil->getUserInfo($username);
+        if(!is_null($userInfo))
+        {
+            $json_str = json_encode($userInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            $myAccountJson = json_decode($json_str);
+            $data['myAccountJson'] = $myAccountJson;
+        }
+        
+        $data['title'] = "CDeep3M | My Account";
+        $this->load->view('templates/header', $data);
+        $this->load->view('home/my_account_display', $data);
+        $this->load->view('templates/footer', $data);
+    }
     
     public function forgot_password()
     {
