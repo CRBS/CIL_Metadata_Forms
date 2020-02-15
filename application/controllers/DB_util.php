@@ -617,7 +617,7 @@ class DB_util
     {
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
-        $sql = "select tag from cil_tags order by order_number asc";
+        $sql = "select tag from cil_tags order by order_number desc";
         $conn = pg_pconnect($db_params);
         $tarray = array();
         if(!$conn)

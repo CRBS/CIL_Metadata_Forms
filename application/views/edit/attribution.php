@@ -41,7 +41,7 @@
         <div class="form-group">
             <label class="col-form-label" for="inputDefault">Other</label>
             <?php
-            
+                $delete_index = 0;
                 if(isset($json->CIL_CCDB->CIL->CORE->ATTRIBUTION->OTHER) && 
                         is_array($json->CIL_CCDB->CIL->CORE->ATTRIBUTION->OTHER) &&
                         count($json->CIL_CCDB->CIL->CORE->ATTRIBUTION->OTHER) > 0)
@@ -54,8 +54,13 @@
                     {
                         $cname = str_replace(" ", "%20", $contributor);
                         $cname = str_replace(",", "_COMMA_", $contributor);
-                        echo "<li>".$contributor."<a  href=\"/image_metadata/delete_attribution/".$image_id."/OTHER/".$cname."\" target=\"_self\"> &#x2716;</a></li>";
-                    }
+                        //echo "<li>".$contributor."<a  href=\"/image_metadata/delete_attribution/".$image_id."/OTHER/".$cname."\" target=\"_self\"> &#x2716;</a></li>";
+                        echo "<li>".$contributor."<a  href=\"/image_metadata/delete_attribution_by_index/".$image_id."/OTHER/".$delete_index."\" target=\"_self\"> &#x2716;</a></li>";
+                        $delete_index++;        
+                    }   
+                            
+                            
+                            
                     echo "</ul>";
 
                 }

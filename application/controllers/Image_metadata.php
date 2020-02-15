@@ -150,6 +150,176 @@ class Image_metadata extends CI_Controller
         redirect ($base_url."/image_metadata/edit/".$image_id);
     }
     
+    
+    
+    public function delete_attribution_by_index($image_id="0",$field="0",$removeIndex="0")
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        $base_url = $this->config->item('base_url');
+        /***********Checking login****************/
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        /***********End Checking login****************/
+        
+        /***********Checking Permission************/
+        $username = $data['username'];
+        if(!$dbutil->isAdmin($username))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        /***********End Checking Permission************/
+        
+        
+        //$input=str_replace("%20", " ", $input);
+        $dbutil = new DB_util();
+        $test_output_folder = $this->config->item('test_output_folder');
+        $mjson = $dbutil->getMetadata($image_id);
+        
+        $mjson_str = json_encode($mjson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        error_log($mjson_str, 3, $test_output_folder."/metadata.json");
+        
+        
+        /*$tempArray=array();
+        $tempArray['input']=$input;
+        $tempJsonStr = json_encode($tempArray, JSON_UNESCAPED_SLASHES);
+        $tempJson = json_decode($tempJsonStr);
+        $input = $tempJson->input;*/
+        
+        if(!$mjson->success)
+        {
+            show_404();
+            return;
+        }
+        $this->load->helper('url');
+        $base_url = $this->config->item('base_url');
+        
+        if($mjson->success && isset($mjson->metadata)
+                && !is_null($mjson->metadata)
+                && strlen(trim($mjson->metadata)) > 0
+                )
+        {
+            $json = json_decode($mjson->metadata);
+            
+            $json_str = json_encode($json,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            if(file_exists($test_output_folder."/metadata.json"))
+                unlink($test_output_folder."/metadata.json");
+            error_log($json_str, 3, $test_output_folder."/metadata.json");
+            
+            
+            
+            $coreJson= $json->CIL_CCDB->CIL->CORE;
+            //$json_str = json_encode($coreJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            //echo $json_str;
+            //return;
+            if(strcmp($field, "Contributors") == 0)
+            {
+                //error_log('In Contributors', 3, $test_output_folder."/delete.json");
+                if(isset($coreJson->ATTRIBUTION->Contributors))
+                {
+                    $contributors = $coreJson->ATTRIBUTION->Contributors;
+                    /*$removeIndex = null;
+                    $i = 0;
+                    foreach($contributors as $contributor)
+                    {
+                        if(strcmp($contributor, $input) == 0)
+                        {
+                            $removeIndex = $i;
+                        }
+                        
+                        $i++;
+                    }*/
+                    
+                    if(!is_null($removeIndex))
+                    {
+                        unset($contributors[$removeIndex]);
+                        $coreJson->ATTRIBUTION->Contributors=array_values($contributors);
+                    }
+                }
+            }
+            else if(strcmp($field, "OTHER") == 0)
+            {
+                //echo '<br/>OTHER';
+                //return;
+           
+                if(file_exists($test_output_folder."/delete.json"))
+                    unlink ($test_output_folder."/delete.json");
+                error_log("OTHER\n", 3, $test_output_folder."/delete.json");
+                    
+                    
+                if(isset($coreJson->ATTRIBUTION->OTHER))
+                {
+                    error_log("OTHER2\n", 3, $test_output_folder."/delete.json");
+                    $others = $coreJson->ATTRIBUTION->OTHER;
+                    
+                    $other_json_str = json_encode($others, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+                    //echo "<br/>".$other_json_str;
+                    //return;
+                    
+
+                    /*foreach($others as $other)
+                    {
+                        
+                        
+                        error_log("OTHER:".$other."\n", 3, $test_output_folder."/delete.json");
+                        error_log("Input:".$input."\n", 3, $test_output_folder."/delete.json");
+                        //if(strcmp($other, $input) == 0)
+                        if(true)
+                        {
+                            $removeIndex = $i;
+                            
+                        }
+                        
+                        $i++;
+                    }*/
+                    
+                    if(!is_null($removeIndex))
+                    {
+                        //echo "<br/>RemoveIndex";
+                        //return;
+                        unset($others[$removeIndex]);
+                        $coreJson->ATTRIBUTION->OTHER=array_values($others);
+                    }
+                }
+            }
+            else if(strcmp($field, "Attribution_url") == 0)
+            {
+                $urls = $coreJson->ATTRIBUTION->URLs;
+                if(is_null($urls))
+                    $urls = array();
+                $removeIndex = null;
+                $i = 0;
+                
+                /*foreach($urls as $url)
+                {
+                    if(strcmp($url->Label, $input) == 0)
+                    {
+                        $removeIndex = $i;
+                    }
+                    $i++;
+                }*/
+                
+                if(!is_null($removeIndex))
+                {
+                    unset($urls[$removeIndex]);
+                    $coreJson->ATTRIBUTION->URLs=array_values($urls);
+                }
+            }
+            
+            $json_str = json_encode($json,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            //file_put_contents($test_output_folder."/".$image_id.".json", $json_str);
+            $dbutil->submitMetadata($image_id, $json_str);
+            redirect ($base_url."/image_metadata/edit/".$image_id);
+        }
+    }
+    
+    
     public function delete_attribution($image_id="0",$field="0",$input="0")
     {
         $this->load->helper('url');
