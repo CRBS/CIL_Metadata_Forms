@@ -566,6 +566,52 @@ class Home extends CI_Controller
         }
     }
     
+    public function process_history()
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        
+        $data['image_viewer_prefix'] = $this->config->item('image_viewer_prefix');
+        $base_url = $this->config->item('base_url');
+        $login_hash = $this->session->userdata('login_hash');
+        
+        $data['username'] = $this->session->userdata('username');
+        $username = $data['username'];
+        
+        $userInfo = $dbutil->getUserInfo($username);
+        $myAccountJson = NULL;
+        if(is_null($userInfo))
+        {
+            show_404();
+            return;
+        }
+        
+        $json_str = json_encode($userInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        $myAccountJson = json_decode($json_str);
+        
+        if(is_null($myAccountJson))
+        {
+            show_404();
+            return;
+        }
+            
+        $email = $myAccountJson->email;
+        $processArray = $dbutil->getProcessHistory($email);
+        
+        //var_dump($processArray);
+        $process_json_str = json_encode($processArray);
+        $process_json = json_decode($process_json_str);
+        $data['process_json'] = $process_json;
+        
+        $data['title'] = "CDeep3M | Process_history";
+        $this->load->view('templates/header', $data);
+        $this->load->view('home/process_history_display', $data);
+        $this->load->view('templates/footer', $data);
+    }
+    
+    
+    
     public function my_account()
     {
         $this->load->helper('url');
@@ -575,6 +621,7 @@ class Home extends CI_Controller
         
         $base_url = $this->config->item('base_url');
         $login_hash = $this->session->userdata('login_hash');
+        
         
         $data['username'] = $this->session->userdata('username');
         $username = $data['username'];

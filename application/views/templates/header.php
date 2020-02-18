@@ -65,6 +65,9 @@
                     <li class="nav-item">
                       <a class="nav-link" href="/home/my_account">My Account</a>
                     </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/home/process_history">Process History</a>
+                    </li>
                     <?php
                     }
                     ?>

@@ -197,6 +197,42 @@ class DB_util
         return $userInfo;
     }
     
+    public function getProcessHistory($email)
+    {
+        $sql = "select id,image_id, submit_time, finish_time from cropping_processes where contact_email = $1 order by id desc";
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('image_viewer_db_params');
+        
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return NULL;
+        }
+        
+        $input = array();
+        array_push($input,$email);
+        $result = pg_query_params($conn, $sql, $input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return NULL;
+        }
+        
+        $mainArray = array();
+        while($row = pg_fetch_row($result))
+        {
+            $array = array();
+            $array['id'] = intval($row[0]);
+            $array['image_id'] = $row[1];
+            $array['submit_time'] = $row[2];
+            $array['finish_time'] = $row[3];
+            
+            array_push($mainArray, $array);
+        }
+        pg_close($conn);
+        return $mainArray;
+    }
+    
     public function getUserInfo($username)
     {
         $sql = "select email, user_role, full_name from cil_users where username = $1";
