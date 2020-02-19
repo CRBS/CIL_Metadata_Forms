@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-md-2"><b>Process ID</b></div>
             <div class="col-md-2"><b>Image ID</b></div>
-            <div class="col-md-3"><b>Submit time</b></div>
+            <div class="col-md-3"><b>Start time</b></div>
             <div class="col-md-3"><b>Finish time</b></div>
             <div class="col-md-2"><b>Log file</b></div>
         </div>
@@ -50,7 +50,7 @@
             <div class="col-md-3">
                 <?php echo $item->finish_time; ?>
             </div>
-            <div class="col-md-2">Log file</div>
+            <div class="col-md-2"><a href="http://cildata.crbs.ucsd.edu/cdeep3m_results/<?php echo $item->id; ?>/log/logs.tar" target="_blank">Log file</a></div>
         </div>
         <hr>    
         <?php
