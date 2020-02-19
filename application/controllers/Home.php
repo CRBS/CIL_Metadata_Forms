@@ -100,6 +100,47 @@ class Home extends CI_Controller
         $this->load->view('templates/footer', $data);
     }
     
+    public function demo_main_page()
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        
+        
+        $base_url = $this->config->item('base_url');
+        $login_hash = $this->session->userdata('login_hash');
+        
+        $data['username'] = $this->session->userdata('username');
+        $username = $data['username'];
+        
+        $data['google_reCAPTCHA_site_key'] = $this->config->item('google_reCAPTCHA_site_key');
+        $data['google_reCAPTCHA_secret_key'] = $this->config->item('google_reCAPTCHA_secret_key');
+        
+        if(is_null($login_hash))
+        {
+            
+            $data['login_error'] = $this->session->userdata('login_error');
+            $this->session->set_userdata('login_error', NULL);
+            
+            $data['title'] = "Home login";
+            $this->load->view('templates/header', $data);
+            $this->load->view('login/home_login_display', $data);
+            $this->load->view('templates/footer', $data);
+            
+            return;
+        }
+        
+        $isAdmin = $dbutil->isAdmin($username);
+        
+        $tarray = $dbutil->getStandardTags();
+        $data['tag_array'] = $tarray;
+        $data['title'] = "Home";
+        $this->load->view('templates/header', $data);
+        
+        $this->load->view('home/member_home_display', $data);
+        $this->load->view('templates/footer', $data);
+    }
+    
     public function index()
     {
         $this->load->helper('url');
