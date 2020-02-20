@@ -88,6 +88,21 @@ class Cdeep3m_preview extends CI_Controller
         array_push($image_array,"CIL_50667");
         array_push($image_array,"CIL_50668");
         array_push($image_array,"CIL_50669");
+        
+        $image_names = array();
+        $image_names['CIL_50451'] = "Hypothalamus";
+        $image_names['CCDB_8192'] = "Cerebellum (molecular layer)";
+        $image_names['CCDB_8246'] = "Cerebellum (molecular layer)";
+        $image_names['CIL_50584'] = "Intergeniculate Leaflet (IGL)";
+        $image_names['CIL_50582'] = "Olivary Pretectal Nucleus (OPN)";
+        $image_names['CIL_50643'] = "Ventral Lateral Geniculate Nucleus (vLGN)";
+        $image_names['CIL_50644'] = "Dorsal Lateral Geniculate Nucleus (dLGN)";
+        $image_names['CIL_50581'] = "Optic Nerve (ON)";
+        $image_names['CIL_50667'] = "Mouse Brain";
+        $image_names['CIL_50668'] = "Mouse Brain";
+        $image_names['CIL_50669'] = "Hypothalamus";
+        
+        $data['image_names'] = $image_names;
         $data['image_array'] = $image_array;
         $data['title'] = "Home > CIL volume demo";
         $this->load->view('templates/header', $data);

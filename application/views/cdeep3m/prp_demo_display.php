@@ -40,11 +40,38 @@
                     //echo $image;
                     $id = str_replace("CIL_", "", $image);
             ?>
-            <center><div class="thumbnail-kenburn">
-                <a alt="<?php echo $image ?>" title="<?php echo $image ?>" href="<?php echo $image_viewer_prefix ?>/cdeep3m_prp/<?php echo $image; ?>?username=<?php echo $username ?>&token=<?php echo $token ?>" target="_blank" >
-                    <img src="https://cildata.crbs.ucsd.edu/media/thumbnail_display/<?php echo $id; ?>/<?php echo $id; ?>_thumbnailx140.jpg" />
-                </a>
-                </div></center>
+            <div class="row">
+                <div class="col-md-12">
+                <center><div class="thumbnail-kenburn">
+                    <a alt="<?php echo $image ?>" title="<?php echo $image ?>" href="<?php echo $image_viewer_prefix ?>/cdeep3m_prp/<?php echo $image; ?>?username=<?php echo $username ?>&token=<?php echo $token ?>" target="_blank" >
+                        <img src="https://cildata.crbs.ucsd.edu/media/thumbnail_display/<?php echo $id; ?>/<?php echo $id; ?>_thumbnailx140.jpg" />
+                    </a>
+                     
+                    </div></center>
+                </div>
+                <div class="col-md-12">
+                    <center>
+                <?php 
+
+                        if(array_key_exists($image, $image_names))
+                        {                        
+                            echo $image_names[$image];
+                        }
+
+                ?>  
+                    </center>
+                </div>
+                <div class="col-md-12">
+                    <?php
+                        if(strcmp($image, "CIL_50667") != 0 && strcmp($image, "CIL_50668") != 0 && strcmp($image, "CIL_50669") != 0)
+                        {
+                    ?>
+                    <center><a href="http://cellimagelibrary.org/images/<?php echo $image; ?>" target="_blank"><?php echo $image; ?></a></center>
+                    <?php
+                        }
+                    ?>
+                </div>
+            </div>
           
             <?php
                 }
@@ -52,11 +79,32 @@
                 {
                     $id = str_replace("CCDB_", "", $image);
             ?>
+            <div class="row">
+                <div class="col-md-12">
              <center><div class="thumbnail-kenburn">
                 <a alt="<?php echo $image ?>" title="<?php echo $image ?>" href="<?php echo $image_viewer_prefix ?>/cdeep3m_prp/<?php echo $image; ?>?username=<?php echo $username ?>&token=<?php echo $token ?>" target="_blank" >
                     <img src="https://cildata.crbs.ucsd.edu/display_images/ccdb/ccdb_512/<?php echo $id; ?>_512v.jpg" width="140">
                 </a>
             </div></center>
+                </div>
+                <div class="col-md-12">
+                    <center>
+                <?php 
+
+                        if(array_key_exists($image, $image_names))
+                        {                        
+                            echo $image_names[$image];
+                        }
+
+                ?>  
+                    </center>
+                </div>
+                
+                <div class="col-md-12">
+                    <center><a href="http://cellimagelibrary.org/images/<?php echo $image; ?>" target="_blank"><?php echo $image; ?></a></center>
+                </div>
+                
+            </div>
             <?php
                 }
                 
