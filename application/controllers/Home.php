@@ -613,12 +613,21 @@ class Home extends CI_Controller
         $dbutil = new DB_util();
         $gutil = new General_util();
         
+        $base_url = $this->config->item('base_url');
+        $data['base_url'] = $base_url;
+        
         $data['image_viewer_prefix'] = $this->config->item('image_viewer_prefix');
         $base_url = $this->config->item('base_url');
         $login_hash = $this->session->userdata('login_hash');
         
         $data['username'] = $this->session->userdata('username');
         $username = $data['username'];
+        
+        if(is_null($login_hash) || is_null($username))
+        {
+            redirect($base_url."/home");
+            return;
+        }
         
         $userInfo = $dbutil->getUserInfo($username);
         $myAccountJson = NULL;
