@@ -54,11 +54,30 @@
             else
             {
         ?>
-        <a href="<?php echo "/image_metadata/view_doi/".$image_id; ?>" target="_blank" class="btn btn-info">View DOI Info</a>
+        <a href="<?php echo "/image_metadata/create_doi/".$image_id; ?>" target="_self" class="btn btn-info">Update DOI</a>
         <?php
             }
         ?>
     </div>
+    
+    
+    <div class="col-md-6">
+        <div class="col-md-12">
+        <br/>
+        </div>
+        <?php
+            if(isset($doi_exists))
+            {
+        ?>
+        <a href="<?php echo "/image_metadata/view_doi/".$image_id; ?>" target="_blank" class="btn btn-info">View DOI Info</a>
+        <?php
+            }
+            
+        ?>
+        
+    </div>
+    
+    
     <div class="col-md-12">
         <?php
             if(isset($enable_unpublish_button_prod) && $enable_unpublish_button_prod)

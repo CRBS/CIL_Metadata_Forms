@@ -206,7 +206,7 @@ class CILContentUtil
             {
                 $creators = $creators.$contributor;
                 if($index+1<$count)
-                    $creators = $creators.", ";
+                    $creators = $creators.";";
                 $index++;
             }
         }

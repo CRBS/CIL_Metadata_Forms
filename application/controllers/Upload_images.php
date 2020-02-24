@@ -356,7 +356,17 @@ class Upload_images extends CI_Controller
                         echo "<br/>Zip size:".$zip_size;
                         /////////////End Zipping file/////////////////////////////////////////////
                         
-                        $metadata = "{\"CIL_CCDB\": {\"Status\": {\"Deleted\": false,\"Is_public\": true },\"CIL\":{\"CORE\":{\"IMAGEDESCRIPTION\":{  }, \"ATTRIBUTION\":{}  }}}}";
+                        $data_type_str = "\"Data_type\": {".
+                        "\"Time_series\": false, ".
+                        "\"Still_image\": false, ".
+                        "\"Z_stack\": false, ".
+                        "\"Video\": false ".
+                        "}";
+                        //$metadata = "{\"CIL_CCDB\": {\"Status\": {\"Deleted\": false,\"Is_public\": true },\"CIL\":{\"CORE\":{\"IMAGEDESCRIPTION\":{  }, \"ATTRIBUTION\":{}  }}}}";
+                        $metadata = "{\"CIL_CCDB\": {\"Status\": {\"Deleted\": false,\"Is_public\": true }, ".$data_type_str.", \"CIL\":{\"CORE\":{\"IMAGEDESCRIPTION\":{  }, \"ATTRIBUTION\":{}  }}}}";
+                        //echo $metadata;
+                        //return;
+                        
                         $dbutil->insertImageEntry($image_id,$image_name, $id, $metadata,$tag,$jpeg_size, $zip_size);
                         
                         $bin = file_get_contents($filePath);

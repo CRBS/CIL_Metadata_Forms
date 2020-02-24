@@ -791,8 +791,16 @@ class Image_metadata extends CI_Controller
         
         $group_check = $this->input->post('group_check', TRUE);
         
-        $json_str = "{\"CIL_CCDB\": {\"Status\": {\"Deleted\": false,\"Is_public\": true },\"CIL\":{\"CORE\":{\"IMAGEDESCRIPTION\":{  }}}}}";
+        $data_type_str = "\"Data_type\": {".
+                        "\"Time_series\": false, ".
+                        "\"Still_image\": false, ".
+                        "\"Z_stack\": false, ".
+                        "\"Video\": false ".
+                        "}";
         
+        $json = NULL;
+        //$json_str = "{\"CIL_CCDB\": {\"Status\": {\"Deleted\": false,\"Is_public\": true }, \"Data_type\":{},   \"CIL\":{\"CORE\":{\"IMAGEDESCRIPTION\":{  }}}}}";
+        $json_str = "{\"CIL_CCDB\": {\"Status\": {\"Deleted\": false,\"Is_public\": true }, ".$data_type_str.",   \"CIL\":{\"CORE\":{\"IMAGEDESCRIPTION\":{  }}}}}";
         if($mjson->success && isset($mjson->metadata)
                 && !is_null($mjson->metadata)
                 && strlen(trim($mjson->metadata)) > 0
@@ -801,15 +809,30 @@ class Image_metadata extends CI_Controller
             //echo "<br/>Loading the previous json sucessfully";
             //echo "<br/><br/>---".$mjson->metadata."????<br/>";
             $json = json_decode($mjson->metadata);
+            
+            //if(is_null($json))
+            //{
+            //    echo "<br/>JSON is NULL";
+            //}
         }
         else
         {
             $json = json_decode($json_str);
             //echo "<br/>Loading the previous json NOT sucessfully";
+
         }
+        
+        
+        
+        //$json_str = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        //echo $json_str;
+        //return;
         
         $json->CIL_CCDB->CIL->Image_files = array();
         $json = $this->updateJpegZipSize($image_id, $json, $jpeg_size,$zip_size);
+        
+        
+
         
         
         //if(!is_null($zip_size))
@@ -1404,8 +1427,8 @@ class Image_metadata extends CI_Controller
         }
         else
         {
-            echo "Not setting";
-            return;
+            //echo "Not setting";
+            //return;
         }
         
         /*********End Citation title************************/
@@ -1824,11 +1847,25 @@ class Image_metadata extends CI_Controller
         $targetDoi = $ezid_production_shoulder."CIL".$data['numeric_id'];
         $ezMessage = $ezutil->getDoiInfo($targetDoi);
 
+        
+        //echo "Message:-----".$ezMessage;
+        //return;
+        
+        
+        $citation = $cilUtil->getCitationInfo($mjson, $data['numeric_id'], date("Y"));
+            $ezMetadata =  $cilUtil->getEzIdMetadata($mjson,$data['numeric_id'],date("Y"));
+            echo "<br/>".$ezMetadata;
+            $ezJson = $ezutil->createDOI($ezMetadata, $ezid_production_shoulder, $doiPostfixId, $ezid_auth);
+            
+            /*$ezJsonStr = json_encode($ezJson, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+            echo $ezJsonStr;
+            return;*/
+        
+        
         if($gutil->startsWith($ezMessage,"error:"))
         {   
-            $citation = $cilUtil->getCitationInfo($mjson, $data['numeric_id'], date("Y"));
-            $ezMetadata =  $cilUtil->getEzIdMetadata($mjson,$data['numeric_id'],date("Y"));
-            $ezutil->createDOI($ezMetadata, $ezid_production_shoulder, $doiPostfixId, $ezid_auth);
+            
+            
             $array = array();
             $array['DOI'] = $targetDoi;
             $array['ARK'] = $ezid_production_ark_shoulder."cil".$data['numeric_id'];

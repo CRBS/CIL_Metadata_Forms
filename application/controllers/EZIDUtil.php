@@ -7,6 +7,80 @@ class EZIDUtil
     private $doi  = "doi";
     private $ark = "ark";
     
+    
+
+    
+    public function updateDOI($input,$shoulder,$id, $doiAuth)
+    {
+        echo "<br/>updateDOI";
+        $ch = curl_init();
+        $url = "https://ezid.cdlib.org/id/".$shoulder.$id;
+        curl_setopt($ch, CURLOPT_URL,$url);
+        curl_setopt($ch, CURLOPT_USERPWD, $doiAuth);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER,
+          array('Content-Type: text/plain; charset=UTF-8',
+                'Content-Length: ' . strlen($input)));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $input);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        $output = curl_exec($ch);
+        $scode = curl_getinfo($ch, CURLINFO_HTTP_CODE)."";
+        $code = $this->convertStatusCode($scode);
+        curl_close($ch);
+        //echo "CODE:".$code;
+        //echo  "\n".$output;
+        
+        if($code === 400)
+        {
+            $array = array();
+            $array[$this->success] = false;
+            $array[$this->error_message] = htmlspecialchars($output."");
+            //echo "\n".$array[$this->error_message];
+            $json_str = json_encode($array);
+            $json = json_decode($json_str);
+            return $json;
+        }
+        
+        if($code === 201)
+        {
+            //echo "CODE:".$code;
+            //echo  "\n".$output;
+            
+            $resultArray = explode(" ",$output);
+            $doi = $this->getDoiFromArray($resultArray);
+            $ark = $this->getArkFromArray($resultArray);
+            $array = array();
+            $array[$this->success] = true;
+            if(!is_null($doi))
+                $array[$this->doi] = $doi;
+            if(!is_null($ark))
+                $array[$this->ark] = $ark;
+            
+            $json_str = json_encode($array);
+            $json = json_decode($json_str);
+            return $json;
+        }
+        else 
+        {
+            $array = array();
+            $array[$this->success] = false;
+            $array[$this->error_message] = "Unkown:".$output;
+            $json_str = json_encode($array);
+            $json = json_decode($json_str);
+            return $json;
+            
+        }
+        
+        
+       $array = array();
+       $array[$this->success] = true;
+            
+            $json_str = json_encode($array);
+            $json = json_decode($json_str);
+            return $json;
+    }
+    
     public function createDOI($input,$shoulder,$id, $doiAuth)
     {
         $ch = curl_init();
@@ -67,11 +141,18 @@ class EZIDUtil
             return $json;
             
         }
-       
+        
+        
+       $array = array();
+       $array[$this->success] = true;
+            
+            $json_str = json_encode($array);
+            $json = json_decode($json_str);
+            return $json;
     }
     
     
-    
+    /*
     public function updateDOI($input, $doi, $doiAuth)
     {
         $url = "https://ezid.cdlib.org/id/".$doi;
@@ -91,7 +172,7 @@ class EZIDUtil
         echo $output . "\n";
         curl_close($ch);
     }
-    
+    */
     public function getDoiInfo($doi)
     {
         $ch = curl_init();
