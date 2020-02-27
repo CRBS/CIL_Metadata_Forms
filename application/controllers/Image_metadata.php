@@ -1856,7 +1856,7 @@ class Image_metadata extends CI_Controller
             $ezMetadata =  $cilUtil->getEzIdMetadata($mjson,$data['numeric_id'],date("Y"));
             echo "<br/>".$ezMetadata;
             $ezJson = $ezutil->createDOI($ezMetadata, $ezid_production_shoulder, $doiPostfixId, $ezid_auth);
-            
+            //$ezJson = $ezutil->updateDOI($ezMetadata, $ezid_production_shoulder, $doiPostfixId, $ezid_auth);
             /*$ezJsonStr = json_encode($ezJson, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
             echo $ezJsonStr;
             return;*/

@@ -12,7 +12,8 @@ class EZIDUtil
     
     public function updateDOI($input,$shoulder,$id, $doiAuth)
     {
-        echo "<br/>updateDOI";
+        error_log($input, 3, "C:/Test2/doi_input.txt");
+        /*echo "<br/>updateDOI";
         $ch = curl_init();
         $url = "https://ezid.cdlib.org/id/".$shoulder.$id;
         curl_setopt($ch, CURLOPT_URL,$url);
@@ -71,7 +72,7 @@ class EZIDUtil
             return $json;
             
         }
-        
+        */
         
        $array = array();
        $array[$this->success] = true;
