@@ -862,6 +862,88 @@ class DB_util
         return $id;
     }
     
+    public function isCropIdExist($crop_id)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('image_viewer_db_params');
+        $sql = "select id  from cropping_processes where id = $1";
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+            return false;
+        
+        $input = array();
+        array_push($input,$crop_id);  //1
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        
+        $existed = false;
+        if($row = pg_fetch_row($result))
+        {
+            $existed = true;
+        }
+        
+        pg_close($conn);
+        return $existed;
+    }
+    
+    
+    public function getDockerImageType($crop_id)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('image_viewer_db_params');
+        $defaultType = "stable";
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+            return $defaultType;
+        $sql = "select docker_image_type from cropping_processes where id = $1";
+        $input = array();
+        array_push($input,$crop_id);  //1
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return $defaultType;
+        }
+        
+        if($row = pg_fetch_row($result))
+        {
+            $defaultType = $row[0];
+        }
+        pg_close($conn);
+        return $defaultType;
+        
+    }
+    
+    public function updateDockerImageType($imageType, $crop_id)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('image_viewer_db_params');
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+        {
+            return fa;se;
+        }
+        $input = array();
+        array_push($input, $imageType);
+        array_push($input, $crop_id);
+        $sql = "update cropping_processes set docker_image_type = $1 where id = $2";
+        $result = pg_query_params($conn,$sql,$input);
+        if (!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        pg_close($conn);
+        
+        return true;  
+        
+    }
+    
+    
     public function getNextCropID()
     {
         $CI = CI_Controller::get_instance();

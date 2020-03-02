@@ -177,19 +177,23 @@ class Cdeep3m_preview extends CI_Controller
         echo "<br/>Email:".$email;
         */
         $crop_id = intval($crop_id);
-        
+        if(!$dbutil->isCropIdExist($crop_id))
+        {
         $dbutil->insertCroppingInfoWithTraining($crop_id, $email, $ct_training_models, $ct_augmentation, $frame);
+        $docker_image_type = $this->config->item('docker_image_type');
+        $dbutil->updateDockerImageType($docker_image_type, $crop_id);
         
         $image_service_auth = $this->config->item('image_service_auth');
         $image_service_prefix = $this->config->item('image_service_prefix');
         $image_service_url = $image_service_prefix."/cdeep3m_prp_service/image_preview_step2/stage/".$crop_id;
         //echo "<br/>image_service_url:".$image_service_url;
         $response = $cutil->auth_curl_post($image_service_url, $image_service_auth,"");
+        }
         //echo "<br/>Response:".$response;
         
         $data['crop_id'] = intval($crop_id);
         $data['step'] = 3;
-        $data['title'] = 'Home > Upload images > Select parameters > Submitted';
+        $data['title'] = 'Home > Cdeep3M Submitted';
         $data['email'] = $email;
         $this->load->view('templates/header', $data);
         $this->load->view('cdeep3m/submitted_parameters_display', $data);

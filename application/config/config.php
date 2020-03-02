@@ -8,6 +8,9 @@ if(!$is_prod)
 else
     $json_str = file_get_contents("/var/www/cil_metadata_config.json");
 $json = json_decode($json_str);
+
+$config['docker_image_type'] = "latest";
+//$config['docker_image_type'] = "stable";
         
 /*
 |--------------------------------------------------------------------------
@@ -35,12 +38,12 @@ if(!$is_prod)
     $config['base_url'] = 'http://localhost';
 else
     $config['base_url'] = 'https://cdeep3m-stage.crbs.ucsd.edu';
-    //$config['base_url'] = 'https://protozoa.crbs.ucsd.edu';     
+    //$config['base_url'] = 'https://cdeep3m.crbs.ucsd.edu';     
 
 if(!$is_prod)
     $config['image_viewer_prefix'] = 'https://cdeep3m-viewer-stage.crbs.ucsd.edu';
 else 
-    $config['image_viewer_prefix'] = 'https://cdeep3m-viewer-stage.crbs.ucsd.edu';
+    $config['image_viewer_prefix'] = 'https://cdeep3m-viewer.crbs.ucsd.edu';
 
 
 /*
