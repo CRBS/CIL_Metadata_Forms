@@ -149,13 +149,13 @@ class Upload_images extends CI_Controller
         
         $this->load->helper('url');
         $dbutil = new DB_util();
-        $login_hash = $this->session->userdata('login_hash');
+        /*$login_hash = $this->session->userdata('login_hash');
         $data['username'] = $this->session->userdata('username');
         if(is_null($login_hash))
         {
             $message = '{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Unable to verify the user."}, "id" : "id"}';
             die($message);
-        }
+        }*/
         
         $targetDir = $this->config->item('model_upload_location');
         if(!file_exists($targetDir))
