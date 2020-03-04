@@ -229,6 +229,7 @@ class Cdeep3m_models extends CI_Controller
             return;
         }
         
+        $is_production = $this->config->item('is_production');
         $base_url = $this->config->item('base_url');
         $data['debug'] = $this->input->get('debug', TRUE);
         $login_hash = $this->session->userdata('login_hash');
@@ -247,6 +248,12 @@ class Cdeep3m_models extends CI_Controller
         $upload_location = $this->config->item('model_upload_location');
         $upload_location = $upload_location."/".$model_id;
         $fileSize = 0;
+        
+        if($is_production)
+        {
+            $fileName =  $gutil->convertZip2Tar($upload_location,$fileName);
+            echo $fileName;
+        }
         if(file_exists($upload_location."/".$fileName))
            $fileSize=filesize($upload_location."/".$fileName);
         
@@ -266,6 +273,9 @@ class Cdeep3m_models extends CI_Controller
         
         //redirect($base_url."/cdeep3m_models/edit/".$model_id);
         redirect($base_url."/cdeep3m_models/upload_training_data/".$model_id);
+          
+         
+        
          
     }
     
