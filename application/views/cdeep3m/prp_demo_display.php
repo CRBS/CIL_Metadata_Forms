@@ -43,7 +43,7 @@
             <div class="row">
                 <div class="col-md-12">
                 <center><div class="thumbnail-kenburn">
-                    <a alt="<?php echo $image ?>" title="<?php echo $image ?>" href="<?php echo $image_viewer_prefix ?>/cdeep3m_prp/<?php echo $image; ?>?username=<?php echo $username ?>&token=<?php echo $token ?>" target="_blank" >
+                    <a alt="<?php echo $image ?>" title="Demo" href="<?php echo $image_viewer_prefix ?>/cdeep3m_prp/<?php echo $image; ?>?username=<?php echo $username ?>&token=<?php echo $token ?>" target="_blank" >
                         <img src="https://cildata.crbs.ucsd.edu/media/thumbnail_display/<?php echo $id; ?>/<?php echo $id; ?>_thumbnailx140.jpg" />
                     </a>
                      
@@ -54,8 +54,15 @@
                 <?php 
 
                         if(array_key_exists($image, $image_names))
-                        {                        
+                        {
+                ?>
+                        <a alt="<?php echo $image ?>" title="Demo" href="<?php echo $image_viewer_prefix ?>/cdeep3m_prp/<?php echo $image; ?>?username=<?php echo $username ?>&token=<?php echo $token ?>" target="_blank" >
+                            <b><?php
                             echo $image_names[$image];
+                            ?></b>
+                        </a>
+                
+                <?php            
                         }
 
                 ?>  
@@ -66,7 +73,7 @@
                         if(strcmp($image, "CIL_50667") != 0 && strcmp($image, "CIL_50668") != 0 && strcmp($image, "CIL_50669") != 0)
                         {
                     ?>
-                    <center><a href="http://cellimagelibrary.org/images/<?php echo $image; ?>" target="_blank"><?php echo $image; ?></a></center>
+                    <center><a href="http://cellimagelibrary.org/images/<?php echo $image; ?>" target="_blank">More info</a></center>
                     <?php
                         }
                     ?>
@@ -82,7 +89,7 @@
             <div class="row">
                 <div class="col-md-12">
              <center><div class="thumbnail-kenburn">
-                <a alt="<?php echo $image ?>" title="<?php echo $image ?>" href="<?php echo $image_viewer_prefix ?>/cdeep3m_prp/<?php echo $image; ?>?username=<?php echo $username ?>&token=<?php echo $token ?>" target="_blank" >
+                <a alt="<?php echo $image ?>" title="Demo" href="<?php echo $image_viewer_prefix ?>/cdeep3m_prp/<?php echo $image; ?>?username=<?php echo $username ?>&token=<?php echo $token ?>" target="_blank" >
                     <img src="https://cildata.crbs.ucsd.edu/display_images/ccdb/ccdb_512/<?php echo $id; ?>_512v.jpg" width="140">
                 </a>
             </div></center>
@@ -92,8 +99,15 @@
                 <?php 
 
                         if(array_key_exists($image, $image_names))
-                        {                        
-                            echo $image_names[$image];
+                        {
+                ?>
+                        <a alt="<?php echo $image ?>" title="Demo" href="<?php echo $image_viewer_prefix ?>/cdeep3m_prp/<?php echo $image; ?>?username=<?php echo $username ?>&token=<?php echo $token ?>" target="_blank" >
+                            <b><?php
+                                echo $image_names[$image];
+                                ?></b>
+                        </a>
+                <?php
+                            
                         }
 
                 ?>  
@@ -101,7 +115,7 @@
                 </div>
                 
                 <div class="col-md-12">
-                    <center><a href="http://cellimagelibrary.org/images/<?php echo $image; ?>" target="_blank"><?php echo $image; ?></a></center>
+                    <center><a href="http://cellimagelibrary.org/images/<?php echo $image; ?>" target="_blank">More info</a></center>
                 </div>
                 
             </div>
