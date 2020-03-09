@@ -159,7 +159,7 @@ class DB_util
     public function getAllUsersJson()
     {
         
-        $sql = "select id, email, user_role, full_name from cil_users order by full_name asc";
+        $sql = "select id, email, user_role, full_name, username from cil_users order by full_name asc";
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
 
@@ -184,7 +184,7 @@ class DB_util
             $userInfo['email'] = $row[1];
             $userInfo['user_role'] = intval($row[2]);
             $userInfo['full_name'] = $row[3];
-            
+            $userInfo['username'] = $row[4];
             array_push($mainArray, $userInfo);
         }
         
