@@ -44,6 +44,8 @@
         <div class="col-md-12">
         <br/>
         </div>
+        
+        <div class="col-md-12">
         <?php
             if(!isset($doi_exists))
             {
@@ -58,24 +60,26 @@
         <?php
             }
         ?>
-    </div>
-    
-    
-    <div class="col-md-6">
+        </div>
+        
         <div class="col-md-12">
         <br/>
         </div>
+        <div class="col-md-12">
         <?php
-            if(isset($doi_exists))
-            {
+        if(isset($doi_exists))
+        {
         ?>
         <a href="<?php echo "/image_metadata/view_doi/".$image_id; ?>" target="_blank" class="btn btn-info">View DOI Info</a>
         <?php
-            }
+        }
             
         ?>
-        
+        </div>
     </div>
+    
+    
+
     
     
     <div class="col-md-12">
@@ -199,11 +203,16 @@
     <?php
         }
     ?>
+    
 
+    
+    
     <div class="col-md-12"><br/></div>
     <div class="col-md-12">
         <a href="/image_metadata/delete_db_image/CIL_<?php echo $numeric_id; ?>"  class="btn btn-danger">Delete image</a>
     </div>
+    
+    
     
 </div>
 

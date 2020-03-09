@@ -642,3 +642,5 @@ $config['gmail_sender_pwd'] = $json->gmail_sender_pwd;
 $config['gmail_reply_to'] = $json->gmail_reply_to;
 $config['gmail_reply_to_name'] = $json->gmail_reply_to_name;
 /***********End Gmail config***************************/
+
+
