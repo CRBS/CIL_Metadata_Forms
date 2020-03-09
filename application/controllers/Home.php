@@ -636,13 +636,14 @@ class Home extends CI_Controller
         }
         
         $userInfo = $dbutil->getUserInfo($username);
+        
         $myAccountJson = NULL;
         if(is_null($userInfo))
         {
             show_404();
             return;
         }
-        
+        $data['full_name'] = $userInfo['full_name'];
         $json_str = json_encode($userInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         $myAccountJson = json_decode($json_str);
         

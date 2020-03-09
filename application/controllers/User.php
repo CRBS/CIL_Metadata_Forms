@@ -5,6 +5,60 @@ include_once 'PasswordHash.php';
 include_once 'MailUtil.php';
 class User extends CI_Controller
 {
+    
+    public function view_activities($id)
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        $mutil = new MailUtil();
+        $base_url = $this->config->item('base_url');
+        $login_hash = $this->session->userdata('login_hash');
+                
+        $data['username'] = $this->session->userdata('username');
+        if(is_null($login_hash) || is_null($id) || !is_numeric($id))
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        
+        $username = $data['username'];
+        if(is_null($username))
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        $isAdmin = $dbutil->isAdmin($username);
+        if(!$isAdmin)
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        $id = intval($id);
+        $userInfo = $dbutil->getUserInfoByID($id);
+        if(is_null($userInfo))
+        {
+           redirect($base_url."/home");     
+        }
+        
+        $email = $userInfo['email'];
+        $data['image_viewer_prefix'] = $this->config->item('image_viewer_prefix');
+        $data['full_name'] = $userInfo['full_name'];
+        $processArray = $dbutil->getProcessHistory($email);
+        
+        //var_dump($processArray);
+        $process_json_str = json_encode($processArray);
+        $process_json = json_decode($process_json_str);
+        $data['process_json'] = $process_json;
+        
+        $data['title'] = "CDeep3M | Process_history";
+        $this->load->view('templates/header', $data);
+        $this->load->view('home/process_history_display', $data);
+        $this->load->view('templates/footer', $data);
+        
+    }
+    
+    
     public function user_stats()
     {
         $this->load->helper('url');

@@ -39,7 +39,7 @@ foreach ($allUserJsons as $item)
         ?>
     </div>
     <div class="col-md-3">
-         <a href="/user/view_activities" class="btn btn-primary">View activities</a>
+         <a href="/user/view_activities/<?php echo $item->id; ?>" class="btn btn-primary">View activities</a>
     </div>
     
 </div>
