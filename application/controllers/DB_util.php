@@ -156,8 +156,46 @@ class DB_util
         return $json;
     }
     
-    
-    
+    public function getAllUsersJson()
+    {
+        
+        $sql = "select id, email, user_role, full_name from cil_users order by full_name asc";
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return NULL;
+        }
+
+        $result = pg_query($conn, $sql);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return NULL;
+        }
+        
+        $mainArray = array();
+        while($row = pg_fetch_row($result))
+        {
+            $userInfo = array();
+            $userInfo['id'] = intval($row[0]);
+            $userInfo['email'] = $row[1];
+            $userInfo['user_role'] = intval($row[2]);
+            $userInfo['full_name'] = $row[3];
+            
+            array_push($mainArray, $userInfo);
+        }
+        
+        $json_str = json_encode($mainArray);
+        $json = json_decode($json_str);
+        
+        pg_close($conn);
+        return $json;
+    }
+
+
     public function getUserInfoByID($id)
     {
         $sql = "select email, user_role, full_name from cil_users where id = $1";

@@ -21,6 +21,8 @@ class Home extends CI_Controller
         return $randomString;
     }
     
+    
+    
     public function faq()
     {
         $this->load->helper('url');
@@ -80,6 +82,10 @@ class Home extends CI_Controller
         $this->load->view('home/pre_trained_models_display', $data);
         $this->load->view('templates/footer', $data);
     }
+    
+    
+    
+    
     
     public function gallery()
     {

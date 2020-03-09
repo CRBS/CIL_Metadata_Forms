@@ -67,6 +67,17 @@
                 </div>
                 
             </div>
+            
+            <div class="row">
+                <div class="col-md-12"><br/></div>
+                <div class="col-md-12">
+                   <span class="cil_title2">Admin</span>
+                       
+                </div>
+                <div class="col-md-12">
+                    <a href="/user/user_stats" class="btn btn-primary">User activities</a>
+                </div>
+            </div>
             <!-- <div class="row">
                 <div class="col-md-12">
                     <br/><br/>

@@ -5,6 +5,45 @@ include_once 'PasswordHash.php';
 include_once 'MailUtil.php';
 class User extends CI_Controller
 {
+    public function user_stats()
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        $mutil = new MailUtil();
+        $base_url = $this->config->item('base_url');
+        $login_hash = $this->session->userdata('login_hash');
+                
+        $data['username'] = $this->session->userdata('username');
+        if(is_null($login_hash))
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        
+        $username = $data['username'];
+        if(is_null($username))
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        $isAdmin = $dbutil->isAdmin($username);
+        if(!$isAdmin)
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        
+        $allUserJsons = $dbutil->getAllUsersJson();
+        
+        $data['allUserJsons'] = $allUserJsons;
+        $data['title'] = "Home > User stats";
+        $this->load->view('templates/header', $data);
+        $this->load->view('user/user_stats_display', $data);
+        $this->load->view('templates/footer', $data);
+    }
+        
+    
     public function do_approve($id)
     {
         $this->load->helper('url');
