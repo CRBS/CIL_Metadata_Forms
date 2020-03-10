@@ -5,6 +5,55 @@ include_once 'PasswordHash.php';
 include_once 'MailUtil.php';
 class User extends CI_Controller
 {
+    public function overall_stats()
+    {
+        
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        $mutil = new MailUtil();
+        $base_url = $this->config->item('base_url');
+        $login_hash = $this->session->userdata('login_hash');
+                
+        $data['username'] = $this->session->userdata('username');
+        if(is_null($login_hash))
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        
+        $username = $data['username'];
+        if(is_null($username))
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        $isAdmin = $dbutil->isAdmin($username);
+        if(!$isAdmin)
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        
+        
+        $numOfFinishedResults = $dbutil->getNumOfFinishedResults();
+        $numOfUnfinishedResults = $dbutil->getNumOfUnfinishedResults();
+        $earliestTimestamp = $dbutil->getEarliestProcessTimestamp();
+        $oldestTimstamp = $dbutil->getOldestProcessTimestamp();
+        
+        $earliestTimestampAarray = explode(" ",$earliestTimestamp);
+        $oldestTimstampArray = explode(" ",$oldestTimstamp);
+        $data['numOfFinishedResults'] = $numOfFinishedResults;
+        $data['numOfUnfinishedResults'] = $numOfUnfinishedResults;
+        $data['earliestTimestamp'] = $earliestTimestampAarray[0];
+        $data['oldestTimstamp'] = $oldestTimstampArray[0];
+        
+        $data['title'] = "CDeep3M | overall_history";
+        $this->load->view('templates/header', $data);
+        $this->load->view('home/overall_history_display', $data);
+        $this->load->view('templates/footer', $data);
+        
+    }
     
     public function view_activities($id)
     {

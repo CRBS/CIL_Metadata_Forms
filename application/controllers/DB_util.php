@@ -7,6 +7,125 @@ class DB_util
     private $metadata = "metadata";
     private $image_name = "image_name";
     
+    
+    public function getOldestProcessTimestamp()
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('image_viewer_db_params');
+        $sql = "select max(submit_time) from cropping_processes";
+        
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return "NA";
+        }
+
+        $result = pg_query($conn, $sql);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return "NA";
+        }
+        
+        $timestamp = "NA";
+        if($row = pg_fetch_row($result))
+        {
+            $timestamp = $row[0];
+        }
+        
+        pg_close($conn);
+        return $timestamp;
+    }
+    
+    
+    public function getEarliestProcessTimestamp()
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('image_viewer_db_params');
+        $sql = "select min(submit_time) from cropping_processes";
+        
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return "NA";
+        }
+
+        $result = pg_query($conn, $sql);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return "NA";
+        }
+        
+        $timestamp = "NA";
+        if($row = pg_fetch_row($result))
+        {
+            $timestamp = $row[0];
+        }
+        
+        pg_close($conn);
+        return $timestamp;
+    }        
+            
+    
+    public function getNumOfUnfinishedResults()
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('image_viewer_db_params');
+        $sql = "select count(id) from cropping_processes where finish_time is  NULL";
+        
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return 0;
+        }
+
+        $result = pg_query($conn, $sql);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return 0;
+        }
+        
+        $count = 0;
+        if($row = pg_fetch_row($result))
+        {
+            $count = $row[0];
+        }
+        
+        pg_close($conn);
+        return $count;
+    }
+    
+    public function getNumOfFinishedResults()
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('image_viewer_db_params');
+        $sql = "select count(id) from cropping_processes where finish_time is not NULL";
+        
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return 0;
+        }
+
+        $result = pg_query($conn, $sql);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return 0;
+        }
+        
+        $count = 0;
+        if($row = pg_fetch_row($result))
+        {
+            $count = $row[0];
+        }
+        
+        pg_close($conn);
+        return $count;
+    }
+    
     public function getUserInfoByEmail($email)
     {
         $CI = CI_Controller::get_instance();

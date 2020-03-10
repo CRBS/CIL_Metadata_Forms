@@ -74,8 +74,11 @@
                    <span class="cil_title2">Admin</span>
                        
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <a href="/user/user_stats" class="btn btn-primary">User activities</a>
+                </div>
+                <div class="col-md-6">
+                    <a href="/user/overall_stats" class="btn btn-primary">Overall stats</a>
                 </div>
             </div>
             <!-- <div class="row">
