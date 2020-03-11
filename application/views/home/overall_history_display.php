@@ -66,7 +66,22 @@
             
             <div class="col-md-12"></div>
             <div class="col-md-1">
+                <?php
+                if(!is_null($process['finish_time']))
+                {
+                    
+                ?>
+                <a href='<?php echo $image_viewer_prefix."/cdeep3m_result/view/".$process['id']; ?>' target="_blank"><?php echo $process['id']; ?></a>
+                <?php
+                }
+                else
+                {
+                ?>
                 <?php echo $process['id']; ?>
+                <?php
+                }
+                ?>
+                
             </div>
             <div class="col-md-2">
                 <?php 
@@ -75,10 +90,41 @@
                     else 
                        echo $process['image_id']; ?>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <?php 
                     echo $process['contact_email'];
                 ?>
+            </div>
+            <div class="col-md-2">
+                <?php 
+                
+                    if(!is_null($process['submit_time']))
+                    {
+                        $submit_timeArray = explode(".", $process['submit_time']);
+                        echo $submit_timeArray[0];
+                    }
+                    else
+                        echo $process['submit_time'];
+                ?>
+            </div>
+            <div class="col-md-2">
+                <?php
+                
+                    if(!is_null($process['finish_time']))
+                    {
+                        $finish_timeArray = explode(".", $process['finish_time']);
+                        echo $finish_timeArray[0];
+                        
+                    }
+                    else
+                        echo $process['finish_time'];
+                ?>
+            </div>
+            <div class="col-md-1">
+                <a href="http://cildata.crbs.ucsd.edu/cdeep3m_results/<?php echo $process['id']; ?>/log/logs.tar" target="_blank">Log files</a>
+            </div>
+            <div class="col-md-1">
+                <a href="http://cildata.crbs.ucsd.edu/cdeep3m_results/<?php echo $process['id']; ?>/log/CDEEP3M_prp.log" target="_blank">PRP log</a>
             </div>
         </div>  
         <hr>

@@ -13,7 +13,7 @@ class User extends CI_Controller
         $mutil = new MailUtil();
         $base_url = $this->config->item('base_url');
         $login_hash = $this->session->userdata('login_hash');
-                
+        $data['image_viewer_prefix'] = $this->config->item('image_viewer_prefix');       
         $data['username'] = $this->session->userdata('username');
         if(is_null($login_hash))
         {
