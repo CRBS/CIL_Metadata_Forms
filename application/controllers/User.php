@@ -5,9 +5,45 @@ include_once 'PasswordHash.php';
 include_once 'MailUtil.php';
 class User extends CI_Controller
 {
-    public function overall_stats()
+    public function search_processes_time()
     {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        $mutil = new MailUtil();
+        $base_url = $this->config->item('base_url');
+        $login_hash = $this->session->userdata('login_hash');
+                
+        $data['username'] = $this->session->userdata('username');
+        if(is_null($login_hash))
+        {
+            redirect($base_url."/home");
+            return;
+        }
         
+        $username = $data['username'];
+        if(is_null($username))
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        $isAdmin = $dbutil->isAdmin($username);
+        if(!$isAdmin)
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        
+        $starting_time = $this->input->post('starting_time', TRUE);
+        $ending_time = $this->input->post('ending_time', TRUE);
+        echo "<br/>Test...";
+        echo "<br/>".$starting_time;
+        echo "<br/>".$ending_time;
+    }
+    
+    
+    public function overall_stats()
+    { 
         $this->load->helper('url');
         $dbutil = new DB_util();
         $gutil = new General_util();
