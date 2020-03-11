@@ -35,10 +35,31 @@ class User extends CI_Controller
         }
         
         $starting_time = $this->input->post('starting_time', TRUE);
+        if(is_null($starting_time) || strlen($starting_time)==0)
+        {
+            redirect($base_url."/user/overall_stats");
+            return;
+        }
+        
         $ending_time = $this->input->post('ending_time', TRUE);
+        if(is_null($ending_time) || strlen($ending_time)==0)
+        {
+            redirect($base_url."/user/overall_stats");
+            return;
+        }
         echo "<br/>Test...";
         echo "<br/>".$starting_time;
         echo "<br/>".$ending_time;
+        
+        $starting_timeArray = explode("/", $starting_time);
+        $ending_timeArray = explode("/", $ending_time);
+        $start_time_formated = $starting_timeArray[2]."-".$starting_timeArray[0]."-".$starting_timeArray[1];
+        $ending_time_formated = $ending_timeArray[2]."-".$ending_timeArray[0]."-".$ending_timeArray[1];
+        echo "<br/>".$start_time_formated;
+        echo "<br/>".$ending_time_formated;
+        $processArray = $dbutil->searchProcesssHistoryByTime($start_time_formated, $ending_time_formated);
+        
+        echo "<br/>".count($processArray);
     }
     
     

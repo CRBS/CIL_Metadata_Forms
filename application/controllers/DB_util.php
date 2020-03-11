@@ -7,6 +7,40 @@ class DB_util
     private $metadata = "metadata";
     private $image_name = "image_name";
     
+    public function searchProcesssHistoryByTime($start_time, $end_time)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('image_viewer_db_params');
+        $sql="select id, image_id, contact_email, submit_time, finish_time from  cropping_processes where submit_time >= '".$start_time."'::timestamp and submit_time <= '".$end_time."'::timestamp";
+    
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return NULL;
+        }
+        $result = pg_query($conn, $sql);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return NULL;
+        }
+        
+        $mainArray = array();
+        while($row = pg_fetch_row($result))
+        {
+            $array = array();
+            $array['id'] = intval($row[0]);
+            $array['image_id'] = $row[1];
+            $array['contact_email'] = $row[2];
+            $array['submit_time'] = $row[3];
+            $array['finish_time'] = $row[4];
+            
+            array_push($mainArray, $array);
+        }
+        
+        pg_close($conn);
+        return $mainArray;
+    }
     
     public function getOldestProcessTimestamp()
     {
