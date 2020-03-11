@@ -35,6 +35,7 @@ class User extends CI_Controller
         }
         
         $starting_time = $this->input->post('starting_time', TRUE);
+        $data['starting_time'] = $starting_time;
         if(is_null($starting_time) || strlen($starting_time)==0)
         {
             redirect($base_url."/user/overall_stats");
@@ -42,6 +43,7 @@ class User extends CI_Controller
         }
         
         $ending_time = $this->input->post('ending_time', TRUE);
+        $data['ending_time'] = $ending_time;
         if(is_null($ending_time) || strlen($ending_time)==0)
         {
             redirect($base_url."/user/overall_stats");
