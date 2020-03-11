@@ -43,6 +43,54 @@
             </div>
         </div>
         </form>
+<?php
+    if(isset($processArray))
+    {
+        if(count($processArray) == 0)
+        {
+            echo "<br/><br/>No processes found";
+        }
+        else
+        {
+        ?>
+        <div class="row">
+            <div class="col-md-12"><br/><br/></div>
+            <div class="col-md-12"><b>Number of processes: <?php echo count($processArray); ?></b></div>
+            <div class="col-md-12"><br/></div>
+        </div>
+        <?php
+            foreach($processArray as $process)
+            {
+        ?>        
+        <div class="row">
+            
+            <div class="col-md-12"></div>
+            <div class="col-md-1">
+                <?php echo $process['id']; ?>
+            </div>
+            <div class="col-md-2">
+                <?php 
+                    if(strcmp("CIL_0", $process['image_id'])==0)
+                       echo "Custom images";
+                    else 
+                       echo $process['image_id']; ?>
+            </div>
+            <div class="col-md-3">
+                <?php 
+                    echo $process['contact_email'];
+                ?>
+            </div>
+        </div>  
+        <hr>
+        <?php
+            }
+            
+            
+        }
+    }
+
+?>
+        
 <script>
   $( function() {
     $( "#starting_time" ).datepicker();

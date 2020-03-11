@@ -47,19 +47,40 @@ class User extends CI_Controller
             redirect($base_url."/user/overall_stats");
             return;
         }
-        echo "<br/>Test...";
-        echo "<br/>".$starting_time;
-        echo "<br/>".$ending_time;
+        //echo "<br/>Test...";
+        //echo "<br/>".$starting_time;
+        //echo "<br/>".$ending_time;
         
         $starting_timeArray = explode("/", $starting_time);
         $ending_timeArray = explode("/", $ending_time);
         $start_time_formated = $starting_timeArray[2]."-".$starting_timeArray[0]."-".$starting_timeArray[1];
         $ending_time_formated = $ending_timeArray[2]."-".$ending_timeArray[0]."-".$ending_timeArray[1];
-        echo "<br/>".$start_time_formated;
-        echo "<br/>".$ending_time_formated;
+        //echo "<br/>".$start_time_formated;
+        //echo "<br/>".$ending_time_formated;
+        
+        
+        
+         $numOfFinishedResults = $dbutil->getNumOfFinishedResults();
+        $numOfUnfinishedResults = $dbutil->getNumOfUnfinishedResults();
+        $earliestTimestamp = $dbutil->getEarliestProcessTimestamp();
+        $oldestTimstamp = $dbutil->getOldestProcessTimestamp();
+        
+        $earliestTimestampAarray = explode(" ",$earliestTimestamp);
+        $oldestTimstampArray = explode(" ",$oldestTimstamp);
+        $data['numOfFinishedResults'] = $numOfFinishedResults;
+        $data['numOfUnfinishedResults'] = $numOfUnfinishedResults;
+        $data['earliestTimestamp'] = $earliestTimestampAarray[0];
+        $data['oldestTimstamp'] = $oldestTimstampArray[0];
+        
         $processArray = $dbutil->searchProcesssHistoryByTime($start_time_formated, $ending_time_formated);
         
-        echo "<br/>".count($processArray);
+        //echo "<br/>".count($processArray);
+        
+        $data['processArray'] = $processArray;
+        $data['title'] = "CDeep3M | Overall history";
+        $this->load->view('templates/header', $data);
+        $this->load->view('home/overall_history_display', $data);
+        $this->load->view('templates/footer', $data);
     }
     
     
