@@ -37,6 +37,12 @@
     <div class="row">
         <div class="col-md-12">
             <br/>
+            <b>Note:</b> Characters such as slashes, question mark, semicolon, colon and comma are not allowed in the file name.
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <br/>
         <?php
         if(isset($model_info_json) && isset($model_info_json->file_name))
         {
@@ -120,6 +126,12 @@ $(function() {
                              }
                              
                              if(up.files[0].name.includes('?'))
+                             {
+                                up.removeFile(files[0]);
+                                alert("Question mark is not allowed in the file name.");
+                             }
+                             
+                             if(up.files[0].name.includes(':'))
                              {
                                 up.removeFile(files[0]);
                                 alert("Question mark is not allowed in the file name.");
