@@ -37,7 +37,7 @@
     <div class="row">
         <div class="col-md-12">
             <br/>
-            <b>Note:</b> Characters such as slashes, question mark, semicolon, colon and comma are not allowed in the file name.
+            <b>Note:</b> Characters such as slashes, question mark, semicolon, colon and comma are NOT allowed in the file name.
         </div>
     </div>
     <div class="row">
