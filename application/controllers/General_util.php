@@ -20,28 +20,31 @@ class General_util
 
     public function convertZip2Tar($folder,$zipFile)
     {
-	$name = str_replace(".zip","",$zipFile);
-	$tempFolder = $folder."/temp";
-	mkdir($tempFolder);
-	$unzip_cmd = "cd ".$folder."; unzip ".$zipFile." -d ".$tempFolder;
-	$uresult = shell_exec($unzip_cmd);
+        if($this->endsWith($zipFile, ".zip"))
+        {
+            $name = str_replace(".zip","",$zipFile);
+            $tempFolder = $folder."/temp";
+            mkdir($tempFolder);
+            $unzip_cmd = "cd ".$folder."; unzip ".$zipFile." -d ".$tempFolder;
+            $uresult = shell_exec($unzip_cmd);
 
-	$tar_cmd = "cd ".$tempFolder."; tar -cvf ".$name.".tar *";
-	$tresult = shell_exec($tar_cmd);
+            $tar_cmd = "cd ".$tempFolder."; tar -cvf ".$name.".tar *";
+            $tresult = shell_exec($tar_cmd);
 
-	$tarPath = $tempFolder."/".$name.".tar";
-	if(file_exists($tarPath))
-	{
-	   $move_cmd = shell_exec("mv ".$tarPath." ".$folder);
-	   shell_exec($move_cmd);
+            $tarPath = $tempFolder."/".$name.".tar";
+            if(file_exists($tarPath))
+            {
+               $move_cmd = shell_exec("mv ".$tarPath." ".$folder);
+               shell_exec($move_cmd);
 
-	   $tarPath = $folder."/".$name.".tar";
-	   if(file_exists($tarPath))
-	   {
-		return $name.".tar";
-	   }
+               $tarPath = $folder."/".$name.".tar";
+               if(file_exists($tarPath))
+               {
+                    return $name.".tar";
+               }
 
-	}
+            }
+        }
 
         return $zipFile;
             

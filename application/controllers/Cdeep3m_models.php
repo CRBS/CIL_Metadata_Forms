@@ -249,7 +249,7 @@ class Cdeep3m_models extends CI_Controller
         $upload_location = $upload_location."/".$model_id;
         $fileSize = 0;
         
-        if($is_production)
+        if($is_production && $gutil->endsWith($fileName, ".zip"))
         {
             $fileName =  $gutil->convertZip2Tar($upload_location,$fileName);
             echo $fileName;
