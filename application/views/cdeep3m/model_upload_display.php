@@ -94,6 +94,36 @@ $(function() {
                              //console.log(up.files[0].name);
                              //console.log(files[0].name);
                              //gurl = "/upload_images/process_upload/"+files[0].name;
+                             
+                             if(up.files[0].name.includes('/') || up.files[0].name.includes('\\'))
+                             {
+                                up.removeFile(files[0]);
+                                alert("Slash is not allowed in the file name.");
+                             }
+                             
+                             if(up.files[0].name.includes(','))
+                             {
+                                up.removeFile(files[0]);
+                                alert("Comma is not allowed in the file name.");
+                             }
+                             
+                             if(up.files[0].name.includes('+'))
+                             {
+                                up.removeFile(files[0]);
+                                alert("Plus sign is not allowed in the file name.");
+                             }
+                             
+                             if(up.files[0].name.includes('+'))
+                             {
+                                up.removeFile(files[0]);
+                                alert("Semicolon is not allowed in the file name.");
+                             }
+                             
+                             if(up.files[0].name.includes('?'))
+                             {
+                                up.removeFile(files[0]);
+                                alert("Question mark is not allowed in the file name.");
+                             }
                          }
                         
                          if (up.files.length > 1) 

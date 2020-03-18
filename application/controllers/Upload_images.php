@@ -179,7 +179,7 @@ class Upload_images extends CI_Controller
             $fileName = $_REQUEST["name"];           
         }
 
-        $fileName = preg_replace('/[^\w\._]+/', '', $fileName);
+        //$fileName = preg_replace('/[^\w\._]+/', '', $fileName);
         if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) 
             error_log("\nStep 0: Filename:".$fileName, 3, $targetDir."/upload.log");
                 
