@@ -583,6 +583,12 @@ else
     $config['images_upload_location'] = "/export2/temp/crop"; 
 
 
+if(!$is_prod)
+    $config['images_upload_location'] = "C:/Test3/retrain_models";
+else
+    $config['images_upload_location'] = "/export2/temp/retrain_models";
+
+
 $config['metadata_service_prefix'] = $json->metadata_service_prefix;
 $config['metadata_auth'] = $json->metadata_auth;
 $config['staging_website_prefix'] = $json->staging_website_prefix;

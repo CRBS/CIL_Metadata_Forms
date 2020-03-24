@@ -11,7 +11,43 @@ include_once 'Image_dbutil.php';
 
 class Cdeep3m_models extends CI_Controller
 {
-    
+    public function retrain_model()
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        
+        $base_url = $this->config->item('base_url');
+        $login_hash = $this->session->userdata('login_hash');
+        
+        $data['username'] = $this->session->userdata('username');
+        if(is_null($login_hash))
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        
+        $username = $data['username'];
+        if(is_null($username))
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        $isAdmin = $dbutil->isAdmin($username);
+        if(!$isAdmin)
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        
+        $retrainID = $dbutil->getNextID(true);
+        $data['retrainID'] = $retrainID;
+        
+        $data['title'] = 'Home > Re-train model';
+        $this->load->view('templates/header', $data);
+        $this->load->view('cdeep3m/models/retrain_model_display', $data);
+        $this->load->view('templates/footer', $data);
+    }
     
     public function my_models()
     {
