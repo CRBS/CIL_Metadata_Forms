@@ -988,6 +988,30 @@ class DB_util
     }
     
     
+    public function insertRetrainedModel($retrain_id=0)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        
+        $sql = "insert into retrain_models(id,retrain_images_upload) values(1,now())";
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+            return false;
+        $input = array();
+        array_push($input,$retrain_id);
+        
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        pg_close($conn);
+        return true;
+    }
+    
+    
     public function insertModelFile($model_id=0,$fileName="Unknown",$fileSize=0,$username)
     {
         $CI = CI_Controller::get_instance();

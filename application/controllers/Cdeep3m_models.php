@@ -20,6 +20,7 @@ class Cdeep3m_models extends CI_Controller
         $base_url = $this->config->item('base_url');
         $login_hash = $this->session->userdata('login_hash');
         
+        $data['base_url'] = $base_url;
         $data['username'] = $this->session->userdata('username');
         if(is_null($login_hash))
         {
@@ -43,7 +44,7 @@ class Cdeep3m_models extends CI_Controller
         $retrainID = $dbutil->getNextID(true);
         $data['retrainID'] = $retrainID;
         
-        $data['title'] = 'Home > Re-train model';
+        $data['title'] = 'Home > Upload re-training images';
         $this->load->view('templates/header', $data);
         $this->load->view('cdeep3m/models/retrain_model_display', $data);
         $this->load->view('templates/footer', $data);

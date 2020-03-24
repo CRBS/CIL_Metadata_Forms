@@ -10,8 +10,8 @@
 
             <br>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item active">Step 1. Upload training images</li>
-                <li class="breadcrumb-item ">Step 2. Upload trainging labels</li>
+                <li class="breadcrumb-item ">Step 1. Upload training images</li>
+                <li class="breadcrumb-item active">Step 2. Upload trainging labels</li>
                 <li class="breadcrumb-item ">Step 3. Re-train model</li>
             </ol>
 
@@ -20,7 +20,7 @@
     
     <div class="row">
         <div class="col-md-12 cil_title2">
-            Step 1. Upload training images
+            Step 2. Upload training labels
         </div>
     </div>
     
@@ -41,6 +41,7 @@
             <b>Note:</b> Characters such as slashes, question mark, semicolon, colon and comma are NOT allowed in the file name.
         </div>
     </div>
+    
 </div>
 
 
@@ -52,7 +53,7 @@ $(function() {
 	$("#html5_uploader").pluploadQueue({
 		// General settings
 		runtimes : 'html5',
-		url : "/upload_images/retraining_images_upload/<?php echo $retrainID; ?>",
+		url : "/cdeep3m_retrain/do_upload_retrain_labels/<?php echo $retrainID; ?>",
 		chunk_size : '1mb',
                 multipart : true,
 		//unique_names : true,
@@ -85,15 +86,15 @@ $(function() {
                     },
                     FileUploaded: function(up, file, info) 
                     {
+                        /*
                         console.log("Uploaded:"+file.name);
-                        var addUrl = "<?php echo $base_url."/cdeep3m_retrain/add_retraining_record/".$retrainID; ?>";
+                        var addUrl = "<?php //echo $base_url."/cdeep3m_retrain/add_retraining_record/".$retrainID ?>";
 
                         if( (up.total.uploaded) == up.files.length)
                         {
-                           //alert("DONE");
                            window.location.href = addUrl;
                         }
-                        
+                        */
                     }
                 }
 
