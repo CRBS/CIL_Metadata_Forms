@@ -37,7 +37,7 @@ class Cdeep3m_retrain extends CI_Controller
         if(!file_exists($targetDir))
             mkdir($targetDir);
         
-        error_log("\ntargetDir:".$targetDir, 3, $targetDir."/retrain_image_upload.log");
+        error_log("\ntargetDir:".$targetDir, 3, $targetDir."/retrain_labels_upload.log");
 
         $cleanupTargetDir = false; // Remove old files
         $maxFileAge = 60 * 60*60; // Temp file age in seconds
@@ -56,10 +56,10 @@ class Cdeep3m_retrain extends CI_Controller
 
         $fileName = preg_replace('/[^\w\._]+/', '', $fileName);
         if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) 
-            error_log("\nStep 0: Filename:".$fileName, 3, $targetDir."/retrain_image_upload.log");
+            error_log("\nStep 0: Filename:".$fileName, 3, $targetDir."/retrain_labels_upload.log");
                 
         $fileName2 = $_FILES["file"]["name"];
-        error_log("\nStep 0.1: Filename:".$fileName2, 3, $targetDir."/retrain_image_upload.log");
+        error_log("\nStep 0.1: Filename:".$fileName2, 3, $targetDir."/retrain_labels_upload.log");
                 
         // Create target dir
         if (!file_exists($targetDir))
@@ -76,11 +76,11 @@ class Cdeep3m_retrain extends CI_Controller
         if (isset($_SERVER["CONTENT_TYPE"]))
             $contentType = $_SERVER["CONTENT_TYPE"];
                 
-        error_log("\nStep 0", 3, $targetDir."/retrain_image_upload.log");
+        error_log("\nStep 0", 3, $targetDir."/retrain_labels_upload.log");
                 
         if (strpos($contentType, "multipart") !== false) 
         {
-            error_log("\nStep 1", 3, $targetDir."/retrain_image_upload.log");
+            error_log("\nStep 1", 3, $targetDir."/retrain_labels_upload.log");
 
             if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) 
             {
@@ -106,7 +106,7 @@ class Cdeep3m_retrain extends CI_Controller
                 else
                 {
                     $message = '{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}';
-                    error_log("\n".$message, 3, $targetDir."/retrain_image_upload.log");
+                    error_log("\n".$message, 3, $targetDir."/retrain_labels_upload.log");
                     die($message);
                             
                 }
@@ -114,13 +114,13 @@ class Cdeep3m_retrain extends CI_Controller
             else
             {
                 $message = '{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}';
-                error_log("\n".$message, 3, $targetDir."/retrain_image_upload.log");
+                error_log("\n".$message, 3, $targetDir."/retrain_labels_upload.log");
                 die($message);
             }
         }
         else 
         {
-            error_log("\nStep 2", 3, $targetDir."/retrain_image_upload.log");
+            error_log("\nStep 2", 3, $targetDir."/retrain_labels_upload.log");
             // Open temp file
             $out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
             if ($out) 

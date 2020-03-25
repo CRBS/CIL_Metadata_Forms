@@ -86,15 +86,14 @@ $(function() {
                     },
                     FileUploaded: function(up, file, info) 
                     {
-                        /*
+                        
                         console.log("Uploaded:"+file.name);
-                        var addUrl = "<?php //echo $base_url."/cdeep3m_retrain/add_retraining_record/".$retrainID ?>";
+                        var addUrl = "<?php echo $base_url."/cdeep3m_retrain/add_retraining_record/".$retrainID ?>";
 
                         if( (up.total.uploaded) == up.files.length)
                         {
                            window.location.href = addUrl;
                         }
-                        */
                     }
                 }
 
