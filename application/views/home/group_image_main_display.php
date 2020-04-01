@@ -2,7 +2,7 @@
     <br/><br/>
     <div class="row">
         <div class="col-md-12">
-           <span class="cil_title2">Upload trained model</span>
+           <span class="cil_title2">Group images</span>
         </div>
     </div>
     
