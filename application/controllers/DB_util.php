@@ -7,6 +7,79 @@ class DB_util
     private $metadata = "metadata";
     private $image_name = "image_name";
     
+    
+    public function getUserGroupsByType($username, $group_type)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "select id,username, group_name, group_type, group_type from cil_user_groups where username = $1 and group_type = $2";
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return NULL;
+        }
+        
+        $input = array();
+        array_push($input, $username);
+        array_push($input, $group_type);
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return NULL;
+        }
+        
+        $mainArray = array();
+        while($row = pg_fetch_row($result))
+        {
+            $array = array();
+            $array['id'] = intval($row[0]);
+            $array['username'] = $row[1];
+            $array['group_name'] = $row[2];
+            $array['group_type'] = $row[3];
+            array_push($mainArray, $array);
+        }
+        pg_close($conn);
+        return $mainArray;
+    }
+    
+    
+    public function getUserGroups($username)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "select id, username, group_name from cil_user_groups where username=$1";
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return NULL;
+        }
+        
+        $input = array();
+        array_push($input, $username);
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return NULL;
+        }
+        
+        $mainArray = array();
+        while($row = pg_fetch_row($result))
+        {
+            $array = array();
+            $array['id'] = intval($row[0]);
+            $array['username'] = $row[1];
+            $array['group_name'] = $row[2];
+            array_push($mainArray, $array);
+        }
+        
+        pg_close($conn);
+        return $mainArray;
+    }
+    
+    
+    
     public function searchProcesssHistoryByTime($start_time, $end_time)
     {
         $CI = CI_Controller::get_instance();

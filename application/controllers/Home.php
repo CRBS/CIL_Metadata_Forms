@@ -179,6 +179,24 @@ class Home extends CI_Controller
         
         $isAdmin = $dbutil->isAdmin($username);
         
+        /**************Group based homepage***********************/
+        $userGroupArray = $dbutil->getUserGroups($username);
+        if(!is_null($userGroupArray))
+        {
+            foreach($userGroupArray as $userGroup)
+            {
+                if(strcmp($userGroup['group_name'], "ncmir")==0)
+                {
+                    $data['title'] = "NCMIR User Homepage";
+                    $this->load->view('templates/header', $data);
+                    $this->load->view('home/ncmir_home_display', $data);
+                    $this->load->view('templates/footer', $data);
+                    return;
+                }
+            }
+        }
+        /**************End Group based homepage***********************/
+        
         $tarray = $dbutil->getStandardTags();
         $data['tag_array'] = $tarray;
         $data['title'] = "Home";
