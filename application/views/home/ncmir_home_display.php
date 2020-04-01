@@ -8,7 +8,7 @@
             <br/>
         </div>
         <div class="col-md-4">
-            <a href="" class="btn btn-primary" target="_self">Internal data on image viewer</a>
+            <a href="/home/group_image_main_page" class="btn btn-primary" target="_self">Internal data on image viewer</a>
         </div>
         <div class="col-md-4">
             <a href="/home/demo_main_page" class="btn btn-primary" target="_self">Go to CDeep3M homepage</a>

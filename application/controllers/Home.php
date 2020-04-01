@@ -106,6 +106,47 @@ class Home extends CI_Controller
         $this->load->view('templates/footer', $data);
     }
     
+    public function group_image_main_page()
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        
+        
+        $base_url = $this->config->item('base_url');
+        $login_hash = $this->session->userdata('login_hash');
+        
+        $data['username'] = $this->session->userdata('username');
+        $username = $data['username'];
+        
+        $data['google_reCAPTCHA_site_key'] = $this->config->item('google_reCAPTCHA_site_key');
+        $data['google_reCAPTCHA_secret_key'] = $this->config->item('google_reCAPTCHA_secret_key');
+        
+        if(is_null($login_hash))
+        {
+            
+            $data['login_error'] = $this->session->userdata('login_error');
+            $this->session->set_userdata('login_error', NULL);
+            
+            $data['title'] = "Home login";
+            $this->load->view('templates/header', $data);
+            $this->load->view('login/home_login_display', $data);
+            $this->load->view('templates/footer', $data);
+            
+            return;
+        }
+        
+        
+        $userGroupArray = $dbutil->getUserGroupsByType($data['username'], 'image_group');
+        
+        $data['userGroupArray'] = $userGroupArray;
+        $data['title'] = "Home";
+        $this->load->view('templates/header', $data);
+        $this->load->view('home/group_image_main_display', $data);
+        $this->load->view('templates/footer', $data);
+    }
+    
+    
     public function demo_main_page()
     {
         $this->load->helper('url');
