@@ -7,6 +7,40 @@ class DB_util
     private $metadata = "metadata";
     private $image_name = "image_name";
     
+    public function getGroupImagesByID($id)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "select gi.id, gi.group_name, gi.image_id from cil_groups g, group_images gi where g.group_name = gi.group_name and g.id = $1";
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return NULL;
+        }
+        
+        $input = array();
+        array_push($input, $id);
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return NULL;
+        }
+        
+        $mainArray = array();
+        while($row = pg_fetch_row($result))
+        {
+            $array = array();
+            $array['id'] = intval($row[0]);
+            $array['group_name'] = ($row[1]);
+            $array['image_id'] = ($row[2]);
+            array_push($mainArray,$array);
+        }
+        pg_close($conn);
+        return $mainArray;
+    }
+    
     
     public function getUserGroupsByType($username, $group_type)
     {

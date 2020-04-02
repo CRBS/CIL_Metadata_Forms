@@ -9,6 +9,57 @@ include_once 'PasswordHash.php';
 include_once 'MailUtil.php';
 class Home extends CI_Controller
 {
+    public function internal_group_images($id="0")
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        
+        
+        $base_url = $this->config->item('base_url');
+        $login_hash = $this->session->userdata('login_hash');
+        
+        $data['username'] = $this->session->userdata('username');
+        $username = $data['username'];
+        
+        $data['google_reCAPTCHA_site_key'] = $this->config->item('google_reCAPTCHA_site_key');
+        $data['google_reCAPTCHA_secret_key'] = $this->config->item('google_reCAPTCHA_secret_key');
+        
+        if(is_null($login_hash))
+        {
+            
+            $data['login_error'] = $this->session->userdata('login_error');
+            $this->session->set_userdata('login_error', NULL);
+            
+            $data['title'] = "Home login";
+            $this->load->view('templates/header', $data);
+            $this->load->view('login/home_login_display', $data);
+            $this->load->view('templates/footer', $data);
+            
+            return;
+        }
+        
+
+        if(!is_numeric($id))
+        {
+            show_404();
+            return;
+        }
+        $id = intval($id);
+        $groupImagesArray = $dbutil->getGroupImagesByID($id);
+        if(is_null($groupImagesArray))
+        {
+            show_404();
+            return;
+        }
+        $data['groupImagesArray']  = $groupImagesArray;
+        
+        $data['title'] = "NCMIR | Internal Images";
+        $this->load->view('templates/header', $data);
+        $this->load->view('home/group_images_display', $data);
+        $this->load->view('templates/footer', $data);
+    }
+    
     private function generateRandomString($length = 10) 
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';

@@ -39,7 +39,12 @@
                         <?php 
                             if($index < $count)
                             {
-                                echo $userGroupArray[$index]['group_name']; 
+                        ?>
+                        <center><a href='/home/internal_group_images/<?php echo $userGroupArray[$index]['id']; ?>' target='_self'><img src='https://cildata.crbs.ucsd.edu/media/internal_group_display/<?php echo $userGroupArray[$index]['group_name']; ?>/default.jpg' width="256" /></a></center>
+                        <br/>
+                        <center><a href='/home/internal_group_images/<?php echo $userGroupArray[$index]['id']; ?>' target='_self'><?php echo $userGroupArray[$index]['group_name'];  ?></a></center>
+                        <?php
+                                
                                 $index++;
                             }
                         ?>
@@ -49,7 +54,12 @@
                         <?php 
                             if($index < $count)
                             {
-                                echo $userGroupArray[$index]['group_name']; 
+                        ?>
+                        <center><a href='/home/internal_group_images/<?php echo $userGroupArray[$index]['id']; ?>' target='_self'><img src='https://cildata.crbs.ucsd.edu/media/internal_group_display/<?php echo $userGroupArray[$index]['group_name']; ?>.jpg' width="256" /></a></center>
+                        <br/>
+                        <center><a href='/home/internal_group_images/<?php echo $userGroupArray[$index]['id']; ?>' target='_self'><?php echo $userGroupArray[$index]['group_name'];  ?></a></center>
+                        <?php
+                                
                                 $index++;
                             }
                         ?>
@@ -59,7 +69,12 @@
                         <?php 
                             if($index < $count)
                             {
-                                echo $userGroupArray[$index]['group_name']; 
+                        ?>
+                        <center><a href='/home/internal_group_images/<?php echo $userGroupArray[$index]['id']; ?>' target='_self'><img src='https://cildata.crbs.ucsd.edu/media/internal_group_display/<?php echo $userGroupArray[$index]['group_name']; ?>.jpg' width="256" /></a></center>
+                        <br/>
+                        <center><a href='/home/internal_group_images/<?php echo $userGroupArray[$index]['id']; ?>' target='_self'><?php echo $userGroupArray[$index]['group_name'];  ?></a></center>
+                        <?php
+                                
                                 $index++;
                             }
                         ?>
