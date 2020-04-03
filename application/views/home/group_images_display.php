@@ -31,9 +31,9 @@
                         {
                             
                     ?> 
-                    <center><a href='#' target='_self'><img src='https://cildata.crbs.ucsd.edu/media/internal_group_display/<?php echo $groupImagesArray[$index]['group_name']; ?>/<?php echo $groupImagesArray[$index]['image_id'];  ?>.jpg' width="256" /></a></center>
+                    <center><a href='<?php echo $image_viewer_prefix ?>/cdeep3m_prp/<?php echo $groupImagesArray[$index]['image_id']; ?>?username=<?php echo $username ?>&token=<?php echo $token ?>' target='_self'><img src='https://cildata.crbs.ucsd.edu/media/internal_group_display/<?php echo $groupImagesArray[$index]['group_name']; ?>/<?php echo $groupImagesArray[$index]['image_id'];  ?>.jpg' width="256" /></a></center>
                     <br/>
-                    <center><a href='#' target='_self'><?php echo $groupImagesArray[$index]['image_id'];  ?></a></center>
+                    <center><a href='<?php echo $image_viewer_prefix ?>/cdeep3m_prp/<?php echo $groupImagesArray[$index]['image_id']; ?>?username=<?php echo $username ?>&token=<?php echo $token ?>' target='_self'><?php echo $groupImagesArray[$index]['image_id'];  ?></a></center>
                     <?php
                         }
                         $index++;

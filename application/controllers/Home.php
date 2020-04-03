@@ -14,7 +14,7 @@ class Home extends CI_Controller
         $this->load->helper('url');
         $dbutil = new DB_util();
         $gutil = new General_util();
-        
+        $data['image_viewer_prefix'] = $this->config->item('image_viewer_prefix');
         
         $base_url = $this->config->item('base_url');
         $login_hash = $this->session->userdata('login_hash');
@@ -52,6 +52,8 @@ class Home extends CI_Controller
             show_404();
             return;
         }
+        $data['token'] = $dbutil->getAuthToken($data['username']);
+        
         $data['groupImagesArray']  = $groupImagesArray;
         
         $data['title'] = "NCMIR | Internal Images";
