@@ -227,6 +227,62 @@ class Cdeep3m_retrain extends CI_Controller
         }
     }
     
+    public function add_retraining_labels($retrainID)
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        
+        $base_url = $this->config->item('base_url');
+        $login_hash = $this->session->userdata('login_hash');
+        
+        $data['username'] = $this->session->userdata('username');
+        if(is_null($login_hash))
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        
+        $username = $data['username'];
+        if(is_null($username))
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        $isAdmin = $dbutil->isAdmin($username);
+        if(!$isAdmin)
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        
+        if(is_null($retrainID) || !is_numeric($retrainID) || $retrainID == 0)
+        {
+            redirect($base_url."/cdeep3m_retrain");
+            return;
+        }
+        
+        //$dbutil->insertRetrainedModel($retrainID);
+        $retrainLabelFolder = $this->config->item('images_upload_location')."/".$retrainID."/retrain_labels";
+        if(file_exists($retrainLabelFolder))
+        { 
+            echo "<br/>".$retrainLabelFolder;
+            
+            $retrainID = intval($retrainID);
+            $dbutil->updateRetrainLabelFolder($retrainID, $retrainLabelFolder);
+            //echo "<br/>Success!";
+            //return;
+        }
+        else 
+        {
+            //echo "Error:".$retrainImageFolder;
+            //return;
+            redirect($base_url."/cdeep3m_retrain");
+            return;
+        }
+        redirect ($base_url."/cdeep3m_retrain/select_retrain_params/".$retrainID);
+        
+    }
     
     public function add_retraining_images($retrainID)
     {
@@ -271,15 +327,15 @@ class Cdeep3m_retrain extends CI_Controller
             
             $retrainID = intval($retrainID);
             $dbutil->updateRetrainImageFolder($retrainID, $retrainImageFolder);
-            echo "<br/>Success!";
-            return;
+            //echo "<br/>Success!";
+            //return;
         }
         else 
         {
-            echo "Error:".$retrainImageFolder;
+            //echo "Error:".$retrainImageFolder;
+            //return;
+            redirect($base_url."/cdeep3m_retrain");
             return;
-            /*redirect($base_url."/cdeep3m_retrain");
-            return;*/
         }
         redirect ($base_url."/cdeep3m_retrain/upload_training_labels/".$retrainID);
         
@@ -410,6 +466,50 @@ class Cdeep3m_retrain extends CI_Controller
         }
     }
     
+    public function select_retrain_params($retrainID=0)
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        
+        $base_url = $this->config->item('base_url');
+        $login_hash = $this->session->userdata('login_hash');
+        
+        $data['username'] = $this->session->userdata('username');
+        if(is_null($login_hash))
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        
+        $username = $data['username'];
+        if(is_null($username))
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        $isAdmin = $dbutil->isAdmin($username);
+        if(!$isAdmin)
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        
+        $userInfo = $dbutil->getUserInfo($data['username']);
+        if(!is_null($userInfo))
+        {
+            
+            $data['email'] = $userInfo['email'];
+        }
+        $data['all_model_json'] = $dbutil->getAllModelJsonList();
+        
+        $data['retrainID'] = $retrainID;
+        $data['title'] = 'Home > Select retrain parameters';
+        $this->load->view('templates/header', $data);
+        $this->load->view('cdeep3m/retrain/select_retrain_params_display', $data);
+        $this->load->view('templates/footer', $data);
+    }
+    
     public function upload_training_labels($retrainID=0)
     {
         $this->load->helper('url');
@@ -419,6 +519,7 @@ class Cdeep3m_retrain extends CI_Controller
         $base_url = $this->config->item('base_url');
         $login_hash = $this->session->userdata('login_hash');
         
+        $data['base_url'] = $base_url;
         $data['username'] = $this->session->userdata('username');
         if(is_null($login_hash))
         {

@@ -1118,6 +1118,29 @@ class DB_util
         return true;
     }
     
+    public function updateRetrainLabelFolder($retrainID,$retrainLabelFolder)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "update retrain_models set retrain_label_folder = $1 where id = $2";
+        
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+            return false;
+        $input = array();
+        array_push($input,$retrainLabelFolder);
+        array_push($input,$retrainID);
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        pg_close($conn);
+        return true;
+    }
+    
     public function updateRetrainImageFolder($retrainID,$retrainImageFolder)
     {
         $CI = CI_Controller::get_instance();

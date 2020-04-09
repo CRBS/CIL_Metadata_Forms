@@ -10,9 +10,9 @@
 
             <br>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item ">Step 1. <a href='/cdeep3m_retrain' href='_self'>Upload training images</a></li>
+                <li class="breadcrumb-item ">Step 1. Upload training images</li>
                 <li class="breadcrumb-item active">Step 2. Upload trainging labels</li>
-                <li class="breadcrumb-item ">Step 3. Re-train model</li>
+                <li class="breadcrumb-item ">Step 3. Select re-train parameters</li>
             </ol>
 
          </div>
@@ -42,6 +42,14 @@
         </div>
     </div>
     
+    <!--
+    <div class='row'>
+        <div class='col-md-12'>
+            <br/>
+            <a href='/cdeep3m_retrain' href='_self' class='btn btn-primary'>Start Over</a>
+        </div>
+    </div>
+    -->
 </div>
 
 
@@ -88,7 +96,7 @@ $(function() {
                     {
                         
                         console.log("Uploaded:"+file.name);
-                        var addUrl = "<?php echo $base_url."/cdeep3m_retrain/add_retraining_record/".$retrainID ?>";
+                        var addUrl = "<?php echo $base_url."/cdeep3m_retrain/add_retraining_labels/".$retrainID ?>";
 
                         if( (up.total.uploaded) == up.files.length)
                         {

@@ -12,7 +12,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item active">Step 1. Upload training images</li>
                 <li class="breadcrumb-item ">Step 2. Upload trainging labels</li>
-                <li class="breadcrumb-item ">Step 3. Re-train model</li>
+                <li class="breadcrumb-item ">Step 3. Select re-train parameters</li>
             </ol>
 
          </div>

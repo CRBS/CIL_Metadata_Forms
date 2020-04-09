@@ -245,7 +245,7 @@ class Cdeep3m_preview extends CI_Controller
         $data['all_model_json'] = $dbutil->getAllModelJsonList();
         $data['crop_id'] = intval($crop_id);
         $data['step'] = 2;
-        $data['title'] = 'Home > Upload images > Select parameters';
+        $data['title'] = 'Home > Select parameters';
         $this->load->view('templates/header', $data);
         $this->load->view('cdeep3m/images_select_parameters', $data);
         $this->load->view('templates/footer', $data);
