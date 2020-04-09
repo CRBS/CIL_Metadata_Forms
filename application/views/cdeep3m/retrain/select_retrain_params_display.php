@@ -66,6 +66,18 @@ Augspeed 1: slowest, 16x augmented (8x for 1fm), higher accuracy" >Info</a>
                 </div>
                 <!------------------End Augmentation---------------->
                 <hr style="height:10px; visibility:hidden;" />
+                <!------------------Iterations----------------------> 
+                <div class="col-md-4">
+                    Iterations:
+                </div>
+                <div class="col-md-6">
+                    <input type="range" class="custom-range" min="100" max="2000" step="100" id="ct_iteration_ranage" name='ct_iteration_ranage' value='100' onchange='update_iteration()'>
+                </div>
+                <div class="col-md-2">
+                    <div id='iteration_value' name='iteration_value'>100</div>
+                </div>
+                <!------------------End Iterations---------------------->
+                <hr style="height:10px; visibility:hidden;" />
                 <!----------------Email--------------------------> 
                 <div class="col-md-4">
                                 Email address:
@@ -87,3 +99,15 @@ Augspeed 1: slowest, 16x augmented (8x for 1fm), higher accuracy" >Info</a>
         <div class='col-md-4'></div>
     </div>
 </div>
+
+
+<script>
+    function update_iteration()
+    {
+        //alert('iteration update');
+        var iteration_value =  document.getElementById('ct_iteration_ranage').value;
+        document.getElementById('iteration_value').innerHTML = iteration_value;
+    }
+    
+    
+</script>
