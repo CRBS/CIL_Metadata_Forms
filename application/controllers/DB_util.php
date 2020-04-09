@@ -1100,7 +1100,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         
-        $sql = "insert into retrain_models(id,retrain_images_upload) values(1,now())";
+        $sql = "insert into retrain_models(id) values($1)";
         $conn = pg_pconnect($db_params);
         if(!$conn)
             return false;
@@ -1118,6 +1118,53 @@ class DB_util
         return true;
     }
     
+    public function updateRetrainImageFolder($retrainID,$retrainImageFolder)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "update retrain_models set retrain_image_folder = $1 where id = $2";
+        
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+            return false;
+        $input = array();
+        array_push($input,$retrainImageFolder);
+        array_push($input,$retrainID);
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        pg_close($conn);
+        return true;
+    }
+    
+    /*
+    public function insertRetrainedModel($retrain_id=0)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        
+        $sql = "insert into retrain_models(id,retrain_images_upload) values(1,now())";
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+            return false;
+        $input = array();
+        array_push($input,$retrain_id);
+        
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        pg_close($conn);
+        return true;
+    }
+    */
     
     public function insertModelFile($model_id=0,$fileName="Unknown",$fileSize=0,$username)
     {
