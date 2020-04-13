@@ -274,7 +274,7 @@ class Cdeep3m_retrain extends CI_Controller
             $dbutil->updateRetrainLabelFolder($retrainID, $retrainLabelFolder);
             if($do_tar_retrain_files)
             {
-                $parentFolder = $retrainImageFolder = $this->config->item('retrain_upload_location')."/".$retrainID; 
+                $parentFolder = $this->config->item('retrain_upload_location')."/".$retrainID; 
                 $gutil->createRetrainLabelTar($retrainID, $parentFolder, $retrainLabelFolder);
             }
             //echo "<br/>Success!";
