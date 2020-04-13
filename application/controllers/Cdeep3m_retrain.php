@@ -263,7 +263,7 @@ class Cdeep3m_retrain extends CI_Controller
         }
         
         //$dbutil->insertRetrainedModel($retrainID);
-        $retrainLabelFolder = $this->config->item('images_upload_location')."/".$retrainID."/retrain_labels";
+        $retrainLabelFolder = $this->config->item('retrain_upload_location')."/".$retrainID."/retrain_labels";
         if(file_exists($retrainLabelFolder))
         { 
             echo "<br/>".$retrainLabelFolder;
@@ -320,7 +320,7 @@ class Cdeep3m_retrain extends CI_Controller
         }
         
         //$dbutil->insertRetrainedModel($retrainID);
-        $retrainImageFolder = $this->config->item('images_upload_location')."/".$retrainID."/retrain_images";
+        $retrainImageFolder = $this->config->item('retrain_upload_location')."/".$retrainID."/retrain_images";
         if(file_exists($retrainImageFolder))
         { 
             echo "<br/>".$retrainImageFolder;
