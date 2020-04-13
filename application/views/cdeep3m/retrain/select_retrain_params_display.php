@@ -1,4 +1,5 @@
 <div class="container">
+    <form action='/cdeep3m_retrain/submit_retrain/<?php echo $retrainID; ?>' method='post'>
     <div class="row">
         <div class="col-md-12">
              
@@ -51,7 +52,7 @@
                     Augspeed:
                 </div>
                 <div class="col-md-6">
-                    <select name="ct_augmentation" id="ct_augmentation" class="form-control" onchange="showRuntime()"> 
+                    <select name="ct_augmentation" id="ct_augmentation" class="form-control" > 
                         <option value="10">10</option>
                         <option value="4">4</option>
                         <option value="2">2</option>
@@ -98,6 +99,10 @@ Augspeed 1: slowest, 16x augmented (8x for 1fm), higher accuracy" >Info</a>
         </div> 
         <div class='col-md-4'></div>
     </div>
+
+
+    </form>
+
 </div>
 
 

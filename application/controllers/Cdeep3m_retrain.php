@@ -116,19 +116,19 @@ class Cdeep3m_retrain extends CI_Controller
             die($message);
         }
         
-        $targetDir = $this->config->item('images_upload_location');
-        if(!file_exists($targetDir))
-            mkdir($targetDir);
+        $targetDir0 = $this->config->item('images_upload_location');
+        if(!file_exists($targetDir0))
+            mkdir($targetDir0);
                 
-        $targetDir = $targetDir."/".$retrainID;
+        $targetDir1 = $targetDir0."/".$retrainID;
+        if(!file_exists($targetDir1))
+            mkdir($targetDir1);
+        
+        $targetDir = $targetDir1."/retrain_labels";
         if(!file_exists($targetDir))
             mkdir($targetDir);
         
-        $targetDir = $targetDir."/retrain_labels";
-        if(!file_exists($targetDir))
-            mkdir($targetDir);
-        
-        error_log("\ntargetDir:".$targetDir, 3, $targetDir."/retrain_labels_upload.log");
+        error_log("\ntargetDir:".$targetDir1, 3, $targetDir1."/retrain_labels_upload.log");
 
         $cleanupTargetDir = false; // Remove old files
         $maxFileAge = 60 * 60*60; // Temp file age in seconds
@@ -147,10 +147,10 @@ class Cdeep3m_retrain extends CI_Controller
 
         $fileName = preg_replace('/[^\w\._]+/', '', $fileName);
         if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) 
-            error_log("\nStep 0: Filename:".$fileName, 3, $targetDir."/retrain_labels_upload.log");
+            error_log("\nStep 0: Filename:".$fileName, 3, $targetDir1."/retrain_labels_upload.log");
                 
         $fileName2 = $_FILES["file"]["name"];
-        error_log("\nStep 0.1: Filename:".$fileName2, 3, $targetDir."/retrain_labels_upload.log");
+        error_log("\nStep 0.1: Filename:".$fileName2, 3, $targetDir1."/retrain_labels_upload.log");
                 
         // Create target dir
         if (!file_exists($targetDir))
@@ -167,11 +167,11 @@ class Cdeep3m_retrain extends CI_Controller
         if (isset($_SERVER["CONTENT_TYPE"]))
             $contentType = $_SERVER["CONTENT_TYPE"];
                 
-        error_log("\nStep 0", 3, $targetDir."/retrain_labels_upload.log");
+        error_log("\nStep 0", 3, $targetDir1."/retrain_labels_upload.log");
                 
         if (strpos($contentType, "multipart") !== false) 
         {
-            error_log("\nStep 1", 3, $targetDir."/retrain_labels_upload.log");
+            error_log("\nStep 1", 3, $targetDir1."/retrain_labels_upload.log");
 
             if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) 
             {
@@ -197,7 +197,7 @@ class Cdeep3m_retrain extends CI_Controller
                 else
                 {
                     $message = '{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}';
-                    error_log("\n".$message, 3, $targetDir."/retrain_labels_upload.log");
+                    error_log("\n".$message, 3, $targetDir1."/retrain_labels_upload.log");
                     die($message);
                             
                 }
@@ -205,13 +205,13 @@ class Cdeep3m_retrain extends CI_Controller
             else
             {
                 $message = '{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}';
-                error_log("\n".$message, 3, $targetDir."/retrain_labels_upload.log");
+                error_log("\n".$message, 3, $targetDir1."/retrain_labels_upload.log");
                 die($message);
             }
         }
         else 
         {
-            error_log("\nStep 2", 3, $targetDir."/retrain_labels_upload.log");
+            error_log("\nStep 2", 3, $targetDir1."/retrain_labels_upload.log");
             // Open temp file
             $out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
             if ($out) 
@@ -355,19 +355,19 @@ class Cdeep3m_retrain extends CI_Controller
             die($message);
         }
         
-        $targetDir = $this->config->item('images_upload_location');
-        if(!file_exists($targetDir))
+        $targetDir0 = $this->config->item('images_upload_location');
+        if(!file_exists($targetDir0))
             mkdir($targetDir);
                 
-        $targetDir = $targetDir."/".$retrainID;
+        $targetDir1 = $targetDir0."/".$retrainID;
+        if(!file_exists($targetDir1))
+            mkdir($targetDir1);
+        
+        $targetDir = $targetDir1."/retrain_images";
         if(!file_exists($targetDir))
             mkdir($targetDir);
         
-        $targetDir = $targetDir."/retrain_images";
-        if(!file_exists($targetDir))
-            mkdir($targetDir);
-        
-        error_log("\ntargetDir:".$targetDir, 3, $targetDir."/retrain_image_upload.log");
+        error_log("\ntargetDir:".$targetDir1, 3, $targetDir1."/retrain_image_upload.log");
 
         $cleanupTargetDir = false; // Remove old files
         $maxFileAge = 60 * 60*60; // Temp file age in seconds
@@ -386,10 +386,10 @@ class Cdeep3m_retrain extends CI_Controller
 
         $fileName = preg_replace('/[^\w\._]+/', '', $fileName);
         if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) 
-            error_log("\nStep 0: Filename:".$fileName, 3, $targetDir."/retrain_image_upload.log");
+            error_log("\nStep 0: Filename:".$fileName, 3, $targetDir1."/retrain_image_upload.log");
                 
         $fileName2 = $_FILES["file"]["name"];
-        error_log("\nStep 0.1: Filename:".$fileName2, 3, $targetDir."/retrain_image_upload.log");
+        error_log("\nStep 0.1: Filename:".$fileName2, 3, $targetDir1."/retrain_image_upload.log");
                 
         // Create target dir
         if (!file_exists($targetDir))
@@ -406,11 +406,11 @@ class Cdeep3m_retrain extends CI_Controller
         if (isset($_SERVER["CONTENT_TYPE"]))
             $contentType = $_SERVER["CONTENT_TYPE"];
                 
-        error_log("\nStep 0", 3, $targetDir."/retrain_image_upload.log");
+        error_log("\nStep 0", 3, $targetDir1."/retrain_image_upload.log");
                 
         if (strpos($contentType, "multipart") !== false) 
         {
-            error_log("\nStep 1", 3, $targetDir."/retrain_image_upload.log");
+            error_log("\nStep 1", 3, $targetDir1."/retrain_image_upload.log");
 
             if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) 
             {
@@ -436,7 +436,7 @@ class Cdeep3m_retrain extends CI_Controller
                 else
                 {
                     $message = '{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}';
-                    error_log("\n".$message, 3, $targetDir."/retrain_image_upload.log");
+                    error_log("\n".$message, 3, $targetDir1."/retrain_image_upload.log");
                     die($message);
                             
                 }
@@ -444,13 +444,13 @@ class Cdeep3m_retrain extends CI_Controller
             else
             {
                 $message = '{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}';
-                error_log("\n".$message, 3, $targetDir."/retrain_image_upload.log");
+                error_log("\n".$message, 3, $targetDir1."/retrain_image_upload.log");
                 die($message);
             }
         }
         else 
         {
-            error_log("\nStep 2", 3, $targetDir."/retrain_image_upload.log");
+            error_log("\nStep 2", 3, $targetDir1."/retrain_image_upload.log");
             // Open temp file
             $out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
             if ($out) 
@@ -464,6 +464,62 @@ class Cdeep3m_retrain extends CI_Controller
                 }
             }
         }
+    }
+    
+    
+    public function submit_retrain($retrainID=0)
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        
+        $base_url = $this->config->item('base_url');
+        $login_hash = $this->session->userdata('login_hash');
+        
+        $data['username'] = $this->session->userdata('username');
+        if(is_null($login_hash))
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        
+        $username = $data['username'];
+        if(is_null($username))
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        $isAdmin = $dbutil->isAdmin($username);
+        if(!$isAdmin)
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        
+        if(is_null($retrainID) || !is_numeric($retrainID))
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        
+        $retrainID = intval($retrainID);
+        $model_doi = $this->input->post('ct_training_models', TRUE);
+        $aug_speed = $this->input->post('ct_augmentation', TRUE);
+        $aug_speed = intval($aug_speed);
+        $num_iterations = $this->input->post('ct_iteration_ranage', TRUE);
+        $num_iterations = intval($num_iterations);
+        $email = $this->input->post('email', TRUE);
+        
+        
+        $dbutil->updateRetrainParameters($retrainID, $model_doi, $aug_speed, $num_iterations, $username, $email);
+        
+        
+        echo "<br/>retrain ID:".$retrainID;
+        echo "<br/>training model DOI:".$model_doi;
+        echo "<br/>Augspeed:".$aug_speed;
+        echo "<br/>Iteration:".$num_iterations;
+        echo "<br/>Email:".$email;
+        echo "<br/>Username:".$username;
     }
     
     public function select_retrain_params($retrainID=0)

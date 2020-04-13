@@ -1141,6 +1141,36 @@ class DB_util
         return true;
     }
     
+    
+    public function updateRetrainParameters($retrainID, $model_doi, $aug_speed, $num_iterations, $username, $email)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "update retrain_models set model_doi=$1, aug_speed=$2, num_iterations=$3, username=$4, email=$5, process_start_time=now() where id=$6";
+        
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+            return false;
+        $input = array();
+        array_push($input, $model_doi);
+        array_push($input, $aug_speed);
+        array_push($input, $num_iterations);
+        array_push($input, $username);
+        array_push($input, $email);
+        array_push($input, $retrainID);
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        pg_close($conn);
+        return true;
+        
+        
+    }
+    
     public function updateRetrainImageFolder($retrainID,$retrainImageFolder)
     {
         $CI = CI_Controller::get_instance();
@@ -1309,6 +1339,10 @@ class DB_util
         return $defaultType;
         
     }
+    
+    
+    
+    
     
     public function updateDockerImageType($imageType, $crop_id)
     {
