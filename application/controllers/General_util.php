@@ -76,7 +76,7 @@ class General_util
         if(!file_exists($parentFolder))
             return NULL;
         
-        if(!file_exists($retrainImageFolder))
+        if(!file_exists($retrainLabelFolder))
             return NULL;
         
         $tar_cmd = "cd ".$parentFolder."; tar -cvf retrain_labels.tar ".$retrainLabelFolder;
