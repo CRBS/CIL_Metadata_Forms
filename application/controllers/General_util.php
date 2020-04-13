@@ -50,7 +50,41 @@ class General_util
             
     }
     
+    public function createRetrainImageTar($retrainID, $parentFolder, $retrainImageFolder)
+    {
+        if(is_null($retrainID) || !is_numeric($retrainID))
+            return NULL;
+        
+        if(!file_exists($parentFolder))
+            return NULL;
+        
+        if(!file_exists($retrainImageFolder))
+            return NULL;
+        
+        $tar_cmd = "cd ".$parentFolder."; tar -cvf retrain_images.tar ".$retrainImageFolder;
+        $tresult = shell_exec($tar_cmd);
+        
+        $file_path = $parentFolder."/retrain_images.tar";
+        return $file_path;
+    }
     
+    public function createRetrainLabelTar($retrainID, $parentFolder, $retrainLabelFolder)
+    {
+        if(is_null($retrainID) || !is_numeric($retrainID))
+            return NULL;
+        
+        if(!file_exists($parentFolder))
+            return NULL;
+        
+        if(!file_exists($retrainImageFolder))
+            return NULL;
+        
+        $tar_cmd = "cd ".$parentFolder."; tar -cvf retrain_labels.tar ".$retrainLabelFolder;
+        $tresult = shell_exec($tar_cmd);
+        
+        $file_path = $parentFolder."/retrain_labels.tar";
+        return $file_path;
+    }
 }
 
 

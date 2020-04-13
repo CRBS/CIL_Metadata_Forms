@@ -234,6 +234,8 @@ class Cdeep3m_retrain extends CI_Controller
         $gutil = new General_util();
         
         $base_url = $this->config->item('base_url');
+        $do_tar_retrain_files = $this->config->item('do_tar_retrain_files');
+        
         $login_hash = $this->session->userdata('login_hash');
         
         $data['username'] = $this->session->userdata('username');
@@ -270,6 +272,11 @@ class Cdeep3m_retrain extends CI_Controller
             
             $retrainID = intval($retrainID);
             $dbutil->updateRetrainLabelFolder($retrainID, $retrainLabelFolder);
+            if($do_tar_retrain_files)
+            {
+                $parentFolder = $retrainImageFolder = $this->config->item('retrain_upload_location')."/".$retrainID; 
+                $gutil->createRetrainLabelTar($retrainID, $parentFolder, $retrainLabelFolder);
+            }
             //echo "<br/>Success!";
             //return;
         }
@@ -291,6 +298,8 @@ class Cdeep3m_retrain extends CI_Controller
         $gutil = new General_util();
         
         $base_url = $this->config->item('base_url');
+        $do_tar_retrain_files = $this->config->item('do_tar_retrain_files');
+        
         $login_hash = $this->session->userdata('login_hash');
         
         $data['username'] = $this->session->userdata('username');
@@ -327,6 +336,11 @@ class Cdeep3m_retrain extends CI_Controller
             
             $retrainID = intval($retrainID);
             $dbutil->updateRetrainImageFolder($retrainID, $retrainImageFolder);
+            if($do_tar_retrain_files)
+            {
+                $parentFolder = $retrainImageFolder = $this->config->item('retrain_upload_location')."/".$retrainID; 
+                $gutil->createRetrainImageTar($retrainID, $parentFolder, $retrainImageFolder);
+            }
             //echo "<br/>Success!";
             //return;
         }

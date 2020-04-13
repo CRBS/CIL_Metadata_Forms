@@ -623,6 +623,11 @@ if($is_prod)
 else
     $config['group_data_location'] = "C:/CIL_GIT/CIL-CCDB_JSON/Version8_9/GROUPS";
 
+if($is_prod)
+    $config['do_tar_retrain_files'] = true;
+else
+    $config['do_tar_retrain_files'] = false;
+
 $config['remote_upload_prefix'] = $json->remote_upload_prefix;    
 
 $config['remote_service_prefix'] = $json->remote_service_prefix;
