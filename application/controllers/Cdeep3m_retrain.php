@@ -116,7 +116,7 @@ class Cdeep3m_retrain extends CI_Controller
             die($message);
         }
         
-        $targetDir0 = $this->config->item('images_upload_location');
+        $targetDir0 = $this->config->item('retrain_upload_location');
         if(!file_exists($targetDir0))
             mkdir($targetDir0);
                 
@@ -355,7 +355,7 @@ class Cdeep3m_retrain extends CI_Controller
             die($message);
         }
         
-        $targetDir0 = $this->config->item('images_upload_location');
+        $targetDir0 = $this->config->item('retrain_upload_location');
         if(!file_exists($targetDir0))
             mkdir($targetDir);
                 

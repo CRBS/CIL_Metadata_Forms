@@ -576,6 +576,11 @@ if(!$is_prod)
 else
     $config['model_upload_location'] = "/export2/media/model_display"; //"/var/www/upload_dir/models";
 
+if(!$is_prod)
+    $config['retrain_upload_location'] = "C:/Test2";
+else
+    $config['retrain_upload_location'] = "/export2/temp/retrain_upload";
+
 
 if(!$is_prod)
     $config['images_upload_location'] = "C:/Test3";
