@@ -516,24 +516,51 @@ class Cdeep3m_retrain extends CI_Controller
             return;
         }
         
+        
+        
         $retrainID = intval($retrainID);
         $model_doi = $this->input->post('ct_training_models', TRUE);
-        $aug_speed = $this->input->post('ct_augmentation', TRUE);
-        $aug_speed = intval($aug_speed);
+        //$aug_speed = $this->input->post('ct_augmentation', TRUE);
+        //$aug_speed = intval($aug_speed);
+        
+        $second_aug = $this->input->post('second_ranage', TRUE);
+        $second_aug = intval($second_aug);
+        
+        $tertiary_aug = $this->input->post('tertiary_ranage', TRUE);
+        $tertiary_aug = intval($tertiary_aug);
+        
+        
         $num_iterations = $this->input->post('ct_iteration_ranage', TRUE);
         $num_iterations = intval($num_iterations);
         $email = $this->input->post('email', TRUE);
         
         
-        $dbutil->updateRetrainParameters($retrainID, $model_doi, $aug_speed, $num_iterations, $username, $email);
+        $dbutil->updateRetrainParameters($retrainID, $model_doi, $second_aug, $tertiary_aug, $num_iterations, $username, $email);
         
         
         echo "<br/>retrain ID:".$retrainID;
+        $do_tar_retrain_files = $this->config->item('do_tar_retrain_files');
+        if($do_tar_retrain_files)
+        {
+            $retrainImageTarFile = $this->config->item('retrain_upload_location')."/".$retrainID."/retrain_images.tar";
+            if(file_exists($retrainImageTarFile))
+            {
+                echo "<br/>Retrain image tar URL: http://cildata.crbs.ucsd.edu/retrain_upload/".$retrainID."/retrain_images.tar";
+            }
+            
+            $retrainLabelTarFile = $this->config->item('retrain_upload_location')."/".$retrainID."/retrain_labels.tar";
+            if(file_exists($retrainLabelTarFile))
+            {
+                echo "<br/>Retrain label tar URL: http://cildata.crbs.ucsd.edu/retrain_upload/".$retrainID."/retrain_labels.tar";
+            }
+        }
         echo "<br/>training model DOI:".$model_doi;
-        echo "<br/>Augspeed:".$aug_speed;
+        
         echo "<br/>Iteration:".$num_iterations;
         echo "<br/>Email:".$email;
         echo "<br/>Username:".$username;
+        echo "<br/>Secondary Aug value:".$second_aug;
+        echo "<br/>Tertiary Aug value:".$tertiary_aug;
     }
     
     public function select_retrain_params($retrainID=0)

@@ -1142,18 +1142,19 @@ class DB_util
     }
     
     
-    public function updateRetrainParameters($retrainID, $model_doi, $aug_speed, $num_iterations, $username, $email)
+    public function updateRetrainParameters($retrainID, $model_doi, $second_aug, $tertiary_aug, $num_iterations, $username, $email)
     {
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
-        $sql = "update retrain_models set model_doi=$1, aug_speed=$2, num_iterations=$3, username=$4, email=$5, process_start_time=now() where id=$6";
+        $sql = "update retrain_models set model_doi=$1, second_aug=$2, tertiary_aug=$3, num_iterations=$4, username=$5, email=$6, process_start_time=now() where id=$7";
         
         $conn = pg_pconnect($db_params);
         if(!$conn)
             return false;
         $input = array();
         array_push($input, $model_doi);
-        array_push($input, $aug_speed);
+        array_push($input, $second_aug);
+        array_push($input, $tertiary_aug);
         array_push($input, $num_iterations);
         array_push($input, $username);
         array_push($input, $email);

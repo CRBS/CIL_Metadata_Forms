@@ -47,25 +47,32 @@
                 <!-----End Training model-------------->
                 
                 <hr style="height:10px; visibility:hidden;" />
-                <!------------------Augmentation---------------->
+                <!------------------Secondary Augmentation---------------->
                 <div class="col-md-4">
-                    Augspeed:
+                    Secondary Aug value:
                 </div>
                 <div class="col-md-6">
-                    <select name="ct_augmentation" id="ct_augmentation" class="form-control" > 
-                        <option value="10">10</option>
-                        <option value="4">4</option>
-                        <option value="2">2</option>
-                        <option value="1">1</option>
-                    </select>             
-                </div> 
-                <div class="col-md-2"> 
-                                <!-- <a href="#"  data-toggle="tooltip" data-placement="left" data-html="true" title="Augspeed 10: fastest, no addtl augmentation <br/>Augspeed 1: slowest, 16x augmented (8x for 1fm), higher accuracy">Help</a>  -->
-                    <a href="#" style="color:#00aaff" title="Augspeed 10: fastest, no addtl augmentation
-Augspeed 1: slowest, 16x augmented (8x for 1fm), higher accuracy" >Info</a> 
-                                   
+                    <input type="range" class="custom-range" min="0" max="10" step="1" id="second_ranage" name='second_ranage' value='0' onchange='update_second_ranage()'>
                 </div>
-                <!------------------End Augmentation---------------->
+                <div class="col-md-2">
+                    <div id='second_ranage_value' name='second_ranage_value'>0</div>
+                </div>
+                <!------------------End Secondary Augmentation---------------->
+                
+                <hr style="height:10px; visibility:hidden;" />
+                <!------------------Tertiary Augmentation---------------->
+                <div class="col-md-4">
+                    Tertiary Aug value:
+                </div>
+                <div class="col-md-6">
+                    <input type="range" class="custom-range" min="-1" max="10" step="1" id="tertiary_ranage" name='tertiary_ranage' value='-1' onchange='update_tertiary_ranage()'>
+                </div>
+                <div class="col-md-2">
+                    <div id='tertiary_ranage_value' name='tertiary_ranage_value'>-1</div>
+                </div>
+                <!------------------End Tertiary Augmentation---------------->
+                
+                
                 <hr style="height:10px; visibility:hidden;" />
                 <!------------------Iterations----------------------> 
                 <div class="col-md-4">
@@ -114,5 +121,17 @@ Augspeed 1: slowest, 16x augmented (8x for 1fm), higher accuracy" >Info</a>
         document.getElementById('iteration_value').innerHTML = iteration_value;
     }
     
+    
+    function update_second_ranage()
+    {
+        var iteration_value =  document.getElementById('second_ranage').value;
+        document.getElementById('second_ranage_value').innerHTML = iteration_value;
+    }
+    
+    function update_tertiary_ranage()
+    {
+        var iteration_value =  document.getElementById('tertiary_ranage').value;
+        document.getElementById('tertiary_ranage_value').innerHTML = iteration_value;
+    }
     
 </script>
