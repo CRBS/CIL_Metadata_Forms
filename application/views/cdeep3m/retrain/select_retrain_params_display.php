@@ -52,7 +52,7 @@
                     Secondary Aug value:
                 </div>
                 <div class="col-md-6">
-                    <input type="range" class="custom-range" min="0" max="10" step="1" id="second_ranage" name='second_ranage' value='0' onchange='update_second_ranage()'>
+                    <input type="range" class="custom-range" min="-1" max="10" step="1" id="second_ranage" name='second_ranage' value='-1' onchange='update_second_ranage()'>
                 </div>
                 <div class="col-md-2">
                     <div id='second_ranage_value' name='second_ranage_value'>0</div>
@@ -65,7 +65,7 @@
                     Tertiary Aug value:
                 </div>
                 <div class="col-md-6">
-                    <input type="range" class="custom-range" min="-1" max="10" step="1" id="tertiary_ranage" name='tertiary_ranage' value='-1' onchange='update_tertiary_ranage()'>
+                    <input type="range" class="custom-range" min="0" max="10" step="1" id="tertiary_ranage" name='tertiary_ranage' value='0' onchange='update_tertiary_ranage()'>
                 </div>
                 <div class="col-md-2">
                     <div id='tertiary_ranage_value' name='tertiary_ranage_value'>-1</div>
@@ -76,7 +76,7 @@
                 <hr style="height:10px; visibility:hidden;" />
                 <!------------------Iterations----------------------> 
                 <div class="col-md-4">
-                    Iterations:
+                     Additerations:
                 </div>
                 <div class="col-md-6">
                     <input type="range" class="custom-range" min="100" max="2000" step="100" id="ct_iteration_ranage" name='ct_iteration_ranage' value='100' onchange='update_iteration()'>
