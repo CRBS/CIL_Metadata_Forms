@@ -338,7 +338,7 @@ class Cdeep3m_retrain extends CI_Controller
             $dbutil->updateRetrainImageFolder($retrainID, $retrainImageFolder);
             if($do_tar_retrain_files)
             {
-                $parentFolder = $retrainImageFolder = $this->config->item('retrain_upload_location')."/".$retrainID; 
+                $parentFolder  = $this->config->item('retrain_upload_location')."/".$retrainID; 
                 $gutil->createRetrainImageTar($retrainID, $parentFolder, $retrainImageFolder);
             }
             //echo "<br/>Success!";
@@ -542,16 +542,16 @@ class Cdeep3m_retrain extends CI_Controller
         $do_tar_retrain_files = $this->config->item('do_tar_retrain_files');
         if($do_tar_retrain_files)
         {
-            $retrainImageTarFile = $this->config->item('retrain_upload_location')."/".$retrainID."/retrain_images.tar";
+            $retrainImageTarFile = $this->config->item('retrain_upload_location')."/".$retrainID."/retrain_images/retrain_images.tar";
             if(file_exists($retrainImageTarFile))
             {
-                echo "<br/>Retrain image tar URL: http://cildata.crbs.ucsd.edu/retrain_upload/".$retrainID."/retrain_images.tar";
+                echo "<br/>Retrain image tar URL: http://cildata.crbs.ucsd.edu/retrain_upload/".$retrainID."/retrain_images/retrain_images.tar";
             }
             
-            $retrainLabelTarFile = $this->config->item('retrain_upload_location')."/".$retrainID."/retrain_labels.tar";
+            $retrainLabelTarFile = $this->config->item('retrain_upload_location')."/".$retrainID."/retrain_labels/retrain_labels.tar";
             if(file_exists($retrainLabelTarFile))
             {
-                echo "<br/>Retrain label tar URL: http://cildata.crbs.ucsd.edu/retrain_upload/".$retrainID."/retrain_labels.tar";
+                echo "<br/>Retrain label tar URL: http://cildata.crbs.ucsd.edu/retrain_upload/".$retrainID."/retrain_labels/retrain_labels.tar";
             }
         }
         echo "<br/>training model DOI:".$model_doi;

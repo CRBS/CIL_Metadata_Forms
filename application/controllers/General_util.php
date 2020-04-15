@@ -61,10 +61,12 @@ class General_util
         if(!file_exists($retrainImageFolder))
             return NULL;
         
-        $tar_cmd = "cd ".$parentFolder."; tar -cvf retrain_images.tar ".$retrainImageFolder;
+        //$tar_cmd = "cd ".$parentFolder."; tar -cvf retrain_images.tar ".$retrainImageFolder;
+        $tar_cmd = "cd ".$retrainImageFolder."; tar -cvf retrain_images.tar *.png *.tif *.jpg";
+        error_log($tar_cmd,3,$parentFolder."/tar.log");
         $tresult = shell_exec($tar_cmd);
         
-        $file_path = $parentFolder."/retrain_images.tar";
+        $file_path = $retrainImageFolder."/retrain_images.tar";
         return $file_path;
     }
     
@@ -79,7 +81,9 @@ class General_util
         if(!file_exists($retrainLabelFolder))
             return NULL;
         
-        $tar_cmd = "cd ".$parentFolder."; tar -cvf retrain_labels.tar ".$retrainLabelFolder;
+        //$tar_cmd = "cd ".$parentFolder."; tar -cvf retrain_labels.tar ".$retrainLabelFolder;
+        $tar_cmd = "cd ".$retrainLabelFolder."; tar -cvf retrain_labels.tar *.png *.tif *.jpg";
+        error_log($tar_cmd,3,$parentFolder."/tar.log");
         $tresult = shell_exec($tar_cmd);
         
         $file_path = $parentFolder."/retrain_labels.tar";
