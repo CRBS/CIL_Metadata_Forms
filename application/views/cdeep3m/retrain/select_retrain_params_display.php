@@ -55,7 +55,7 @@
                     <input type="range" class="custom-range" min="-1" max="10" step="1" id="second_ranage" name='second_ranage' value='-1' onchange='update_second_ranage()'>
                 </div>
                 <div class="col-md-2">
-                    <div id='second_ranage_value' name='second_ranage_value'>0</div>
+                    <div id='second_ranage_value' name='second_ranage_value'>-1</div>
                 </div>
                 <!------------------End Secondary Augmentation---------------->
                 
@@ -68,7 +68,7 @@
                     <input type="range" class="custom-range" min="0" max="10" step="1" id="tertiary_ranage" name='tertiary_ranage' value='0' onchange='update_tertiary_ranage()'>
                 </div>
                 <div class="col-md-2">
-                    <div id='tertiary_ranage_value' name='tertiary_ranage_value'>-1</div>
+                    <div id='tertiary_ranage_value' name='tertiary_ranage_value'>0</div>
                 </div>
                 <!------------------End Tertiary Augmentation---------------->
                 
