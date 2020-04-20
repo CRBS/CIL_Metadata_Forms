@@ -589,9 +589,9 @@ else
 
 
 if(!$is_prod)
-    $config['images_upload_location'] = "C:/Test3/retrain_models";
+    $config['retrain_upload_location'] = "C:/Test3/retrain_models";
 else
-    $config['images_upload_location'] = "/export2/temp/retrain_models";
+    $config['retrain_upload_location'] = "/export2/temp/retrain_models";
 
 
 $config['metadata_service_prefix'] = $json->metadata_service_prefix;
