@@ -23,6 +23,9 @@
             <b>Max number of files:</b> 20
         </div>
         <div class="col-md-12">
+            <b>Mx file size:</b> 20mb
+        </div>
+        <div class="col-md-12">
             <b>Note:</b>
              For best results upload acquired electron micrographs as TIFs (without lowering bit-depth or histogram adjustments). Automatic image adjustments will be applied.
         </div>
@@ -88,7 +91,7 @@ $(function() {
 		//unique_names : true,
 		
 		filters : {
-			max_file_size : '999999999mb',
+			max_file_size : '20mb',
 			mime_types: [
 				//{title : "Image files", extensions : "jpg,gif,png,tif"},
 				{title : "png & tif", extensions : "png,tif"}

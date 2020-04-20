@@ -120,6 +120,7 @@ class Cdeep3m_preview extends CI_Controller
         $gutil = new General_util();
         $login_hash = $this->session->userdata('login_hash');
         $data['username'] = $this->session->userdata('username');
+         $data['image_viewer_prefix'] = $this->config->item('image_viewer_prefix');
         if(is_null($login_hash))
         {
             redirect ($base_url."/home");
@@ -177,6 +178,7 @@ class Cdeep3m_preview extends CI_Controller
         echo "<br/>Email:".$email;
         */
         $crop_id = intval($crop_id);
+        $data['crop_id'] = $crop_id;
         if(!$dbutil->isCropIdExist($crop_id))
         {
         $dbutil->insertCroppingInfoWithTraining($crop_id, $email, $ct_training_models, $ct_augmentation, $frame);
