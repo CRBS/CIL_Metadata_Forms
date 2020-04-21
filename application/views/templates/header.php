@@ -76,7 +76,7 @@
                       <a class="nav-link" href="/home/faq">FAQ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="https://github.com/CRBS/cdeep3m" target="_self">Open source</a>
+                        <a class="nav-link" href="https://github.com/CRBS/cdeep3m2" target="_self">Open source</a>
                     </li>
                     <?php
                     if(isset($username))
