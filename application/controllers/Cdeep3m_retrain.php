@@ -282,10 +282,10 @@ class Cdeep3m_retrain extends CI_Controller
         }
         else 
         {
-            //echo "Error:".$retrainImageFolder;
-            //return;
-            redirect($base_url."/cdeep3m_retrain");
+            echo "Error---Retrain label folder does not exist:".$retrainLabelFolder;
             return;
+            //redirect($base_url."/cdeep3m_retrain");
+            //return;
         }
         redirect ($base_url."/cdeep3m_retrain/select_retrain_params/".$retrainID);
         
@@ -346,10 +346,10 @@ class Cdeep3m_retrain extends CI_Controller
         }
         else 
         {
-            //echo "Error:".$retrainImageFolder;
-            //return;
-            redirect($base_url."/cdeep3m_retrain");
+            echo "Error ----- image folder does not exist:".$retrainImageFolder;
             return;
+            //redirect($base_url."/cdeep3m_retrain");
+            //return;
         }
         redirect ($base_url."/cdeep3m_retrain/upload_training_labels/".$retrainID);
         

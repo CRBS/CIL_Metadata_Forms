@@ -586,9 +586,10 @@ else
 
 
 if(!$is_prod)
-    $config['retrain_upload_location'] = "C:/Test3/retrain_models";
+    $config['retrain_upload_location'] = "C:/Test3/retrain_upload";
 else
-    $config['retrain_upload_location'] = "/export2/temp/retrain_models";
+    $config['retrain_upload_location'] = "/export2/temp/retrain_upload";
+    //$config['retrain_upload_location'] = "/export2/temp/retrain_models";
 
 
 $config['metadata_service_prefix'] = $json->metadata_service_prefix;
