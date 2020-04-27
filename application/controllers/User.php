@@ -274,8 +274,23 @@ class User extends CI_Controller
         if(!is_null($userInfo))
         {
             $email_to = $userInfo['email'];
+            $subject = "Your CDeep3M account has been approved";
             $message = "Go to ".$base_url;
-            $mutil->sendGridMail($email_to, $email_from, "Your CDeep3M account has been approved", $message, $sendgrid_api_url, $sendgrid_api_key);
+            //$mutil->sendGridMail($email_to, $email_from, "Your CDeep3M account has been approved", $message, $sendgrid_api_url, $sendgrid_api_key);
+            /***************Send Gmail*******************/
+            $log_location = $this->config->item('log_location');
+            $email_log_file = $log_location."/email_error.log";
+            //$subject = "Account request:".$username;
+            //$message = "Go to ".$base_url." and approve this user.<br/>Username:".$username."<br/>Email:".$create_email;
+            
+            $gmail_sender = $this->config->item('gmail_sender');
+            $gmail_sender_name = $this->config->item('gmail_sender_name');
+            $gmail_sender_pwd = $this->config->item('gmail_sender_pwd');
+            $gmail_reply_to = $this->config->item('gmail_reply_to');
+            $gmail_reply_to_name = $this->config->item('gmail_reply_to_name');
+            
+            $mutil->sendGmail($gmail_sender, $gmail_sender_name, $gmail_sender_pwd,$email_to, $gmail_reply_to, $gmail_reply_to_name, $subject, $message, $email_log_file);
+            /***************End send Gmail***************/
         }
         
         redirect($base_url."/user/approve_users");
