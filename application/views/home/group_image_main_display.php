@@ -40,7 +40,7 @@
                             if($index < $count)
                             {
                         ?>
-                        <center><a href='/home/internal_group_images/<?php echo $userGroupArray[$index]['id']; ?>' target='_self'><img src='https://cildata.crbs.ucsd.edu/media/internal_group_display/<?php echo $userGroupArray[$index]['group_name']; ?>/default.jpg' width="256" /></a></center>
+                        <center><a href='/home/internal_group_images/<?php echo $userGroupArray[$index]['id']; ?>' target='_self'><img src='/pix/default_jpg3.png?<?php echo microtime(); ?>' width="256" /></a></center>
                         <br/>
                         <center><a href='/home/internal_group_images/<?php echo $userGroupArray[$index]['id']; ?>' target='_self'><?php echo $userGroupArray[$index]['group_name'];  ?></a></center>
                         <?php
@@ -55,7 +55,7 @@
                             if($index < $count)
                             {
                         ?>
-                        <center><a href='/home/internal_group_images/<?php echo $userGroupArray[$index]['id']; ?>' target='_self'><img src='https://cildata.crbs.ucsd.edu/media/internal_group_display/<?php echo $userGroupArray[$index]['group_name']; ?>.jpg' width="256" /></a></center>
+                        <center><a href='/home/internal_group_images/<?php echo $userGroupArray[$index]['id']; ?>' target='_self'><img src='/pix/default_jpg3.png?<?php echo microtime(); ?>' width="256" /></a></center>
                         <br/>
                         <center><a href='/home/internal_group_images/<?php echo $userGroupArray[$index]['id']; ?>' target='_self'><?php echo $userGroupArray[$index]['group_name'];  ?></a></center>
                         <?php
@@ -70,7 +70,7 @@
                             if($index < $count)
                             {
                         ?>
-                        <center><a href='/home/internal_group_images/<?php echo $userGroupArray[$index]['id']; ?>' target='_self'><img src='https://cildata.crbs.ucsd.edu/media/internal_group_display/<?php echo $userGroupArray[$index]['group_name']; ?>.jpg' width="256" /></a></center>
+                        <center><a href='/home/internal_group_images/<?php echo $userGroupArray[$index]['id']; ?>' target='_self'><img src='/pix/default_jpg3.png?<?php echo microtime(); ?>' width="256" /></a></center>
                         <br/>
                         <center><a href='/home/internal_group_images/<?php echo $userGroupArray[$index]['id']; ?>' target='_self'><?php echo $userGroupArray[$index]['group_name'];  ?></a></center>
                         <?php
@@ -81,15 +81,15 @@
                     </div>
                     
                 <?php
-                    if($index==0)
-                    {
+                    //if($index==0)
+                    //{
                 ?>
                 </div>
                 <?php
-                    }
+                    //}
                     
-                    if($index == 2)
-                        $index =0;
+                    //if($index == 2)
+                    //    $index =0;
                 ?>    
     <?php
             }             

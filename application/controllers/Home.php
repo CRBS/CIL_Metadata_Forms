@@ -192,6 +192,8 @@ class Home extends CI_Controller
         
         $userGroupArray = $dbutil->getUserGroupsByType($data['username'], 'image_group');
         
+        //var_dump($userGroupArray);
+        
         $data['userGroupArray'] = $userGroupArray;
         $data['title'] = "Home";
         $this->load->view('templates/header', $data);
