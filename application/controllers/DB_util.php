@@ -46,7 +46,9 @@ class DB_util
     {
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
-        $sql = "select id,username, group_name, group_type, group_type from cil_user_groups where username = $1 and group_type = $2";
+        //$sql = "select id,username, group_name, group_type, group_type from cil_user_groups where username = $1 and group_type = $2";
+        $sql = "select distinct g.id, ug.username, g.group_name, ug.group_type from cil_user_groups ug, cil_groups g where ug.group_name = g.group_name and  ug.username = $1 and ug.group_type = $2 order by g.id asc";
+        //echo $sql;
         $conn = pg_pconnect($db_params);
         if(!$conn)
         {
