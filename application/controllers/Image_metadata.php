@@ -791,6 +791,10 @@ class Image_metadata extends CI_Controller
         
         $group_check = $this->input->post('group_check', TRUE);
         
+        //echo $tech_details;
+        //return;
+        
+        
         $data_type_str = "\"Data_type\": {".
                         "\"Time_series\": false, ".
                         "\"Still_image\": false, ".
@@ -848,12 +852,31 @@ class Image_metadata extends CI_Controller
         if(!is_null($tech_details) && strlen(trim($tech_details)) >0)
         {
             $tech_details = trim($tech_details);
+            //$tech_details = str_replace("%", "&#37;", $tech_details);
+            //echo $tech_details;
+            //return;
             $darray = array();
-            $darray['free_text'] = $tech_details;
-            $djson_str = json_encode($darray);
+            $darray['free_text'] =  ($tech_details);
+            //echo "<br/>".$tech_details;
+            $djson_str = json_encode($darray );
+           
+            //header('Content-Type: application/json');
+            //echo $djson_str;
+            //return;
+            
+            
             $djson = json_decode($djson_str);
             $json->CIL_CCDB->CIL->CORE->TECHNICALDETAILS = $djson;
         }
+        
+        /*
+        //Debug
+        header('Content-Type: application/json');
+        $json_str = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        echo $json_str;
+        return;
+         * 
+         */
         
         /***************GROUP************/
      
