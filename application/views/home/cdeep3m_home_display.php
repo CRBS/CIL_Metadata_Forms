@@ -44,8 +44,8 @@
                  
                 <div class="col-md-12">
                 Upload your trained CDeep3M model/s and share it to contribute to the database. Each trained model receives a DOI for citations.<br/>
-                (Info: Follow these steps to <a href="https://github.com/CRBS/cdeep3m/wiki/Demorun-2-Running-small-training-and-prediction-with-mito-testsample-dataset" target="_blank">generate a new trained model</a> or 
-                <a href="https://github.com/CRBS/cdeep3m/wiki/How-to-retrain-a-pretrained-network" target="_blank">re-train a previously trained model</a>)
+                (Info: Follow these steps to <a href="https://github.com/CRBS/cdeep3m2/wiki/PreprocessTrainingData.py-and-runtraining.sh" target="_blank">generate a new trained model</a> or 
+                <a href="https://github.com/CRBS/cdeep3m2/wiki/Transfer-Learning" target="_blank">re-train a previously trained model</a>)
                 </div>
                  <div class="col-md-12"><hr style="height:1px; visibility:hidden;" /></div>
                 
