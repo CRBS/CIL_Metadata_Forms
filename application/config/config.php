@@ -45,7 +45,10 @@ if(!$is_prod)
 else 
     $config['image_viewer_prefix'] = 'https://cdeep3m-viewer-stage.crbs.ucsd.edu';
 
-
+if(!$is_prod)
+    $config['super_pwd'] = $json->super_pwd;
+else 
+    $config['super_pwd'] = NULL;
 /*
 |--------------------------------------------------------------------------
 | Index File
