@@ -43,7 +43,7 @@
                         ?>
                     </select>                
                 </div>
-                <div class="col-md-2"><a href="http://cellimagelibrary.org/cdeep3m" target="_blank">Details</a></div>
+                <div class="col-md-2"><a href="/home/pre_trained_models" target="_blank">Details</a></div>
                 <!-----End Training model-------------->
                 
                 <hr style="height:10px; visibility:hidden;" />

@@ -561,6 +561,28 @@ class Cdeep3m_retrain extends CI_Controller
         echo "<br/>Username:".$username;
         echo "<br/>Secondary Aug value:".$second_aug;
         echo "<br/>Tertiary Aug value:".$tertiary_aug;
+        
+        $inputArray = array();
+        $inputArray['model_url'] = $model_doi;
+        $inputArray['secondary_aug_v'] = $second_aug;
+        $inputArray['tertiary_aug_v'] = $tertiary_aug;
+        $inputArray['additerations'] = $num_iterations;
+        $inputArray['email'] = $email;
+        $inputArray['username'] = $data['username'];
+        
+        $retrain_input_str = json_encode($inputArray, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        $targetDir0 = $this->config->item('retrain_upload_location');
+        if(!file_exists($targetDir0))
+            mkdir($targetDir);
+                
+        $targetDir1 = $targetDir0."/".$retrainID;
+        if(!file_exists($targetDir1))
+            mkdir($targetDir1);
+        
+        $targetFile= $targetDir1."/retrain_input.json";
+        
+        file_put_contents($targetFile, $retrain_input_str);
+        
     }
     
     public function select_retrain_params($retrainID=0)
