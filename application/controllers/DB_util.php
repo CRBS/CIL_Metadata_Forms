@@ -1344,7 +1344,28 @@ class DB_util
     }
     
     
-    
+    public function updateRetrainProcessFinished($retrain_id)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('image_viewer_db_params');
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+        {
+            return false;
+        }
+        $sql = "update retrain_models set process_finish_time = now() where id = $1";
+        $input = array();
+        array_push($input, $retrain_id);
+        $result = pg_query_params($conn,$sql,$input);
+        if (!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        pg_close($conn);
+        
+        return true;  
+    }
     
     
     public function updateDockerImageType($imageType, $crop_id)
@@ -1354,7 +1375,7 @@ class DB_util
         $conn = pg_pconnect($db_params);
         if (!$conn) 
         {
-            return fa;se;
+            return false;
         }
         $input = array();
         array_push($input, $imageType);

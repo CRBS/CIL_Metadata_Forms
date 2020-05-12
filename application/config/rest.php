@@ -110,8 +110,8 @@ $config['rest_realm'] = 'REST API';
 |           authorization key
 |
 */
-$config['rest_auth'] = FALSE;
-//$config['rest_auth'] = 'basic';
+//$config['rest_auth'] = FALSE;
+$config['rest_auth'] = 'basic';
 
 /*
 |--------------------------------------------------------------------------
@@ -212,7 +212,7 @@ $config['auth_library_function'] = '';
 | Array of usernames and passwords for login, if ldap is configured this is ignored
 |
 */
-$config['rest_valid_logins'] = ['cat' => 'test123'];
+$config['rest_valid_logins'] = ['cilmeta' => 'eGCmC4s3CHUKAg6h'];
 
 /*
 |--------------------------------------------------------------------------

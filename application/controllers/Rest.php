@@ -7,6 +7,35 @@ require_once 'DB_util.php';
 class Rest extends REST_Controller
 {
     
+    public function report_finished_retrain_model($retrain_id)
+    {
+        $dbutil = new DB_util();
+        if(is_null($retrain_id) || !is_numeric($retrain_id))
+        {
+            $array = array();
+            $array['success'] = false;
+            $array['Error'] = "Invalid input ID:".$retrain_id;
+            $this->response($array);
+            return;
+        }
+        
+        $success = $dbutil->updateRetrainProcessFinished($retrain_id);
+        if(!$success)
+        {
+            $array = array();
+            $array['success'] = false;
+            $array['Error'] = "DB connection error.";
+            $this->response($array);
+            return;
+        }
+        
+        $array = array();
+        $array['success'] = true;
+        $this->response($array);
+    }
+            
+    
+    
     public function all_model_json_get()
     {
         $dbutil = new DB_util();
