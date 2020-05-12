@@ -59,6 +59,11 @@ class Cdeep3m_retrain extends CI_Controller
         redirect($base_url."/cdeep3m_retrain/upload_training_images/".$cropID);
     }
     
+    public function result($retrain_id="0")
+    {
+        echo "retrain result";
+    }
+    
     public function upload_training_images($retrain_id="0")
     {
         $this->load->helper('url');
@@ -490,6 +495,7 @@ class Cdeep3m_retrain extends CI_Controller
         $cutil = new Curl_util();
         
         $base_url = $this->config->item('base_url');
+        $data['base_url'] = $base_url;
         $is_prod = $this->config->item('is_prod');
         $remote_service_prefix = $this->config->item('remote_service_prefix');
         $metadata_auth = $this->config->item('metadata_auth');
@@ -562,13 +568,15 @@ class Cdeep3m_retrain extends CI_Controller
                 echo "<br/>Retrain label tar URL: http://cildata.crbs.ucsd.edu/retrain_upload/".$retrainID."/retrain_labels/retrain_labels.tar";
             }
         }
-        echo "<br/>training model DOI:".$model_doi;
         
+        /*
+        echo "<br/>training model DOI:".$model_doi;
         echo "<br/>Iteration:".$num_iterations;
         echo "<br/>Email:".$email;
         echo "<br/>Username:".$username;
         echo "<br/>Secondary Aug value:".$second_aug;
         echo "<br/>Tertiary Aug value:".$tertiary_aug;
+         */
         
         $inputArray = array();
         $inputArray['model_url'] = $model_doi;
@@ -601,6 +609,14 @@ class Cdeep3m_retrain extends CI_Controller
         file_put_contents($targetFile, $retrain_input_str);
         if($is_prod)
             $cutil->auth_curl_post($retrainUrl, $metadata_auth, $retrain_input_str);
+        
+        
+        $data['retrainID'] = $retrainID;
+        $data['title'] = 'Home > Cdeep3M Submitted';
+        $data['email'] = $email;
+        $this->load->view('templates/header', $data);
+        $this->load->view('cdeep3m/retrain/submitted_parameters_display', $data);
+        $this->load->view('templates/footer', $data);
         
     }
     
