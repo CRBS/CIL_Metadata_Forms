@@ -4,7 +4,7 @@
         <div class="col-md-12"><br/></div>
         <div class="col-md-2">
             <!-- <div class="alert alert-dismissible alert-success"> -->
-            <div class="alert alert-dismissible alert-success"><center><strong>Submitted!</strong></center></div> 
+            <div class="alert  alert-success"><center><strong>Submitted!</strong></center></div> 
             <!-- </div> -->
         </div>
         <div class="col-md-10"></div>

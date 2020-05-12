@@ -552,7 +552,7 @@ class Cdeep3m_retrain extends CI_Controller
         $dbutil->updateRetrainParameters($retrainID, $model_doi, $second_aug, $tertiary_aug, $num_iterations, $username, $email);
         
         
-        echo "<br/>retrain ID:".$retrainID;
+        //echo "<br/>retrain ID:".$retrainID;
         $do_tar_retrain_files = $this->config->item('do_tar_retrain_files');
         if($do_tar_retrain_files)
         {
