@@ -486,8 +486,14 @@ class Cdeep3m_retrain extends CI_Controller
         $this->load->helper('url');
         $dbutil = new DB_util();
         $gutil = new General_util();
+        $cutil = new Curl_util();
         
         $base_url = $this->config->item('base_url');
+        $remote_service_prefix = $this->config->item('remote_service_prefix');
+        $metadata_auth = $this->config->item('metadata_auth');
+        $retrainUrl = $remote_service_prefix."/cdeep3m_retrain_service/submit_prp_retrain/".$retrainID;
+        
+        
         $login_hash = $this->session->userdata('login_hash');
         
         $data['username'] = $this->session->userdata('username');
@@ -579,9 +585,19 @@ class Cdeep3m_retrain extends CI_Controller
         if(!file_exists($targetDir1))
             mkdir($targetDir1);
         
-        $targetFile= $targetDir1."/retrain_input.json";
+        $targetFile= $targetDir1."/retrain_input_from_site.json";
+        $debugLogFile = $targetDir1."/debug.log";
         
-        file_put_contents($targetFile, $retrain_input_str);
+        if(file_exists($debugLog))
+            unlink ($debugLog);
+        
+        error_log("\n".$retrainUrl, 3, $debugLogFile);
+        
+        if(file_exists($targetFile))
+            unlink($targetFile);
+  
+        file_put_contents($targetFile, $retrain_input_str);      
+        $cutil->auth_curl_post($retrainUrl, $metadata_auth, $retrain_input_str);
         
     }
     
