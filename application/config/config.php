@@ -3,6 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $is_prod = false;
 
+$config['is_prod'] = $is_prod;
+
 if(!$is_prod)
     $json_str = file_get_contents("C:/data/cil_metadata_config.json");
 else

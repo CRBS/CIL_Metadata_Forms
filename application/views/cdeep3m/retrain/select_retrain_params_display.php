@@ -101,7 +101,10 @@
                     <br/>
                     <center><button id="prp_submit" name="prp_submit" type="submit" class="btn btn-info">Submit</button></center>
                 </div>
-                
+                <div id="after_submit" name="after_submit" class="col-md-12">
+                    <br/>
+                    <center><span style="color:#00b300">Waiting...</span></center>
+                </div>
             </div>
         </div> 
         <div class='col-md-4'></div>
@@ -114,6 +117,15 @@
 
 
 <script>
+    
+        
+    document.getElementById('after_submit').style.display = "none";
+    function do_submit_tasks()
+    {
+       document.getElementById('prp_submit').disabled = true;
+       document.getElementById('after_submit').style.display = "block";
+    }
+    
     function update_iteration()
     {
         //alert('iteration update');
