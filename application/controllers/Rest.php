@@ -7,7 +7,7 @@ require_once 'DB_util.php';
 class Rest extends REST_Controller
 {
     
-    public function report_finished_retrain_model($retrain_id)
+    public function report_finished_retrain_model_post($retrain_id)
     {
         $dbutil = new DB_util();
         if(is_null($retrain_id) || !is_numeric($retrain_id))
