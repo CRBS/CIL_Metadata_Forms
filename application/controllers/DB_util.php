@@ -457,6 +457,42 @@ class DB_util
         return $json;
     }
 
+    
+    public function getEmailByRetrainId($retrainID)
+    {
+        $sql = "select email from retrain_models where id = $1";
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $email = NULL;
+        
+        if(!is_numeric($retrainID))
+            return NULL;
+        
+        $retrainID = intval($retrainID);
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return NULL;
+        }
+        
+        $input = array();
+        array_push($input,$retrainID);
+        $result = pg_query_params($conn, $sql, $input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return NULL;
+        }
+        
+        if($row = pg_fetch_row($result))
+        {
+            $email = $row[0];
+        }
+        
+        pg_close($conn);
+        return $email;
+        
+    }
 
     public function getUserInfoByID($id)
     {

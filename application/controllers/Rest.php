@@ -3,12 +3,15 @@ require_once './application/libraries/REST_Controller.php';
 require_once 'Curl_util.php';
 require_once 'General_util.php';
 require_once 'DB_util.php';
+require_once 'MailUtil.php';
 
 class Rest extends REST_Controller
 {
     
     public function report_finished_retrain_model_post($retrain_id)
     {
+        $base_url = $this->config->item('base_url');
+        $mutil = new MailUtil();
         $dbutil = new DB_util();
         if(is_null($retrain_id) || !is_numeric($retrain_id))
         {
@@ -29,9 +32,30 @@ class Rest extends REST_Controller
             return;
         }
         
+        $email = $dbutil->getEmailByRetrainId($retrain_id);
+        
+        /***************Send Gmail*******************/
+        $log_location = $this->config->item('log_location');
+        $email_log_file = $log_location."/email_error.log";
+        
+        $subject = "Your CDeep3M retrain process is finished:".$retrain_id;
+        $message = $base_url."/cdeep3m_retrain/result/".$retrain_id;;
+            
+        $gmail_sender = $this->config->item('gmail_sender');
+        $gmail_sender_name = $this->config->item('gmail_sender_name');
+        $gmail_sender_pwd = $this->config->item('gmail_sender_pwd');
+        $gmail_reply_to = $this->config->item('gmail_reply_to');
+        $gmail_reply_to_name = $this->config->item('gmail_reply_to_name');
+            
+        $mutil->sendGmail($gmail_sender, $gmail_sender_name, $gmail_sender_pwd,$email, $gmail_reply_to, $gmail_reply_to_name, $subject, $message, $email_log_file);
+        /***************End send Gmail***************/
+        
         $array = array();
         $array['success'] = true;
         $this->response($array);
+        
+        
+        
     }
             
     
