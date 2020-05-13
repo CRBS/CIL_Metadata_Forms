@@ -457,6 +457,41 @@ class DB_util
         return $json;
     }
 
+    public function isRetrainProcessFinished($retrainID)
+    {
+        $sql = "select process_finish_time from retrain_models where id = $1";
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $done = false;
+        
+        if(!is_numeric($retrainID))
+            return false;
+        $retrainID = intval($retrainID);
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return false;
+        }
+        
+        $input = array();
+        array_push($input,$retrainID);
+        $result = pg_query_params($conn, $sql, $input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        
+        if($row = pg_fetch_row($result))
+        {
+            $timestamp = $row[0];
+            if(!is_null($timestamp))
+                $done = true;
+        }
+        
+        pg_close($conn);
+        return $done; 
+    }
     
     public function getEmailByRetrainId($retrainID)
     {

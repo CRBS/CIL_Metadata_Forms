@@ -61,7 +61,15 @@ class Cdeep3m_retrain extends CI_Controller
     
     public function result($retrain_id="0")
     {
-        echo "retrain result";
+        $dbutil = new DB_util();
+        $done = $dbutil->isRetrainProcessFinished($retrain_id);
+        if(!$done)
+        {
+            echo "Your retrain process is not done yet.";
+            return;
+        }
+        
+        echo "Done";
     }
     
     public function upload_training_images($retrain_id="0")
