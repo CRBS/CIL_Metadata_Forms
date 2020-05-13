@@ -69,7 +69,28 @@ class Cdeep3m_retrain extends CI_Controller
             return;
         }
         
-        echo "Done";
+        $retrain_result_folder_prefix = $this->config->item('retrain_result_folder_prefix');
+        $retrain_result_folder = $retrain_result_folder_prefix."/".$retrain_id."/retrain_model";
+        if(!file_exists($retrain_result_folder))
+        {
+            echo "Your retrain result folder does not exist";
+            return;
+        }
+        
+        /*
+        $files = scandir($retrain_result_folder);
+        foreach($files as $file)
+        {
+            echo "<br/>".$file;
+        }
+        */
+        $data['retrain_result_folder'] = $retrain_result_folder;
+        $data['retrainID'] = $retrain_id;
+        $data['title'] = 'Home > Retrain result:'.$retrain_id;
+        $this->load->view('templates/header', $data);
+        $this->load->view('cdeep3m/retrain/retrain_result_display', $data);
+        $this->load->view('templates/footer', $data);
+        
     }
     
     public function upload_training_images($retrain_id="0")

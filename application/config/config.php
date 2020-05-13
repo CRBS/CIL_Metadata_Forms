@@ -51,6 +51,13 @@ if(!$is_prod)
     $config['super_pwd'] = $json->super_pwd;
 else 
     $config['super_pwd'] = NULL;
+
+if(!$is_prod)
+    $config['retrain_result_folder_prefix'] = "C:/Test3/cdeep3m_retrain_results";
+else 
+    $config['retrain_result_folder_prefix'] = "/export2/temp/cdeep3m_retrain_results";
+
+
 /*
 |--------------------------------------------------------------------------
 | Index File
