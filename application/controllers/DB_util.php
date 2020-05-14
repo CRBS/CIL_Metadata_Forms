@@ -7,6 +7,47 @@ class DB_util
     private $metadata = "metadata";
     private $image_name = "image_name";
     
+    
+    public function getRetrainInfo($retrainID)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "select id, num_iterations, second_aug, tertiary_aug, model_doi, process_start_time, process_finish_time from retrain_models where id = $1";
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return NULL;
+        }
+        $retrainID = intval($retrainID);
+        $input = array();
+        array_push($input, $retrainID);
+        
+        $array = array();
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return NULL;
+        }
+        
+        if($row = pg_fetch_row($result))
+        {
+            $array['id'] = intval($row[0]);
+            $array['num_iterations'] = intval($row[1]);
+            $array['second_aug'] = intval($row[2]);
+            $array['tertiary_aug'] = intval($row[3]);
+            $array['model_doi'] = $row[4];
+            $array['process_start_time'] = $row[5];
+            $array['process_finish_time'] = $row[6];
+        }
+        pg_close($conn);
+        $json_str = json_encode($array);
+        $json = json_decode($json_str);
+        
+        return $json;
+    }
+    
+    
     public function getGroupImagesByID($id)
     {
         $CI = CI_Controller::get_instance();

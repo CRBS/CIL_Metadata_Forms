@@ -77,6 +77,24 @@ class Cdeep3m_retrain extends CI_Controller
             return;
         }
         
+        $retrainInfoJson = $dbutil->getRetrainInfo($retrain_id);
+        $data['retrain_info_json'] = $retrainInfoJson;
+        
+        if(!is_null($retrainInfoJson) && isset($retrainInfoJson->model_doi))
+        {
+            $modelID = str_replace("https://doi.org/10.7295/W9CDEEP3M", "", $retrainInfoJson->model_doi);
+            if(!is_null($modelID) && is_numeric($modelID))
+            {
+                $modelID = intval($modelID);
+                $model_json = $dbutil->getModelJson($modelID);
+                if(!is_null($model_json))
+                {
+                    $data['model_json'] = $model_json;
+                }
+            }
+        }
+        
+        
         /*
         $files = scandir($retrain_result_folder);
         foreach($files as $file)
