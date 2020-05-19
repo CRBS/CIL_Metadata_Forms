@@ -44,6 +44,16 @@
                 </div>
             </div>
             
+            <div class="row">
+                <div class="col-md-12"><br/>
+                    <span class="cil_title2">Internal Images</span>
+                </div>
+                <div class="col-md-12">
+                    <a href="/home/group_image_main_page" target="_self" class="btn btn-info">View internal images</a>    
+                </div>
+            </div>
+            
+            
         </div>
         <div class="col-md-4">
             <div class="row">
