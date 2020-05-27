@@ -95,7 +95,9 @@
                             </div>  
                 <!--------------End Email-------------------->
                 
-                
+                <hr style="height:10px; visibility:hidden;" />
+                <div class="col-md-4">Estimated process time: </div>
+                <div class="col-md-8" id="estimated_time" name="estimated_time">20 minutes or longer</div>
                 
                 <div class="col-md-12">
                     <br/>
@@ -120,6 +122,7 @@
     
         
     document.getElementById('after_submit').style.display = "none";
+    
     function do_submit_tasks()
     {
        document.getElementById('prp_submit').disabled = true;
@@ -131,6 +134,9 @@
         //alert('iteration update');
         var iteration_value =  document.getElementById('ct_iteration_ranage').value;
         document.getElementById('iteration_value').innerHTML = iteration_value;
+        iteration_value = parseInt(iteration_value);
+        var minutes = iteration_value/5;
+        document.getElementById('estimated_time').innerHTML = minutes+" minutes or longer";
     }
     
     
