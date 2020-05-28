@@ -45,10 +45,26 @@
         </ul>
     </div>
     <div class="col-md-6">
-        <br/>
-        <center>
-        <a href="https://iruka.crbs.ucsd.edu/cdeep3m_retrain_results/<?php echo $retrainID; ?>/retrain_model/retrained.tar" target="_blank" class="btn btn-primary">Download retrained model</a>
-        </center>
+        <div class="row">
+            <div class="col-md-12">
+                <br/>
+                <center>
+                <a href="https://iruka.crbs.ucsd.edu/cdeep3m_retrain_results/<?php echo $retrainID; ?>/retrain_model/retrained.tar" target="_blank" class="btn btn-primary">Download retrained model</a>
+                </center>
+            </div>
+            <div class="col-md-12">
+                <br/>
+                <center>
+                    <a href="<?php echo $image_viewer_prefix; ?>/cdeep3m_result/view/<?php echo $retrainID; ?>" target="_blank" class="btn btn-info">View the prediction result</a>
+                </center>
+            </div>
+            <div class="col-md-12">
+                <br/>
+                <center>
+                    <a href="<?php echo $base_url; ?>/cdeep3m_retrain/publish_model/<?php echo $retrainID; ?>" target="_blank" class="btn btn-info">Publish this retrained model</a>
+                </center>
+            </div>
+        </div>
     </div>
     
     

@@ -62,6 +62,14 @@ class Cdeep3m_retrain extends CI_Controller
     public function result($retrain_id="0")
     {
         $dbutil = new DB_util();
+        
+        $base_url = $this->config->item('base_url');
+        $data['base_url'] = $base_url;
+        $data['image_viewer_prefix'] = $this->config->item('image_viewer_prefix');
+        $login_hash = $this->session->userdata('login_hash');
+        
+        $data['username'] = $this->session->userdata('username');
+        
         $done = $dbutil->isRetrainProcessFinished($retrain_id);
         if(!$done)
         {
