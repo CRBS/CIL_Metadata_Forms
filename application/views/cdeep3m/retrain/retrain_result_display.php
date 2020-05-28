@@ -71,25 +71,51 @@
                   <br/>
                   <span class="cil_title3">1fm</span>
                   <br/>
-                  <embed src="https://iruka.crbs.ucsd.edu/cdeep3m_retrain_results/<?php echo $retrainID; ?>/retrain_model/1fm/log/accuracy.pdf" width="100%" height="600px" />
+                  
+                  <div class="row">
+                      <div class="col-md-6">
+                          <embed src="https://iruka.crbs.ucsd.edu/cdeep3m_retrain_results/<?php echo $retrainID; ?>/retrain_model/1fm/log/accuracy.png" width="100%"  />
+                      </div>
+                      <div class="col-md-6">
+                          <embed src="https://iruka.crbs.ucsd.edu/cdeep3m_retrain_results/<?php echo $retrainID; ?>/retrain_model/1fm/log/loss.png" width="100%"  />
+                      </div>
+                  </div>
+                  <!-- <embed src="https://iruka.crbs.ucsd.edu/cdeep3m_retrain_results/<?php //echo $retrainID; ?>/retrain_model/1fm/log/accuracy.png" width="100%" height="600px" />
                   <br/>
-                  <embed src="https://iruka.crbs.ucsd.edu/cdeep3m_retrain_results/<?php echo $retrainID; ?>/retrain_model/1fm/log/loss.pdf" width="100%" height="600px" />
+                  <embed src="https://iruka.crbs.ucsd.edu/cdeep3m_retrain_results/<?php //echo $retrainID; ?>/retrain_model/1fm/log/loss.png" width="100%" height="600px" /> -->
                 </div>
                 <div class="tab-pane fade" id="3fm">
                   <br/>
                   <span class="cil_title3">3fm</span>
                   <br/>
-                  <embed src="https://iruka.crbs.ucsd.edu/cdeep3m_retrain_results/<?php echo $retrainID; ?>/retrain_model/3fm/log/accuracy.pdf" width="100%" height="600px" />
+                  <div class="row">
+                      <div class="col-md-6">
+                          <embed src="https://iruka.crbs.ucsd.edu/cdeep3m_retrain_results/<?php echo $retrainID; ?>/retrain_model/3fm/log/accuracy.png" width="100%" />
+                      </div>
+                      <div class="col-md-6">
+                          <embed src="https://iruka.crbs.ucsd.edu/cdeep3m_retrain_results/<?php echo $retrainID; ?>/retrain_model/3fm/log/loss.png" width="100%"  />
+                      </div>
+                  </div>
+                  <!-- <embed src="https://iruka.crbs.ucsd.edu/cdeep3m_retrain_results/<?php //echo $retrainID; ?>/retrain_model/3fm/log/accuracy.png" width="100%" height="600px" />
                   <br/>
-                  <embed src="https://iruka.crbs.ucsd.edu/cdeep3m_retrain_results/<?php echo $retrainID; ?>/retrain_model/3fm/log/loss.pdf" width="100%" height="600px" />
+                  <embed src="https://iruka.crbs.ucsd.edu/cdeep3m_retrain_results/<?php //echo $retrainID; ?>/retrain_model/3fm/log/loss.png" width="100%" height="600px" /> -->
                 </div>
                  <div class="tab-pane fade" id="5fm">
                   <br/>
                   <span class="cil_title3">5fm</span>
                   <br/>
-                  <embed src="https://iruka.crbs.ucsd.edu/cdeep3m_retrain_results/<?php echo $retrainID; ?>/retrain_model/5fm/log/accuracy.pdf" width="100%" height="600px" />
+                  <div class="row">
+                      <div class="col-md-6">
+                          <embed src="https://iruka.crbs.ucsd.edu/cdeep3m_retrain_results/<?php echo $retrainID; ?>/retrain_model/5fm/log/accuracy.png" width="100%"  />
+                      </div> 
+                      <div class="col-md-6">
+                          <embed src="https://iruka.crbs.ucsd.edu/cdeep3m_retrain_results/<?php echo $retrainID; ?>/retrain_model/5fm/log/loss.png" width="100%" />
+                      </div>
+                  </div>
+                  <!--
+                  <embed src="https://iruka.crbs.ucsd.edu/cdeep3m_retrain_results/<?php //echo $retrainID; ?>/retrain_model/5fm/log/accuracy.png" width="100%" height="600px" />
                   <br/>
-                  <embed src="https://iruka.crbs.ucsd.edu/cdeep3m_retrain_results/<?php echo $retrainID; ?>/retrain_model/5fm/log/loss.pdf" width="100%" height="600px" />
+                  <embed src="https://iruka.crbs.ucsd.edu/cdeep3m_retrain_results/<?php //echo $retrainID; ?>/retrain_model/5fm/log/loss.png" width="100%" height="600px" /> -->
                 </div>
               </div>
           </div>
