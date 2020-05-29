@@ -59,6 +59,284 @@ class Cdeep3m_retrain extends CI_Controller
         redirect($base_url."/cdeep3m_retrain/upload_training_images/".$cropID);
     }
     
+    public function submit_metadata($model_id="0")
+    {
+                $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        $cutil = new Curl_util();
+        $ezutil = new EZIDUtil();
+        $outil = new Ontology_util();
+        
+        if(strcmp($model_id, "0") == 0 || !is_numeric($model_id))
+        {
+            show_404();
+            return;
+        }
+        
+        $model_id = intval($model_id);
+        $mjson = $dbutil->getModelJson($model_id);
+        
+        
+        
+        $base_url = $this->config->item('base_url');
+        $data['debug'] = $this->input->get('debug', TRUE);
+        $login_hash = $this->session->userdata('login_hash');
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        $username = $this->session->userdata('username');
+        $data['username'] = $username;
+        $data['user_role'] = $dbutil->getUserRole($username);
+        
+        
+        $trained_model_name = $this->input->post('trained_model_name', TRUE);
+        $ncbi = $this->input->post('image_search_parms[ncbi]', TRUE);
+        $cell_type = $this->input->post('image_search_parms[cell_type]', TRUE);
+        $cell_component = $this->input->post('image_search_parms[cellular_component]', TRUE);
+        $image_type = $this->input->post('image_search_parms[item_type_bim]', TRUE);
+        $magnification = $this->input->post('magnification', TRUE);
+        $contributor = $this->input->post('contributor', TRUE);
+        $desc = $this->input->post('description', TRUE);
+        
+        //$voxelsize = $this->input->post('voxelsize', TRUE);
+        //$voxelsize_unit = $this->input->post('voxelsize_unit', TRUE);
+        
+        /********Voxel sizes******************/
+        $x_voxelsize = $this->input->post('x_voxelsize', TRUE);
+        $x_voxelsize_unit = $this->input->post('x_voxelsize_unit', TRUE);
+        
+        $y_voxelsize = $this->input->post('y_voxelsize', TRUE);
+        $y_voxelsize_unit = $this->input->post('y_voxelsize_unit', TRUE);
+        
+        $z_voxelsize = $this->input->post('z_voxelsize', TRUE);
+        $z_voxelsize_unit = $this->input->post('z_voxelsize_unit', TRUE);
+        /********End voxel sizes**************/
+        
+        echo "<br/>trained_model_name:".$trained_model_name;
+        if(!is_null($trained_model_name))
+            $mjson->Cdeepdm_model->Name = $trained_model_name;
+        
+        if(!is_null($desc))
+            $mjson->Cdeepdm_model->Description = $desc;
+        
+        echo "<br/>NCBI:".$ncbi;
+        echo "<br/>cell_type:".$cell_type;
+        echo "<br/>cell_component:".$cell_component;
+        echo "<br/>image_type:".$image_type;
+        echo "<br/>magnification:".$magnification;
+        echo "<br/>x_voxelsize:".$x_voxelsize;
+        echo "<br/>x_voxelsize_unit:".$x_voxelsize_unit;
+        echo "<br/>y_voxelsize:".$y_voxelsize;
+        echo "<br/>y_voxelsize_unit:".$y_voxelsize_unit;
+        echo "<br/>z_voxelsize:".$z_voxelsize;
+        echo "<br/>z_voxelsize_unit:".$z_voxelsize_unit;
+        $targetDir = $this->config->item('model_upload_location');
+        if(!file_exists($targetDir))
+           mkdir($targetDir);
+                
+        $targetDir = $targetDir."/".$model_id;
+        if(!file_exists($targetDir))
+            mkdir($targetDir);
+        
+        
+          
+        if(!is_null($ncbi) && strlen(trim($ncbi)) > 0)
+        {   
+            $narray = array();
+            $ncbiJsonStr = json_encode($narray);
+            $ncbiJson = json_decode($ncbiJsonStr);
+            if(isset($mjson->Cdeepdm_model->NCBIORGANISMALCLASSIFICATION))
+                $ncbiJson = $mjson->Cdeepdm_model->NCBIORGANISMALCLASSIFICATION;
+            
+            $ncbiJson=$outil->handleExistingOntoJSON($ncbiJson, "ncbi_organism", $ncbi);
+            //echo json_encode($ncbiJson,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            $mjson->Cdeepdm_model->NCBIORGANISMALCLASSIFICATION = $ncbiJson;
+        }
+        
+        if(!is_null($cell_type) && strlen(trim($cell_type)) > 0)
+        {   
+            $narray = array();
+            $ncbiJsonStr = json_encode($narray);
+            $ncbiJson = json_decode($ncbiJsonStr);
+            if(isset($mjson->Cdeepdm_model->CELLTYPE))
+                $ncbiJson = $mjson->Cdeepdm_model->CELLTYPE;
+            
+            $ncbiJson=$outil->handleExistingOntoJSON($ncbiJson, "cell_types", $cell_type);
+            //echo json_encode($ncbiJson,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            $mjson->Cdeepdm_model->CELLTYPE = $ncbiJson;
+        }
+        
+        if(!is_null($cell_component) && strlen(trim($cell_component)) > 0)
+        {   
+            $narray = array();
+            $ncbiJsonStr = json_encode($narray);
+            $ncbiJson = json_decode($ncbiJsonStr);
+            if(isset($mjson->Cdeepdm_model->CELLULARCOMPONENT))
+                $ncbiJson = $mjson->Cdeepdm_model->CELLULARCOMPONENT;
+            
+            $ncbiJson=$outil->handleExistingOntoJSON($ncbiJson, "cellular_components", $cell_component);
+            //echo json_encode($ncbiJson,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            $mjson->Cdeepdm_model->CELLULARCOMPONENT = $ncbiJson;
+        }
+        
+        
+        if(!is_null($image_type) && strlen(trim($image_type)) > 0)
+        {   
+            $narray = array();
+            $ncbiJsonStr = json_encode($narray);
+            $ncbiJson = json_decode($ncbiJsonStr);
+            if(isset($mjson->Cdeepdm_model->ITEMTYPE))
+                $ncbiJson = $mjson->Cdeepdm_model->ITEMTYPE;
+            
+            $ncbiJson=$outil->handleExistingOntoJSON($ncbiJson, "imaging_methods", $image_type);
+            //echo json_encode($ncbiJson,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            $mjson->Cdeepdm_model->ITEMTYPE = $ncbiJson;
+        }
+        
+        if(!is_null($magnification) && strlen(trim($magnification)) > 0)
+        { 
+            $mjson->Cdeepdm_model->Magnification = $magnification;
+        }
+        
+        
+        /*        
+        if(!is_null($voxelsize) && strlen(trim($voxelsize)) > 0)
+        { 
+            $varray = array();
+            $varray['Value'] = doubleval($voxelsize);
+            $varray['Unit'] = $voxelsize_unit;
+            $vjson_str = json_encode($varray);
+            $vjson = json_decode($vjson_str);
+            $mjson->Cdeepdm_model->Voxelsize = $vjson;
+        }
+        */
+        if(!is_null($x_voxelsize) && strlen(trim($x_voxelsize)) > 0 && is_numeric($x_voxelsize))
+        { 
+            $varray = array();
+            $varray['Value'] = doubleval($x_voxelsize);
+            $varray['Unit'] = $x_voxelsize_unit;
+            $vjson_str = json_encode($varray);
+            $vjson = json_decode($vjson_str);
+            $mjson->Cdeepdm_model->X_voxelsize = $vjson;
+        }
+        if(!is_null($y_voxelsize) && strlen(trim($y_voxelsize)) > 0 && is_numeric($y_voxelsize))
+        { 
+            $varray = array();
+            $varray['Value'] = doubleval($y_voxelsize);
+            $varray['Unit'] = $y_voxelsize_unit;
+            $vjson_str = json_encode($varray);
+            $vjson = json_decode($vjson_str);
+            $mjson->Cdeepdm_model->Y_voxelsize = $vjson;
+        }
+        if(!is_null($z_voxelsize) && strlen(trim($z_voxelsize)) > 0 && is_numeric($z_voxelsize))
+        { 
+            $varray = array();
+            $varray['Value'] = doubleval($z_voxelsize);
+            $varray['Unit'] = $z_voxelsize_unit;
+            $vjson_str = json_encode($varray);
+            $vjson = json_decode($vjson_str);
+            $mjson->Cdeepdm_model->Z_voxelsize = $vjson;
+        }
+        else
+        {
+            
+            if(isset($mjson->Cdeepdm_model->Z_voxelsize))
+                //unset($mjson['Cdeepdm_model']['Z_voxelsize']);
+                unset($mjson->Cdeepdm_model->Z_voxelsize);
+        }
+
+        
+        if(!is_null($contributor)&& strlen(trim($contributor)) > 0)
+        {
+            
+            if(isset($mjson->Cdeepdm_model->Contributors))
+            {
+                array_push($mjson->Cdeepdm_model->Contributors, $contributor);
+            }
+            else
+            {
+                $carray = array();
+                array_push($carray, $contributor);
+                $cjson_str = json_encode($carray, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+                $cjson = json_decode($cjson_str);
+                $mjson->Cdeepdm_model->Contributors = $cjson;
+            }
+        }
+        
+        
+        if(!is_null($mjson))
+        {
+            $json_str = json_encode($mjson, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+            $dbutil->updateModelJson($model_id,$json_str);
+        }
+       
+    }
+    
+    public function publish_model($retrain_id="0")
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $cutil = new Curl_util();
+        $gutil = new General_util();
+        
+        $base_url = $this->config->item('base_url');
+        $login_hash = $this->session->userdata('login_hash');
+        $retrain_id = intval($retrain_id);
+        $model_id = $retrain_id;
+        $data['username'] = $this->session->userdata('username');
+        if(is_null($login_hash))
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        
+        $username = $data['username'];
+        if(is_null($username))
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        $isAdmin = $dbutil->isAdmin($username);
+        if(!$isAdmin)
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        
+        $mjson = $dbutil->getModelJson($retrain_id);
+        $data['mjson'] = $mjson;
+        $userInfo = $dbutil->getUserInfo($data['username']);
+        $data['model_id'] = $retrain_id;
+        
+        ///////////////////////////Display image//////////////////////////
+        $remote_service_prefix =  $this->config->item('remote_service_prefix');
+        $jpg_path = "/export2/media/model_display/".$model_id."/".$model_id."_thumbnailx512.jpg";
+        $metadata_auth = $this->config->item('metadata_auth');
+        $filezize_str = $cutil->auth_curl_get_with_data($metadata_auth,$remote_service_prefix."/rest/file_size", $jpg_path);
+        //echo "<br/>File JSON STR:".$filezize_str;
+        $sjson = json_decode($filezize_str);
+        $hasImage = false;
+        if(!is_null($sjson) && isset($sjson->Size) && $sjson->Size > 0)
+            $hasImage = true;
+        
+        $data['hasDisplayImage'] = $hasImage;
+        
+        
+        //////////////////////////End Display image///////////////////////
+        
+        
+        
+        $data['retrainID'] = $retrain_id;
+        $data['title'] = 'Home > Publish model:'.$retrain_id;
+        $this->load->view('templates/header', $data);
+        $this->load->view('cdeep3m/retrain/publish_retrain_display', $data);
+        $this->load->view('templates/footer', $data);
+    }
+    
+    
     public function result($retrain_id="0")
     {
         $dbutil = new DB_util();
