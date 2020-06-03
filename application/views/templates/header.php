@@ -63,12 +63,20 @@
                     <li class="nav-item active">
                         &nbsp;&nbsp;&nbsp;
                     </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="/home/about_us">About us</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="/home/gallery">Gallery</a>
-                    </li>
+                    
+                    <?php
+                    if(!isset($username))
+                    {
+                    ?>
+                        <li class="nav-item">
+                          <a class="nav-link" href="/home/about_us">About us</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="/home/gallery">Gallery</a>
+                        </li>
+                    <?php
+                    }
+                    ?>
                     <li class="nav-item">
                       <a class="nav-link" href="/home/pre_trained_models">Pre-trained models</a>
                     </li>
@@ -77,6 +85,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="https://github.com/CRBS/cdeep3m2" target="_self">Open source</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/home/terms">Terms</a>
                     </li>
                     <?php
                     if(isset($username))

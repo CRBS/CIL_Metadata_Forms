@@ -74,7 +74,24 @@ class Home extends CI_Controller
         return $randomString;
     }
     
-    
+    public function terms()
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        
+        
+        $base_url = $this->config->item('base_url');
+        $login_hash = $this->session->userdata('login_hash');
+        
+        $data['username'] = $this->session->userdata('username');
+        $username = $data['username'];
+        
+        $data['title'] = "Cdeep3M | Terms of Use";
+        $this->load->view('templates/header', $data);
+        $this->load->view('home/terms_display', $data);
+        $this->load->view('templates/footer', $data);
+    }
     
     public function faq()
     {
