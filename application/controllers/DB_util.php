@@ -779,6 +779,37 @@ class DB_util
         
     }
     
+    
+    public function getCropOwnerEmail($id)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('image_viewer_db_params');
+        $sql = "select contact_email from cropping_processes where id = $1";
+        
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+            return NULL;
+        
+        $input = array();
+        array_push($input,$id);  //1
+        
+        $email = NULL;
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return NULL;
+        }
+        
+        if($row = pg_fetch_row($result))
+        {
+            $email = $row[0];
+        }
+        
+        
+        
+    }
+    
     public function insertCroppingInfoWithTraining($id,$contact_email, $training_model_url, $augspeed, $frame)
     {
         $CI = CI_Controller::get_instance();

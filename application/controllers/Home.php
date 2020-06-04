@@ -803,7 +803,55 @@ class Home extends CI_Controller
         $this->load->view('templates/footer', $data);
     }
     
-    
+    public function delete_prediction_data($cropID="0")
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        
+        $base_url = $this->config->item('base_url');
+        $cdeep3m_prediction_location = $this->config->item('cdeep3m_prediction_location');
+        $is_prod = $this->config->item('is_prod');
+        $login_hash = $this->session->userdata('login_hash');
+        
+        if(is_null($login_hash))
+        {
+            $data['title'] = "Home login";
+            $this->load->view('templates/header', $data);
+            $this->load->view('login/home_login_display', $data);
+            $this->load->view('templates/footer', $data);
+            
+            return;
+        }
+        
+        if(!is_numeric($cropID))
+        {
+            echo "Invalid ID:".$cropID;
+            return;
+        }
+        
+        $cropID = intval($cropID);
+        
+        $data['username'] = $this->session->userdata('username');
+        $username = $data['username'];
+        
+        $userInfo = $dbutil->getUserInfo($username);
+        $email = $userInfo['email'];
+        
+        $ownerEmail = $dbutil->getCropOwnerEmail($cropID);
+        if(strcmp($email, $ownerEmail) != 0)
+        {
+            echo "You don't have the permission to delete this data as ".$username;
+            return;
+        }
+        
+        if($is_prod)
+        {
+            $gutil->deleteCdeep3mPredictionResult($cropID, $cdeep3m_prediction_location);
+        }
+        
+        
+    }
     
     public function my_account()
     {

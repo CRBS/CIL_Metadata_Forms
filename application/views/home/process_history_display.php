@@ -28,6 +28,7 @@
             <div class="col-md-2"><b>Start time</b></div>
             <div class="col-md-2"><b>Finish time</b></div>
             <div class="col-md-2"><b>Log file</b></div>
+            <div class="col-md-2"><b>Option</b></div>
         </div>
         <hr>
         <?php
@@ -96,6 +97,9 @@
                 <div class="col-md-1"><a href="http://cildata.crbs.ucsd.edu/cdeep3m_results/<?php echo $item->id; ?>/log/logs.tar" target="_blank">Log files</a></div>
                 <div class="col-md-1">
                 <a href="http://cildata.crbs.ucsd.edu/cdeep3m_results/<?php echo $item->id; ?>/log/CDEEP3M_prp.log" target="_blank">PRP log</a>
+                </div>
+                <div class="col-md-2">
+                    <a id="delete_prediction_data_id" name="delete_prediction_data_id" href="/home/delete_prediction_data/<?php echo $item->id ?>" target="_blank" class="btn btn-danger" onclick="return confirm('Your prediction data will be permanently destroyed. Are you sure?')">Delete forever</a>
                 </div>
             </div>
             <hr>    
@@ -214,3 +218,7 @@
         
 </div>
 
+<script>
+    
+    
+</script>
