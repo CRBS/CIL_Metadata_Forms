@@ -752,7 +752,7 @@ class Home extends CI_Controller
         $data['base_url'] = $base_url;
         
         $data['image_viewer_prefix'] = $this->config->item('image_viewer_prefix');
-        $base_url = $this->config->item('base_url');
+        //$base_url = $this->config->item('base_url');
         $login_hash = $this->session->userdata('login_hash');
         
         $data['username'] = $this->session->userdata('username');
@@ -783,12 +783,19 @@ class Home extends CI_Controller
         }
             
         $email = $myAccountJson->email;
-        $processArray = $dbutil->getProcessHistory($email);
         
+        $processArray = $dbutil->getProcessHistory($email);
         //var_dump($processArray);
         $process_json_str = json_encode($processArray);
         $process_json = json_decode($process_json_str);
         $data['process_json'] = $process_json;
+        
+        
+        $retrainArray = $dbutil->getRetrainHistory($username);
+        $retrain_json_str = json_encode($retrainArray);
+        $retrain_json = json_decode($retrain_json_str);
+        $data['retrain_json'] = $retrain_json;
+        
         
         $data['title'] = "CDeep3M | Process_history";
         $this->load->view('templates/header', $data);
