@@ -596,7 +596,7 @@ if(!$is_prod)
 else
     $config['images_upload_location'] = "/export2/temp/crop"; 
 
-if($is_prod)
+if(!$is_prod)
     $config['cdeep3m_prediction_location'] = "C:/Test3/cdeep3m_results";
 else
     $config['cdeep3m_prediction_location'] = "/export2/temp/cdeep3m_results";

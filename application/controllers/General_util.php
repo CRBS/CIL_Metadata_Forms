@@ -19,17 +19,23 @@ class General_util
     }
     
     
-    public function deleteCdeep3mPredictionResult($cropID, $cdeep3m_prediction_location)
+    public function deleteCdeep3mPredictionResult($cropID, $cdeep3m_prediction_location, $images_upload_location)
     {
         date_default_timezone_set( 'America/Los_Angeles' );
         
         if(!is_numeric($cropID))
             return;
+        
+        $deleteUploadLog = $images_upload_location."/".$cropID."_delete.log";
         $deleteLog = $cdeep3m_prediction_location."/".$cropID."_delete.log";
         $cmd = "rm -rf ".$cdeep3m_prediction_location."/".$cropID;
         error_log("\n".date("Y-m-d h:i:sa")."----Cmd:".$cmd,3,$deleteLog);
         //$result = shell_exec($cmd);
         //error_log("\n".date("Y-m-d h:i:sa")."----Result:".$result,3,$deleteLog);
+        
+        $cmd = "rm -rf ".$images_upload_location."/".$cropID;
+        error_log("\n".date("Y-m-d h:i:sa")."----Cmd:".$cmd,3,$deleteUploadLog);
+       
     }
 
     public function convertZip2Tar($folder,$zipFile)

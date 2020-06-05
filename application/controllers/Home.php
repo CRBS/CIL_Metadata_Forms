@@ -811,6 +811,7 @@ class Home extends CI_Controller
         
         $base_url = $this->config->item('base_url');
         $cdeep3m_prediction_location = $this->config->item('cdeep3m_prediction_location');
+        $images_upload_location = $this->config->item('images_upload_location');
         $is_prod = $this->config->item('is_prod');
         $login_hash = $this->session->userdata('login_hash');
         
@@ -849,7 +850,7 @@ class Home extends CI_Controller
         
         if($is_prod)
         {
-            $gutil->deleteCdeep3mPredictionResult($cropID, $cdeep3m_prediction_location);
+            $gutil->deleteCdeep3mPredictionResult($cropID, $cdeep3m_prediction_location, $images_upload_location);
         }
         
         echo "<br/>Done!";
