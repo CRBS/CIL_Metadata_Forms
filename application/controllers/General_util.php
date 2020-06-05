@@ -28,8 +28,8 @@ class General_util
         $deleteLog = $cdeep3m_prediction_location."/".$cropID."_delete.log";
         $cmd = "rm -rf ".$cdeep3m_prediction_location."/".$cropID;
         error_log("\n".date("Y-m-d h:i:sa")."----Cmd:".$cmd,3,$deleteLog);
-        $result = shell_exec($cmd);
-        error_log("\n".date("Y-m-d h:i:sa")."----Result:".$result,3,$deleteLog);
+        //$result = shell_exec($cmd);
+        //error_log("\n".date("Y-m-d h:i:sa")."----Result:".$result,3,$deleteLog);
     }
 
     public function convertZip2Tar($folder,$zipFile)

@@ -841,7 +841,9 @@ class Home extends CI_Controller
         $ownerEmail = $dbutil->getCropOwnerEmail($cropID);
         if(strcmp($email, $ownerEmail) != 0)
         {
-            echo "You don't have the permission to delete this data as ".$username;
+            echo "<br/>You don't have the permission to delete this data as ".$username;
+            echo "<br/>Email: ".$email;
+            echo "<br/>ownerEmail: ".$ownerEmail;
             return;
         }
         

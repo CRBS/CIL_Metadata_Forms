@@ -806,7 +806,8 @@ class DB_util
             $email = $row[0];
         }
         
-        
+        pg_close($conn);
+        return $email;
         
     }
     
