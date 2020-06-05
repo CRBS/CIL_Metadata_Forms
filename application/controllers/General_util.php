@@ -28,13 +28,42 @@ class General_util
         
         $deleteUploadLog = $images_upload_location."/".$cropID."_delete.log";
         $deleteLog = $cdeep3m_prediction_location."/".$cropID."_delete.log";
-        $cmd = "rm -rf ".$cdeep3m_prediction_location."/".$cropID;
-        error_log("\n".date("Y-m-d h:i:sa")."----Cmd:".$cmd,3,$deleteLog);
-        //$result = shell_exec($cmd);
-        //error_log("\n".date("Y-m-d h:i:sa")."----Result:".$result,3,$deleteLog);
         
-        $cmd = "rm -rf ".$images_upload_location."/".$cropID;
+        $predictionFolder = $cdeep3m_prediction_location."/".$cropID;
+        $cmd = "rm -rf ".$predictionFolder;
+        error_log("\n".date("Y-m-d h:i:sa")."----Cmd:".$cmd,3,$deleteLog);
+        $result = shell_exec($cmd);
+        error_log("\n".date("Y-m-d h:i:sa")."----Result:".$result,3,$deleteLog);
+        
+        $imageFolder = $images_upload_location."/".$cropID;
+        $cmd = "rm -rf ".$imageFolder;
         error_log("\n".date("Y-m-d h:i:sa")."----Cmd:".$cmd,3,$deleteUploadLog);
+        $result = shell_exec($cmd);
+        error_log("\n".date("Y-m-d h:i:sa")."----Result:".$result,3,$deleteUploadLog);
+        
+        if(!file_exists($predictionFolder) && !file_exists($predictionFolder))
+        {
+            $array = array();
+            $array['success'] = true;
+            return $array;
+        }
+        else
+        {
+            $message = "";
+            if(file_exists($predictionFolder))
+            {
+                $message = $message."<br/>Folder (".$predictionFolder.") cannot be deleted";
+            }
+            if(file_exists($imageFolder))
+            {
+                $message = $message."<br/>Folder (".$imageFolder.") cannot be deleted";
+            }
+            
+            $array = array();
+            $array['success'] = false;
+            $array['error_message'] = $message;
+            return $array;
+        }
        
     }
 

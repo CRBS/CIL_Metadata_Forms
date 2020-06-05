@@ -848,12 +848,16 @@ class Home extends CI_Controller
             return;
         }
         
+        $returnArray = NULL;
         if($is_prod)
         {
-            $gutil->deleteCdeep3mPredictionResult($cropID, $cdeep3m_prediction_location, $images_upload_location);
+            $returnArray = $gutil->deleteCdeep3mPredictionResult($cropID, $cdeep3m_prediction_location, $images_upload_location);
         }
         
-        echo "<br/>Done!";
+        if($returnArray['success'])
+            echo "<br/>Done!";
+        else
+            echo "<br/>Error:".$returnArray['error_message'];
     }
     
     public function my_account()
