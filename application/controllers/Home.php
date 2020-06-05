@@ -852,7 +852,7 @@ class Home extends CI_Controller
             $gutil->deleteCdeep3mPredictionResult($cropID, $cdeep3m_prediction_location);
         }
         
-        
+        echo "<br/>Done!";
     }
     
     public function my_account()
