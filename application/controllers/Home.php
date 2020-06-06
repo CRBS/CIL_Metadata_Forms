@@ -796,7 +796,6 @@ class Home extends CI_Controller
         $retrain_json = json_decode($retrain_json_str);
         $data['retrain_json'] = $retrain_json;
         
-        
         $data['title'] = "CDeep3M | Process_history";
         $this->load->view('templates/header', $data);
         $this->load->view('home/process_history_display', $data);
@@ -853,6 +852,8 @@ class Home extends CI_Controller
         {
             $returnArray = $gutil->deleteCdeep3mPredictionResult($cropID, $cdeep3m_prediction_location, $images_upload_location);
         }
+        
+        $dbutil->deleteCropProcess($cropID);
         
         if($returnArray['success'])
             echo "<br/>Done!";

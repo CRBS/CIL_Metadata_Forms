@@ -648,7 +648,7 @@ class DB_util
     
     public function getProcessHistory($email)
     {
-        $sql = "select id,image_id, submit_time, finish_time from cropping_processes where contact_email = $1 order by id desc";
+        $sql = "select id,image_id, submit_time, finish_time from cropping_processes where contact_email = $1 and delete_time is NULL order by id desc";
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('image_viewer_db_params');
         
@@ -779,6 +779,29 @@ class DB_util
         
     }
     
+    
+    public function deleteCropProcess($id)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('image_viewer_db_params');
+        $sql = "update cropping_processes set delete_time = now() where id = $1";
+        
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+            return false;
+        
+        $input = array();
+        array_push($input,$id);  //1
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        pg_close($conn);
+        return true; 
+    }
     
     public function getCropOwnerEmail($id)
     {

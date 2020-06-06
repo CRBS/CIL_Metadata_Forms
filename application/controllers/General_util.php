@@ -41,7 +41,7 @@ class General_util
         $result = shell_exec($cmd);
         error_log("\n".date("Y-m-d h:i:sa")."----Result:".$result,3,$deleteUploadLog);
         
-        if(!file_exists($predictionFolder) && !file_exists($predictionFolder))
+        if(!file_exists($predictionFolder))
         {
             $array = array();
             $array['success'] = true;
