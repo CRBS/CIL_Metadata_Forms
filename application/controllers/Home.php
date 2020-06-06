@@ -859,6 +859,10 @@ class Home extends CI_Controller
             echo "<br/>Done!";
         else
             echo "<br/>Error:".$returnArray['error_message'];
+        
+        redirect($base_url."/home/process_history");
+        return;
+        
     }
     
     public function my_account()
