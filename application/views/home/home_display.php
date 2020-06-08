@@ -37,6 +37,11 @@
                 <div class="col-md-12">
                     <a href="/cdeep3m_models/list_models" target="_self" class="btn btn-info"> All trained models </a>
                 </div>
+                <div class="col-md-12"><br/></div>
+                
+                <div class="col-md-12">
+                    <a href="/cdeep3m_models/my_retrained_models" target="_self" class="btn btn-info">My retrained models </a>
+                </div>
                 
                 <div class="col-md-12"><br/></div>
                 <div class="col-md-12">

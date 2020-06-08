@@ -736,6 +736,32 @@ class Cdeep3m_models extends CI_Controller
     }
     
     
+    public function my_retrained_models()
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        $username = $data['username'];
+        $base_url = $this->config->item('base_url');
+        $data['base_url'] = $base_url;
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        $data['user_role'] = $dbutil->getUserRole($data['username']);
+        $data['title'] = 'Home > My retrained models';
+        $retrainArray = $dbutil->getRetrainHistory($username);
+        $retrainJsonStr = json_encode($retrainArray);
+        $retrainJson = json_decode($retrainJsonStr);
+        $data['retrainArray'] = $retrainJson;
+        $this->load->view('templates/header', $data);
+        $this->load->view('cdeep3m/models/retrained_model_list_display', $data);
+        $this->load->view('templates/footer', $data);
+    }
+    
+    
     public function list_models()
     {
         $this->load->helper('url');
