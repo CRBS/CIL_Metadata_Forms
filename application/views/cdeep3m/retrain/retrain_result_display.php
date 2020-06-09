@@ -58,12 +58,19 @@
                     <a href="<?php echo $image_viewer_prefix; ?>/cdeep3m_result/view/<?php echo $retrainID; ?>" target="_blank" class="btn btn-info">View the prediction result</a>
                 </center>
             </div>
+            <?php
+                if($is_owner)
+                {
+            ?>
             <div class="col-md-12">
                 <br/>
                 <center>
-                    <a href="<?php echo $base_url; ?>/cdeep3m_retrain/publish_model/<?php echo $retrainID; ?>" target="_blank" class="btn btn-info">Publish this retrained model</a>
+                    <a href="<?php echo $base_url; ?>/cdeep3m_retrain/publish_model/<?php echo $published_model_id; ?>" target="_blank" class="btn btn-info">Publish this retrained model</a>
                 </center>
             </div>
+            <?php
+                } 
+            ?>
         </div>
     </div>
     

@@ -347,6 +347,8 @@ class Cdeep3m_retrain extends CI_Controller
         $login_hash = $this->session->userdata('login_hash');
         
         $data['username'] = $this->session->userdata('username');
+        $username = $data['username'];
+        $data['is_owner'] = false;
         
         $done = $dbutil->isRetrainProcessFinished($retrain_id);
         if(!$done)
@@ -366,6 +368,8 @@ class Cdeep3m_retrain extends CI_Controller
         $retrainInfoJson = $dbutil->getRetrainInfo($retrain_id);
         $data['retrain_info_json'] = $retrainInfoJson;
         
+        $published_model_id = -1;
+        
         if(!is_null($retrainInfoJson) && isset($retrainInfoJson->model_doi))
         {
             $modelID = str_replace("https://doi.org/10.7295/W9CDEEP3M", "", $retrainInfoJson->model_doi);
@@ -378,8 +382,26 @@ class Cdeep3m_retrain extends CI_Controller
                     $data['model_json'] = $model_json;
                 }
             }
+            
+            if(strcmp($retrainInfoJson->owner, $username)==0)
+            {
+                $data['is_owner'] = true;    
+            }
+            
+            if(is_null($retrainInfoJson->published_model_id))
+            {
+                //echo "Updating published_model_id";
+                $is_prod = $this->config->item('is_prod');
+                $publish_id = $dbutil->getNextID($is_prod);
+                $dbutil->updateRetrainModelPublishId($retrain_id, $publish_id);
+                $published_model_id = $publish_id;
+            }
+            else
+            {
+                $published_model_id =  $retrainInfoJson->published_model_id;
+            }
         }
-        
+
         
         /*
         $files = scandir($retrain_result_folder);
@@ -388,6 +410,7 @@ class Cdeep3m_retrain extends CI_Controller
             echo "<br/>".$file;
         }
         */
+        $data['published_model_id'] = $published_model_id;
         $data['retrain_result_folder'] = $retrain_result_folder;
         $data['retrainID'] = $retrain_id;
         $data['title'] = 'Home > Retrain result:'.$retrain_id;

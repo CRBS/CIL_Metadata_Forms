@@ -8,11 +8,38 @@ class DB_util
     private $image_name = "image_name";
     
     
+    public function updateRetrainModelPublishId($id, $publish_id)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "update retrain_models set published_model_id = $1  where id = $2";
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return false;
+        }
+        $id = intval($id);
+        $publish_id = intval($publish_id);
+        $input = array();
+        array_push($input, $publish_id);
+        array_push($input, $id);
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        pg_close($conn);
+        return true;
+    }
+    
+    
     public function getRetrainInfo($retrainID)
     {
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
-        $sql = "select id, num_iterations, second_aug, tertiary_aug, model_doi, process_start_time, process_finish_time from retrain_models where id = $1";
+        $sql = "select id, num_iterations, second_aug, tertiary_aug, model_doi, process_start_time, process_finish_time,published_model_id,username from retrain_models where id = $1";
         $conn = pg_pconnect($db_params);
         if(!$conn)
         {
@@ -39,6 +66,13 @@ class DB_util
             $array['model_doi'] = $row[4];
             $array['process_start_time'] = $row[5];
             $array['process_finish_time'] = $row[6];
+            
+            if(!is_null($row[7]))
+                $array['published_model_id'] = intval($row[7]);
+            else
+                $array['published_model_id'] = NULL;
+            
+            $array['owner'] = $row[8];
         }
         pg_close($conn);
         $json_str = json_encode($array);
