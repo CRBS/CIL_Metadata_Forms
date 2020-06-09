@@ -61,7 +61,7 @@ class Cdeep3m_retrain extends CI_Controller
     
     public function submit_metadata($model_id="0")
     {
-                $this->load->helper('url');
+        $this->load->helper('url');
         $dbutil = new DB_util();
         $gutil = new General_util();
         $cutil = new Curl_util();
@@ -273,6 +273,7 @@ class Cdeep3m_retrain extends CI_Controller
             $dbutil->updateModelJson($model_id,$json_str);
         }
        
+        redirect($base_url."/cdeep3m_retrain/publish_model/".$model_id);
     }
     
     public function publish_model($retrain_id="0")
@@ -287,6 +288,7 @@ class Cdeep3m_retrain extends CI_Controller
         $retrain_id = intval($retrain_id);
         $model_id = $retrain_id;
         $data['username'] = $this->session->userdata('username');
+        $username = $data['username'];
         if(is_null($login_hash))
         {
             redirect($base_url."/home");
@@ -305,6 +307,12 @@ class Cdeep3m_retrain extends CI_Controller
             redirect($base_url."/home");
             return;
         }
+        
+        if(!$dbutil->modelExists($retrain_id))
+        {
+            $dbutil->insertModelFile($retrain_id, "retrain.tar",0,$username);
+        }
+        
         
         $mjson = $dbutil->getModelJson($retrain_id);
         $data['mjson'] = $mjson;
