@@ -12,7 +12,7 @@
     <div class="row">
         
         <div class="col-md-12">
-            <span class="cil_title2">Trained model metadata</span>
+            <span class="cil_title2">Retrained model metadata</span>
         </div>
         <div class="col-md-12">
             <input type="submit" name="submit" class="btn btn-primary float-right" value="Update">

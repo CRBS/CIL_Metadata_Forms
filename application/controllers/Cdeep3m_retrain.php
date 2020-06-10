@@ -11,7 +11,71 @@ include_once 'Image_dbutil.php';
 
 class Cdeep3m_retrain extends CI_Controller
 {
-    
+    public function upload_model_image($model_id)
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        $data['user_role'] = $dbutil->getUserRole($data['username']);
+        
+        
+        $cutil= new Curl_util();
+        $metadata_service_prefix = $this->config->item('metadata_service_prefix');
+        $metadata_auth = $this->config->item('metadata_auth');
+        $upload_location = $this->config->item('model_upload_location');
+        $upload_location = $upload_location."/".$model_id;
+        echo "<br/>".$upload_location;
+        if(!file_exists($upload_location))
+            mkdir($upload_location);
+        
+        $config2 = array(
+        'upload_path' => $upload_location,
+        'allowed_types' => "gif|jpg|png|jpeg",
+        'overwrite' => TRUE,
+        'max_size' => "12048000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
+        'max_height' => "4000",
+        'max_width' => "4000"
+        );
+        $this->load->library('upload', $config2);
+        $url = $metadata_service_prefix."/model_image/".$model_id;
+        echo "<br/>".$url;
+        if($this->upload->do_upload())
+        {
+            $img = array('upload_data' => $this->upload->data());
+            if(!is_null($img))
+            {
+                
+                if(array_key_exists('upload_data',$img))
+                {
+                    $upload_metadata = $img['upload_data'];
+                    if(array_key_exists('full_path',$upload_metadata))
+                    {
+                        $full_path = $upload_metadata['full_path'];
+                        
+                        echo "<br/>". $full_path;
+                        $bin = file_get_contents($full_path);
+                        $hex = bin2hex($bin);
+                        $response = $cutil->auth_curl_post($url, $metadata_auth, $hex);
+                        echo "<br/>".$response;
+                        $dbutil->updateModelDisplayImageStatus($model_id);
+                        //redirect($base_url."/cdeep3m_retrain/publish_model/".$model_id);
+                    }
+                   
+                }
+            }
+        }
+        else
+        {
+            $error = array('error' => $this->upload->display_errors());
+            var_dump($error);
+        }
+    }
     public function index()
     {
         $this->load->helper('url');

@@ -20,7 +20,7 @@
     </div>
     <div class="col-md-12">
         
-        <form action="/cdeep3m_models/upload_model_image/<?php echo $model_id; ?>" enctype="multipart/form-data" method="post" accept-charset="utf-8" onsubmit="return validate_cil_image_upload();">
+        <form action="/Cdeep3m_retrain/upload_model_image/<?php echo $model_id; ?>" enctype="multipart/form-data" method="post" accept-charset="utf-8" onsubmit="return validate_cil_image_upload();">
             
                     <input class="upload_cil_image" type="file" name="userfile" accept="image/x-png, image/gif, image/jpeg" data-max-size="12048000"><br/>
                     <input type="submit" name="submit" class="btn btn-primary" value="Upload image">
