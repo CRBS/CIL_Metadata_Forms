@@ -85,7 +85,7 @@
                         $index++;
                     ?>
                 </div>
-        
+                <div class="col-md-12"><hr></div>
         
         <?php
                 }

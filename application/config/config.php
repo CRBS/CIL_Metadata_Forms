@@ -50,7 +50,7 @@ else
 if(!$is_prod)
     $config['super_pwd'] = $json->super_pwd;
 else 
-    $config['super_pwd'] = NULL;
+    $config['super_pwd'] = $json->super_pwd;
 
 if(!$is_prod)
     $config['retrain_result_folder_prefix'] = "C:/Test3/cdeep3m_retrain_results";

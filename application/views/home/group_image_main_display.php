@@ -18,7 +18,7 @@
     <?php
         }
     ?>
-    
+    <div class="row">
     <?php
         if(!is_null($userGroupArray))
         {
@@ -31,7 +31,7 @@
                     if($index==0)
                     {
                 ?>
-                <div class="row">
+                
                 <?php
                     } 
                 ?>
@@ -79,12 +79,15 @@
                             }
                         ?>
                     </div>
+        
+        
+                <div class="col-md-12"><hr></div>
                     
                 <?php
                     //if($index==0)
                     //{
                 ?>
-                </div>
+                
                 <?php
                     //}
                     
@@ -95,7 +98,7 @@
             }             
         }
     ?>
-    
+    </div>
     
 </div>
 
