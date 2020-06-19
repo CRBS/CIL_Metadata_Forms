@@ -268,7 +268,7 @@ class Upload_images extends CI_Controller
         }
     }
     
-    
+   
     public function do_upload()
     {
         $this->load->helper('url');
@@ -292,25 +292,40 @@ class Upload_images extends CI_Controller
         $data_location = $this->config->item('data_location');
         $upload_location = $this->config->item('upload_location');
         $is_production = $this->config->item('is_production');
+        
+        //$fname = $this->input->post('fname', TRUE);
+        //echo "<br/>fname:".$fname;
+        
         $id = $dbutil->getNextID($is_production);
         $image_id = "CIL_".$id;
         echo "<br/>Image ID:".$image_id;
-        $tag = $this->input->post('tag', TRUE);
-        if(strcmp($tag,"none")==0)
-                $tag = NULL;
         
-        echo "<br/>Tag:".$tag;
+        
+        
         $config2 = array(
         'upload_path' => $upload_location,
         'allowed_types' => "gif|jpg|png|jpeg|tiff|tif",
         'overwrite' => TRUE,
-        'max_size' => "12048000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
-        'max_height' => "4000",
-        'max_width' => "4000"
+        'max_size' => "50480"//, // Can be set to particular file size , here it is 2 MB(2048 Kb)
+        //'max_height' => "8000",
+        //'max_width' => "8000"
         );
+        
+        echo "<br/>Upload location:".$upload_location;
+        
+        //var_dump($_POST);
+        
+        $tag = $this->input->post('tag', TRUE);
+        echo "<br/>Tag:".$tag;
+        if(strcmp($tag,"none")==0)
+                $tag = NULL;
+        
         $this->load->library('upload', $config2);
         $jpeg_size = NULL;
         $zip_size = NULL;
+        
+        
+        
         if($this->upload->do_upload())
         {
             $img = array('upload_data' => $this->upload->data());
@@ -319,6 +334,7 @@ class Upload_images extends CI_Controller
                 //echo "<br/>".$img->upload_data->full_path;
                 if(array_key_exists('upload_data',$img))
                 {
+                    
                     $upload_metadata = $img['upload_data'];
                     if(array_key_exists('full_path',$upload_metadata))
                     {
@@ -391,7 +407,9 @@ class Upload_images extends CI_Controller
                         $base_url = $this->config->item('base_url');
                         redirect ($base_url."/image_metadata/edit/".$image_id);
                     }
-                   
+                
+                    
+                //End block
                 }
             }
         }
@@ -400,12 +418,13 @@ class Upload_images extends CI_Controller
             echo "<br/>Upload Error:".$this->upload->display_errors();
             
         }
+
     }
+
     
-    /****
-     * //Commented out because it is the older version. The new version will re-upload it to iruka.
-     * 
-     * public function do_upload()
+    
+    /*
+    public function do_upload()
     {
         
         $cutil= new Curl_util();
@@ -513,6 +532,6 @@ class Upload_images extends CI_Controller
             var_dump($error);
         }
     }
-     */
+    */
 }
 

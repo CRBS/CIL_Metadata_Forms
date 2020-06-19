@@ -4,9 +4,14 @@
         <div class="col-md-12">
             <span class="cil_title2">Upload display image (Jpeg Image ONLY)</span>
         </div>
-        <form action="/upload_images/do_upload" enctype="multipart/form-data" method="post" accept-charset="utf-8" onsubmit="return validate_cil_image_upload();">
+        <!-- <form action="/upload_images/do_upload" enctype="multipart/form-data" method="post" accept-charset="utf-8" onsubmit="return validate_cil_image_upload();"> -->
+        <?php 
+        
+        $this->load->helper('form');
+        echo form_open_multipart('/upload_images/do_upload');?>
         <div class="col-md-12">            
-            <input class="upload_cil_image" type="file" name="userfile" accept="image/x-png, image/gif, image/jpeg, image/tiff" data-max-size="32048000">   
+            <input class="upload_cil_image" type="file" name="userfile" accept="image/x-png, image/gif, image/jpeg, image/tiff" data-max-size="50048000">   
+            
         </div>
         <div class="col-md-12"><br/></div>
         <div class="col-md-12">
@@ -25,6 +30,12 @@
               ?>
             </select> 
         </div>
+        <!--
+        <div class="col-md-12"><br/></div>
+        <div class="col-md-12">
+            <input type="text" id="fname" name="fname">
+        </div>
+        -->
         <div class="col-md-12"><br/></div>
         <div class="col-md-12">    
             <input type="submit" name="submit" class="btn btn-primary" value="Upload image">
