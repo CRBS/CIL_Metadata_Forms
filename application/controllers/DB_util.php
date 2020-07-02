@@ -7,6 +7,35 @@ class DB_util
     private $metadata = "metadata";
     private $image_name = "image_name";
     
+    public function getRetrainIdFromModelId($model_id)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "select id from retrain_models where published_model_id = $1";
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return NUL;
+        }
+        
+        $model_id = intval($model_id);
+        $input = array();
+        array_push($input, $model_id);
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return NULL;
+        }
+        $retrainID = NULL;
+        if($row = pg_fetch_row($result))
+        {
+            $retrainID = intval($row[0]);
+        }
+        pg_close($conn);
+        return $retrainID;
+    }
     
     public function updateRetrainModelPublishId($id, $publish_id)
     {

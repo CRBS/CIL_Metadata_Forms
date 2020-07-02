@@ -942,9 +942,9 @@ class Cdeep3m_models extends CI_Controller
         
         
         $doiPostfixId = str_replace("_", "", $model_id);
-        $filePath = "C:/Users/wawong/Desktop/Test/".$doiPostfixId."_log.txt";
-        if(file_exists($filePath))
-            unlink ($filePath);
+        //$filePath = "C:/Users/wawong/Desktop/Test/".$doiPostfixId."_log.txt";
+        //if(file_exists($filePath))
+        //    unlink ($filePath);
         //error_log($json_str,3,$filePath);
         
         /****************Saving the DOI Info*************************************/

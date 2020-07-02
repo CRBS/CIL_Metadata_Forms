@@ -52,12 +52,28 @@
     <?php
         }
     ?>
+   <div class="col-md-12">
+       <form action="/cdeep3m_retrain/do_publish_model/<?php echo $model_id; ?>"  method="post">
+       <br/>
+       <input id="publish_model_id" name="publish_model_id" type="submit" name="submit" class="btn btn-primary" value="Publish model" onclick="publish_model_click()">
+       </form>
+   </div>
     <div class="col-md-12">
         <br/><br/>
         <a href="/cdeep3m_models/list_models" target="_self" class="btn btn-primary"> Close </a>
     </div>
-    
+   <div class="col-md-12"><br/></div>
+   <div class="col-md-12" id="waiting_text_id" name="waiting_text_id"></div>
     
     
     
 </div>
+
+<script>
+    function publish_model_click()
+    {
+        //alert('publish_model_click');
+        document.getElementById('publish_model_id').disabled = true;
+        document.getElementById('waiting_text_id').innerHTML = "Waiting...";
+    }
+</script>

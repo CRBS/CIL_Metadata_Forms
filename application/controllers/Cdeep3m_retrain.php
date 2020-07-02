@@ -340,6 +340,55 @@ class Cdeep3m_retrain extends CI_Controller
         redirect($base_url."/cdeep3m_retrain/publish_model/".$model_id);
     }
     
+    public function do_publish_model($model_id="0")
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $cutil = new Curl_util();
+        $gutil = new General_util();
+        
+        $base_url = $this->config->item('base_url');
+        $login_hash = $this->session->userdata('login_hash');
+        
+        $model_id = intval($model_id);
+        $data['username'] = $this->session->userdata('username');
+        $username = $data['username'];
+        if(is_null($login_hash))
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        
+        $username = $data['username'];
+        if(is_null($username))
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        $isAdmin = $dbutil->isAdmin($username);
+        if(!$isAdmin)
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        
+        $retrain_result_folder_prefix = $this->config->item('retrain_result_folder_prefix');
+        $model_upload_location = $this->config->item('model_upload_location');
+        
+        $retrainID = $dbutil->getRetrainIdFromModelId($model_id);
+        echo "<br/>Retrain ID:".$retrainID;
+        
+        $modelFolder = $model_upload_location."/".$model_id;
+        if(!file_exists($modelFolder))
+            mkdir ($modelFolder);
+        
+        $retrainPath = $retrain_result_folder_prefix."/".$retrainID."/retrain_model/retrained.tar";
+        $modelPath = $modelFolder."/retrained.tar";
+        
+        copy($retrainPath, $modelPath);
+    }
+    
+    
     public function publish_model($retrain_id="0")
     {
         $this->load->helper('url');
