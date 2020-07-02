@@ -376,16 +376,19 @@ class Cdeep3m_retrain extends CI_Controller
         $model_upload_location = $this->config->item('model_upload_location');
         
         $retrainID = $dbutil->getRetrainIdFromModelId($model_id);
-        echo "<br/>Retrain ID:".$retrainID;
-        
-        $modelFolder = $model_upload_location."/".$model_id;
-        if(!file_exists($modelFolder))
-            mkdir ($modelFolder);
-        
-        $retrainPath = $retrain_result_folder_prefix."/".$retrainID."/retrain_model/retrained.tar";
-        $modelPath = $modelFolder."/retrained.tar";
-        
-        copy($retrainPath, $modelPath);
+        if(!is_null($retrainID))
+        {
+            echo "<br/>Retrain ID:".$retrainID;
+
+            $modelFolder = $model_upload_location."/".$model_id;
+            if(!file_exists($modelFolder))
+                mkdir ($modelFolder);
+
+            $retrainPath = $retrain_result_folder_prefix."/".$retrainID."/retrain_model/retrained.tar";
+            $modelPath = $modelFolder."/retrained.tar";
+
+            copy($retrainPath, $modelPath);
+        }
     }
     
     
