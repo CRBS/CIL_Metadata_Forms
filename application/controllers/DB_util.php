@@ -63,6 +63,39 @@ class DB_util
         return true;
     }
     
+    public function updateModelFileSize($model_id, $filesize)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "update models set file_size = $1 where id = $2";
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return false;
+        }
+        
+        if(!is_numeric($model_id) || !is_numeric($filesize))
+        {
+            pg_close($conn);
+            return false;
+        }
+        
+        $model_id = intval($model_id);
+        $filesize = intval($filesize);
+        
+        $input = array();
+        array_push($input, $filesize);
+        array_push($input, $model_id);
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        pg_close($conn);
+        return true;
+    }
     
     public function getRetrainInfo($retrainID)
     {

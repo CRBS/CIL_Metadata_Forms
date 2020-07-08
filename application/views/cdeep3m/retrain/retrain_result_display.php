@@ -64,9 +64,12 @@
             ?>
             <div class="col-md-12">
                 <br/>
+                <form action="<?php echo $base_url; ?>/cdeep3m_retrain/publish_model/<?php echo $published_model_id; ?>" method="POST">
                 <center>
-                    <a href="<?php echo $base_url; ?>/cdeep3m_retrain/publish_model/<?php echo $published_model_id; ?>" target="_blank" class="btn btn-info">Publish this retrained model</a>
+                    <!-- <a href="<?php //echo $base_url; ?>/cdeep3m_retrain/publish_model/<?php //echo $published_model_id; ?>" target="_blank" class="btn btn-info">Publish this retrained model</a> -->
+                    <button type="submit"  value="Submit" class="btn btn-info">Publish this retrained model</button>
                 </center>
+                </form>
             </div>
             <?php
                 } 
