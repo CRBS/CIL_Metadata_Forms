@@ -101,7 +101,7 @@
                 
                 <div class="col-md-12">
                     <br/>
-                    <center><button id="prp_submit" name="prp_submit" type="submit" class="btn btn-info">Submit</button></center>
+                    <center><button id="prp_submit" name="prp_submit" type="submit" class="btn btn-info" onclick="do_submit_tasks()">Submit</button></center>
                 </div>
                 <div id="after_submit" name="after_submit" class="col-md-12">
                     <br/>
