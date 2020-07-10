@@ -67,13 +67,17 @@
                 <form action="<?php echo $base_url; ?>/cdeep3m_retrain/publish_model/<?php echo $published_model_id; ?>" method="POST">
                 <center>
                     <!-- <a href="<?php //echo $base_url; ?>/cdeep3m_retrain/publish_model/<?php //echo $published_model_id; ?>" target="_blank" class="btn btn-info">Publish this retrained model</a> -->
-                    <button type="submit"  value="Submit" class="btn btn-info">Publish this retrained model</button>
+                    <button id="prp_submit" name="prp_submit" type="submit"  value="Submit" class="btn btn-info" onclick="do_submit_tasks()">Publish this retrained model</button>
                 </center>
                 </form>
             </div>
             <?php
                 } 
             ?>
+        </div>
+        <div id="after_submit" name="after_submit" class="col-md-12">
+           <br/>
+           <center><span style="color:#00b300">Waiting...</span></center>
         </div>
     </div>
     
@@ -155,3 +159,17 @@
 
 </div>    
 </div>
+
+
+<script>
+    
+        
+    document.getElementById('after_submit').style.display = "none";
+    
+    function do_submit_tasks()
+    {
+       document.getElementById('prp_submit').disabled = true;
+       document.getElementById('after_submit').style.display = "block";
+    }
+    
+</script>
