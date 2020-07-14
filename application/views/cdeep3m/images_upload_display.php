@@ -22,9 +22,16 @@
         <div class="col-md-12">
             <b>Max number of files:</b> 20
         </div>
+        <?php
+            if(isset($isUncappedUpload) && !$isUncappedUpload)
+            { 
+        ?>        
         <div class="col-md-12">
             <b>Mx file size:</b> 20mb
         </div>
+        <?php
+            }  
+        ?>
         <div class="col-md-12">
             <b>Note:</b>
              For best results upload acquired electron micrographs as TIFs (without lowering bit-depth or histogram adjustments). Automatic image adjustments will be applied.
@@ -91,7 +98,23 @@ $(function() {
 		//unique_names : true,
 		
 		filters : {
-			max_file_size : '20mb',
+                    
+                    <?php
+                        if(isset($isUncappedUpload) && $isUncappedUpload)
+                        { 
+                    ?>
+                        max_file_size : '9999999mb',  
+			
+                    <?php
+                        } 
+                        else 
+                        { 
+                    ?>   
+                        max_file_size : '20mb',         
+                    <?php  
+                        } 
+                    ?>   
+                     
 			mime_types: [
 				//{title : "Image files", extensions : "jpg,gif,png,tif"},
 				{title : "png & tif", extensions : "png,tif"}

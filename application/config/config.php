@@ -412,7 +412,7 @@ $config['encryption_key'] = '';
 */
 $config['sess_driver'] = 'files';
 $config['sess_cookie_name'] = 'ci_session';
-$config['sess_expiration'] = 7200;
+$config['sess_expiration'] = 72000; //10 hours session
 //$config['sess_save_path'] = NULL;
 if(!$is_prod)
     $config['sess_save_path'] = 'C:/Users/wawong/Documents/apache/CIL_Metadata_Forms/Apache24/temp';

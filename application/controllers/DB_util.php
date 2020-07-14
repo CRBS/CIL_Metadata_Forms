@@ -7,6 +7,38 @@ class DB_util
     private $metadata = "metadata";
     private $image_name = "image_name";
     
+    
+    public function isUncappedUpload($username)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "select uncapped_upload from cil_users where username = $1";
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return false;
+        }
+        
+        $input = array();
+        array_push($input, $username);
+        
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        
+        $isUncapped = false;
+        if($row = pg_fetch_row($result))
+        {
+            $isUncapped = $row[0];
+        }
+        pg_close($conn);
+        return true;
+    }
+    
     public function getRetrainIdFromModelId($model_id)
     {
         $CI = CI_Controller::get_instance();
@@ -15,7 +47,7 @@ class DB_util
         $conn = pg_pconnect($db_params);
         if(!$conn)
         {
-            return NUL;
+            return NULL;
         }
         
         $model_id = intval($model_id);

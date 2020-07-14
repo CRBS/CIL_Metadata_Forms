@@ -260,11 +260,18 @@ class Cdeep3m_preview extends CI_Controller
         $dbutil = new DB_util();
         $login_hash = $this->session->userdata('login_hash');
         $data['username'] = $this->session->userdata('username');
+        $username = $data['username'];
         if(is_null($login_hash))
         {
             redirect ($base_url."/home");
             return;
         }
+        
+        $data['isUncappedUpload'] = $dbutil->isUncappedUpload($username);
+        //if($data['isUncappedUpload'])
+        //    echo "<br/>isUncappedUpload:true"; 
+        //else 
+        //    echo "<br/>isUncappedUpload:false"; 
         
         $data['base_url'] = $this->config->item('base_url');
         $data['crop_id'] = intval($crop_id);
