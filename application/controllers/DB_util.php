@@ -8,6 +8,52 @@ class DB_util
     private $image_name = "image_name";
     
     
+    public function getImagesByDataCategory($username, $data_category)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "select distinct gi.id, gi.group_name, gi.image_id from cil_groups g, cil_user_groups ug, group_images gi ".
+               " where g.group_name = ug.group_name and ug.group_name = gi.group_name and ug.username = $1 and g.data_category = $2 order by gi.id asc";
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return NULL;
+        }
+        
+        $input = array();
+        array_push($input, $username);
+        array_push($input, $data_category);
+        
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return NULL;
+        }
+        
+        $mainArray = array();
+        while($row = pg_fetch_row($result))
+        {
+            $array = array();
+            $array['id'] = intval($row[0]);
+            $array['group_name'] = ($row[1]);
+            $array['image_id'] = ($row[2]);
+            array_push($mainArray, $array);
+        }
+        
+        pg_close($conn);
+        if(count($mainArray) > 0)
+        {
+            $json_str = json_encode($mainArray);
+            $json = json_decode($json_str);
+            return $json;
+        }
+        else  
+            return NULL;
+        
+    }
+    
     public function isUncappedUpload($username)
     {
         $CI = CI_Controller::get_instance();
