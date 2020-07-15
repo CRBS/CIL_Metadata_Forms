@@ -1143,6 +1143,38 @@ class DB_util
         return $userExist;
     }
     
+    
+    public function isTokenCorrect($username,$token)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+            return false;
+        
+        $sql = "select id from cil_auth_tokens where username = $1 and token = $2";
+        $input = array();
+        array_push($input,$username);
+        array_push($input,$token);
+    
+        $result = pg_query_params($conn,$sql,$input);
+        if (!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        
+        $isCorrect = false;
+        if($row = pg_fetch_row($result))
+        {
+            $isCorrect = true;
+        }
+        pg_close($conn);
+        return $isCorrect;
+        
+    }
+    
+    
     public function isAdmin($username)
     {
         $CI = CI_Controller::get_instance();

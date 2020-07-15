@@ -100,5 +100,34 @@
     ?>
     </div>
     
+    
+    <!--------------------Video group--------------------------------->
+    <br/><br/>
+    <div class="row">
+        <div class="col-md-12">
+           <span class="cil_title2">Group videos</span>
+        </div>
+    </div>
+    <div class="row">
+    <?php
+        if(isset($userVideoGroupArray) && !is_null($userVideoGroupArray))
+        {
+            //var_dump($userVideoGroupArray);
+            $index = 0;
+            foreach($userVideoGroupArray as $videoGroup)
+            {
+    ?> 
+        <div class="col-md-4">
+            <center><a href='/home/internal_group_videos/<?php echo $videoGroup['id']; ?>' target='_self'><img src='/pix/video_group.png?<?php echo microtime(); ?>' width="200" /></a></center>
+            <br/>
+            <center><a href='/home/internal_group_videos/<?php echo $videoGroup['id']; ?>' target='_self'><?php echo $videoGroup['group_name'];  ?></a></center>
+        </div>
+    <?php
+                $index++;
+            }
+        } 
+        
+    ?>
+    </div>
 </div>
 

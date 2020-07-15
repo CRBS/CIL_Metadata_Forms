@@ -9,6 +9,84 @@ include_once 'PasswordHash.php';
 include_once 'MailUtil.php';
 class Home extends CI_Controller
 {
+    public function view_video($videoName)
+    {
+        $dbutil = new DB_util();
+        $token = $this->input->get('token', TRUE);
+        $data['token'] = $token;
+        $username = $this->input->get('username', TRUE);
+        $data['username'] = $username;
+        $data['videoName'] = $videoName;
+        
+        $correctToken = $dbutil->isTokenCorrect($username, $token);
+        if(!$correctToken)
+        {
+            echo "Incorrect authentication.";
+            return;
+        }
+        
+        $data['title'] = "NCMIR | Internal Images";
+        $this->load->view('templates/header', $data);
+        $this->load->view('home/internal_videos_display', $data);
+        $this->load->view('templates/footer', $data);
+    }
+    
+    
+    public function internal_group_videos($id="0")
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        $data['image_viewer_prefix'] = $this->config->item('image_viewer_prefix');
+        
+        $base_url = $this->config->item('base_url');
+        $login_hash = $this->session->userdata('login_hash');
+        
+        $data['base_url'] = $base_url;
+        $data['username'] = $this->session->userdata('username');
+        $username = $data['username'];
+        
+        $data['google_reCAPTCHA_site_key'] = $this->config->item('google_reCAPTCHA_site_key');
+        $data['google_reCAPTCHA_secret_key'] = $this->config->item('google_reCAPTCHA_secret_key');
+        
+        if(is_null($login_hash))
+        {
+            
+            $data['login_error'] = $this->session->userdata('login_error');
+            $this->session->set_userdata('login_error', NULL);
+            
+            $data['title'] = "Home login";
+            $this->load->view('templates/header', $data);
+            $this->load->view('login/home_login_display', $data);
+            $this->load->view('templates/footer', $data);
+            
+            return;
+        }
+        
+
+        if(!is_numeric($id))
+        {
+            show_404();
+            return;
+        }
+        $id = intval($id);
+        $groupImagesArray = $dbutil->getGroupImagesByID($id);
+        if(is_null($groupImagesArray))
+        {
+            show_404();
+            return;
+        }
+        $data['token'] = $dbutil->getAuthToken($data['username']);
+        
+        $data['groupImagesArray']  = $groupImagesArray;
+        
+        $data['title'] = "NCMIR | Internal Images";
+        $this->load->view('templates/header', $data);
+        $this->load->view('home/group_videos_display', $data);
+        $this->load->view('templates/footer', $data);
+    }
+    
+    
     public function internal_group_images($id="0")
     {
         $this->load->helper('url');
@@ -207,8 +285,11 @@ class Home extends CI_Controller
         }
         
         
-        $userGroupArray = $dbutil->getUserGroupsByType($data['username'], 'image_group');
         
+        $userGroupArray = $dbutil->getUserGroupsByType($data['username'], 'image_group');
+        $userVideoGroupArray  = $dbutil->getUserGroupsByType($data['username'], 'video_group');
+        
+        $data['userVideoGroupArray'] = $userVideoGroupArray;
         $data['userGroupArray'] = $userGroupArray;
         $data['title'] = "Home";
         $this->load->view('templates/header', $data);
