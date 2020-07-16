@@ -58,7 +58,7 @@ class DB_util
     {
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
-        $sql = "select uncapped_upload from cil_users where username = $1";
+        $sql = "select uncapped_upload from cil_users where username = $1 and uncapped_upload = true";
         $conn = pg_pconnect($db_params);
         if(!$conn)
         {
@@ -79,10 +79,11 @@ class DB_util
         $isUncapped = false;
         if($row = pg_fetch_row($result))
         {
-            $isUncapped = $row[0];
+            $isUncapped = true;
         }
         pg_close($conn);
-        return true;
+        //echo "\nisUncapped:".$isUncapped;
+        return $isUncapped;
     }
     
     public function getRetrainIdFromModelId($model_id)
