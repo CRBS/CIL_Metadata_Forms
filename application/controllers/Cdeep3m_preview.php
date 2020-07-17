@@ -187,7 +187,7 @@ class Cdeep3m_preview extends CI_Controller
         
         $image_service_auth = $this->config->item('image_service_auth');
         $image_service_prefix = $this->config->item('image_service_prefix');
-        $image_service_url = $image_service_prefix."/cdeep3m_prp_service/image_preview_step2/stage/".$crop_id;
+        $image_service_url = $image_service_prefix."/cdeep3m_prp_service/image_preview_step2/stage/".$crop_id."/".$docker_image_type;
         //echo "<br/>image_service_url:".$image_service_url;
         $response = $cutil->auth_curl_post($image_service_url, $image_service_auth,"");
         }
