@@ -5,6 +5,46 @@ include_once 'DB_util.php';
 
 class Alzdata_organizer extends CI_Controller
 {
+    
+    public function tag()
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        
+        $data['title'] = "NCMIR | Organize Alz data";
+        $base_url = $this->config->item('base_url');
+        $data['base_url'] = $base_url;
+        $login_hash = $this->session->userdata('login_hash');
+        
+        $data['username'] = $this->session->userdata('username');
+        $username = $data['username'];
+        
+    
+        $data['step1_text'] ='Step 1. Tag image';
+        $data['is_step1_active'] = true;
+        
+        
+        if(is_null($login_hash))
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        
+        if($this->isUserNcmir($username))
+        {
+            
+            $this->load->view('templates/header', $data);
+            $this->load->view('alzdata/tag_display', $data);
+            $this->load->view('templates/footer', $data);
+        }
+        else  
+        {
+            redirect($base_url."/home");
+            return;
+        }
+    }
+    
     public function start()
     {
         $this->load->helper('url');
@@ -18,6 +58,11 @@ class Alzdata_organizer extends CI_Controller
         
         $data['username'] = $this->session->userdata('username');
         $username = $data['username'];
+        
+    
+        $data['step1_text'] ='Step 1. Select image to tag';
+        $data['is_step1_active'] = true;
+        
         
         if(is_null($login_hash))
         {
