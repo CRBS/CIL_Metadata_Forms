@@ -22,7 +22,7 @@
                     
         ?>
         <div class="col-md-4">
-            <center><a href="/alzdata_organizer/tag/<?php echo $alzData->image_id; ?>" target="_self" ><img width="256" height="256" src="https://cildata.crbs.ucsd.edu/media/internal_group_display/<?php echo $alzData->group_name."/".$alzData->image_id.".jpg"; ?>" /></a></center>
+            <center><a href="#" target="_self" onclick="imageClick('<?php echo $alzData->image_id; ?>')"><img width="256" height="256" src="https://cildata.crbs.ucsd.edu/media/internal_group_display/<?php echo $alzData->group_name."/".$alzData->image_id.".jpg"; ?>" /></a></center>
             <br/>
             <!-- <center><a href="/alzdata_organizer/tag/<?php //echo $alzData->image_id; ?>" target="_self" ><?php //echo $alzData->image_id; ?></a></center> -->
             <center><a href="#" target="_self" onclick="imageClick('<?php echo $alzData->image_id; ?>')"><?php echo $alzData->image_id; ?></a></center>
