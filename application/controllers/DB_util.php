@@ -8,6 +8,91 @@ class DB_util
     private $image_name = "image_name";
     
     
+    
+    /////////////////AD structure//////////////////////////////////////
+    public function adUpdateImageType($image_id, $image_type)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('ad_structure_db_params');
+        $sql = "update images set image_type = $1 where image_id = $2";
+        
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return false;
+        }
+        
+        $input = array();
+        array_push($input, $image_type);
+        array_push($input, $image_id);
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            return false;
+        }
+        pg_close($conn);
+        
+        return true;
+    }
+    
+    public function adImageExist($image_id)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('ad_structure_db_params');
+        $sql = "select id from images where image_id=$1";
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return false;
+        }
+        
+        $input = array();
+        array_push($input, $image_id);
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            return false;
+        }
+        $exist = false;
+        if($row = pg_fetch_row($result))
+        {
+            $exist = true;
+        }
+        pg_close($conn);
+        
+        return $exist;
+    }
+    
+    public function adInsertImageType($image_id, $imageType)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('ad_structure_db_params');
+        $sql = "insert into images(id, image_id,image_type) values(nextval('general_seq'),$1,$2)";
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return false;
+        }
+        
+        $input = array();
+        array_push($input, $image_id);
+        array_push($input, $imageType);
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            return false;
+        }
+        pg_close($conn);
+        
+        return true;
+    }
+            
+    
+    /////////////////End AD structure//////////////////////////////////////
+    
     public function getImagesByDataCategory($username, $data_category)
     {
         $CI = CI_Controller::get_instance();
