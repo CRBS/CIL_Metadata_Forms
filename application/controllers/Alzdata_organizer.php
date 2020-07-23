@@ -121,6 +121,9 @@ class Alzdata_organizer extends CI_Controller
         if($this->isUserNcmir($username))
         {
             $data['alzDataJson'] = $dbutil->getImagesByDataCategory($username, 'alzheimer');
+            
+            $data['biopsy_info'] = $dbutil->getBiopsyInfo();
+            
             $this->load->view('templates/header2', $data);
             $this->load->view('alzdata/start_organize_display', $data);
             $this->load->view('templates/footer', $data);

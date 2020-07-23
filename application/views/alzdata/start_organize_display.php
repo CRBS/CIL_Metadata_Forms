@@ -52,11 +52,23 @@
                         <form action="/Alzdata_organizer/tag_image" method="POST">
                         Image Name: <input type="text" id="image_name_id" name="image_name_id" readonly="" class="form-control" value="">
                       <br/>
+                      Biopsy source: <select name="biopsy_source_id" id="biopsy_source_id" class="form-control">
+                                        <?php
+                                            foreach($biopsy_info as $biopsy)
+                                            {
+                                        ?>         
+                                                <option value="<?php echo $biopsy->id; ?>"><?php echo $biopsy->biopsy_name; ?></option>
+                                        <?php
+                                            }
+                                        ?>
+                                     </select>
+                          
+                      <br/>
                       Image type: <select name="image_type_id" id="image_type_id" class="form-control">
-                                    <option value="biopsy">Biopsy</option>
-                                    <option value="block">Block</option>
-                                    <option value="section">Section</option>
-                                    <option value="roi">Roi</option>
+                                    <option value="3D XRM">3D XRM</option>
+                                    <option value="SEM Mosaic">SEM Mosaic</option>
+                                    <option value="Serial-section SEM">Serial-section SEM</option>
+                                    <option value="Serial-section TEM">Serial-section TEM</option>
                                   </select>
                       <br/>
                       <center><input type="submit" value="Submit" class="btn btn-primary"></center>
