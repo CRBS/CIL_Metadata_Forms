@@ -37,9 +37,14 @@ class Alzdata_organizer extends CI_Controller
         
         $image_id = $this->input->post('image_name_id', TRUE);
         $image_type = $this->input->post('image_type_id', TRUE);
+        $biopsy_id = $this->input->post('biopsy_source_id', TRUE);
+        $block_id = $this->input->post('block_id', TRUE);
         
         echo "<br/>".$image_id;
         echo "<br/>".$image_type;
+        echo "<br/>Biopsy ID:".$biopsy_id;
+        echo "<br/>Block ID:".$block_id;
+        
         $exist = $dbutil->adImageExist($image_id);
         if(!$exist)
         {
@@ -50,7 +55,9 @@ class Alzdata_organizer extends CI_Controller
             $dbutil->adUpdateImageType($image_id, $image_type);
         }
         
-        redirect($base_url."/alzdata_organizer/start");
+        $dbutil->adUpdateBiopsyNblock($image_id, $biopsy_id, $block_id);
+        
+        //redirect($base_url."/alzdata_organizer/start");
         
     }
             

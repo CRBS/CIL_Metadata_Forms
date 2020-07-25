@@ -65,6 +65,32 @@ class DB_util
         return $exist;
     }
     
+    public function adUpdateBiopsyNblock($image_id, $biopsy_id, $block_id)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('ad_structure_db_params');
+        $sql = "update images set biopsy_id = $1, block_id = $2 where image_id = $3";
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return false;
+        }
+        
+        $input = array();
+        array_push($input, intval($biopsy_id));
+        array_push($input, intval($block_id));
+        array_push($input, $image_id);
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            return false;
+        }
+        pg_close($conn);
+        
+        return true;
+    }
+    
     public function adInsertImageType($image_id, $imageType)
     {
         $CI = CI_Controller::get_instance();
