@@ -116,6 +116,42 @@ class DB_util
         return true;
     }
     
+    public function adGetAllImageInfo()
+    {
+        $mainArray = array();
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('ad_structure_db_params');
+        $sql = "select i.id, i.image_id, i.image_type, i.biopsy_id, i.block_id, bp.biopsy_name, b.block_name from images i left join biopsy bp on i.biopsy_id = bp.id left join block b on i.block_id = b.id order by i.id asc";
+        if(!$conn)
+        {
+            return $mainArray;
+        }
+        
+        $result = pg_query($conn,$sql);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return $mainArray;
+        }
+        
+        while($row = pg_fetch_row($result))
+        {
+            $array = array(); 
+            $array['id'] = intval($row[0]);
+            $array['image_id'] = $row[1];
+            $array['image_type'] = $row[2];
+            $array['biopsy_id'] = $row[3];
+            $array['block_id'] = $row[4]; 
+            $array['biopsy_name'] = $row[5]; 
+            $array['block_name'] = $row[6];
+            
+            array_push($mainArray, $array);
+        }
+        pg_close($conn);
+        return $mainArray;
+        
+    }
+    
     public function getBiopsyIdBlocks()
     {
         $CI = CI_Controller::get_instance();

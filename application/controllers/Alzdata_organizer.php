@@ -57,7 +57,7 @@ class Alzdata_organizer extends CI_Controller
         
         $dbutil->adUpdateBiopsyNblock($image_id, $biopsy_id, $block_id);
         
-        //redirect($base_url."/alzdata_organizer/start");
+        redirect($base_url."/alzdata_organizer/start");
         
     }
             
@@ -132,6 +132,9 @@ class Alzdata_organizer extends CI_Controller
             $data['biopsy_info'] = $dbutil->getBiopsyInfo();
             
             $data['biopsyIdBlockStr'] = $dbutil->getBiopsyIdBlocks();
+            
+            $data['allImageInfoArray'] = $dbutil->adGetAllImageInfo();
+            
             
             $this->load->view('templates/header2', $data);
             $this->load->view('alzdata/start_organize_display', $data);
