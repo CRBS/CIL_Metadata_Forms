@@ -1,3 +1,7 @@
+<?php
+    //echo ($biopsyIdBlockArray);
+?>
+
 <div class="container">
     <br/>
     <div class="row">
@@ -52,7 +56,7 @@
                         <form action="/Alzdata_organizer/tag_image" method="POST">
                         Image Name: <input type="text" id="image_name_id" name="image_name_id" readonly="" class="form-control" value="">
                       <br/>
-                      Biopsy source: <select name="biopsy_source_id" id="biopsy_source_id" class="form-control">
+                      Biopsy source: <select name="biopsy_source_id" id="biopsy_source_id" class="form-control" onchange="updateBlocks()">
                                         <?php
                                             foreach($biopsy_info as $biopsy)
                                             {
@@ -64,6 +68,22 @@
                                      </select>
                           
                       <br/>
+                      Block: <select name="block_id" id="block_id" class="form-control" ">  
+                                    <?php
+                                        //echo $biopsyIdBlockStr;
+                                        $biopsyIdBlockArray = json_decode($biopsyIdBlockStr);
+                                        //var_dump($biopsyIdBlockArray);
+                                        $blockArray = $biopsyIdBlockArray->{"1"};
+                                        foreach ($blockArray as $block)
+                                        {
+                                    ?>  
+                                            <option value="<?php echo $block->block_id; ?>"><?php echo $block->block_name; ?></option> 
+                                    <?php
+                                        }
+                                    
+                                    ?>
+                             </select>
+                      <br/>   
                       Image type: <select name="image_type_id" id="image_type_id" class="form-control">
                                     <option value="3D XRM">3D XRM</option>
                                     <option value="SEM Mosaic">SEM Mosaic</option>
@@ -88,11 +108,35 @@
 
 
 <script>
+    
+    var jsonStr = '<?php echo $biopsyIdBlockStr; ?>';
+    var biopsyBlockJson = JSON.parse(jsonStr);
+    
+    function updateBlocks() 
+    {
+        
+        var biopsy_id = document.getElementById('biopsy_source_id').value;
+        var block = document.getElementById('block_id');
+        block.innerHTML="";
+        //alert(biopsy_id);
+        var barray = biopsyBlockJson[biopsy_id];
+        //console.log(barray);
+        for(i=0;i<barray.length;i++)
+        {
+            var opt = document.createElement('option');
+            opt.text = barray[i].block_name;
+            opt.value = barray[i].block_id;
+            block.add(opt, null);
+        }
+    }
+    
     function imageClick(image_id)
     {
         //alert('hello');
         document.getElementById('image_name_id').value = image_id;
          $("#tag_modal_id").modal('show');
     }
+    
+    
     
 </script>

@@ -89,6 +89,63 @@ class DB_util
         
         return true;
     }
+    
+    public function getBiopsyIdBlocks()
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('ad_structure_db_params');
+        $sql = "select bp.id as biopsy_id, bp.biopsy_name, b.id as block_id, b.block_name from biopsy bp, block b where bp.id = b.biopsy_id  order by bp.id, b.id";
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return NULL;
+        }
+        
+        $result = pg_query($conn,$sql);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return NULL;
+        }
+        
+        $mainArray = array();
+        while($row = pg_fetch_row($result))
+        {
+            $biopsy_id = intval($row[0]);
+            $biopsy_name = $row[1];
+            $block_id = intval($row[2]);
+            $block_name = $row[3];
+            if(array_key_exists($biopsy_id, $mainArray))
+            {
+                $bArray = $mainArray[$biopsy_id];
+                
+                $array = array();
+                $array['block_id'] = $block_id;
+                $array['block_name'] = $block_name;
+                
+                array_push($bArray, $array);
+                $mainArray[$biopsy_id] = $bArray;
+            }
+            else
+            {
+                $array = array();
+                $array['block_id'] = $block_id;
+                $array['block_name'] = $block_name;
+                
+                $bArray = array();
+                array_push($bArray, $array);
+                $mainArray[$biopsy_id] = $bArray;
+            }
+        }
+        pg_close($conn);
+        
+        $json_str = json_encode($mainArray,  JSON_UNESCAPED_SLASHES);
+        //$json = json_decode($json_str);
+        
+        return $json_str;
+    }
+    
+    
             
     public function getBiopsyInfo()
     {        

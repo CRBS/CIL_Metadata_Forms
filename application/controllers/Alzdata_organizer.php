@@ -124,6 +124,8 @@ class Alzdata_organizer extends CI_Controller
             
             $data['biopsy_info'] = $dbutil->getBiopsyInfo();
             
+            $data['biopsyIdBlockStr'] = $dbutil->getBiopsyIdBlocks();
+            
             $this->load->view('templates/header2', $data);
             $this->load->view('alzdata/start_organize_display', $data);
             $this->load->view('templates/footer', $data);
