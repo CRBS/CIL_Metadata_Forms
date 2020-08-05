@@ -138,7 +138,7 @@ class Cdeep3m_preview extends CI_Controller
             {
                 if(strcmp($file, ".")==0 || strcmp($file, "..")==0)
                     continue;
-                if($gutil->endsWith($file, ".tif") || $gutil->endsWith($file, ".png"))
+                if($gutil->endsWith($file, ".tif") || $gutil->endsWith($file, ".png") || $gutil->endsWith($file, ".TIF") || $gutil->endsWith($file, ".PNG"))
                 {
                     $filePath = $imageFolder."/".$file;
                     $tar->addFile($filePath,$file);
