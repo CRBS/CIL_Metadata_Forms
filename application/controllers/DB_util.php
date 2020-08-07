@@ -121,6 +121,7 @@ class DB_util
         $mainArray = array();
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('ad_structure_db_params');
+        $conn = pg_pconnect($db_params);
         $sql = "select i.id, i.image_id, i.image_type, i.biopsy_id, i.block_id, bp.biopsy_name, b.block_name from images i left join biopsy bp on i.biopsy_id = bp.id left join block b on i.block_id = b.id order by i.id asc";
         if(!$conn)
         {

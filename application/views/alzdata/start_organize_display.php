@@ -29,8 +29,20 @@
             <center><a href="#" target="_self" onclick="imageClick('<?php echo $alzData->image_id; ?>')"><img width="256" height="256" src="https://cildata.crbs.ucsd.edu/media/internal_group_display/<?php echo $alzData->group_name."/".$alzData->image_id.".jpg"; ?>" /></a></center>
             <br/>
             <!-- <center><a href="/alzdata_organizer/tag/<?php //echo $alzData->image_id; ?>" target="_self" ><?php //echo $alzData->image_id; ?></a></center> -->
-            <center><a href="#" target="_self" onclick="imageClick('<?php echo $alzData->image_id; ?>')"><?php echo $alzData->image_id; ?></a></center>
-            <br/>
+            <center><a href="#" target="_self" onclick="imageClick('<?php echo $alzData->image_id; ?>')"><?php echo $alzData->image_id; ?></a>
+            
+            <?php
+                foreach($allImageInfoArray as $imageInfo)
+                {
+                    if(strcmp($alzData->image_id, $imageInfo['image_id']) == 0)
+                    {
+                         echo ":<center>".$imageInfo['biopsy_name'].", ".$imageInfo['block_name'].", ".$imageInfo['image_type']."</center>";
+                         break;
+                    }
+                }
+            
+            ?>
+                </center><br/>
         </div>
         <?php
  
