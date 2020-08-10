@@ -153,6 +153,40 @@ class DB_util
         
     }
     
+    public function getROIs()
+    {
+        $mainArray = array();
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('ad_structure_db_params');
+        $sql = "select r.id, r.roi_name, r.block_id from block b, roi r where b.id = r.block_id";
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return $mainArray;
+        }
+        
+        $result = pg_query($conn,$sql);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return $mainArray;
+        }
+        
+        while($row = pg_fetch_row($result))
+        {
+            $array = array();
+            $array['id'] = intval($row[0]);
+            $array['roi_name'] = $row[1];
+            $array['block_id'] = intval($row[2]);
+            
+            array_push($mainArray, $array);
+        }
+        
+         pg_close($conn);
+         
+         return $mainArray;
+    }
+    
     public function getBiopsyIdBlocks()
     {
         $CI = CI_Controller::get_instance();

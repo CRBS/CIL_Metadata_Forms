@@ -80,7 +80,7 @@
                                      </select>
                           
                       <br/>
-                      Block: <select name="block_id" id="block_id" class="form-control" ">  
+                      Block: <select name="block_id" id="block_id" class="form-control" onchange="updateROI()">  
                                     <?php
                                         //echo $biopsyIdBlockStr;
                                         $biopsyIdBlockArray = json_decode($biopsyIdBlockStr);
@@ -95,7 +95,13 @@
                                     
                                     ?>
                              </select>
-                      <br/>   
+                      <br/>
+                      
+                      ROI: <select name="roi_id" id="roi_id" class="form-control" >
+                          
+                      </select>
+                      <br/>
+                      
                       Image type: <select name="image_type_id" id="image_type_id" class="form-control">
                                     <option value="3D XRM">3D XRM</option>
                                     <option value="SEM Mosaic">SEM Mosaic</option>
@@ -124,6 +130,9 @@
     var jsonStr = '<?php echo $biopsyIdBlockStr; ?>';
     var biopsyBlockJson = JSON.parse(jsonStr);
     
+    var roiStr = '<?php echo $roi_str; ?>';
+    var roiJson = JSON.parse(roiStr);
+    
     function updateBlocks() 
     {
         
@@ -140,6 +149,40 @@
             opt.value = barray[i].block_id;
             block.add(opt, null);
         }
+        
+        updateROI();
+    }
+    
+    
+    function updateROI()
+    {
+        console.log(roiJson);
+        var roiSelect = document.getElementById('roi_id');
+        roiSelect.innerHTML="";
+        var block_id = document.getElementById("block_id").value;
+        block_id = parseInt(block_id);
+        console.log("block_id:"+block_id);
+        
+        var opt = document.createElement('option');
+        opt.text = "NA";
+        opt.value = "-1";
+        roiSelect.add(opt, null);
+        
+        
+        for(i=0;i<roiJson.length;i++)
+        {
+            var roi = roiJson[i];
+            if(block_id == roi.block_id)
+            {
+                opt = document.createElement('option');
+                opt.text = roi.roi_name;
+                opt.value = roi.id;
+                roiSelect.add(opt, null);
+            }
+        }
+                    
+        
+        
     }
     
     function imageClick(image_id)
@@ -149,6 +192,6 @@
          $("#tag_modal_id").modal('show');
     }
     
-    
+    updateROI();
     
 </script>

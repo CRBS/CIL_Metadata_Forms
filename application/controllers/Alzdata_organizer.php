@@ -167,6 +167,8 @@ class Alzdata_organizer extends CI_Controller
             
             $data['allImageInfoArray'] = $dbutil->adGetAllImageInfo();
             
+            $roiArray = $dbutil->getROIs();
+            $data['roi_str'] = json_encode($roiArray,  JSON_UNESCAPED_SLASHES);
             
             $this->load->view('templates/header2', $data);
             $this->load->view('alzdata/start_organize_display', $data);
