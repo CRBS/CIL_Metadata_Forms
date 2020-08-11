@@ -39,6 +39,7 @@ class Alzdata_organizer extends CI_Controller
         $image_type = $this->input->post('image_type_id', TRUE);
         $biopsy_id = $this->input->post('biopsy_source_id', TRUE);
         $block_id = $this->input->post('block_id', TRUE);
+        $roi_id = $this->input->post('roi_id', TRUE);
         
         echo "<br/>".$image_id;
         echo "<br/>".$image_type;
@@ -56,6 +57,7 @@ class Alzdata_organizer extends CI_Controller
         }
         
         $dbutil->adUpdateBiopsyNblock($image_id, $biopsy_id, $block_id);
+        $dbutil->adUpdateRoi($image_id, $roi_id);
         
         redirect($base_url."/alzdata_organizer/start");
         
@@ -125,7 +127,50 @@ class Alzdata_organizer extends CI_Controller
             return;
         }
         
+        $allImageInfoArray = $dbutil->adGetAllImageInfo();
+        $blockArray = $dbutil->adGetAllBlocks();
         
+        $biopsyJson = $dbutil->getBiopsyInfo();
+        
+        
+        $biopsyArray = array();
+        $biopsyArray['name'] = "Biopsy";
+        $biopsyArray['is_url'] = false;
+        $biopsyArray['children'] = array();
+        foreach($biopsyJson as $biopsy)
+        {
+            $item = array();
+            $item['id'] = $biopsy->id;
+            $item['name']  = $biopsy->biopsy_name;
+            $item['is_url'] = false;
+            
+            
+            //$item['children'] = array();
+            $tempArray = array();
+            foreach($blockArray as $block)
+            {
+                if(intval($biopsy->id) == intval($block['biopsy_id']))
+                {
+                    //echo "<br/>In if block";
+                    $blockItem = array();
+                    $blockItem['id'] = $block['id'];
+                    $blockItem['name'] = $block['block_name'];
+                    $blockItem['is_url'] = false;
+                    
+                    array_push($tempArray,$blockItem );
+                }
+            }
+            if(count($tempArray) > 0)
+            {
+                echo "<br/>Temp array count:".count($tempArray);
+                $item['children'] = $tempArray;
+                
+            }
+            array_push($biopsyArray['children'], $item);
+        }
+        
+        $data['graph_json_str'] = json_encode($biopsyArray, JSON_UNESCAPED_SLASHES);
+        echo "<br/>".$data['graph_json_str'];
         $this->load->view('templates/header2', $data);
         $this->load->view('alzdata/graph_relations_display', $data);
         $this->load->view('templates/footer', $data);

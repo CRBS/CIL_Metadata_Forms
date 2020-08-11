@@ -16,7 +16,9 @@
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
 
-var treeData =
+var graph_json_str = '<?php echo $graph_json_str; ?>'
+var treeData = JSON.parse(graph_json_str);
+/*var treeData =
   {
     "name": "Top Level", "is_url": false,
     "children": [
@@ -30,7 +32,7 @@ var treeData =
       },
       { "name": "Level 2: B","is_url": false, }
     ]
-  };
+  };*/
 
 // Set the dimensions and margins of the diagram
 var margin = {top: 20, right: 90, bottom: 30, left: 90},

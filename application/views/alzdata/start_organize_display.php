@@ -36,7 +36,11 @@
                 {
                     if(strcmp($alzData->image_id, $imageInfo['image_id']) == 0)
                     {
-                         echo ":<center>".$imageInfo['biopsy_name'].", ".$imageInfo['block_name'].", ".$imageInfo['image_type']."</center>";
+                         $desc = ":<center>".$imageInfo['biopsy_name'].", ".$imageInfo['block_name'];
+                         if(!is_null($imageInfo['roi_id']) || !is_null($imageInfo['roi_name']))
+                             $desc = $desc.", ".$imageInfo['roi_name'];
+                         $desc = $desc.", ".$imageInfo['image_type']."</center>";
+                         echo $desc;
                          break;
                     }
                 }
@@ -156,12 +160,12 @@
     
     function updateROI()
     {
-        console.log(roiJson);
+        //console.log(roiJson);
         var roiSelect = document.getElementById('roi_id');
         roiSelect.innerHTML="";
         var block_id = document.getElementById("block_id").value;
         block_id = parseInt(block_id);
-        console.log("block_id:"+block_id);
+        //console.log("block_id:"+block_id);
         
         var opt = document.createElement('option');
         opt.text = "NA";
