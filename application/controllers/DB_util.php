@@ -2904,4 +2904,221 @@ class DB_util
         $json = json_decode($json_str);
         return $json; 
     }
+    
+    
+    /************** Timer *************************************/
+    public function timerUpdatePodStartTime($cropId)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('image_viewer_db_params');
+        $array = array();
+        $conn = pg_pconnect($db_params);
+        
+        if(!is_numeric($cropId))
+        {
+            return false;
+        }
+        
+        if (!$conn) 
+        {   
+            return false;
+        }
+        
+        $cropId = intval($cropId);
+        
+        $input = array();
+        array_push($input, $cropId);
+        $sql = "update cropping_processes set pod_start = now() where id = $1";
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        
+        pg_close($conn);
+        return true;
+        
+    }
+    
+    
+    public function timerUpdatePodEndTime($cropId)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('image_viewer_db_params');
+        $array = array();
+        $conn = pg_pconnect($db_params);
+        
+        if(!is_numeric($cropId))
+        {
+            return false;
+        }
+        
+        if (!$conn) 
+        {   
+            return false;
+        }
+        
+        $cropId = intval($cropId);
+        
+        $input = array();
+        array_push($input, $cropId);
+        $sql = "update cropping_processes set pod_end = now() where id = $1";
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        
+        pg_close($conn);
+        return true;
+        
+    }
+    
+    public function timerUpdateDownloadStartTime($cropId)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('image_viewer_db_params');
+        $array = array();
+        $conn = pg_pconnect($db_params);
+        
+        if(!is_numeric($cropId))
+        {
+            return false;
+        }
+        
+        if (!$conn) 
+        {   
+            return false;
+        }
+        
+        $cropId = intval($cropId);
+        
+        $input = array();
+        array_push($input, $cropId);
+        $sql = "update cropping_processes set download_start = now() where id = $1";
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        
+        pg_close($conn);
+        return true;
+        
+    }
+    
+    public function timerUpdateDownloadEndTime($cropId)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('image_viewer_db_params');
+        $array = array();
+        $conn = pg_pconnect($db_params);
+        
+        if(!is_numeric($cropId))
+        {
+            return false;
+        }
+        
+        if (!$conn) 
+        {   
+            return false;
+        }
+        
+        $cropId = intval($cropId);
+        
+        $input = array();
+        array_push($input, $cropId);
+        $sql = "update cropping_processes set download_end = now() where id = $1";
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        
+        pg_close($conn);
+        return true;
+        
+    }
+    
+    
+    public function timerUpdatePredictStartTime($cropId)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('image_viewer_db_params');
+        $array = array();
+        $conn = pg_pconnect($db_params);
+        
+        if(!is_numeric($cropId))
+        {
+            return false;
+        }
+        
+        if (!$conn) 
+        {   
+            return false;
+        }
+        
+        $cropId = intval($cropId);
+        
+        $input = array();
+        array_push($input, $cropId);
+        $sql = "update cropping_processes set predict_start = now() where id = $1";
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        
+        pg_close($conn);
+        return true;
+        
+    }
+    
+    
+    public function timerUpdatePredictEndTime($cropId)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('image_viewer_db_params');
+        $array = array();
+        $conn = pg_pconnect($db_params);
+        
+        if(!is_numeric($cropId))
+        {
+            return false;
+        }
+        
+        if (!$conn) 
+        {   
+            return false;
+        }
+        
+        $cropId = intval($cropId);
+        
+        $input = array();
+        array_push($input, $cropId);
+        $sql = "update cropping_processes set predict_end = now() where id = $1";
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        
+        pg_close($conn);
+        return true;
+        
+    }
+    
+    /************** End Timer *************************************/
 }

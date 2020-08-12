@@ -157,6 +157,12 @@ class Alzdata_organizer extends CI_Controller
                     $blockItem['name'] = $block['block_name'];
                     $blockItem['is_url'] = false;
                     
+                    foreach($allImageInfoArray as $imageInfo)
+                    {
+                        
+                    }
+                    
+                    
                     array_push($tempArray,$blockItem );
                 }
             }
@@ -166,6 +172,10 @@ class Alzdata_organizer extends CI_Controller
                 $item['children'] = $tempArray;
                 
             }
+            
+            
+            
+            
             array_push($biopsyArray['children'], $item);
         }
         
