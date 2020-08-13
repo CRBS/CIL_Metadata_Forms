@@ -154,15 +154,14 @@ class Alzdata_organizer extends CI_Controller
                     //echo "<br/>In if block";
                     $blockItem = array();
                     $blockItem['id'] = $block['id'];
-                    $blockItem['name'] = $block['block_name'];
+                    $blockItem['name'] = "Block".$block['block_name'];
                     $blockItem['is_url'] = false;
+                   
                     
-                    foreach($allImageInfoArray as $imageInfo)
-                    {
-                        
-                    }
-                    
-                    
+                    $negateArray = array();
+                    array_push($negateArray, "roi_id");
+                    $blockItem = $this->handleGraphImages("block_id",$negateArray, $blockItem);
+                    $blockItem = $this->handleROIs($blockItem);
                     array_push($tempArray,$blockItem );
                 }
             }
@@ -173,9 +172,6 @@ class Alzdata_organizer extends CI_Controller
                 
             }
             
-            
-            
-            
             array_push($biopsyArray['children'], $item);
         }
         
@@ -185,6 +181,104 @@ class Alzdata_organizer extends CI_Controller
         $this->load->view('alzdata/graph_relations_display', $data);
         $this->load->view('templates/footer', $data);
     }
+    
+    private function handleROIs(&$blockItem)
+    {
+        $dbutil = new DB_util();
+        $allImageInfoArray = $dbutil->adGetAllImageInfo();
+        
+        $roiArray = $dbutil->getROIs();
+        $hasChildren = false;
+        foreach($roiArray as $roi)
+        {
+            if(intval($roi['block_id']) == intval($blockItem['id']))
+            {
+                $hasChildren = true;
+            }
+        }
+        
+        if($hasChildren)
+        {
+            if(!array_key_exists("children", $blockItem))
+                $blockItem['children'] = array();
+            foreach($roiArray as $roi)
+            {
+                $roiItem = array();
+                $roiItem['id'] = intval($roi['id']);
+                $roiItem['name'] = "ROI:".$roi['roi_name'];
+                $roiItem['is_url'] = false;
+                $negateArray = array();
+                $roiItem = $this->handleGraphImages("roi_id",$negateArray, $roiItem);
+                array_push($blockItem['children'], $roiItem);
+            }
+            
+        }
+        return $blockItem;
+    }
+    
+    private function handleGraphImages($id_type,$negateArray, $parentItem)
+    {
+        $dbutil = new DB_util();
+        $allImageInfoArray = $dbutil->adGetAllImageInfo();
+        $hasChildren = false;
+        foreach($allImageInfoArray as $imageInfo)
+        {
+            if(intval($imageInfo[$id_type]) == intval($parentItem['id']))
+            {
+                $hasChildren = false;
+                
+                foreach($negateArray as $negateKey)
+                {
+                    //echo "<br/>NegateKey:".$negateKey."---data:".$imageInfo[$negateKey];
+                    if(is_null($imageInfo[$negateKey]))
+                    {
+                        $hasChildren = true;
+                        
+                    }
+                }
+                if(count($negateArray)==0)
+                    $hasChildren = true;
+                
+            }
+        }
+        
+        if($hasChildren)
+        {
+            if(!array_key_exists("children", $parentItem))
+                $parentItem['children'] = array();
+            foreach($allImageInfoArray as $imageInfo)
+            {
+                if(intval($imageInfo[$id_type]) == intval($parentItem['id']))
+                {
+                    if(count($negateArray)==0)
+                    {
+                        $imageItem = array();
+                            $imageItem['id'] = $imageInfo['id'];
+                            $imageItem['name'] = "Image:".$imageInfo['image_id'];
+                            $imageItem['is_url'] = true;
+                            $imageItem['url'] = "http://google.com";
+                            array_push($parentItem['children'], $imageItem);
+                    }
+                    
+                    foreach($negateArray as $negateKey)
+                    {
+                    //echo "<br/>NegateKey:".$negateKey."---data:".$imageInfo[$negateKey];
+                        if(is_null($imageInfo[$negateKey]))
+                        {
+                            $imageItem = array();
+                            $imageItem['id'] = $imageInfo['id'];
+                            $imageItem['name'] = "Image:".$imageInfo['image_id'];
+                            $imageItem['is_url'] = true;
+                            $imageItem['url'] = "http://google.com";
+                            array_push($parentItem['children'], $imageItem);
+                        }
+                    }
+                }
+            }
+        }
+        return $parentItem;
+    }
+            
     
     
     public function start()
