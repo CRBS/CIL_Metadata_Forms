@@ -254,7 +254,7 @@ class Alzdata_organizer extends CI_Controller
                     {
                         $imageItem = array();
                             $imageItem['id'] = $imageInfo['id'];
-                            $imageItem['name'] = "Image:".$imageInfo['image_id'];
+                            $imageItem['name'] = "Image:".$imageInfo['image_id'].", ".$imageInfo['image_type'];
                             $imageItem['is_url'] = true;
                             $imageItem['url'] = "http://google.com";
                             array_push($parentItem['children'], $imageItem);
@@ -267,7 +267,7 @@ class Alzdata_organizer extends CI_Controller
                         {
                             $imageItem = array();
                             $imageItem['id'] = $imageInfo['id'];
-                            $imageItem['name'] = "Image:".$imageInfo['image_id'];
+                            $imageItem['name'] = "Image:".$imageInfo['image_id'].", ".$imageInfo['image_type'];
                             $imageItem['is_url'] = true;
                             $imageItem['url'] = "http://google.com";
                             array_push($parentItem['children'], $imageItem);
