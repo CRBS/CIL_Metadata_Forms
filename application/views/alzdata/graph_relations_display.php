@@ -10,6 +10,10 @@
             <?php include_once 'breadcrumb.php'; ?>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12" id="mySvg"></div>
+
+    </div>
 </div>
 
 <!-- load the d3.js library -->	
@@ -34,20 +38,32 @@ var treeData = JSON.parse(graph_json_str);
     ]
   };*/
 
+var svgPosition = document.getElementById("mySvg");
+
 // Set the dimensions and margins of the diagram
 var margin = {top: 20, right: 90, bottom: 30, left: 90},
     width = 2000 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+    height = 1000 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
 // appends a 'group' element to 'svg'
 // moves the 'group' element to the top left margin
-var svg = d3.select("body").append("svg")
+/*var svg = d3.select("body").append("svg")
     .attr("width", width + margin.right + margin.left)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
     .attr("transform", "translate("
-          + margin.left + "," + margin.top + ")");
+          + margin.left + "," + margin.top + ")");*/
+    
+ var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.right + margin.left)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate("
+          + svgPosition.offsetLeft + "," + (svgPosition.offsetTop-300) + ")");   
+    
+    
+  
 
 var i = 0,
     duration = 750,

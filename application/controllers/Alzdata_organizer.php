@@ -167,7 +167,7 @@ class Alzdata_organizer extends CI_Controller
             }
             if(count($tempArray) > 0)
             {
-                echo "<br/>Temp array count:".count($tempArray);
+                //echo "<br/>Temp array count:".count($tempArray);
                 $item['children'] = $tempArray;
                 
             }
@@ -176,13 +176,13 @@ class Alzdata_organizer extends CI_Controller
         }
         
         $data['graph_json_str'] = json_encode($biopsyArray, JSON_UNESCAPED_SLASHES);
-        echo "<br/>".$data['graph_json_str'];
+        //echo "<br/>".$data['graph_json_str'];
         $this->load->view('templates/header2', $data);
         $this->load->view('alzdata/graph_relations_display', $data);
         $this->load->view('templates/footer', $data);
     }
     
-    private function handleROIs(&$blockItem)
+    private function handleROIs($blockItem)
     {
         $dbutil = new DB_util();
         $allImageInfoArray = $dbutil->adGetAllImageInfo();
@@ -227,23 +227,34 @@ class Alzdata_organizer extends CI_Controller
             {
                 $hasChildren = false;
                 
+                $isEmpty = true;
                 foreach($negateArray as $negateKey)
                 {
                     //echo "<br/>NegateKey:".$negateKey."---data:".$imageInfo[$negateKey];
-                    if(is_null($imageInfo[$negateKey]))
+                    if(!is_null($imageInfo[$negateKey]))
                     {
-                        $hasChildren = true;
-                        
+                        $isEmpty = false;
                     }
                 }
-                if(count($negateArray)==0)
-                    $hasChildren = true;
                 
+                if($isEmpty)
+                {
+                    $hasChildren = true;
+                    break;
+                }
+                else if(count($negateArray)==0)
+                {
+                    $hasChildren = true;
+                    break;
+                }
             }
         }
         
+        
+        
         if($hasChildren)
         {
+            //echo "<br/>hasChildren";
             if(!array_key_exists("children", $parentItem))
                 $parentItem['children'] = array();
             foreach($allImageInfoArray as $imageInfo)
@@ -260,22 +271,33 @@ class Alzdata_organizer extends CI_Controller
                             array_push($parentItem['children'], $imageItem);
                     }
                     
+                    $isEmpty = true;
                     foreach($negateArray as $negateKey)
                     {
                     //echo "<br/>NegateKey:".$negateKey."---data:".$imageInfo[$negateKey];
-                        if(is_null($imageInfo[$negateKey]))
+                        
+                        if(!is_null($imageInfo[$negateKey]))
                         {
-                            $imageItem = array();
+                            $isEmpty =false;
+                        }
+                    }
+                    if(count($negateArray) > 0 && $isEmpty)
+                    {
+                        $imageItem = array();
                             $imageItem['id'] = $imageInfo['id'];
                             $imageItem['name'] = "Image:".$imageInfo['image_id'].", ".$imageInfo['image_type'];
                             $imageItem['is_url'] = true;
                             $imageItem['url'] = "http://google.com";
                             array_push($parentItem['children'], $imageItem);
-                        }
                     }
+                    
                 }
             }
         }
+        //else 
+        //{
+        //    echo "<br/>No children";
+        //}
         return $parentItem;
     }
             
