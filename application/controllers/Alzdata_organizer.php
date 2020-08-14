@@ -126,6 +126,13 @@ class Alzdata_organizer extends CI_Controller
             redirect($base_url."/home");
             return;
         }
+        $image_viewer_prefix = $this->config->item('image_viewer_prefix');
+        $token = $dbutil->getAuthToken($data['username']);
+        $imageViewerParams = array();
+        $imageViewerParams['username'] = $username;
+        $imageViewerParams['image_viewer_prefix'] = $image_viewer_prefix;
+        $imageViewerParams['token'] = $token;
+        
         
         $allImageInfoArray = $dbutil->adGetAllImageInfo();
         $blockArray = $dbutil->adGetAllBlocks();
@@ -160,8 +167,8 @@ class Alzdata_organizer extends CI_Controller
                     
                     $negateArray = array();
                     array_push($negateArray, "roi_id");
-                    $blockItem = $this->handleGraphImages("block_id",$negateArray, $blockItem);
-                    $blockItem = $this->handleROIs($blockItem);
+                    $blockItem = $this->handleGraphImages("block_id",$negateArray, $blockItem, $imageViewerParams);
+                    $blockItem = $this->handleROIs($blockItem,$imageViewerParams);
                     array_push($tempArray,$blockItem );
                 }
             }
@@ -182,7 +189,7 @@ class Alzdata_organizer extends CI_Controller
         $this->load->view('templates/footer', $data);
     }
     
-    private function handleROIs($blockItem)
+    private function handleROIs($blockItem,$imageViewerParams)
     {
         $dbutil = new DB_util();
         $allImageInfoArray = $dbutil->adGetAllImageInfo();
@@ -208,7 +215,7 @@ class Alzdata_organizer extends CI_Controller
                 $roiItem['name'] = "ROI:".$roi['roi_name'];
                 $roiItem['is_url'] = false;
                 $negateArray = array();
-                $roiItem = $this->handleGraphImages("roi_id",$negateArray, $roiItem);
+                $roiItem = $this->handleGraphImages("roi_id",$negateArray, $roiItem, $imageViewerParams);
                 array_push($blockItem['children'], $roiItem);
             }
             
@@ -216,7 +223,7 @@ class Alzdata_organizer extends CI_Controller
         return $blockItem;
     }
     
-    private function handleGraphImages($id_type,$negateArray, $parentItem)
+    private function handleGraphImages($id_type,$negateArray, $parentItem, $imageViewerParams)
     {
         $dbutil = new DB_util();
         $allImageInfoArray = $dbutil->adGetAllImageInfo();
@@ -267,7 +274,8 @@ class Alzdata_organizer extends CI_Controller
                             $imageItem['id'] = $imageInfo['id'];
                             $imageItem['name'] = "Image:".$imageInfo['image_id'].", ".$imageInfo['image_type'];
                             $imageItem['is_url'] = true;
-                            $imageItem['url'] = "http://google.com";
+                            $imageItem['url'] = $imageViewerParams['image_viewer_prefix']."/internal_data/".$imageInfo['image_id'].
+                                    "?username=".$imageViewerParams['username']."&token=".$imageViewerParams['token'];
                             array_push($parentItem['children'], $imageItem);
                     }
                     
@@ -287,7 +295,8 @@ class Alzdata_organizer extends CI_Controller
                             $imageItem['id'] = $imageInfo['id'];
                             $imageItem['name'] = "Image:".$imageInfo['image_id'].", ".$imageInfo['image_type'];
                             $imageItem['is_url'] = true;
-                            $imageItem['url'] = "http://google.com";
+                            $imageItem['url'] = $imageViewerParams['image_viewer_prefix']."/internal_data/".$imageInfo['image_id'].
+                                    "?username=".$imageViewerParams['username']."&token=".$imageViewerParams['token'];
                             array_push($parentItem['children'], $imageItem);
                     }
                     
