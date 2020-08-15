@@ -67,10 +67,12 @@
                     <!-- Upload small images and try the CDeep3M preview function. Select a trained model, augspeed , and frames to run the CDeep3M remotely. -->
                     Upload own images and try the CDeep3M preview function. Select a trained model from the database, augspeed, and frames to run CDeep3M remotely (using the <a href="https://nautilus.optiputer.net/" target="_blank">PRP cluster</a>).
                 </div>
+                <!--
                 <div class="col-md-12"><hr style="height:1px; visibility:hidden;" /></div>
                 <div class="col-md-12"> 
                    <a href="/home/create_user" class="btn btn-primary">Request an account</a>
                 </div>
+                -->
             </div>
         </div>
         <div class="col-md-4">
@@ -89,6 +91,34 @@
                 </div>
             </div>
         </div>
+            
+            
+        <!--------------Section---------------------->      
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <span class="cil_title2">Retrain Models</span>
+                </div>
+                <div class="col-md-12">
+                    <img src="/pix/retrain_default.png" width="100%" />
+                </div>
+                <div class="col-md-12"><hr style="height:1px; visibility:hidden;" /></div>
+                
+                <div class="col-md-12">
+                    <!-- The CIL Image Viewer utilizes the Leaflet library and the CodeIgniter PHP library for browsing the high definition images. This image viewer is capable of displaying confocal images, electron tomography z-stack images, and time-series images. This user-interface includes image controls such as zooming, panning, contrast adjustment, brightness adjustment, moving Z-stack location, moving the time location. --> 
+                    It is a good practice to continuously monitor the incoming data and retrain your model on newer data if you find that the data distribution has deviated significantly from the original training data distribution. 
+                </div>
+            </div>
+        </div>    
+        <!--------------End Section----------------->   
+    </div>
+    <div class="row">
+        <div class="col-md-12"><hr style="height:1px; visibility:hidden;" /></div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <a href="/home/create_user" class="btn btn-primary">Request an account</a>
+        </div>
+        <div class="col-md-4"></div>
     </div>
 </div>    
   
