@@ -98,13 +98,13 @@ class Cdeep3m_retrain extends CI_Controller
             redirect($base_url."/home");
             return;
         }
-        $isAdmin = $dbutil->isAdmin($username);
+        /*$isAdmin = $dbutil->isAdmin($username);
         if(!$isAdmin)
         {
             redirect($base_url."/home");
             return;
-        }
-        
+        }*/
+        //echo "\n Step 1";
         $cropID =  $dbutil->getNextCropID();
         if(is_null($cropID) || !is_numeric($cropID))
         {
@@ -365,12 +365,13 @@ class Cdeep3m_retrain extends CI_Controller
             redirect($base_url."/home");
             return;
         }
-        $isAdmin = $dbutil->isAdmin($username);
+        
+        /*$isAdmin = $dbutil->isAdmin($username);
         if(!$isAdmin)
         {
             redirect($base_url."/home");
             return;
-        }
+        }*/
         
         $retrain_result_folder_prefix = $this->config->item('retrain_result_folder_prefix');
         $model_upload_location = $this->config->item('model_upload_location');
@@ -417,12 +418,12 @@ class Cdeep3m_retrain extends CI_Controller
             redirect($base_url."/home");
             return;
         }
-        $isAdmin = $dbutil->isAdmin($username);
+        /*$isAdmin = $dbutil->isAdmin($username);
         if(!$isAdmin)
         {
             redirect($base_url."/home");
             return;
-        }
+        }*/
         
         if(!$dbutil->modelExists($model_id))
         {
@@ -593,12 +594,12 @@ class Cdeep3m_retrain extends CI_Controller
             redirect($base_url."/home");
             return;
         }
-        $isAdmin = $dbutil->isAdmin($username);
+        /*$isAdmin = $dbutil->isAdmin($username);
         if(!$isAdmin)
         {
             redirect($base_url."/home");
             return;
-        }
+        }*/
         
         if(is_null($retrain_id) || !is_numeric($retrain_id) || $retrain_id == 0)
         {
@@ -763,12 +764,12 @@ class Cdeep3m_retrain extends CI_Controller
             redirect($base_url."/home");
             return;
         }
-        $isAdmin = $dbutil->isAdmin($username);
+        /*$isAdmin = $dbutil->isAdmin($username);
         if(!$isAdmin)
         {
             redirect($base_url."/home");
             return;
-        }
+        }*/
         
         if(is_null($retrainID) || !is_numeric($retrainID) || $retrainID == 0)
         {
@@ -827,12 +828,12 @@ class Cdeep3m_retrain extends CI_Controller
             redirect($base_url."/home");
             return;
         }
-        $isAdmin = $dbutil->isAdmin($username);
+        /*$isAdmin = $dbutil->isAdmin($username);
         if(!$isAdmin)
         {
             redirect($base_url."/home");
             return;
-        }
+        }*/
         
         if(is_null($retrainID) || !is_numeric($retrainID) || $retrainID == 0)
         {
@@ -1024,12 +1025,12 @@ class Cdeep3m_retrain extends CI_Controller
             redirect($base_url."/home");
             return;
         }
-        $isAdmin = $dbutil->isAdmin($username);
+        /*$isAdmin = $dbutil->isAdmin($username);
         if(!$isAdmin)
         {
             redirect($base_url."/home");
             return;
-        }
+        }*/
         
         if(is_null($retrainID) || !is_numeric($retrainID))
         {
@@ -1149,12 +1150,12 @@ class Cdeep3m_retrain extends CI_Controller
             redirect($base_url."/home");
             return;
         }
-        $isAdmin = $dbutil->isAdmin($username);
+        /*$isAdmin = $dbutil->isAdmin($username);
         if(!$isAdmin)
         {
             redirect($base_url."/home");
             return;
-        }
+        }*/
         
         $userInfo = $dbutil->getUserInfo($data['username']);
         if(!is_null($userInfo))
@@ -1194,12 +1195,12 @@ class Cdeep3m_retrain extends CI_Controller
             redirect($base_url."/home");
             return;
         }
-        $isAdmin = $dbutil->isAdmin($username);
+        /*$isAdmin = $dbutil->isAdmin($username);
         if(!$isAdmin)
         {
             redirect($base_url."/home");
             return;
-        }
+        }*/
         
         
         $data['retrainID'] = $retrainID;
