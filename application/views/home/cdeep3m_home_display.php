@@ -1,5 +1,21 @@
 <div class="container">
     <br/><br/>
+    <?php
+        if(isset($cdeep3m_down) && $cdeep3m_down)
+        {
+    ?>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-dismissible alert-danger">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong>Warning!</strong> Our CDeep3M demo is currently NOT available. Please try it again later.
+            </div>
+        </div>
+    </div>
+    <?php
+        }
+    ?>
+    
     <div class="row">
 
         <div class="col-md-6">

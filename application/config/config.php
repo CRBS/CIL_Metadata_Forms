@@ -13,7 +13,9 @@ $json = json_decode($json_str);
 
 $config['docker_image_type'] = "latest";
 //$config['docker_image_type'] = "stable";
-        
+ 
+$config['cdeep3m_down'] = true;
+//$config['cdeep3m_down'] = false;
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
@@ -667,6 +669,7 @@ $config['sendgrid_api_key'] = $json->sendgrid_api_key;
 
 $config['email_from'] = 'cdeep3m@ucsd.edu';
 
+$config['cdeep3m_result_path_prefix'] = "/export2/temp/cdeep3m_results";
 
 /***********Gmail config*******************************/
 $config['gmail_sender'] = $json->gmail_sender;

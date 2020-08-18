@@ -18,6 +18,8 @@ class Cdeep3m extends CI_Controller
             $data['my_account'] = $username;
         
         $base_url = $this->config->item('base_url');
+        $cdeep3m_down = $this->config->item('cdeep3m_down');
+        $data['cdeep3m_down'] = $cdeep3m_down;
         
         $data['title'] = "CDeep3M | Welcome";
         $this->load->view('templates/header', $data);
