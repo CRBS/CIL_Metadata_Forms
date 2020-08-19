@@ -222,7 +222,7 @@ class DB_util
         $mainArray = array();
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('ad_structure_db_params');
-        $sql = "select r.id, r.roi_name, r.block_id from block b, roi r where b.id = r.block_id";
+        $sql = "select id, roi_name, serial_section_id  from roi order by id asc";
         $conn = pg_pconnect($db_params);
         if(!$conn)
         {
@@ -241,7 +241,7 @@ class DB_util
             $array = array();
             $array['id'] = intval($row[0]);
             $array['roi_name'] = $row[1];
-            $array['block_id'] = intval($row[2]);
+            $array['serial_section_id'] = intval($row[2]);
             
             array_push($mainArray, $array);
         }

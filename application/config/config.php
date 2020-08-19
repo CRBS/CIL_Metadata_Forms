@@ -14,8 +14,8 @@ $json = json_decode($json_str);
 $config['docker_image_type'] = "latest";
 //$config['docker_image_type'] = "stable";
  
-$config['cdeep3m_down'] = true;
-//$config['cdeep3m_down'] = false;
+//$config['cdeep3m_down'] = true;
+$config['cdeep3m_down'] = false;
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
