@@ -65,6 +65,35 @@ class DB_util
         return $exist;
     }
     
+    public function adUpdateSectionId($image_id, $section_id)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('ad_structure_db_params');
+        $sql = "update images set serial_section_id = $1 where image_id = $2";
+        $section_id = intval($section_id);
+        
+        if($section_id < 0)
+            $section_id = NULL;
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return false;
+        }
+        
+        $input = array();
+        array_push($input, $section_id);
+        array_push($input, $image_id);
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            return false;
+        }
+        pg_close($conn);
+        
+        return true;
+    }
+    
     public function adUpdateRoi($image_id, $roi_id)
     {
         $CI = CI_Controller::get_instance();
@@ -212,8 +241,10 @@ class DB_util
             $array['block_id'] = $row[4]; 
             $array['biopsy_name'] = $row[5]; 
             $array['block_name'] = $row[6];
-            $array['roi_id'] = $row[7];
-            $array['roi_name'] = $row[8];
+            $array['section_id'] = $row[7];
+            $array['section_name'] = $row[8];
+            $array['roi_id'] = $row[9];
+            $array['roi_name'] = $row[10];
             
             array_push($mainArray, $array);
         }

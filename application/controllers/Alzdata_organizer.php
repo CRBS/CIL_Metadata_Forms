@@ -40,6 +40,7 @@ class Alzdata_organizer extends CI_Controller
         $biopsy_id = $this->input->post('biopsy_source_id', TRUE);
         $block_id = $this->input->post('block_id', TRUE);
         $roi_id = $this->input->post('roi_id', TRUE);
+        $section_id = $this->input->post('section_id', TRUE);
         
         echo "<br/>".$image_id;
         echo "<br/>".$image_type;
@@ -58,7 +59,7 @@ class Alzdata_organizer extends CI_Controller
         
         $dbutil->adUpdateBiopsyNblock($image_id, $biopsy_id, $block_id);
         $dbutil->adUpdateRoi($image_id, $roi_id);
-        
+        $dbutil->adUpdateSectionId($image_id, $section_id);
         redirect($base_url."/alzdata_organizer/start");
         
     }
@@ -136,7 +137,7 @@ class Alzdata_organizer extends CI_Controller
         
         $allImageInfoArray = $dbutil->adGetAllImageInfo();
         $blockArray = $dbutil->adGetAllBlocks();
-        
+        $sectionArray = $dbutil->getAdSerialSections();
         $biopsyJson = $dbutil->getBiopsyInfo();
         
         
@@ -166,9 +167,10 @@ class Alzdata_organizer extends CI_Controller
                    
                     
                     $negateArray = array();
-                    array_push($negateArray, "roi_id");
-                    $blockItem = $this->handleGraphImages("block_id",$negateArray, $blockItem, $imageViewerParams);
-                    $blockItem = $this->handleROIs($blockItem,$imageViewerParams);
+                    //array_push($negateArray, "roi_id");
+                    //$blockItem = $this->handleGraphImages("block_id",$negateArray, $blockItem, $imageViewerParams);
+                    //$blockItem = $this->handleROIs($blockItem,$imageViewerParams);
+                    $blockItem = $this->handleSections($blockItem, $imageViewerParams);
                     array_push($tempArray,$blockItem );
                 }
             }
@@ -189,16 +191,51 @@ class Alzdata_organizer extends CI_Controller
         $this->load->view('templates/footer', $data);
     }
     
-    private function handleROIs($blockItem,$imageViewerParams)
+    private function handleSections($blockItem,$imageViewerParams)
     {
         $dbutil = new DB_util();
-        $allImageInfoArray = $dbutil->adGetAllImageInfo();
+        $sectionArray = $dbutil->getAdSerialSections();
+        $hasChildren = false;
+        foreach($sectionArray as $section)
+        {
+            if(intval($section['block_id']) == intval($blockItem['id']))
+            {
+                $hasChildren = true;
+            }
+        }
+        
+        
+        if($hasChildren)
+        {
+            if(!array_key_exists("children", $blockItem))
+                $blockItem['children'] = array();
+            foreach($sectionArray as $section)
+            {
+                $sItem = array();
+                $sItem['id'] = intval($section['id']);
+                $sItem['name'] = "Section:".$section['serial_section_name'];
+                $sItem['is_url'] = false;
+                $sItem = $this->handleROIs($sItem, $imageViewerParams);
+                $negateArray = array();
+                array_push($negateArray, "roi_id");
+                $sItem = $this->handleGraphImages("section_id",$negateArray, $sItem, $imageViewerParams);
+                array_push($blockItem['children'], $sItem);
+            }
+            
+        }
+        return $blockItem;
+    }
+    
+    private function handleROIs($sItem,$imageViewerParams)
+    {
+        $dbutil = new DB_util();
+        
         
         $roiArray = $dbutil->getROIs();
         $hasChildren = false;
         foreach($roiArray as $roi)
         {
-            if(intval($roi['block_id']) == intval($blockItem['id']))
+            if(intval($roi['serial_section_id']) == intval($sItem['id']))
             {
                 $hasChildren = true;
             }
@@ -206,53 +243,62 @@ class Alzdata_organizer extends CI_Controller
         
         if($hasChildren)
         {
-            if(!array_key_exists("children", $blockItem))
-                $blockItem['children'] = array();
+            if(!array_key_exists("children", $sItem))
+                $sItem['children'] = array();
             foreach($roiArray as $roi)
             {
-                $roiItem = array();
-                $roiItem['id'] = intval($roi['id']);
-                $roiItem['name'] = "ROI:".$roi['roi_name'];
-                $roiItem['is_url'] = false;
-                $negateArray = array();
-                $roiItem = $this->handleGraphImages("roi_id",$negateArray, $roiItem, $imageViewerParams);
-                array_push($blockItem['children'], $roiItem);
+                if(intval($roi['serial_section_id']) == intval($sItem['id']))
+                {
+                    $roiItem = array();
+                    $roiItem['id'] = intval($roi['id']);
+                    $roiItem['name'] = "ROI:".$roi['roi_name'];
+                    $roiItem['is_url'] = false;
+                    $negateArray = array();
+                    $roiItem = $this->handleGraphImages("roi_id",$negateArray, $roiItem, $imageViewerParams);
+                    array_push($sItem['children'], $roiItem);
+                }
             }
             
         }
-        return $blockItem;
+        return $sItem;
     }
     
     private function handleGraphImages($id_type,$negateArray, $parentItem, $imageViewerParams)
     {
+        //echo "<br/>handleGraphImages";
         $dbutil = new DB_util();
         $allImageInfoArray = $dbutil->adGetAllImageInfo();
         $hasChildren = false;
-        foreach($allImageInfoArray as $imageInfo)
+        if(count($negateArray)==0)
+            $hasChildren = true;
+        else
         {
-            if(intval($imageInfo[$id_type]) == intval($parentItem['id']))
+            foreach($allImageInfoArray as $imageInfo)
             {
-                $hasChildren = false;
-                
-                $isEmpty = true;
-                foreach($negateArray as $negateKey)
+                if(intval($imageInfo[$id_type]) == intval($parentItem['id']))
                 {
-                    //echo "<br/>NegateKey:".$negateKey."---data:".$imageInfo[$negateKey];
-                    if(!is_null($imageInfo[$negateKey]))
+                    $hasChildren = false;
+
+                    $isEmpty = true;
+                    foreach($negateArray as $negateKey)
                     {
-                        $isEmpty = false;
+                        //echo "<br/>NegateKey:".$negateKey."---data:".$imageInfo[$negateKey];
+                        if(!is_null($imageInfo[$negateKey]))
+                        {
+                            $isEmpty = false;
+                        }
                     }
-                }
-                
-                if($isEmpty)
-                {
-                    $hasChildren = true;
-                    break;
-                }
-                else if(count($negateArray)==0)
-                {
-                    $hasChildren = true;
-                    break;
+
+                    if($isEmpty)
+                    {
+                        $hasChildren = true;
+                        break;
+                    }
+                    //else if(count($negateArray)==0)
+                    //{
+                    //    $hasChildren = true;
+                    //    break;
+                    //}
                 }
             }
         }
@@ -266,6 +312,7 @@ class Alzdata_organizer extends CI_Controller
                 $parentItem['children'] = array();
             foreach($allImageInfoArray as $imageInfo)
             {
+                //echo "<br/>".intval($imageInfo[$id_type])."----".intval($parentItem['id']);
                 if(intval($imageInfo[$id_type]) == intval($parentItem['id']))
                 {
                     if(count($negateArray)==0)

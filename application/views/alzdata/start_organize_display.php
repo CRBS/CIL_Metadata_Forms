@@ -37,8 +37,8 @@
                     if(strcmp($alzData->image_id, $imageInfo['image_id']) == 0)
                     {
                          $desc = ":<center>".$imageInfo['biopsy_name'].", ".$imageInfo['block_name'];
-                         if(!is_null($imageInfo['roi_id']) || !is_null($imageInfo['roi_name']))
-                             $desc = $desc.", ".$imageInfo['roi_name'];
+                         //if(!is_null($imageInfo['roi_id']) || !is_null($imageInfo['roi_name']))
+                             $desc = $desc.", ".$imageInfo['section_name'].", ".$imageInfo['roi_name'];
                          $desc = $desc.", ".$imageInfo['image_type']."</center>";
                          echo $desc;
                          break;
