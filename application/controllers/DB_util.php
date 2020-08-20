@@ -184,7 +184,12 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('ad_structure_db_params');
         $conn = pg_pconnect($db_params);
-        $sql = "select i.id, i.image_id, i.image_type, i.biopsy_id, i.block_id, bp.biopsy_name, b.block_name, i.roi_id, r.roi_name from images i left join biopsy bp on i.biopsy_id = bp.id left join block b on i.block_id = b.id left join roi r on i.roi_id = r.id order by i.id asc";
+        //$sql = "select i.id, i.image_id, i.image_type, i.biopsy_id, i.block_id, bp.biopsy_name, b.block_name, i.roi_id, r.roi_name from images i left join biopsy bp on i.biopsy_id = bp.id left join block b on i.block_id = b.id left join roi r on i.roi_id = r.id order by i.id asc";
+        
+        $sql = "select i.id, i.image_id, i.image_type, i.biopsy_id, i.block_id, bp.biopsy_name, b.block_name, i.serial_section_id, s.serial_section_name, i.roi_id, r.roi_name from images i ".
+               " left join biopsy bp on i.biopsy_id = bp.id left join block b on i.block_id = b.id left join roi r on i.roi_id = r.id left join serial_section s on i.serial_section_id = s.id order by i.id asc";
+        
+        
         if(!$conn)
         {
             return $mainArray;
@@ -215,6 +220,40 @@ class DB_util
         pg_close($conn);
         return $mainArray;
         
+    }
+    
+    
+    public function getAdSerialSections()
+    {
+        $mainArray = array();
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('ad_structure_db_params');
+        $sql = "select id, serial_section_name, block_id from serial_section order by id asc";
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return $mainArray;
+        }
+        
+        $result = pg_query($conn,$sql);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return $mainArray;
+        }
+        
+        while($row = pg_fetch_row($result))
+        {
+            $array = array();
+            $array['id'] = intval($row[0]);
+            $array['serial_section_name'] = $row[1];
+            $array['block_id'] = intval($row[2]);
+            
+            array_push($mainArray, $array);
+        }
+        
+        pg_close($conn);
+        return $mainArray;
     }
     
     public function getROIs()

@@ -350,6 +350,10 @@ class Alzdata_organizer extends CI_Controller
             $roiArray = $dbutil->getROIs();
             $data['roi_str'] = json_encode($roiArray,  JSON_UNESCAPED_SLASHES);
             
+            
+            $sectionArray  = $dbutil->getAdSerialSections();
+            $data['section_str'] = json_encode($sectionArray,  JSON_UNESCAPED_SLASHES);
+            
             $this->load->view('templates/header2', $data);
             $this->load->view('alzdata/start_organize_display', $data);
             $this->load->view('templates/footer', $data);

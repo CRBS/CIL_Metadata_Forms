@@ -84,7 +84,7 @@
                                      </select>
                           
                       <br/>
-                      Block: <select name="block_id" id="block_id" class="form-control" onchange="updateROI()">  
+                      Block: <select name="block_id" id="block_id" class="form-control" onchange="updateSection()">  
                                     <?php
                                         //echo $biopsyIdBlockStr;
                                         $biopsyIdBlockArray = json_decode($biopsyIdBlockStr);
@@ -99,6 +99,11 @@
                                     
                                     ?>
                              </select>
+                      <br/>
+                      
+                      Serial section: <select name="section_id" id="section_id" class="form-control" onchange="updateROI()">
+                          
+                      </select>
                       <br/>
                       
                       ROI: <select name="roi_id" id="roi_id" class="form-control" >
@@ -137,6 +142,9 @@
     var roiStr = '<?php echo $roi_str; ?>';
     var roiJson = JSON.parse(roiStr);
     
+    var sectionStr = '<?php echo $section_str; ?>';
+    var sectionJson = JSON.parse(sectionStr);
+    
     function updateBlocks() 
     {
         
@@ -154,17 +162,46 @@
             block.add(opt, null);
         }
         
+        //updateROI();
+        updateSection();
+    }
+    
+    function updateSection()
+    {
+        var sectionSelect = document.getElementById('section_id');
+        sectionSelect.innerHTML="";
+        var block_id = document.getElementById("block_id").value;
+        block_id = parseInt(block_id);
+        
+        var opt = document.createElement('option');
+        opt.text = "NA";
+        opt.value = "-1";
+        sectionSelect.add(opt, null);
+        
+        for(i=0;i<sectionJson.length;i++)
+        {
+            var section = sectionJson[i];
+            if(block_id == section.block_id)
+            {
+                //console.log("block id matched:"+block_id);
+                opt = document.createElement('option');
+                opt.text = section.serial_section_name;
+                opt.value = section.id;
+                sectionSelect.add(opt, null);
+            }
+        }
+        
         updateROI();
     }
     
-    
     function updateROI()
     {
+        //console.log('updateROI');
         //console.log(roiJson);
         var roiSelect = document.getElementById('roi_id');
         roiSelect.innerHTML="";
-        var block_id = document.getElementById("block_id").value;
-        block_id = parseInt(block_id);
+        var section_id = document.getElementById("section_id").value;
+        section_id = parseInt(section_id);
         //console.log("block_id:"+block_id);
         
         var opt = document.createElement('option');
@@ -176,7 +213,7 @@
         for(i=0;i<roiJson.length;i++)
         {
             var roi = roiJson[i];
-            if(block_id == roi.block_id)
+            if(section_id == roi.serial_section_id)
             {
                 opt = document.createElement('option');
                 opt.text = roi.roi_name;
@@ -196,6 +233,8 @@
          $("#tag_modal_id").modal('show');
     }
     
+    
+    updateSection();
     updateROI();
     
 </script>
