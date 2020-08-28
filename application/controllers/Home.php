@@ -373,6 +373,21 @@ class Home extends CI_Controller
         
         /**************Group based homepage***********************/
         $userGroupArray = $dbutil->getUserGroups($username);
+        
+        $isAlz = false;
+        if(!is_null($userGroupArray))
+        {
+            foreach($userGroupArray as $userGroup)
+            {
+                if(strcmp($userGroup['group_name'], "alz")==0)
+                {
+                    $isAlz = true;
+                    break;
+                }
+            }
+        }
+        $data['isAlz'] = $isAlz;
+        
         if(!is_null($userGroupArray))
         {
             foreach($userGroupArray as $userGroup)
@@ -388,6 +403,7 @@ class Home extends CI_Controller
             }
         }
         /**************End Group based homepage***********************/
+        
         
         $tarray = $dbutil->getStandardTags();
         $data['tag_array'] = $tarray;
