@@ -1,5 +1,41 @@
 <div class="container">
     <br/><br/>
+    <div class="row">
+        <div class="col-md-1"><img src="/pix/fitler_128.png" width="52px" /> </div>
+        <div class="col-md-1">
+            <b>Imaging Type</b>
+        </div>
+        <div class="col-md-2">
+            
+            <select name="image_type_id" id="image_type_id" class="form-control" >
+                <option value="None">None</option>
+                <option value="SBEM">SBEM</option>
+                <option value="TEM">TEM</option>
+                <option value="Fluorescence">Fluorescence</option>
+                <option value="XRM">XRM</option>
+            </select>
+        </div>
+        <div class="col-md-1">
+            <b>Cell structure</b>
+        </div>
+        <div class="col-md-2">
+            
+            <select name="cell_struct_id" id="cell_struct_id" class="form-control" >
+                <option value="None">None</option>
+                <option value="Mitochondria">Mitochondria</option>
+                <option value="Synapses">Synapses</option>
+                <option value="Vesicles">Vesicles</option>
+                <option value="Nuclei">Nuclei</option>
+                <option value="Axons">Axons</option>
+            </select>
+        </div>
+        
+        <div class="col-md-2">
+            <b>&nbsp;</b>
+             <button type="button" onclick="updateDropDown()" class="btn btn-primary">Filter</button> 
+        </div>
+    </div>
+    <br/>
     <?php 
         foreach($publishedModelArray as $model)
         {
@@ -14,6 +50,9 @@
                 $json = json_decode($json_str);
                 $cc_name = "";
                 $scope_names = "";
+                
+                
+                
                 if(isset($json->Cdeepdm_model->CELLULARCOMPONENT))
                 {
                     $cc = $json->Cdeepdm_model->CELLULARCOMPONENT;
@@ -48,6 +87,43 @@
                 }
                 
                 $title = $scope_names." ".$cc_name." (".$model_id.")";
+                
+                if(strcmp($image_type, "None") != 0 || strcmp($cell_structure, "None") != 0)
+                {
+                    if(strcmp($image_type, "None") != 0)
+                    {
+                        if(strpos($title, $image_type) == false)
+                        {
+                            continue;
+                        }
+                    }
+                    
+                    if(strcmp($cell_structure, "None") != 0)
+                    {
+                        $hasMatch = false;
+                        if(isset($json->Cdeepdm_model->CELLULARCOMPONENT))
+                        {
+                            
+                            $ccArray = $json->Cdeepdm_model->CELLULARCOMPONENT;
+                            foreach($ccArray as $cc)
+                            {
+                                if(isset($cc->free_text))
+                                {
+                                    if(strlen($cc->free_text) > 0)
+                                    {
+                                        if(strpos($cc->free_text, $cell_structure) !== false)
+                                            $hasMatch = true;
+                                    }
+                                }
+                            }
+                            
+                            
+                        }
+                        if(!$hasMatch)
+                           continue;
+                    }
+                }
+                
                 //echo "<br/><br/>".$title;
                 $x_voxel_sum = "";
                 $y_voxel_sum = "";
@@ -215,3 +291,18 @@
     ?>
 
 </div>
+
+<script>
+    function updateDropDown()
+    {
+        var image_type_id = document.getElementById('image_type_id').value;
+        var cell_struct_id = document.getElementById('cell_struct_id').value;
+        
+        //console.log(image_type_id);
+        //console.log(cell_struct_id);
+        
+        window.location.href = "<?php echo $base_url; ?>/home/pre_trained_models?image_type="+image_type_id+"&cell_structure="+cell_struct_id;
+    }
+    
+    
+</script>

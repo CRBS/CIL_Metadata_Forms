@@ -216,6 +216,18 @@ class Home extends CI_Controller
         $gutil = new General_util();
         
         
+        $image_type = $this->input->get('image_type', TRUE);
+        if(is_null($image_type))
+            $image_type = "None";
+        $cell_structure = $this->input->get('cell_structure', TRUE);
+        if(is_null($cell_structure))
+            $cell_structure = "None";
+        
+        
+        $data['image_type'] = $image_type;
+        $data['cell_structure'] = $cell_structure;
+        
+        
         $base_url = $this->config->item('base_url');
         $login_hash = $this->session->userdata('login_hash');
         
@@ -224,7 +236,7 @@ class Home extends CI_Controller
         
         $publishedModelArray = $dbutil->getPublishedModelList();
         $data['publishedModelArray'] = $publishedModelArray;
-        
+        $data['base_url'] = $base_url;
         $data['title'] = "Cdeep3M Pre-trained models";
         $this->load->view('templates/header', $data);
         $this->load->view('home/pre_trained_models_display', $data);
