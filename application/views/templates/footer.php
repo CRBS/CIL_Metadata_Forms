@@ -58,7 +58,7 @@
     </center>
     -->
     <div class="row ">
-        <div class="col-md-12 footer_background2"><<br/></div>
+        <div class="col-md-12 footer_background2"><br/></div>
         <div class="col-md-12 footer_background2">
         <center>
         <!-- <span class="cil_16_font_black">Cell Image Library</span> -->
@@ -68,7 +68,7 @@
         </center>
         </div>
         <div class="col-md-12 footer_background2"><br/></div>
-        </div>
+    </div>
         
 
 <!-- Footer -->
