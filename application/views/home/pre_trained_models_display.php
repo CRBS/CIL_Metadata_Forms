@@ -8,11 +8,11 @@
         <div class="col-md-2">
             
             <select name="image_type_id" id="image_type_id" class="form-control" >
-                <option value="None">None</option>
-                <option value="SBEM">SBEM</option>
-                <option value="TEM">TEM</option>
-                <option value="Fluorescence">Fluorescence</option>
-                <option value="XRM">XRM</option>
+                <option value="None"  >None</option>
+                <option value="SBEM" <?php if(strcmp($image_type, "SBEM")==0) echo "selected" ?>>SBEM</option>
+                <option value="TEM" <?php if(strcmp($image_type, "TEM")==0) echo "selected" ?>>TEM</option>
+                <option value="Fluorescence" <?php if(strcmp($image_type, "Fluorescence")==0) echo "selected" ?>>Fluorescence</option>
+                <option value="XRM" <?php if(strcmp($image_type, "XRM")==0) echo "selected" ?>>XRM</option>
             </select>
         </div>
         <div class="col-md-1">
@@ -22,11 +22,11 @@
             
             <select name="cell_struct_id" id="cell_struct_id" class="form-control" >
                 <option value="None">None</option>
-                <option value="Mitochondria">Mitochondria</option>
-                <option value="Synapses">Synapses</option>
-                <option value="Vesicles">Vesicles</option>
-                <option value="Nuclei">Nuclei</option>
-                <option value="Axons">Axons</option>
+                <option value="Mitochondria" <?php if(strcmp($cell_structure, "Mitochondria")==0) echo "selected" ?>>Mitochondria</option>
+                <option value="Synapses" <?php if(strcmp($cell_structure, "Synapses")==0) echo "selected" ?>>Synapses</option>
+                <option value="Vesicles" <?php if(strcmp($cell_structure, "Vesicles")==0) echo "selected" ?>>Vesicles</option>
+                <option value="Nuclei" <?php if(strcmp($cell_structure, "Nuclei")==0) echo "selected" ?>>Nuclei</option>
+                <option value="Axons" <?php if(strcmp($cell_structure, "Axons")==0) echo "selected" ?>>Axons</option>
             </select>
         </div>
         
@@ -40,8 +40,7 @@
         foreach($publishedModelArray as $model)
         {
     ?>
-    <div class="row">
-        <div class="col-md-12">
+    
             <?php
                 
                 $json_str = $model['metadata_json'];
@@ -92,11 +91,24 @@
                 {
                     if(strcmp($image_type, "None") != 0)
                     {
-                        if(strpos($title, $image_type) == false)
+                        /*if(strpos($title, $image_type) == false)
                         {
                             continue;
+                        }*/
+                        
+                        
+                        if(isset($json->Cdeepdm_model->Name))
+                        {
+                            //echo "<br/>".$json->Cdeepdm_model->Name."---".$image_type."---";
+                            if(strpos($json->Cdeepdm_model->Name, $image_type) !== false)
+                            {
+                                
+                            }
+                            else 
+                                continue;
                         }
                     }
+                    
                     
                     if(strcmp($cell_structure, "None") != 0)
                     {
@@ -111,7 +123,7 @@
                                 {
                                     if(strlen($cc->free_text) > 0)
                                     {
-                                        if(strpos($cc->free_text, $cell_structure) !== false)
+                                        if(strpos(strtolower($cc->free_text), strtolower($cell_structure)) !== false)
                                             $hasMatch = true;
                                     }
                                 }
@@ -124,6 +136,10 @@
                     }
                 }
                 
+    ?>
+    <div class="row">
+        <div class="col-md-12">
+    <?php
                 //echo "<br/><br/>".$title;
                 $x_voxel_sum = "";
                 $y_voxel_sum = "";
