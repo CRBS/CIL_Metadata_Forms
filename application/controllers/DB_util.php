@@ -2407,7 +2407,7 @@ class DB_util
     {
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
-        $sql = "select token from cil_auth_tokens where username = $1";
+        $sql = "select token from cil_auth_tokens where username = $1 order by id desc limit 1";
         $conn = pg_pconnect($db_params);
         $input = array();
         array_push($input,$username);
