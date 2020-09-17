@@ -22,6 +22,7 @@
             
             <select name="cell_struct_id" id="cell_struct_id" class="form-control" >
                 <option value="None">None</option>
+                <option value="Membranes" <?php if(strcmp($cell_structure, "Membranes")==0) echo "selected" ?>>Membranes</option>
                 <option value="Mitochondria" <?php if(strcmp($cell_structure, "Mitochondria")==0) echo "selected" ?>>Mitochondria</option>
                 <option value="Synapses" <?php if(strcmp($cell_structure, "Synapses")==0) echo "selected" ?>>Synapses</option>
                 <option value="Vesicles" <?php if(strcmp($cell_structure, "Vesicles")==0) echo "selected" ?>>Vesicles</option>
