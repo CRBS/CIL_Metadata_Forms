@@ -60,6 +60,11 @@ else
     $config['retrain_result_folder_prefix'] = "/export2/temp/cdeep3m_retrain_results";
 
 
+if(!$is_prod)
+    $config['super_pixel_prefix'] = "C:/Test3/super_pixel";
+else
+    $config['super_pixel_prefix'] = "/export2/temp/super_pixel";
+
 /*
 |--------------------------------------------------------------------------
 | Index File

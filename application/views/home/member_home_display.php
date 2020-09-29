@@ -109,7 +109,7 @@
                 </div>
                 <div class="col-md-12"><hr style="height:1px; visibility:hidden;" /></div>
                 <div class="col-md-12"> 
-                   <a href="/cdeep3m_create_training" target="_self" class="btn btn-primary">Create training data </a>
+                   <a href="/cdeep3m_create_training/create" target="_self" class="btn btn-primary">Create training data </a>
                 </div>
             </div>
         </div>
