@@ -32,7 +32,7 @@
                  </div>
                  <div class="col-md-12"><br/></div>
                  <div class="col-md-12">
-                 <a href="/cdeep3m_retrain" target="_self" class="btn btn-primary">Re-train model </a>
+                 <!-- <a href="/cdeep3m_retrain" target="_self" class="btn btn-primary">Re-train model </a> -->
                  </div>
             </div>
         </div>
@@ -75,5 +75,45 @@
                 </div>
             </div>
         </div>
+        
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <span class="cil_title2">Retrain model</span>
+                </div>
+                <div class="col-md-12">
+                    <img src="/pix/training_validation_loss.png" width="100%" />
+                </div>
+                <div class="col-md-12"><hr style="height:1px; visibility:hidden;" /></div>
+                <div class="col-md-12">
+                    Upload more training data and improve the accuracy of your model.
+                </div>
+                <div class="col-md-12"><hr style="height:1px; visibility:hidden;" /></div>
+                <div class="col-md-12"> 
+                   <a href="/cdeep3m_retrain" target="_self" class="btn btn-primary">Re-train model </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <span class="cil_title2">Create training data</span>
+                </div>
+                <div class="col-md-12">
+                    <img src="/pix/super_pixel.png" width="100%" />
+                </div>
+                <div class="col-md-12"><hr style="height:1px; visibility:hidden;" /></div>
+                <div class="col-md-12">
+                    Create training data by selecting the super pixel grids.
+                </div>
+                <div class="col-md-12"><hr style="height:1px; visibility:hidden;" /></div>
+                <div class="col-md-12"> 
+                   <a href="/cdeep3m_create_training" target="_self" class="btn btn-primary">Create training data </a>
+                </div>
+            </div>
+        </div>
+        
+        
     </div>
 </div>
