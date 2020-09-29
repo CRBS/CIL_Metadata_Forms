@@ -77,7 +77,25 @@ class Cdeep3m_create_training extends CI_Controller
     
     public function pending($sp_id)
     {
-        echo "Pending...";
+        $this->load->helper('url');
+        $base_url = $this->config->item('base_url');
+        $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        $username = $data['username'];
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        
+        $data['base_url'] = $this->config->item('base_url');
+        $data['sp_id'] = intval($sp_id);
+        $data['step'] = 1;
+        $data['title'] = 'Home > Upload images';
+        $this->load->view('templates/header', $data);
+        $this->load->view('super_pixel/pending_display', $data);
+        $this->load->view('templates/footer', $data);
     }
     
     function process_images_upload($model_id=0)
