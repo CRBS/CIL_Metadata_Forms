@@ -80,6 +80,7 @@ class Cdeep3m_create_training extends CI_Controller
         $this->load->helper('url');
         $base_url = $this->config->item('base_url');
         $dbutil = new DB_util();
+        $gutil = new General_util();
         $login_hash = $this->session->userdata('login_hash');
         $data['username'] = $this->session->userdata('username');
         $username = $data['username'];
@@ -88,6 +89,31 @@ class Cdeep3m_create_training extends CI_Controller
             redirect ($base_url."/home");
             return;
         }
+        
+        $targetDir = $this->config->item('super_pixel_prefix');
+        $targetDir = $targetDir."/SP_".$sp_id;
+        $targetDir = $targetDir."/original";
+        
+        $files = scandir($targetDir);
+        $index = 0;
+        $mainArray = array();
+        foreach($files as $file)
+        {
+            
+            if(strcmp($file, ".") == 0 || strcmp($file, "..") == 0)
+               continue;
+            
+            if($gutil->endsWith($file, ".png"))
+            {
+                $item = array();
+                $item['image_name'] = $file;
+                $item['index'] = $index;
+                array_push($mainArray, $item);
+            }
+            $index++;
+        }
+        $json_str = json_encode($mainArray, JSON_PRETTY_PRINT, JSON_UNESCAPED_SLASHES);
+        file_put_contents($targetDir."/mapping.json", $json_str);
         
         $data['base_url'] = $this->config->item('base_url');
         $data['sp_id'] = intval($sp_id);
