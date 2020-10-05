@@ -92,11 +92,16 @@ class Cdeep3m_create_training extends CI_Controller
         
         $targetDir = $this->config->item('super_pixel_prefix');
         $targetDir = $targetDir."/SP_".$sp_id;
+        $topDir = $targetDir;
         $targetDir = $targetDir."/original";
         
         $files = scandir($targetDir);
         $index = 0;
         $mainArray = array();
+        $width = 0;
+        $height = 0;
+        $imageCount = 0;
+        
         foreach($files as $file)
         {
             
@@ -105,15 +110,28 @@ class Cdeep3m_create_training extends CI_Controller
             
             if($gutil->endsWith($file, ".png"))
             {
+                $imageCount++;
                 $item = array();
                 $item['image_name'] = $file;
                 $item['index'] = $index;
+                
+                if($index == 0)
+                {
+                    $imageSize = getimagesize($targetDir."/".$file);
+                    $width = $imageSize[0];
+                    $height = $imageSize[1];
+                }
+                //$item['width'] = $width;
+                //$item['height'] = $height;
+                
                 array_push($mainArray, $item);
             }
             $index++;
         }
         $json_str = json_encode($mainArray, JSON_PRETTY_PRINT, JSON_UNESCAPED_SLASHES);
-        file_put_contents($targetDir."/mapping.json", $json_str);
+        file_put_contents($topDir."/mapping.json", $json_str);
+        
+        $dbutil->insertSuperPixel($sp_id, $width, $height, $imageCount, $username);
         
         $data['base_url'] = $this->config->item('base_url');
         $data['sp_id'] = intval($sp_id);
@@ -142,6 +160,7 @@ class Cdeep3m_create_training extends CI_Controller
             mkdir($targetDir);
                 
         $targetDir = $targetDir."/SP_".$model_id;
+        $topDir = $targetDir;
         if(!file_exists($targetDir))
             mkdir($targetDir);
         
@@ -149,7 +168,7 @@ class Cdeep3m_create_training extends CI_Controller
         if(!file_exists($targetDir))
             mkdir($targetDir);
         
-        error_log("\ntargetDir:".$targetDir, 3, $targetDir."/upload.log");
+        error_log("\ntargetDir:".$targetDir, 3, $topDir."/upload.log");
 
         $cleanupTargetDir = false; // Remove old files
         $maxFileAge = 60 * 60*60; // Temp file age in seconds
@@ -168,10 +187,10 @@ class Cdeep3m_create_training extends CI_Controller
 
         $fileName = preg_replace('/[^\w\._]+/', '', $fileName);
         if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) 
-            error_log("\nStep 0: Filename:".$fileName, 3, $targetDir."/upload.log");
+            error_log("\nStep 0: Filename:".$fileName, 3, $topDir."/upload.log");
                 
         $fileName2 = $_FILES["file"]["name"];
-        error_log("\nStep 0.1: Filename:".$fileName2, 3, $targetDir."/upload.log");
+        error_log("\nStep 0.1: Filename:".$fileName2, 3, $topDir."/upload.log");
                 
         // Create target dir
         if (!file_exists($targetDir))
@@ -188,11 +207,11 @@ class Cdeep3m_create_training extends CI_Controller
         if (isset($_SERVER["CONTENT_TYPE"]))
             $contentType = $_SERVER["CONTENT_TYPE"];
                 
-        error_log("\nStep 0", 3, $targetDir."/upload.log");
+        error_log("\nStep 0", 3, $topDir."/upload.log");
                 
         if (strpos($contentType, "multipart") !== false) 
         {
-            error_log("\nStep 1", 3, $targetDir."/upload.log");
+            error_log("\nStep 1", 3, $topDir."/upload.log");
 
             if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) 
             {
@@ -218,7 +237,7 @@ class Cdeep3m_create_training extends CI_Controller
                 else
                 {
                     $message = '{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}';
-                    error_log("\n".$message, 3, $targetDir."/upload.log");
+                    error_log("\n".$message, 3, $topDir."/upload.log");
                     die($message);
                             
                 }
@@ -226,13 +245,13 @@ class Cdeep3m_create_training extends CI_Controller
             else
             {
                 $message = '{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}';
-                error_log("\n".$message, 3, $targetDir."/upload.log");
+                error_log("\n".$message, 3, $topDir."/upload.log");
                 die($message);
             }
         }
         else 
         {
-            error_log("\nStep 2", 3, $targetDir."/upload.log");
+            error_log("\nStep 2", 3, $topDir."/upload.log");
             // Open temp file
             $out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
             if ($out) 

@@ -1414,6 +1414,40 @@ class DB_util
         
     }
     
+    
+    public function insertSuperPixel($id, $width, $height, $num_images , $username)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('image_viewer_db_params');
+        
+        
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+            return false;
+        
+        $sql = "insert into super_pixel(id, width, height, num_of_images, upload_time, username) ".
+               " values($1,$2,$3,$4,now(),$5)";
+        
+        $id = intval($id);
+        $input = array();
+        array_push($input,$id);  //1
+        array_push($input,$width);  //2
+        array_push($input,$height);  //3
+        array_push($input,$num_images);  //4
+        array_push($input,$username);  //5
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        
+        pg_close($conn);
+        return true;
+        
+    }
+    
     public function insertCroppingInfoWithTraining($id,$contact_email, $training_model_url, $augspeed, $frame)
     {
         $CI = CI_Controller::get_instance();
