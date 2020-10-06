@@ -115,14 +115,14 @@ class Cdeep3m_create_training extends CI_Controller
                 $item['image_name'] = $file;
                 $item['index'] = $index;
                 
+                $imageSize = getimagesize($targetDir."/".$file);
                 if($index == 0)
-                {
-                    $imageSize = getimagesize($targetDir."/".$file);
+                {                    
                     $width = $imageSize[0];
                     $height = $imageSize[1];
                 }
-                //$item['width'] = $width;
-                //$item['height'] = $height;
+                $item['width'] = $imageSize[0];
+                $item['height'] = $imageSize[1];
                 
                 array_push($mainArray, $item);
             }
