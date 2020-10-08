@@ -10,6 +10,25 @@ include_once 'MailUtil.php';
 
 class Cdeep3m_create_training extends CI_Controller
 {
+    public function isOverlayDone($sp_id)
+    {
+        $super_pixel_prefix = $this->config->item('super_pixel_prefix');
+        $subFolder1 = $super_pixel_prefix."/SP_".$sp_id;
+        $overlayFolder = $subFolder1."/overlay";
+        $doneFile = $overlayFolder."/DONE.txt";
+        $done = false;
+        if(file_exists($doneFile))
+            $done = true;
+        $array = array();
+        $array['done'] = $done;
+        
+        $json_str = json_encode($array, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        header('Content-Type: application/json');
+        echo $json_str;
+        
+    }
+    
+    
     public function create()
     {
         $this->load->helper('url');
