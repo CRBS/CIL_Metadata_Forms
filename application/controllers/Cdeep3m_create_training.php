@@ -84,6 +84,7 @@ class Cdeep3m_create_training extends CI_Controller
         $base_url = $this->config->item('base_url');
         $dbutil = new DB_util();
         $gutil = new General_util();
+        $cutil = new Curl_util();
         $login_hash = $this->session->userdata('login_hash');
         $data['username'] = $this->session->userdata('username');
         $username = $data['username'];
@@ -135,6 +136,13 @@ class Cdeep3m_create_training extends CI_Controller
         file_put_contents($topDir."/mapping.json", $json_str);
         
         $dbutil->insertSuperPixel($sp_id, $width, $height, $imageCount, $username);
+        
+        $super_pixel_user = $this->config->item('super_pixel_user');
+        $super_pixel_password = $this->config->item('super_pixel_password');
+        $auth = $super_pixel_user.":".$super_pixel_password;
+        $sp_service_prefix = $this->config->item('sp_service_prefix');
+        $url = $sp_service_prefix."/get_overlays/".$sp_id."?N=500&overwrite=true";
+        $cutil->auth_curl_post($url, $auth, "");
         
         $data['base_url'] = $this->config->item('base_url');
         $data['sp_id'] = intval($sp_id);

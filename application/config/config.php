@@ -65,6 +65,11 @@ if(!$is_prod)
 else
     $config['super_pixel_prefix'] = "/export2/temp/super_pixel";
 
+
+$config['super_pixel_user'] = $json->sp_user;
+$config['super_pixel_password'] = $json->sp_pasword;
+$config['sp_service_prefix'] = $json->sp_service_prefix;
+
 /*
 |--------------------------------------------------------------------------
 | Index File
