@@ -15,7 +15,7 @@
         </div>
         <div class="col-md-12">
             <center>
-                <div id="overlay_ui_id"><a href="#" target="_blank" class="btn btn-primary">Launch the Super Pixel Marker</a></div>
+                <div id="overlay_ui_id"><a href="<?php echo $image_viewer_url; ?>" target="_blank" class="btn btn-primary">Launch the Super Pixel Marker</a></div>
             </center>
         </div>
     </div>

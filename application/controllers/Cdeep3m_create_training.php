@@ -101,6 +101,10 @@ class Cdeep3m_create_training extends CI_Controller
     {
         $this->load->helper('url');
         $base_url = $this->config->item('base_url');
+        $is_prod = $this->config->item('is_prod');
+        $image_viewer_prefix = $this->config->item('image_viewer_prefix');
+        $data['image_viewer_url'] = $image_viewer_prefix."/super_pixel/overlay/SP_".$sp_id."/0";
+        
         $dbutil = new DB_util();
         $gutil = new General_util();
         $cutil = new Curl_util();
@@ -154,6 +158,7 @@ class Cdeep3m_create_training extends CI_Controller
         $json_str = json_encode($mainArray, JSON_PRETTY_PRINT, JSON_UNESCAPED_SLASHES);
         file_put_contents($topDir."/mapping.json", $json_str);
         
+        
         $dbutil->insertSuperPixel($sp_id, $width, $height, $imageCount, $username);
         
         $super_pixel_user = $this->config->item('super_pixel_user');
@@ -161,7 +166,9 @@ class Cdeep3m_create_training extends CI_Controller
         $auth = $super_pixel_user.":".$super_pixel_password;
         $sp_service_prefix = $this->config->item('sp_service_prefix');
         $url = $sp_service_prefix."/get_overlays/".$sp_id."?N=500&overwrite=true";
-        $cutil->auth_curl_post($url, $auth, "");
+        
+        if($is_prod)
+            $cutil->auth_curl_post($url, $auth, "");
         
         $data['base_url'] = $this->config->item('base_url');
         $data['sp_id'] = intval($sp_id);
