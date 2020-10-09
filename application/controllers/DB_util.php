@@ -2137,6 +2137,36 @@ class DB_util
         return $id;
     }
     
+    public function isSuperPixelIdExist($sp_id)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('image_viewer_db_params');
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+            return false;
+        
+        $sql = "select id from super_pixel where id = $1";
+        $input = array();
+        array_push($input,$sp_id);
+    
+        $result = pg_query_params($conn,$sql,$input);
+        if (!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        
+        $isCorrect = false;
+        if($row = pg_fetch_row($result))
+        {
+            $isCorrect = true;
+        }
+        pg_close($conn);
+        return $isCorrect;
+    }
+    
+    
+    
     public function isCropIdExist($crop_id)
     {
         $CI = CI_Controller::get_instance();

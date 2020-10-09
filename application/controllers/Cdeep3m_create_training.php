@@ -158,8 +158,10 @@ class Cdeep3m_create_training extends CI_Controller
         $json_str = json_encode($mainArray, JSON_PRETTY_PRINT, JSON_UNESCAPED_SLASHES);
         file_put_contents($topDir."/mapping.json", $json_str);
         
-        
-        $dbutil->insertSuperPixel($sp_id, $width, $height, $imageCount, $username);
+        $id = intval($sp_id);
+        $idExist = $dbutil->isSuperPixelIdExist($id);
+        if(!$idExist)
+            $dbutil->insertSuperPixel($sp_id, $width, $height, $imageCount, $username);
         
         $super_pixel_user = $this->config->item('super_pixel_user');
         $super_pixel_password = $this->config->item('super_pixel_password');
