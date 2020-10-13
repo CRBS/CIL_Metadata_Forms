@@ -66,6 +66,9 @@ class Cdeep3m_create_training extends CI_Controller
                 
                 $subFolder4 = $subFolder1."/segments";
                 mkdir($subFolder4);
+                
+                $subFolder5 = $subFolder1."/mask";
+                mkdir($subFolder5);
             }
         }
         
