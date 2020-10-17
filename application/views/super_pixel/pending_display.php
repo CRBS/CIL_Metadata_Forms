@@ -39,7 +39,7 @@
             {
                 clearInterval(cancel);
                 document.getElementById('loader_id').style.display = 'none';
-                document.getElementById('seconds_counter_id').style.display = 'none';
+                //document.getElementById('seconds_counter_id').style.display = 'none';
                 document.getElementById('overlay_ui_id').style.display = 'block';
                 document.getElementById('checkmark_id').style.display = 'block';
             }

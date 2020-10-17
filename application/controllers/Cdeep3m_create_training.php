@@ -10,11 +10,12 @@ include_once 'MailUtil.php';
 
 class Cdeep3m_create_training extends CI_Controller
 {
+    /*
     public function isOverlayDone($sp_id)
     {
         $super_pixel_prefix = $this->config->item('super_pixel_prefix');
         $subFolder1 = $super_pixel_prefix."/SP_".$sp_id;
-        $overlayFolder = $subFolder1."/overlay";
+        $overlayFolder = $subFolder1."/overlays";
         $doneFile = $overlayFolder."/DONE.txt";
         $done = false;
         if(file_exists($doneFile))
@@ -26,7 +27,41 @@ class Cdeep3m_create_training extends CI_Controller
         header('Content-Type: application/json');
         echo $json_str;
         
+    }*/
+    
+    public function isOverlayDone($sp_id)
+    {
+        error_reporting(0);
+        $super_pixel_prefix = $this->config->item('super_pixel_prefix');
+        $subFolder1 = $super_pixel_prefix."/SP_".$sp_id;
+        $overlayFolder = $subFolder1."/overlays";
+        
+        $done = false;
+        $response =  exec("ls ".$subFolder1);
+        
+        $files = scandir($overlayFolder);
+        //echo "\nScan";
+        foreach($files as $file)
+        {
+
+            //echo "\nFile:".$file;
+            if(strcmp($file, "DONE.txt") == 0)
+                $done = true;
+        }
+        
+        /*$doneFile = $overlayFolder."/DONE.txt";
+        $done = false;
+        if(file_exists($doneFile))
+            $done = true;*/
+        $array = array();
+        $array['done'] = $done;
+        
+        $json_str = json_encode($array, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        header('Content-Type: application/json');
+        echo $json_str;
+        
     }
+    
     
     
     public function create()
@@ -61,7 +96,7 @@ class Cdeep3m_create_training extends CI_Controller
                 $subFolder2 = $subFolder1."/original";
                 mkdir($subFolder2);
                 
-                $subFolder3 = $subFolder1."/overlay";
+                $subFolder3 = $subFolder1."/overlays";
                 mkdir($subFolder3);
                 
                 $subFolder4 = $subFolder1."/segments";
@@ -170,8 +205,9 @@ class Cdeep3m_create_training extends CI_Controller
         $super_pixel_password = $this->config->item('super_pixel_password');
         $auth = $super_pixel_user.":".$super_pixel_password;
         $sp_service_prefix = $this->config->item('sp_service_prefix');
-        $url = $sp_service_prefix."/get_overlays/".$sp_id."?N=500&overwrite=true";
-        
+        //$url = $sp_service_prefix."/get_overlays/".$sp_id."?N=500&overwrite=true";
+        $url = $sp_service_prefix."/gen_superpixels/".$sp_id."?N=500&overwrite=true";
+       
         if($is_prod)
             $cutil->auth_curl_post($url, $auth, "");
         
