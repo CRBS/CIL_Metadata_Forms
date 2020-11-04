@@ -580,6 +580,8 @@ $config['db_params']= $json->cil_pgsql_db;
 
 $config['image_viewer_db_params'] = $json->cil_annotation_pgsql_db;
 
+$config['ncmir_db_params'] = $json->ncmir_pgsql_db;
+
 $config['ad_structure_db_params'] = $json->ad_structure_db;
 
 if(!$is_prod)
