@@ -10,7 +10,7 @@ include_once 'CILContentUtil.php';
 include_once 'NcmirDbUtil.php';
 class Ncmir_archive extends CI_Controller
 {
-    public function view()
+    public function index()
     {
         $this->load->helper('url');
         $dbutil = new DB_util();
@@ -32,6 +32,9 @@ class Ncmir_archive extends CI_Controller
         
         $ndbuitl = new NcmirDbUtil();
         $mpidArray = $ndbuitl->getAllMPIDs($username);
+        $archivedArray = $ndbuitl->getArchivedMPIDs($username);
+        
+        $data['archivedArray'] = $archivedArray;
         $data['mpidArray'] = $mpidArray;
         $data['title'] = "NCMIR MPID Archive";
                 
