@@ -31,19 +31,19 @@
                 <div class="col-md-12"><br/></div>
                 <div class="col-md-12">
                     <div style="font-weight:bold">Sean Penticoff</div>
-                    <div>PRP Implementation and Scheduler, CIL System Administration</div>
+                    <div>DevOps and Systems Administration</div>
                     
                 </div>
                 <div class="col-md-12"><br/></div>
                 <div class="col-md-12">
                     <div style="font-weight:bold">Adrian Borchardt</div>
-                    <div>CDeep3M Containerization</div>
+                    <div>Software Containerization and Deployment</div>
                     
                 </div>
                 <div class="col-md-12"><br/></div>
                 <div class="col-md-12">
                     <div style="font-weight:bold">Matthew Madany</div>
-                    <div>PRP Settings</div>
+                    <div>AI, Cyberinfrastructure, and Computational Data Science Development</div>
                 </div>
                 <div class="col-md-12"><br/></div>
                 <div class="col-md-12">
