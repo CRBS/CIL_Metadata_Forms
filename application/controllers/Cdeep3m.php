@@ -23,7 +23,8 @@ class Cdeep3m extends CI_Controller
         
         $data['title'] = "CDeep3M | Welcome";
         $this->load->view('templates/header', $data);
-        $this->load->view('home/cdeep3m_home_display', $data);
+        //$this->load->view('home/cdeep3m_home_display', $data);
+        $this->load->view('home/cdeep3m_home_display2', $data);
         $this->load->view('templates/footer', $data);
     }
     
