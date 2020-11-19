@@ -41,18 +41,18 @@
         </div>
         <div class="col-md-12"><br/></div>
     </div>
-    <div class="row" style="width: 100%; height: 1118px">
+    <div class="row" style="width: 100%; height: 942px">
         
         
-        <div class="col-md-12" style="background-image: url('/pix/cdeep3m_background.png');background-position: center center;background-size: 100% 100%;background-repeat: no-repeat;">
+       <div class="col-md-12" style="background-image: url('/pix/cdeep3m_background3.png');background-position: center center;background-size: 100% 100%;background-repeat: no-repeat;"> 
         <!--------------Row---------------------------->
-        
+
         <div class="row">
             <div class="col-md-4">
                 <div class="row">
                     <div class="col-md-12">
                         <br/>
-                        <span class="cil_title2" style="color:white">Training</span>
+                        <span class="cdeep3m_bg_title" style="color:white">Training</span>
                     </div>
                     
                     <div class="col-md-12">
@@ -76,7 +76,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <br/>
-                        <span class="cil_title2" style="color:white">Prediction</span>
+                        <span class="cdeep3m_bg_title" style="color:white">Prediction</span>
                     </div>
                     
                     <div class="col-md-12">
@@ -105,7 +105,7 @@
             
         </div>
         
-        
+            
         <!--------------End Row---------------------------->
         </div>
         
