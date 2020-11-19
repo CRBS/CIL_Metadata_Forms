@@ -57,17 +57,17 @@
                     
                     <div class="col-md-12">
                         <br/>
-                        <a href="#" class="btn btn-info" style="color:white">Create training data</a>
+                        <a href="/home" class="btn btn-info" style="color:white" onmouseover="showCreateTrainingMessage()" onmouseout="hideMessageBoard()">Create training data</a>
                     </div>
                     
                     <div class="col-md-12">
                         <br/>
-                        <a href="#" class="btn btn-info" style="color:white">Retrain model</a>
+                        <a href="/home" class="btn btn-info" style="color:white" onmouseover="showRetrainModelMessage()" onmouseout="hideMessageBoard()">Retrain model</a>
                     </div>
                     
                     <div class="col-md-12">
                         <br/>
-                        <a href="#" class="btn btn-info" style="color:white">Upload trained model</a>
+                        <a href="/home" class="btn btn-info" style="color:white" onmouseover="showUploadTrainedModelMessage()" >Upload trained model</a>
                     </div>
                 </div>
             </div>
@@ -81,17 +81,30 @@
                     
                     <div class="col-md-12">
                         <br/>
-                        <a href="#" class="btn btn-info" style="color:white">Your own images</a>
+                        <a href="/home" class="btn btn-info" style="color:white" onmouseover="showYourOwnImageMessage()" >Your own images</a>
                     </div>
                     
                     <div class="col-md-12">
                         <br/>
-                        <a href="#" class="btn btn-info" style="color:white">The CIL images</a>
+                        <a href="/home" class="btn btn-info" style="color:white" onmouseover="showCilImageMessage()" onmouseout="hideMessageBoard()">The CIL images</a>
                     </div>
 
                 </div>
             </div>
         </div>
+        
+        <div class="row">
+            <div class="col-md-12"><br/></div>
+            
+            <div class="col-md-5" >
+                <div id="message_board_id" style="background-color: black; height:  300px;color:white;">
+                
+                </div>    
+            </div>
+            <div class="col-md-7"></div>
+            
+        </div>
+        
         
         <!--------------End Row---------------------------->
         </div>
@@ -108,3 +121,49 @@
 </div>    
   
 
+<script>
+    document.getElementById('message_board_id').style.display = "none";
+    
+    function hideMessageBoard()
+    {
+        document.getElementById('message_board_id').style.display = "none";
+    }
+    
+    function showCreateTrainingMessage()
+    {
+        document.getElementById('message_board_id').style.display = "block";
+        document.getElementById('message_board_id').innerHTML = "Create training data by selecting the super pixel grids.";
+        
+    }
+    
+    function showRetrainModelMessage()
+    {
+        document.getElementById('message_board_id').style.display = "block";
+        document.getElementById('message_board_id').innerHTML = "Upload more training data and improve the accuracy of your model.";
+    }
+    
+    function showUploadTrainedModelMessage()
+    {
+        document.getElementById('message_board_id').style.display = "block";
+        document.getElementById('message_board_id').innerHTML = 
+        'Upload your trained CDeep3M model/s and share it to contribute to the database. Each trained model receives a DOI for citations.<br>'+
+        '(Info: Follow these steps to <a href="https://github.com/CRBS/cdeep3m2/wiki/PreprocessTrainingData.py-and-runtraining.sh" target="_blank">generate a new trained model</a> or '+
+        '<a href="https://github.com/CRBS/cdeep3m2/wiki/Transfer-Learning" target="_blank">re-train a previously trained model</a>)';
+              
+    }
+    
+    function showYourOwnImageMessage()
+    {
+        document.getElementById('message_board_id').style.display = "block";
+        document.getElementById('message_board_id').innerHTML = 
+            'Upload own images and try the CDeep3M preview function. Select a trained model from the database, augspeed, and frames to run CDeep3M remotely (using the <a href="https://nautilus.optiputer.net/" target="_blank">PRP cluster</a>).';
+             
+    }
+    
+    function showCilImageMessage()
+    {
+        document.getElementById('message_board_id').style.display = "block";
+        document.getElementById('message_board_id').innerHTML = 'Browse through large SBEM volumes hosted on the CIL, select ROI for segmentation and run CDeep3M Demo to test a trained model from the database on the image volume. ';
+    }
+    
+</script>
