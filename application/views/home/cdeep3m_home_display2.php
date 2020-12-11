@@ -44,8 +44,11 @@
     <div class="row" style="width: 100%; height: 942px">
         
         
-       <div class="col-md-12" style="background-image: url('/pix/cdeep3m_background3.png');background-position: center center;background-size: 100% 100%;background-repeat: no-repeat;"> 
-        <!--------------Row---------------------------->
+       <!-- <div class="col-md-12" style="background-image: url('/pix/cdeep3m_background3.png');background-position: center center;background-size: 100% 100%;background-repeat: no-repeat;">  -->
+        
+       <div id="background_id" class="hidden-xs hidden-sm col-md-12 hidden-lg" style="background-image: url('/pix/cdeep3m_background3.png');background-position: center center;background-size: 100% 100%;background-repeat: no-repeat;">  
+
+       <!--------------Row---------------------------->
 
         <div class="row">
             <div class="col-md-4">
@@ -165,5 +168,40 @@
         document.getElementById('message_board_id').style.display = "block";
         document.getElementById('message_board_id').innerHTML = 'Browse through large SBEM volumes hosted on the CIL, select ROI for segmentation and run CDeep3M Demo to test a trained model from the database on the image volume. ';
     }
+    
+    
+   window.addEventListener('resize', function () {
+  // change background
+        console.log('Resize');
+        var windowWidth = window.innerWidth; // get the new window width
+        var windowHeight = window.innerHeight; // get the new window height
+        console.log("Width:"+windowWidth);
+        console.log("Height:"+windowHeight);
+        if(windowWidth < 600)
+        {
+            document.getElementById('background_id').style = 
+                    "background-image: url('/pix/cdeep3m_background3_480.png');background-position: center center;background-size: 100%;background-repeat: repeat;";
+        }
+        else
+        {
+            document.getElementById('background_id').style = 
+                    "background-image: url('/pix/cdeep3m_background3.png');background-position: center center;background-size: 100% 100%;background-repeat: no-repeat;";
+        }
+    });
+    
+    
+    
+    if(window.innerWidth < 600)
+    {
+        document.getElementById('background_id').style = 
+                    "background-image: url('/pix/cdeep3m_background3_480.png');background-position: center center;background-size: 100%;background-repeat: repeat;";
+    }
+    else
+    {
+        document.getElementById('background_id').style = 
+                    "background-image: url('/pix/cdeep3m_background3.png');background-position: center center;background-size: 100% 100%;background-repeat: no-repeat;";
+    }
+    
+    
     
 </script>
