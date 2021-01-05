@@ -18,7 +18,7 @@
     
     <div class="row">
 
-        <div class="col-md-6">
+        <div class="col-md-6" style="border-style: outset; border-width: thin; padding-top: 5px;">
             <!-- <video controls="" autoplay="" loop="" width="100%" > -->
             <video controls="" autoplay=""  width="100%" >
                 <source src="/pix/msog_v2_fin.mp4" type="video/mp4">
@@ -100,7 +100,7 @@
             <div class="col-md-12"><br/></div>
             
             <div class="col-md-5" >
-                <div id="message_board_id" style="background-color: black; height:  300px;color:white;">
+                <div id="message_board_id" style="background-color: black; height:  300px;color:white; padding-left: 10px; padding-right: 10px;">
                 
                 </div>    
             </div>
