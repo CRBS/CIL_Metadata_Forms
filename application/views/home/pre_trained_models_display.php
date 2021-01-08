@@ -288,6 +288,20 @@
                 </span>
                 </dd>
                 
+                <?php 
+                if(isset($json->Cdeepdm_model->Version_number))
+                {
+                ?>
+                <dt><span class="" style="font-weight:bold">Version number</span></dt>
+                <dd class="eol_dd">
+                <span>
+                    &#8226;&nbsp;<?php if(isset($json->Cdeepdm_model->Version_number)) echo $json->Cdeepdm_model->Version_number; ?>  </span>
+                </span>
+                </dd>
+                <?php
+                } 
+                ?>
+                
             </dl>
             </div>
                 </div>

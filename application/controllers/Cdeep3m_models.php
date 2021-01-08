@@ -378,7 +378,7 @@ class Cdeep3m_models extends CI_Controller
         $magnification = $this->input->post('magnification', TRUE);
         $contributor = $this->input->post('contributor', TRUE);
         $desc = $this->input->post('description', TRUE);
-        
+        $version_number = $this->input->post('version_number', TRUE);
         //$voxelsize = $this->input->post('voxelsize', TRUE);
         //$voxelsize_unit = $this->input->post('voxelsize_unit', TRUE);
         
@@ -411,6 +411,7 @@ class Cdeep3m_models extends CI_Controller
         echo "<br/>y_voxelsize_unit:".$y_voxelsize_unit;
         echo "<br/>z_voxelsize:".$z_voxelsize;
         echo "<br/>z_voxelsize_unit:".$z_voxelsize_unit;
+        echo "<br/>version_number:".$version_number;
         $targetDir = $this->config->item('model_upload_location');
         if(!file_exists($targetDir))
            mkdir($targetDir);
@@ -544,6 +545,10 @@ class Cdeep3m_models extends CI_Controller
             }
         }
         
+        if(!is_null($version_number) && strlen(trim($version_number)) > 0)
+        {
+           $mjson->Cdeepdm_model->Version_number = $version_number;
+        }
         
         if(!is_null($mjson))
         {

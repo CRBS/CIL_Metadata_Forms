@@ -334,6 +334,16 @@
         </div>
     </div>
 
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+            <label class="col-form-label" for="inputDefault">Version number:</label>
+            <input id="version_number" name="version_number" style="width: 100%" value="<?php if(isset($mjson->Cdeepdm_model->Version_number)) echo $mjson->Cdeepdm_model->Version_number; ?>" class="form-control cil_san_regular_font"  type="text">
+            </div>
+       </div><div class="col-md-6"></div>
+    </div>
+    
      <div class="row">
            <div class="col-md-12">
                <div id="myModal" class="modal">
