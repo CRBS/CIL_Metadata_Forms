@@ -688,6 +688,7 @@ class Image_metadata extends CI_Controller
         $itemArray['File_type'] = "Zip";
         $itemArray['File_path'] = $id.".zip";
         $itemArray['Size'] = intval($zip_size);
+        echo "<br/>".intval($zip_size);
         $ijson_str = json_encode($itemArray, JSON_UNESCAPED_SLASHES);
         $ijson = json_decode($ijson_str);
         array_push($json->CIL_CCDB->CIL->Image_files,$ijson);
@@ -1307,6 +1308,8 @@ class Image_metadata extends CI_Controller
        /**********End Data type*********************************/
        
        /***********Image files****************************/
+       
+       //$json = $this->updateJpegZipSize($image_id, $json, $jpeg_size,$zip_size);
         if(isset($json->CIL_CCDB->Data_type->Video) && $json->CIL_CCDB->Data_type->Video)
         {
             $json->CIL_CCDB->CIL->Image_files = array();
@@ -1315,14 +1318,16 @@ class Image_metadata extends CI_Controller
                     "\"Mime_type\": \"application/zip\",".
                     "\"File_type\": \"Zip\",".
                     "\"File_path\": \"".$numeric_id.".zip\",".
-                    "\"Size\": 15659136".
+                    //"\"Size\": 15659136"
+                    "\"Size\": ".$zip_size.
                     "}";
             
             $i_item2_str = "{".
                     "\"Mime_type\": \"image/jpeg; charset=utf-8\",".
                     "\"File_type\": \"Jpeg\",".
                     "\"File_path\": \"".$numeric_id.".jpg\",".
-                    "\"Size\": 116024".
+                    //"\"Size\": 116024".
+                    "\"Size\": ".$jpeg_size.
                     "}";
             
             $i_item3_str = "{".
@@ -2153,13 +2158,31 @@ class Image_metadata extends CI_Controller
             }
             
             //if(!is_null($image_size_json) && isset($image_size_json->zip_size))
-            if(!is_null($image_size_json))
+            if(isset($mjson->CIL_CCDB->Data_type->Video) && $mjson->CIL_CCDB->Data_type->Video)
             {
-                $filePath = "/var/www/html/media/images/".$data['numeric_id']."/".$data['numeric_id'].".zip"; //Remote file path
-                $response = $cutil->auth_curl_get_with_data($metadata_auth, $size_url, $filePath);
-                $sjson = json_decode($response);
-                $zip_size = $sjson->Size;
-                $image_size_json->zip_size = $sjson->Size;
+                //echo "<br/>Video";
+                if(!is_null($image_size_json))
+                {
+                    $filePath = "/var/www/html/media/videos/".$data['numeric_id']."/".$data['numeric_id'].".zip"; //Remote file path
+                    //echo "<br/>File Path:".$filePath;
+                    $response = $cutil->auth_curl_get_with_data($metadata_auth, $size_url, $filePath);
+                    $sjson = json_decode($response);
+                    $zip_size = $sjson->Size;
+                    //echo "<br/>Size:".$zip_size;
+                    $image_size_json->zip_size = $sjson->Size;
+                }
+            }
+            else 
+            {
+                //echo "<br/>Image";
+                if(!is_null($image_size_json))
+                {
+                    $filePath = "/var/www/html/media/images/".$data['numeric_id']."/".$data['numeric_id'].".zip"; //Remote file path
+                    $response = $cutil->auth_curl_get_with_data($metadata_auth, $size_url, $filePath);
+                    $sjson = json_decode($response);
+                    $zip_size = $sjson->Size;
+                    $image_size_json->zip_size = $sjson->Size;
+                }
             }
             
             if($jpeg_size > 0 && $zip_size > 0)

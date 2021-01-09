@@ -23,7 +23,14 @@ if(isset($image_size_json) && isset($numeric_id))
 </div>
 <div class="row">
     <div class="col-md-9">
-        <?php $zip_url = "https://cildata.crbs.ucsd.edu/media/images/".$numeric_id."/".$numeric_id.".zip"; ?> 
+        <?php 
+            $zip_url = "";
+            if(isset($json->CIL_CCDB->Data_type->Video) && $json->CIL_CCDB->Data_type->Video)
+                $zip_url = "https://cildata.crbs.ucsd.edu/media/videos/".$numeric_id."/".$numeric_id.".zip"; 
+            else
+                $zip_url = "https://cildata.crbs.ucsd.edu/media/images/".$numeric_id."/".$numeric_id.".zip"; 
+            
+        ?> 
         <a href="<?php echo $zip_url; ?>" target="_blank"><?php echo $zip_url; ?></a>
     </div>
     <div class="col-md-3">
