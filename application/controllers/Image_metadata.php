@@ -290,10 +290,11 @@ class Image_metadata extends CI_Controller
             }
             else if(strcmp($field, "Attribution_url") == 0)
             {
+                echo "<br/>Remove Attribution_url";
                 $urls = $coreJson->ATTRIBUTION->URLs;
                 if(is_null($urls))
                     $urls = array();
-                $removeIndex = null;
+                //$removeIndex = null;
                 $i = 0;
                 
                 /*foreach($urls as $url)
@@ -304,7 +305,7 @@ class Image_metadata extends CI_Controller
                     }
                     $i++;
                 }*/
-                
+                echo "<br/>Remove index:".$removeIndex;
                 if(!is_null($removeIndex))
                 {
                     unset($urls[$removeIndex]);
@@ -313,9 +314,11 @@ class Image_metadata extends CI_Controller
             }
             
             $json_str = json_encode($json,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-            //file_put_contents($test_output_folder."/".$image_id.".json", $json_str);
+            
             $dbutil->submitMetadata($image_id, $json_str);
             redirect ($base_url."/image_metadata/edit/".$image_id);
+            
+            //file_put_contents($test_output_folder."/".$image_id.".json", $json_str);
         }
     }
     

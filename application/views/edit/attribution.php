@@ -84,15 +84,18 @@
                     if(is_array($urls))
                     {
                         echo "<ul>";
+                        $delete_index = 0;
                         foreach($urls as $url)
                         {
                             if(isset($url->Label) && isset($url->Href))
                             {
                                 $label = str_replace("'", "%27", $url->Label);
                                 echo "\n<li><a href='".$url->Href."' target='_blank'>URL: ".$url->Label."</a>";
-                                echo "\n<a  href=\"/image_metadata/delete_attribution/".$image_id."/Attribution_url/".$label."\" target=\"_self\"> &#x2716;</a></li>";
+                                //echo "\n<a  href=\"/image_metadata/delete_attribution/".$image_id."/Attribution_url/".$label."\" target=\"_self\"> &#x2716;</a></li>";
+                                echo "<a  href=\"/image_metadata/delete_attribution_by_index/".$image_id."/Attribution_url/".$delete_index."\" target=\"_self\"> &#x2716;</a>";
                                 echo "\n</li>";
                                 
+                                $delete_index++;
                             }
                         }
                         echo "</ul>";
