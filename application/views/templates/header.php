@@ -32,14 +32,14 @@
 
   <body>
    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-159943048-1"></script>
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-159943048-1"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
+     /* window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      gtag('config', 'UA-159943048-1');
-    </script>  
+      gtag('config', 'UA-159943048-1'); */
+    </script>   -->
       
     <div class="row">
         <div class="col-md-12">
