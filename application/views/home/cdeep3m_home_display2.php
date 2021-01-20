@@ -135,21 +135,21 @@
     function showCreateTrainingMessage()
     {
         document.getElementById('message_board_id').style.display = "block";
-        document.getElementById('message_board_id').innerHTML = "Create training data by selecting the super pixel grids.";
+        document.getElementById('message_board_id').innerHTML = "<b><u>Create training data</u></b><br/>  Generate new training data based on your own microscopy images using a superpixel clustering algorithm. You can select superpixels to convert them into training labels. Note: Training data for CDeep3M can also be generated using other platforms online or offline and imported. The use of superpixels can in certain cases facilitate the creation of training labels and reduce the time required for manual annotation.";
         
     }
     
     function showRetrainModelMessage()
     {
         document.getElementById('message_board_id').style.display = "block";
-        document.getElementById('message_board_id').innerHTML = "Upload more training data and improve the accuracy of your model.";
+        document.getElementById('message_board_id').innerHTML = "<b><u>Retrain model</u></b><br/> Upload training data and re-train a trained model from the database. This helps to improve accuracy of existing models for a new dataset. Small training data and short training times (500-5000 iterations) are usually sufficient to re-train an existing model.";
     }
     
     function showUploadTrainedModelMessage()
     {
         document.getElementById('message_board_id').style.display = "block";
         document.getElementById('message_board_id').innerHTML = 
-        'Upload your trained CDeep3M model/s and share it to contribute to the database. Each trained model receives a DOI for citations.<br>'+
+        '<b><u>Upload trained model</u></b><br/> Upload your trained CDeep3M model/s and share it to contribute to the CDeep3M model zoo. Each trained model is attributed to you, receives a DOI for citations. Making your trained models available here will contribute to the community and facilitates finding available pre-trained models.<br>'+
         '(Info: Follow these steps to <a href="https://github.com/CRBS/cdeep3m2/wiki/PreprocessTrainingData.py-and-runtraining.sh" target="_blank">generate a new trained model</a> or '+
         '<a href="https://github.com/CRBS/cdeep3m2/wiki/Transfer-Learning" target="_blank">re-train a previously trained model</a>)';
               
@@ -159,14 +159,14 @@
     {
         document.getElementById('message_board_id').style.display = "block";
         document.getElementById('message_board_id').innerHTML = 
-            'Upload own images and try the CDeep3M preview function. Select a trained model from the database, augspeed, and frames to run CDeep3M remotely (using the <a href="https://nautilus.optiputer.net/" target="_blank">PRP cluster</a>).';
+            '<b><u>Your own image</u></b><br/> To perform image segmentation on your own test images and try out different pre-trained models or settings, you can upload your own microscopy images here and try the CDeep3M preview function. Select a trained model from the database, augspeed, and frames to run CDeep3M remotely  (using the <a href="https://nautilus.optiputer.net/" target="_blank">PRP cluster</a>).';
              
     }
     
     function showCilImageMessage()
     {
         document.getElementById('message_board_id').style.display = "block";
-        document.getElementById('message_board_id').innerHTML = 'Browse through large SBEM volumes hosted on the CIL, select ROI for segmentation and run CDeep3M Demo to test a trained model from the database on the image volume. ';
+        document.getElementById('message_board_id').innerHTML = '<b><u>The CIL images</u></b><br/> Browse through large SBEM volumes hosted on the CIL, select ROI for segmentation and run CDeep3M Demo to test a trained model from the database on the image volume. ';
     }
     
     
