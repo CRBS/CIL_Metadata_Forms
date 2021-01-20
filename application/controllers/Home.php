@@ -425,7 +425,8 @@ class Home extends CI_Controller
         if($isAdmin)
             $this->load->view('home/home_display', $data);
         else
-            $this->load->view('home/member_home_display', $data);
+            $this->load->view('home/member_home_display2', $data);
+            //$this->load->view('home/member_home_display', $data);
         $this->load->view('templates/footer', $data);
     }
     
