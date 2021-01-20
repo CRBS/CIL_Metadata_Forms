@@ -1,4 +1,4 @@
-<br/>
+
 <div class="container" style="width: 100%;margin: 0 auto;">
     <div class="row footer_background row-full">
         <div class="col-md-12"><br/></div>

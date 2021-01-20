@@ -347,7 +347,8 @@ class Home extends CI_Controller
         $data['title'] = "Home";
         $this->load->view('templates/header', $data);
         
-        $this->load->view('home/member_home_display', $data);
+        //$this->load->view('home/member_home_display', $data);
+        $this->load->view('home/member_home_display2', $data);
         $this->load->view('templates/footer', $data);
     }
     
