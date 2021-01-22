@@ -30,9 +30,10 @@
             <div class="row">
                 <div class="col-md-12">
             <span class="cil_title2">What is CDeep3M</span>
-            Our goal is improve reproducibility and to make deep-learning algorithms available to the community, we built CDeep3M as a cloud-based tool for image segmentation tasks, using the underlying architecture of a state-of-the-art deep-learning convolutional neural network (CNN), DeepEM3D7, which was integrated in the Caffe deep-learning framework. 
+            <!-- Our goal is improve reproducibility and to make deep-learning algorithms available to the community, we built CDeep3M as a cloud-based tool for image segmentation tasks, using the underlying architecture of a state-of-the-art deep-learning convolutional neural network (CNN), DeepEM3D7, which was integrated in the Caffe deep-learning framework. -->  
+            Our goal with CDeep3M is to make deep learning algorithms available to the community and improve reproducibility. We built CDeep3M as a containerized tool, using deep learning for large-scale image segmentation tasks. It is an open source development and the software is free to use. You can run CDeep3M on your local platforms, on cloud providers, on GPU clusters or with free GPU resources on this website (limitations to the amount of data being processed on this website apply). Pre-trained models for electron and light microscopy (EM and LM) data are available here.
                 </div>
-                <div class="col-md-12"><hr style="height:1px; visibility:hidden;" /></div>
+                <!-- <div class="col-md-12"><hr style="height:1px; visibility:hidden;" /></div> -->
                 <div class="col-md-12"><a href="https://www.biorxiv.org/content/10.1101/353425v1" class="btn btn-outline-primary" target="_blank" alt="Cdeep3m article">Read more</a></div>
             </div>
         </div>
