@@ -50,6 +50,11 @@ class Cdeep3m_models extends CI_Controller
         $this->load->view('templates/footer', $data);
     }
     
+    public function my_superpixel()
+    {
+        
+    }
+    
     public function my_models()
     {
         $this->load->helper('url');

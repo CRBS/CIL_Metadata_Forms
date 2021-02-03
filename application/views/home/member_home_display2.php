@@ -54,6 +54,12 @@
                         <br/>
                         <a href="/cdeep3m_models/my_models" class="btn btn-info" style="color:white" onmouseover="hideMessageBoard()" onmouseout="hideMessageBoard()">My trained model</a>
                     </div>
+                    
+                    
+                    <div class="col-md-12">
+                        <br/>
+                        <a href="/cdeep3m_create_training/my_superpixel" class="btn btn-info" style="color:white" onmouseover="hideMessageBoard()" onmouseout="hideMessageBoard()">My superpixel results</a>
+                    </div>
                 </div>
             </div>
             <div class="col-md-2"></div> 

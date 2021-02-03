@@ -1383,6 +1383,43 @@ class DB_util
         return true; 
     }
     
+    public function getSuperpixelData($username)
+    {
+        $array = array();
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('image_viewer_db_params');
+        $sql = "select id, width, height, num_of_images, upload_time from super_pixel where username = $1 order by id desc";
+        
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+            return NULL;
+        
+        $input = array();
+        array_push($input,$username);  //1
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return $array;
+        }
+        
+        while($row = pg_fetch_row($result))
+        {
+            $item = array();
+            $item['id'] = intval($row[0]);
+            $item['width'] = $row[1];
+            $item['height'] = $row[2];
+            $item['num_of_images'] = $row[3];
+            $item['upload_time'] = $row[4];
+            
+            array_push($array, $item);
+        }
+        
+        pg_close($conn);
+        return $array;
+    }
+    
+    
     public function getCropOwnerEmail($id)
     {
         $CI = CI_Controller::get_instance();

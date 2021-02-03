@@ -62,7 +62,31 @@ class Cdeep3m_create_training extends CI_Controller
         
     }
     
-    
+    public function my_superpixel()
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $base_url = $this->config->item('base_url');
+        $image_viewer_prefix = $this->config->item('image_viewer_prefix');
+        $data['image_viewer_prefix'] = $image_viewer_prefix;
+        
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        $username = $data['username'];
+        
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        
+        $superpixelArray = $dbutil->getSuperpixelData($username);
+        $data['title'] = 'Home > My superpixel results';
+        $data['superpixelArray'] = $superpixelArray;
+        $this->load->view('templates/header', $data);
+        $this->load->view('super_pixel/superpixel_list_display', $data);
+        $this->load->view('templates/footer', $data);
+    }
     
     public function create()
     {
