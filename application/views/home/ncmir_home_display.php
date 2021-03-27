@@ -18,7 +18,8 @@
             { 
         ?>        
         <div class="col-md-4">
-            <a href="/alzdata_organizer/start" class="btn btn-primary" target="_self">Organize Alz. data</a> 
+            <!-- <a href="/alzdata_organizer/start" class="btn btn-primary" target="_self">Alzheimer's data structure</a> -->
+            <a href="/alzdata_organizer" class="btn btn-primary" target="_blank">Alzheimer's data structure</a>
         </div>
         <?php
             }
