@@ -365,6 +365,7 @@ class Alzdata_organizer extends CI_Controller
         
         $data['title'] = "NCMIR | Organize Alz data";
         $base_url = $this->config->item('base_url');
+        $data['image_viewer_prefix'] = $this->config->item('image_viewer_prefix');
         $data['base_url'] = $base_url;
         $login_hash = $this->session->userdata('login_hash');
         
