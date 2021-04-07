@@ -8,9 +8,11 @@
 	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> --> 
         <script src="/js/jquery.min.js"></script> 
 	<script src="/js/treeview/treeview.js"></script>
+        <title>Alzheimer's disease project | Tree view</title>
+        <link rel="icon" href="/pix/favicon.ico" type="image/x-icon" />
 </head>
 <body onload="init()">
-    <div id="wrapper"><span class="title">Alzheimer's disease project</span><span class="label toggleable" id="root">Alzheimer's data</span>
+    <div id="wrapper"><span class="title"><b>Alzheimer's disease project</b></span><span class="label toggleable" id="root">Alzheimer's data</span>
         
             
             
@@ -116,15 +118,15 @@
                   <div class="entry "><span class="label"><a href="<?php if(isset($image_viewer_prefix)) echo $image_viewer_prefix; ?>/internal_data/NCMIR_5238337_Koo-TG-soriens-SBEM-Vol1?username=<?php if(isset($username)) echo $username; ?>&token=<?php  if(isset($token)) echo $token; ?>" target="_blank">NCMIR_5238337_Koo-TG-soriens-SBEM-Vol1</a></span></div> 
                 </div>
             </div>
-	    <div class="entry"><span class="label toggleable hasMore">Debello (3)</span>
+	    <!-- <div class="entry"><span class="label toggleable hasMore">Debello (3)</span>
                 <div class="branch lv2" style="display: none;">
-                  <div class="entry "><span class="label"><a href="<?php if(isset($image_viewer_prefix)) echo $image_viewer_prefix; ?>/internal_data/NCMIR_Debello_subvolume_11_19_2020?username=<?php if(isset($username)) echo $username; ?>&token=<?php  if(isset($token)) echo $token; ?>" target="_blank">NCMIR_Debello_subvolume_11_19_2020</a></span></div> 
-                  <div class="entry "><span class="label"><a href="<?php if(isset($image_viewer_prefix)) echo $image_viewer_prefix; ?>/internal_data/NCMIR_5281196?username=<?php if(isset($username)) echo $username; ?>&token=<?php  if(isset($token)) echo $token; ?>" target="_blank">NCMIR_5281196</a></span></div> 
-                  <div class="entry "><span class="label"><a href="<?php if(isset($image_viewer_prefix)) echo $image_viewer_prefix; ?>/internal_data/NCMIR_5281196_sub?username=<?php if(isset($username)) echo $username; ?>&token=<?php  if(isset($token)) echo $token; ?>" target="_blank">NCMIR_5281196_sub</a></span></div> 
+                  <div class="entry "><span class="label"><a href="<?php //if(isset($image_viewer_prefix)) echo $image_viewer_prefix; ?>/internal_data/NCMIR_Debello_subvolume_11_19_2020?username=<?php //if(isset($username)) echo $username; ?>&token=<?php  //if(isset($token)) echo $token; ?>" target="_blank">NCMIR_Debello_subvolume_11_19_2020</a></span></div> 
+                  <div class="entry "><span class="label"><a href="<?php //if(isset($image_viewer_prefix)) echo $image_viewer_prefix; ?>/internal_data/NCMIR_5281196?username=<?php //if(isset($username)) echo $username; ?>&token=<?php  //if(isset($token)) echo $token; ?>" target="_blank">NCMIR_5281196</a></span></div> 
+                  <div class="entry "><span class="label"><a href="<?php //if(isset($image_viewer_prefix)) echo $image_viewer_prefix; ?>/internal_data/NCMIR_5281196_sub?username=<?php //if(isset($username)) echo $username; ?>&token=<?php  //if(isset($token)) echo $token; ?>" target="_blank">NCMIR_5281196_sub</a></span></div> 
 
                 </div>
             
-            </div>
+            </div> -->
 	  </div>
     </div>
 </body>
