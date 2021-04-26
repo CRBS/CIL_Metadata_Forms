@@ -1,4 +1,12 @@
+<?php
 
+    function startsWith($haystack, $needle)
+    {
+         $length = strlen($needle);
+         return (substr($haystack, 0, $length) === $needle);
+    }
+
+?>
 <form action="/cdeep3m_preview/submit_preview/<?php echo $crop_id; ?>" method="POST" onsubmit="do_submit_tasks()">
 <div class="container">
     
@@ -38,9 +46,18 @@
                                         {
                                             foreach($all_model_json as $mjson)
                                             {
+                                                if(isset($mjson->Cdeepdm_model->Version_number) && startsWith($mjson->Cdeepdm_model->Version_number, "2"))
+                                                {
                                     ?>
-                                            <option value="https://doi.org/10.7295/W9CDEEP3M<?php echo $mjson->id ?>"><?php  if(isset($mjson->Cdeepdm_model->Name)) echo $mjson->Cdeepdm_model->Name." (".$mjson->id.")"; ?> </option>
+                                                    <option value="https://doi.org/10.7295/W9CDEEP3M<?php echo $mjson->id ?>" style='color:#29a329'><?php  if(isset($mjson->Cdeepdm_model->Name)) echo $mjson->Cdeepdm_model->Name." (".$mjson->id.") "; if(isset($mjson->Cdeepdm_model->Version_number)){ echo "[v".$mjson->Cdeepdm_model->Version_number."]"; } ?></option>
+                                   <?php
+                                                }
+                                                else 
+                                                {
+                                    ?>               
+                                                    <option value="https://doi.org/10.7295/W9CDEEP3M<?php echo $mjson->id ?>"><?php  if(isset($mjson->Cdeepdm_model->Name)) echo $mjson->Cdeepdm_model->Name." (".$mjson->id.") "; if(isset($mjson->Cdeepdm_model->Version_number)){ echo "[v".$mjson->Cdeepdm_model->Version_number."]"; } ?></option>
                                     <?php
+                                                }
                                             }
                                         }
                                     

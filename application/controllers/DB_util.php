@@ -1,5 +1,7 @@
 <?php
 
+include_once 'General_util.php';
+
 class DB_util
 {
     private $success = "success";
@@ -2428,7 +2430,63 @@ class DB_util
             
         }
         pg_close($conn);
+        $array = $this->sortTrainedModelByVersion($array);
         return $array;
+    }
+    
+    private function sortTrainedModelByVersion($modelJsonArray)
+    {   
+        $gutil = new General_util();
+        $newArray = array();
+        foreach($modelJsonArray as $modelJson)
+        {
+            if(isset($modelJson->Cdeepdm_model->Version_number))
+            {
+                $vnum = $modelJson->Cdeepdm_model->Version_number;
+                if($gutil->startsWith($vnum, "3"))
+                    array_push ($newArray, $modelJson);
+            }
+        }
+        
+        foreach($modelJsonArray as $modelJson)
+        {
+            if(isset($modelJson->Cdeepdm_model->Version_number))
+            {
+                $vnum = $modelJson->Cdeepdm_model->Version_number;
+                if($gutil->startsWith($vnum, "2"))
+                    array_push ($newArray, $modelJson);
+            }
+        }
+        
+        foreach($modelJsonArray as $modelJson)
+        {
+            if(isset($modelJson->Cdeepdm_model->Version_number))
+            {
+                $vnum = $modelJson->Cdeepdm_model->Version_number;
+                if($gutil->startsWith($vnum, "1"))
+                    array_push ($newArray, $modelJson);
+            }
+        }
+        
+        foreach($modelJsonArray as $modelJson)
+        {
+            if(isset($modelJson->Cdeepdm_model->Version_number))
+            {
+                $vnum = $modelJson->Cdeepdm_model->Version_number;
+                if($gutil->startsWith($vnum, "0"))
+                    array_push ($newArray, $modelJson);
+            }
+        }
+        
+        foreach($modelJsonArray as $modelJson)
+        {
+            if(!isset($modelJson->Cdeepdm_model->Version_number))
+            {
+                array_push ($newArray, $modelJson);
+            }
+        }
+        
+        return $newArray;
     }
     
     
