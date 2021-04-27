@@ -34,7 +34,7 @@
                             <div class="branch lv4">
                                 <div class="entry "><span class="label"><a href="<?php if(isset($image_viewer_prefix)) echo $image_viewer_prefix; ?>/internal_data/NCMIR_5387986_b?username=<?php if(isset($username)) echo $username; ?>&token=<?php  if(isset($token)) echo $token; ?>" target="_blank">NCMIR_5387986_b</a>, Serial-section SEM</span></div>
                                 <div class="entry "><span class="label"><a href="<?php if(isset($image_viewer_prefix)) echo $image_viewer_prefix; ?>/internal_data/NCMIR_5388225?username=<?php if(isset($username)) echo $username; ?>&token=<?php  if(isset($token)) echo $token; ?>" target="_blank">NCMIR_5388225</a>, Serial-section SEM</span></div>
-                                <div class="entry "><span class="label"><a href="<?php if(isset($image_viewer_prefix)) echo $image_viewer_prefix; ?>/internal_data/NCMIR_5388225?username=<?php if(isset($username)) echo $username; ?>&token=<?php  if(isset($token)) echo $token; ?>" target="_blank">NCMIR_5388225</a>, Serial-section SEM</span></div>
+                                <div class="entry "><span class="label"><a href="<?php if(isset($image_viewer_prefix)) echo $image_viewer_prefix; ?>/internal_data/NCMIR_5386969_rized?username=<?php if(isset($username)) echo $username; ?>&token=<?php  if(isset($token)) echo $token; ?>" target="_blank">NCMIR_5386969_rized</a>, Serial-section SEM</span></div>
                             </div>
                         </div>
                         <div class="entry">
