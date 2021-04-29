@@ -372,6 +372,9 @@ class Alzdata_organizer extends CI_Controller
         $data['username'] = $this->session->userdata('username');
         $username = $data['username'];
         
+        
+        $data['image_locations'] = $dbutil->getImageLocations();
+        
         if(is_null($login_hash))
         {
             redirect($base_url."/home");

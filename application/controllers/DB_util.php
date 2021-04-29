@@ -3350,4 +3350,33 @@ class DB_util
     }
     
     /************** End Timer *************************************/
+    
+    
+    public function getImageLocations()
+    {
+        $imageArray = array();
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('image_viewer_db_params');
+        $sql = "select image_id, internal_image_location from images where internal_image_location is not null order by id asc";
+        
+    
+        $conn = pg_pconnect($db_params);
+        
+        
+        $result = pg_query($conn,$sql);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return $imageArray;
+        }
+        
+        while($row = pg_fetch_row($result))
+        {
+            $imageArray[$row[0]] = $row[1];
+        }
+        pg_close($conn);
+        
+        return $imageArray;
+    }
+    
 }
