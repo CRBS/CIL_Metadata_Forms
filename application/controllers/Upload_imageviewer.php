@@ -121,6 +121,8 @@ class Upload_imageviewer extends CI_Controller
                     $counter++;
                 }
            }
+           if($counter > 0)
+               $counter = $counter -1;
            $data['max_z'] = $counter;
         }
         
