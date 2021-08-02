@@ -65,6 +65,11 @@ if(!$is_prod)
 else
     $config['super_pixel_prefix'] = "/export2/temp/super_pixel";
 
+if(!$is_prod)
+    $config['imageviewer_data_folder'] = "C:/Test3/image_viewer_data";
+else
+    $config['imageviewer_data_folder'] = "/export2/image_viewer_data";
+
 
 $config['super_pixel_user'] = $json->sp_user;
 $config['super_pixel_password'] = $json->sp_pasword;
@@ -571,9 +576,9 @@ $config['rewrite_short_tags'] = FALSE;
 */
 $config['proxy_ips'] = '';
 
-$config['elasticsearch_host'] = $json->elasticsearch_host_stage;
+$config['elasticsearch_host'] = $json->elasticsearch_host_prod;
 
-$config['api_host'] = $json->service_api_host_stage;
+$config['api_host'] = $json->service_api_host_prod;
 $config['auth_key'] = $json->cil_auth;
 
 $config['db_params']= $json->cil_pgsql_db;

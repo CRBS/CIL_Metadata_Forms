@@ -112,7 +112,8 @@
     </div>
     <div class="col-md-12">
         <?php
-            if(isset($enable_unpublish_button) && $enable_unpublish_button)
+            //if(isset($enable_unpublish_button) && $enable_unpublish_button)
+            if(true)
             {
         ?>      
                 <div class="col-md-12">
