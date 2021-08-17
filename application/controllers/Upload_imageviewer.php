@@ -126,6 +126,16 @@ class Upload_imageviewer extends CI_Controller
            $data['max_z'] = $counter;
         }
         
+        $gdal_info_file = $targetDir."/gdal_info.json";
+        if(file_exists($gdal_info_file))
+        {
+            $gjson_str = file_get_contents($gdal_info_file);
+            $gjson = json_decode($gjson_str);
+            if(isset($gjson->max_zoom))
+            {
+                $data['max_zoom'] = $gjson->max_zoom;
+            }
+        }
         
         $this->load->view('templates/header2', $data);
         $this->load->view('upload_imageviewer/configure_image', $data);

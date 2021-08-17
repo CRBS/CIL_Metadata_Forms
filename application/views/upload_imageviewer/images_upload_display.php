@@ -65,7 +65,7 @@ $(function() {
                      
 			mime_types: [
 				//{title : "Image files", extensions : "jpg,gif,png,tif"},
-				{title : "sqlite3", extensions : "sqllite3"}
+				{title : "sqlite3", extensions : "sqllite3,json"}
 			]
 		},
                 init : {

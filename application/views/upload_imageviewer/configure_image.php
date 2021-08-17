@@ -28,7 +28,7 @@
     <div class="row">
         <div class="col-md-2">Max zoom:</div>
         <div class="col-md-4">
-            <input class="form-control" type="text" name="max_zoom" value="7">
+            <input class="form-control" type="text" name="max_zoom" value="<?php if(isset($max_zoom)) echo $max_zoom; else echo "7";   ?>">
         </div>
         <div class="col-md-6"></div>
     </div>
