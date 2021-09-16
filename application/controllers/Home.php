@@ -31,6 +31,33 @@ class Home extends CI_Controller
         $this->load->view('templates/footer', $data);
     }
     
+    public function my_annotation_priority()
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $gutil = new General_util();
+        $data['image_viewer_prefix'] = $this->config->item('image_viewer_prefix');
+        
+        $base_url = $this->config->item('base_url');
+        $login_hash = $this->session->userdata('login_hash');
+        
+        $data['base_url'] = $base_url;
+        $data['username'] = $this->session->userdata('username');
+        $username = $data['username'];
+        
+        if(is_null($login_hash))
+        {
+            redirect($base_url."/home");
+            return;
+        }
+        
+        $data['token'] = $dbutil->getAuthToken($data['username']);
+        
+        $data['title'] = "NCMIR | My Annotation priorities";
+        $this->load->view('templates/header', $data);
+        $this->load->view('home/annotation_priority_display', $data);
+        $this->load->view('templates/footer', $data);
+    }
     
     public function internal_group_videos($id="0")
     {
