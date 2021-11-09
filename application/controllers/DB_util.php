@@ -732,7 +732,7 @@ class DB_util
     {
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
-        $sql = "select gi.id, gi.group_name, gi.image_id from cil_groups g, group_images gi where g.group_name = gi.group_name and g.id = $1";
+        $sql = "select gi.id, gi.group_name, gi.image_id from cil_groups g, group_images gi where g.group_name = gi.group_name and g.id = $1 order by id asc";
         $conn = pg_pconnect($db_params);
         if(!$conn)
         {
