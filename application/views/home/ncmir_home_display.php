@@ -35,7 +35,7 @@
         </div>
         
         <div class="col-md-4">
-            <a href="/home/my_annotation_priority" class="btn btn-primary" target="_blank">My annotation priorities</a>
+            <!-- <a href="/home/my_annotation_priority" class="btn btn-primary" target="_blank">My annotation priorities</a> -->
         </div>
     </div>
 </div>
