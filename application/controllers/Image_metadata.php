@@ -691,7 +691,7 @@ class Image_metadata extends CI_Controller
         $itemArray['File_type'] = "Zip";
         $itemArray['File_path'] = $id.".zip";
         $itemArray['Size'] = intval($zip_size);
-        echo "<br/>".intval($zip_size);
+        //echo "<br/>".intval($zip_size);
         $ijson_str = json_encode($itemArray, JSON_UNESCAPED_SLASHES);
         $ijson = json_decode($ijson_str);
         array_push($json->CIL_CCDB->CIL->Image_files,$ijson);
@@ -759,6 +759,29 @@ class Image_metadata extends CI_Controller
         $human_disease = $this->input->post('image_search_parms[human_disease]', TRUE); 
         
         /**************End Biological Context*********************************************/
+        $alz_neuropathologist = $this->input->post('alz_neuropathologist', TRUE); 
+        $alz_embedded_sample = $this->input->post('alz_embedded_sample', TRUE);
+        
+        if(!is_null($alz_neuropathologist))
+        {
+            $alz_neuropathologist = trim($alz_neuropathologist);
+            //echo "<br/>".$alz_neuropathologist;
+        }
+        
+        if(!is_null($alz_embedded_sample))
+        {
+            $alz_embedded_sample = trim($alz_embedded_sample);
+            //echo "<br/>".$alz_embedded_sample;
+        }
+        
+        
+        
+        /**************Alz metadata *****************************************************/
+        
+        
+        /**************End Alz metadata ************************************************/
+        
+        
         
         $still_image = $this->input->post('still_image', TRUE);
         $z_stack = $this->input->post('z_stack', TRUE);
@@ -891,7 +914,7 @@ class Image_metadata extends CI_Controller
             {
                 $json->CIL_CCDB->CIL->CORE->GROUP_ID = $group_id;
             }
-            echo "GROUP checked:".$group_id."---";
+            //echo "GROUP checked:".$group_id."---";
         
             //return;
         }
@@ -1255,6 +1278,34 @@ class Image_metadata extends CI_Controller
         }
         /***********End Parameter Imaged *******************/
         
+        /***********Alz metadata **************************/
+        $alzArray = array();
+        $hasAlzData = false;
+        if(!is_null($alz_neuropathologist) && strlen($alz_neuropathologist) > 0)
+        {
+            $alzArray['NEUROPATHOLOGIST'] = $alz_neuropathologist;
+            $hasAlzData = true;
+        }
+        
+        if(!is_null($alz_embedded_sample) && strlen($alz_embedded_sample) > 0)
+        {
+            $alzArray['EMBEDDED_SAMPLE'] = $alz_embedded_sample;
+            $hasAlzData = true;
+        }
+        
+        if($hasAlzData)
+        {
+            $alz_json_str = json_encode($alzArray);
+            $alz_json = json_decode($alz_json_str); 
+            
+            $json->CIL_CCDB->CIL->ALZHEIMER_METADATA = $alz_json;
+        }
+        else 
+        {
+            unset($json->CIL_CCDB->CIL->ALZHEIMER_METADATA);
+        }
+        
+        /***********End Alz metadata **************************/
         
         /***********Attribution name***************************/
         if(!is_null($attribution_name) && strlen(trim($attribution_name))>0)
@@ -1470,8 +1521,10 @@ class Image_metadata extends CI_Controller
         //return;
         
         $dbutil->submitMetadata($image_id, $json_str);
-        
         redirect ($base_url."/image_metadata/edit/".$image_id);
+        //header('Content-Type: application/json');
+        //echo $json_str;
+        
         
         /*echo "<br/>Description:".$desc;
         echo "<br/>Tech_details:".$tech_details;
