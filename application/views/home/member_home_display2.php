@@ -74,12 +74,12 @@
                         <br/>
                         <a href="/cdeep3m_preview/new_images" class="btn btn-info" style="color:white" onmouseover="showYourOwnImageMessage()" >Your own images</a>
                     </div>
-                    
+                    <!--
                     <div class="col-md-12">
                         <br/>
                         <a href="/cdeep3m_preview/new_images_job" class="btn btn-info" style="color:white" onmouseover="showYourOwnImageMessage()" >Your big images</a>
                     </div>
-                    
+                    -->
                     
                     <div class="col-md-12">
                         <br/>
