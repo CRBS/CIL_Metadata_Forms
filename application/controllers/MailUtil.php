@@ -1,11 +1,11 @@
 <?php
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\SMTP;
+//use PHPMailer\PHPMailer\PHPMailer;
+//use PHPMailer\PHPMailer\Exception;
+//use PHPMailer\PHPMailer\SMTP;
 
-require_once getcwd()."/application/controllers/PHPMailer/Exception.php";
-require_once getcwd().'/application/controllers/PHPMailer/PHPMailer.php';
-require_once getcwd().'/application/controllers/PHPMailer/SMTP.php';
+//require_once getcwd()."/application/controllers/PHPMailer/Exception.php";
+//require_once getcwd().'/application/controllers/PHPMailer/PHPMailer.php';
+//require_once getcwd().'/application/controllers/PHPMailer/SMTP.php';
 
 class MailUtil
 {
@@ -59,7 +59,8 @@ class MailUtil
             error_log("\n".date("Y-m-d h:i:sa")."----Error:".$mail->ErrorInfo,3,$email_error_log_file);
         }*/
         
-        $this->sendLocalMail($to_email, $subject, $message);
+        //$this->sendLocalMail($to_email, $subject, $message);
+        $this->sendEmailByCommandLine($to_email, $subject, $message);
     }
     
     public function sendGridMail($to,$from,$subject, $message,$url,$key)
@@ -107,11 +108,32 @@ class MailUtil
     
     public function sendLocalMail($to_email, $subject, $message)
     {
-        
+        /*
         $headers[] = 'MIME-Version: 1.0';
         $headers[] = 'Content-type: text/html; charset=iso-8859-1';
         $headers[] = 'From: cdeep3m@ucsd.edu';
         
         mail($to_email, $subject, $message, implode("\r\n", $headers));
+         * 
+         */
+        $this->sendEmailByCommandLine($to_email, $subject, $message);
+    }
+    
+    
+    private function formatForEmail($input)
+    {
+        $out = trim(preg_replace('/\s+/', ' ', $input));
+        $out = str_replace("'", " ", $out);
+        return $out;
+    }
+    
+    public function sendEmailByCommandLine($to, $subject, $message)
+    {
+        $subject = $this->formatForEmail($subject);
+        $message = $this->formatForEmail($message);
+        $message = "<html><body>".$message."</body></html>";
+        $cmd = "sendEmail -t ".$to." -f cdeep3m@reba.ncmir.ucsd.edu -s reba.ncmir.ucsd.edu:25 -u '".$subject."' -m '".$message."'";
+        $response = shell_exec($cmd);
+        echo $response;
     }
 }
