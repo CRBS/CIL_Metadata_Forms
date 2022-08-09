@@ -94,9 +94,9 @@
                         
                     ?>
                 </div>
-                <div class="col-md-1"><a href="http://cildata.crbs.ucsd.edu/cdeep3m_results/<?php echo $item->id; ?>/log/logs.tar" target="_blank">Log files</a></div>
+                <div class="col-md-1"><a href="https://cildata.crbs.ucsd.edu/cdeep3m_results/<?php echo $item->id; ?>/log/logs.tar" target="_blank">Log files</a></div>
                 <div class="col-md-1">
-                <a href="http://cildata.crbs.ucsd.edu/cdeep3m_results/<?php echo $item->id; ?>/log/CDEEP3M_prp.log" target="_blank">PRP log</a>
+                <a href="https://cildata.crbs.ucsd.edu/cdeep3m_results/<?php echo $item->id; ?>/log/CDEEP3M_prp.log" target="_blank">PRP log</a>
                 </div>
                 <div class="col-md-2">
                     <a id="delete_prediction_data_id" name="delete_prediction_data_id" href="/home/delete_prediction_data/<?php echo $item->id ?>" target="_self" class="btn btn-danger" onclick="return confirm('Your prediction data will be permanently destroyed. Are you sure?')">Delete forever</a>
@@ -193,9 +193,9 @@
                         
                     ?>
                 </div>
-                <div class="col-md-1"><a href="http://cildata.crbs.ucsd.edu/cdeep3m_results/<?php echo $item->id; ?>/log/logs.tar" target="_blank">Log files</a></div>
+                <div class="col-md-1"><a href="https://cildata.crbs.ucsd.edu/cdeep3m_results/<?php echo $item->id; ?>/log/logs.tar" target="_blank">Log files</a></div>
                 <div class="col-md-1">
-                <a href="http://cildata.crbs.ucsd.edu/cdeep3m_results/<?php echo $item->id; ?>/log/CDEEP3M_prp.log" target="_blank">PRP log</a>
+                <a href="https://cildata.crbs.ucsd.edu/cdeep3m_results/<?php echo $item->id; ?>/log/CDEEP3M_prp.log" target="_blank">PRP log</a>
                 </div>
             </div>
             <hr>    

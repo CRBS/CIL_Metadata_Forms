@@ -134,6 +134,6 @@ class MailUtil
         $message = "<html><body>".$message."</body></html>";
         $cmd = "sendEmail -t ".$to." -f cdeep3m@reba.ncmir.ucsd.edu -s reba.ncmir.ucsd.edu:25 -u '".$subject."' -m '".$message."'";
         $response = shell_exec($cmd);
-        echo $response;
+        //echo $response;
     }
 }
