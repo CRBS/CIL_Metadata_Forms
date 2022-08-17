@@ -71,6 +71,29 @@ class Ccdb_rest extends REST_Controller
         }
         
         $this->setRsync($mpid, $status);
+        
+        /**********Sending email***************************/
+        $minfo = $this->getMicroscopyInfo2($mpid);
+        if(!is_null($minfo))
+        {
+           $username =  $minfo['portal_screenname'];
+           $email = $this->getEmail($username);
+           
+           if(!is_null($email))
+           {
+                $message = $this->getEmailMessage($minfo);
+
+                $to = $email;
+                $from = "ccdbuser@reba.crbs.ucsd.edu";
+                $subject = "Your data (CCDBID: ".$mpid.") is ready for archival";
+                
+                $this->sendEmail($to, $from, $subject, $message);
+                $this->updateRsyncEmailTime($mpid);
+           }
+        }
+        /**********End Sending email***************************/
+        
+        
         $rArray['success'] = true;
         $this->response($rArray);
     }
@@ -339,4 +362,127 @@ class Ccdb_rest extends REST_Controller
         
     }    
 
+    
+    
+    /**************Sending email***************************************/
+    private function formatString($line)
+    {
+        if(is_null($line))
+            return "";
+
+        return str_replace("'", " ", $line);
+    }
+
+    private function sendEmail($to, $from, $subject, $message)
+    {
+         $cmd = "sendEmail -t ".$to." -f ".$from." -s reba.ncmir.ucsd.edu:25 -u '".$subject."' -m '".$message."'";
+         $response = shell_exec($cmd);
+         echo $response;
+    }
+    
+    private function updateRsyncEmailTime($mpid)
+    {
+        $ncmir_db_params = $this->config->item('ncmir_db_params');
+        $conn = pg_pconnect($ncmir_db_params);
+
+        if (!$conn) 
+        {
+            return null;
+        }
+
+        $sql = "update microscopy_products set rsync_email_time = now() where mpid = $1";
+        $input = array();
+        array_push($input, $mpid);
+
+        $result = pg_query_params($conn, $sql, $input);
+        pg_close($conn);
+
+        return true;
+    }
+    
+    
+    private function getEmail($username)
+    {
+        $email = null;
+        $ncmir_db_params = $this->config->item('ncmir_db_params');             
+        $conn = pg_pconnect($ncmir_db_params);
+        
+        if (!$conn) 
+        {
+            return null;
+        }
+        
+        $sql = "select emailaddress from user_ where screenname = $1";
+        
+        $input = array();
+        array_push($input, $username);
+        $result = pg_query_params($conn, $sql, $input);
+        if($row = pg_fetch_row($result))
+        {
+            $email = $row[0];
+        }
+        pg_close($conn);
+        
+        return $email;
+        
+    }
+    
+    private function getMicroscopyInfo2($mpid)
+    {
+        $rarray = array();
+        $ncmir_db_params = $this->config->item('ncmir_db_params'); 
+        $conn = pg_pconnect($ncmir_db_params);
+        
+        if (!$conn) 
+        {
+            return null;
+        
+        }
+        
+        $sql = "select p.project_id, p.project_name, e.experiment_id, e.experiment_title, e.experiment_purpose, ".
+               " m.mpid, m.image_basename, m.notes, m.portal_screenname ".
+               " from project p, experiment e, microscopy_products m ".
+               " where p.project_id = e.project_id and e.experiment_id = m.experiment_experiment_id and m.mpid = $1";
+        
+        $input = array();
+        array_push($input, $mpid);
+        $result = pg_query_params($conn, $sql, $input);
+        if($row = pg_fetch_row($result))
+        {
+            
+            $rarray['project_id'] = $row[0];
+            $rarray['project_name'] = $this->formatString($row[1]) ;
+            $rarray['experiment_id'] = $row[2];
+            $rarray['experiment_title'] = $this->formatString($row[3]);
+            $rarray['experiment_purpose'] = $this->formatString($row[4]);
+            $rarray['mpid'] = $row[5];
+            $rarray['image_basename'] = $this->formatString($row[6]);
+            $rarray['notes'] = $this->formatString($row[7]);
+            $rarray['portal_screenname'] = $this->formatString($row[8]);
+        }
+        else 
+        {
+            return null;
+        }
+        pg_close($conn);
+        
+        return $rarray;
+    }
+    
+    public function getEmailMessage($minfo)
+    {
+        $message = "<html><body>";
+        $message = $message."Project ID:".$minfo['project_id']."<br/>";
+        $message = $message."Project name:".$minfo['project_name']."<br/>";
+        $message = $message."Experiment ID:".$minfo['experiment_id']."<br/>";
+        $message = $message."Experiment title:".$minfo['experiment_title']."<br/>";
+        $message = $message."Experiment purpose:".$minfo['experiment_purpose']."<br/>";
+        $message = $message."Microscopy ID:".$minfo['mpid']."<br/>";
+        $message = $message."Microscopy basename:".$minfo['image_basename']."<br/>";
+        $message = $message."</body></html>";
+        
+        return $message;
+    }
+    
+    /**************End sending email *********************************/
 }
