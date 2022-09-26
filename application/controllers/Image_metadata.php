@@ -705,6 +705,7 @@ class Image_metadata extends CI_Controller
     {
         $this->load->helper('url');
         $dbutil = new DB_util();
+        $cutil = new Curl_util();
         $login_hash = $this->session->userdata('login_hash');
         $data['username'] = $this->session->userdata('username');
         $base_url = $this->config->item('base_url');
@@ -788,6 +789,14 @@ class Image_metadata extends CI_Controller
         $time_series = $this->input->post('time_series', TRUE);
         $video = $this->input->post('video', TRUE);
         
+        /*
+        if(!is_null($time_series))
+            echo "Time series is NOT NULL";
+        else
+            echo "Time series is  NULL";
+        echo "<br/>Video:".$video;
+        return;
+         */
         
         /*************Attribution*******************************************/
         $attribution_name = $this->input->post('attribution_name', TRUE);
@@ -1384,12 +1393,32 @@ class Image_metadata extends CI_Controller
                     "\"Size\": ".$jpeg_size.
                     "}";
             
-            $i_item3_str = "{".
+            /* $i_item3_str = "{".
                     "\"Mime_type\": \"video/x-flv\",".
                     "\"File_type\": \"Flv\",".
                     "\"File_path\": \"".$numeric_id.".flv\",".
                     "\"Size\": 1392086".
+                    "}"; */
+            
+            $filePath = "/var/www/html/media/videos/".$numeric_id."/".$numeric_id."_web.mp4"; //Remote file path
+            $metadata_service_prefix = $this->config->item('metadata_service_prefix');
+            $metadata_auth = $this->config->item('metadata_auth');
+            $size_url = str_replace("metadata_service", "rest/file_size", $metadata_service_prefix);
+            $sresponse = $cutil->auth_curl_get_with_data($metadata_auth, $size_url, $filePath);
+            $sjson = json_decode($sresponse);
+            //echo    $sjson->Size;
+            //return;
+            
+            $i_item3_str = "{".
+                    "\"Mime_type\": \"video/mp4\",".
+                    "\"File_type\": \"Mp4\",".
+                    "\"File_path\": \"".$numeric_id."_web.mp4\",".
+                    //"\"Size\": 1392086".
+                    "\"Size\": ".$sjson->Size.
                     "}";
+            
+            
+            
             $i_item1 = json_decode($i_item1_str);
             $i_item2 = json_decode($i_item2_str);
             $i_item3 = json_decode($i_item3_str);
