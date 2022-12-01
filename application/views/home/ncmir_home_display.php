@@ -35,6 +35,10 @@
         </div>
         
         <div class="col-md-4">
+            <a href="/Ncmir_databrowser/view" class="btn btn-primary" target="_self">NCMIR Data Browser</a>
+        </div>
+        
+        <div class="col-md-4">
             <!-- <a href="/home/my_annotation_priority" class="btn btn-primary" target="_blank">My annotation priorities</a> -->
         </div>
     </div>
