@@ -44,7 +44,7 @@ class NcmirDbUtil
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('ncmir_db_params');
         
-        $sql= "select p.project_id, p.project_name, e.experiment_id, e.experiment_title, e.experiment_purpose, m.mpid, m.image_basename, m.notes from project p, experiment e, microscopy_products m ". 
+        $sql= "select p.project_id, p.project_name, e.experiment_id, e.experiment_title, e.experiment_purpose, m.mpid, m.image_basename, m.notes, m.rsync_date, m.archived_date from project p, experiment e, microscopy_products m ". 
               " where p.project_id = e.project_id and e.experiment_id = m.experiment_experiment_id   and mpid = $1";
         
         $conn = pg_pconnect($db_params);
@@ -71,6 +71,8 @@ class NcmirDbUtil
                 $array['mpid'] = intval($row[5]);
                 $array['image_basename'] = $row[6];
                 $array['notes'] = $row[7];
+                $array['rsync_date'] = $row[8];
+                $array['archived_date'] = $row[9];
            }
         }
         

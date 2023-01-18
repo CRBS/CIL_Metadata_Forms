@@ -68,7 +68,7 @@ class Curl_util
     
     public function auth_curl_get($service_auth,$url)
     {
-        echo "<br/>URL here:".$url;
+        //echo "<br/>URL here:".$url;
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');

@@ -47,7 +47,13 @@ class Ncmir_data_rest extends REST_Controller
                 {
                     if(is_file($array['Path']."/".$file))
                     {
-                        array_push($fileArray, $file);
+                        $fpath = $array['Path']."/".$file;
+                        
+                        $farray = array();
+                        $farray['file_name'] = $file;
+                        $farray['file_size'] = filesize($fpath);
+                        //array_push($fileArray, $file);
+                        array_push($fileArray, $farray);
                     }
                 }
             }
