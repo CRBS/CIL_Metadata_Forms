@@ -2,6 +2,41 @@
 
 class NcmirDbUtil
 {
+    
+    public function getNcmirUsername($username)
+    {
+        $ncmirUsername = null;
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        $sql = "select ncmir_username from ncmir_archive_user_mapping where cdeep3m_username = $1";
+        
+        $conn = pg_pconnect($db_params);
+        if(!$conn)
+        {
+            return $ncmirUsername;
+        }
+        
+        $input = array();
+        array_push($input, $username);
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            return $ncmirUsername;
+        }
+        
+        if($row = pg_fetch_row($result))
+        {
+            $ncmirUsername = $row[0];
+        }
+        
+        pg_close($conn);
+        return $ncmirUsername;
+        
+    }
+    
+    
     public function getArchivedMPIDs($username)
     {
         $mainArray = array();

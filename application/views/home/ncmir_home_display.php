@@ -35,7 +35,14 @@
         </div>
         
         <div class="col-md-4">
+            <?php
+                if(!is_null($ncmir_username))
+                {
+            ?>
             <a href="/Ncmir_databrowser/view" class="btn btn-primary" target="_self">NCMIR Data Browser</a>
+            <?php
+                }
+            ?>
         </div>
         
         <div class="col-md-4">

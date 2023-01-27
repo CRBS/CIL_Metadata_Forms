@@ -4,17 +4,30 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <select name="mpid_list" id="mpid_list" size="20" style="width: 100%; overflow: hidden;" onchange="getMpInfo()">
-            <?php
-                foreach($mpidArray as $mpid)
-                {
-            ?>
-                <option <?php if( !is_null($mpid['archived_date'])) { ?>style="color:green"<?php } ?> value="<?php echo $mpid['mpid']; ?>"><?php echo $mpid['mpid']."------".$mpid['notes']; ?></option>
-            <?php
-                }
-            ?>
-           </select>
-        </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <select name="mpid_list" id="mpid_list" size="20" style="width: 100%; overflow: hidden;" onchange="getMpInfo()">
+                    <?php
+                        foreach($mpidArray as $mpid)
+                        {
+                    ?>
+                        <option <?php if( !is_null($mpid['archived_date'])) { ?>style="color:green"<?php } ?> value="<?php echo $mpid['mpid']; ?>"><?php echo $mpid['mpid']."------".$mpid['notes']; ?></option>
+                    <?php
+                        }
+                    ?>
+                   </select>
+                </div>
+                <!-- <div class="col-md-12">
+                    <a id='up_arrow_id' href="#" onclick="moveUp();" ><img src="/pix/up_arrow.png" width="48px" /></a>
+                    <a id='down_arrow_id' href="#" onclick="moveDown();"><img src="/pix/down_arrow.png" width="48px" /></a>
+                </div> -->
+            </div>
+            
+         </div>
+            
+            
+            
+       
         <div class="col-md-6">
             <div class="row">
                 <div class="col-md-12">
@@ -83,4 +96,69 @@
     
     document.getElementById('mpid_list').selectedIndex  = 0;
     getMpInfo();
+</script>
+
+
+<script> 
+/*function moveUp(){
+    var select = document.getElementById("mpid_list");
+    var options = select && select.options;
+    var selected = [];
+
+    for (var i = 0, iLen = options.length; i < iLen; i++) {
+        if (options[i].selected) {
+            selected.push(options[i]);
+        }
+    }
+
+    for (i = 0, iLen = selected.length; i < iLen; i++) {
+        var index = selected[i].index;
+
+        if(index == 0){
+            break;
+        }
+
+        var temp = selected[i].text;
+        selected[i].text = options[index - 1].text;
+        options[index - 1].text = temp;
+
+        temp = selected[i].value;
+        selected[i].value = options[index - 1].value;
+        options[index - 1].value = temp;
+
+        selected[i].selected = false;
+        options[index - 1].selected = true;
+    }
+}
+
+function moveDown(){
+    var select = document.getElementById("mpid_list");
+    var options = select && select.options;
+    var selected = [];
+
+    for (var i = 0, iLen = options.length; i < iLen; i++) {
+        if (options[i].selected) {
+            selected.push(options[i]);
+        }
+    }
+
+    for (i = selected.length - 1, iLen = 0; i >= iLen; i--) {
+        var index = selected[i].index;
+
+        if(index == (options.length - 1)){
+            break;
+        }
+
+        var temp = selected[i].text;
+        selected[i].text = options[index + 1].text;
+        options[index + 1].text = temp;
+
+        temp = selected[i].value;
+        selected[i].value = options[index + 1].value;
+        options[index + 1].value = temp;
+
+        selected[i].selected = false;
+        options[index + 1].selected = true;
+    }
+}*/
 </script>

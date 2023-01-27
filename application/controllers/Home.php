@@ -7,6 +7,8 @@ include_once 'Ontology_util.php';
 include_once 'Dimension_util.php';
 include_once 'PasswordHash.php';
 include_once 'MailUtil.php';
+include_once 'NcmirDbUtil.php';
+
 class Home extends CI_Controller
 {
     public function view_video($videoName)
@@ -384,7 +386,7 @@ class Home extends CI_Controller
         $this->load->helper('url');
         $dbutil = new DB_util();
         $gutil = new General_util();
-        
+        $nutil = new NcmirDbUtil();
         
         $base_url = $this->config->item('base_url');
         $login_hash = $this->session->userdata('login_hash');
@@ -435,6 +437,8 @@ class Home extends CI_Controller
                 if(strcmp($userGroup['group_name'], "ncmir")==0)
                 {
                     $data['title'] = "NCMIR User Homepage";
+                    
+                    $data['ncmir_username'] = $nutil->getNcmirUsername($username);
                     $this->load->view('templates/header', $data);
                     $this->load->view('home/ncmir_home_display', $data);
                     $this->load->view('templates/footer', $data);
@@ -443,6 +447,7 @@ class Home extends CI_Controller
             }
         }
         /**************End Group based homepage***********************/
+        
         
         
         $tarray = $dbutil->getStandardTags();

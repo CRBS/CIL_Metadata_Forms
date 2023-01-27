@@ -3,8 +3,8 @@
 include_once 'General_util.php';
 include_once 'NcmirDbUtil.php';
 include_once 'DB_util.php';
-
 include_once 'Curl_util.php';
+include_once 'NcmirDbUtil.php';
 
 class Ncmir_databrowser extends CI_Controller
 {
@@ -96,6 +96,7 @@ class Ncmir_databrowser extends CI_Controller
     {
         $this->load->helper('url');
         $dbutil = new DB_util();
+        
         $login_hash = $this->session->userdata('login_hash');
         $data['username'] = $this->session->userdata('username');
         $base_url = $this->config->item('base_url');
@@ -114,10 +115,10 @@ class Ncmir_databrowser extends CI_Controller
         if($isNcmir)
         {    
             $ndbutil = new NcmirDbUtil();
-            $username = "ccdbuser";
-            $mpidArray = $ndbutil->getAllMPIDs($username);
+            $ncmir_username = $ndbutil->getNcmirUsername($username);
+            $mpidArray = $ndbutil->getAllMPIDs($ncmir_username);
             
-            $data['ncmir_user'] = $username;
+            $data['ncmir_user'] = $ncmir_username;
             $data['mpidArray'] = $mpidArray;
             $data['title'] = "NCMIR Data Browser";
             $this->load->view('templates/header', $data);
