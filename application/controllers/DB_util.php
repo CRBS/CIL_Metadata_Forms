@@ -17,6 +17,34 @@ class DB_util
             $this->insertImage ($db_params, $image_id, $array);
                 
     }
+    
+    public function isValidImageIdForUpload($num_id='0')
+    {
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+            return false;
+        $sql = "select image_id from cil_metadata where image_id = $1 and publish_date is NULL and delete_date is NULL";
+        
+        $input = array();
+        array_push($input,$image_id);
+        
+        $result = pg_query_params($conn,$sql,$input);
+        
+        if(!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        $success = false;
+        if($row = pg_fetch_row($result))
+        {
+            $success = true;
+        }
+        pg_close($conn);
+        return $success;
+        
+    }
+    
     public function insertImage($db_params,$image_id,$array)
     {
         $conn = pg_pconnect($db_params);

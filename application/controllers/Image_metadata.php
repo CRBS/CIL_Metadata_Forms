@@ -2757,6 +2757,9 @@ class Image_metadata extends CI_Controller
             redirect ($base_url."/home");
             return;
         }
+        
+        $data['base_url'] = $this->config->item('base_url');
+        $data['image_id'] = $image_id;
         /***********End Checking Permission************/
         $data['title'] = "CIL | Upload the main image ".$image_id;
         $this->load->view('templates/header', $data);

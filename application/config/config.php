@@ -649,7 +649,7 @@ $config['ezid_production_ark_shoulder'] = $json->ezid_production_ark_shoulder;
 
 $config['is_production'] = true;
 
-if($config['is_production'])
+if($is_prod)
     $config['data_location'] = $json->production_data_location;
 else 
     $config['data_location'] = $json->staging_data_location;

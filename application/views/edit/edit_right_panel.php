@@ -12,6 +12,9 @@
     include_once 'alz_metadata.php';
     
     include_once 'image_files.php';
+    
+    include_once 'alternative_files.php';
+    
     include_once 'licensing.php';
     if(isset($json->CIL_CCDB->Citation->Title))
     {
