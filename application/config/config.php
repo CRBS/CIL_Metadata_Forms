@@ -699,3 +699,6 @@ $config['gmail_reply_to_name'] = $json->gmail_reply_to_name;
 
 $config['cil_meta_auth'] = $json->cil_meta_auth;
 $config['cil_meta_url_prefix'] = $json->cil_meta_url_prefix;
+
+
+$config['min_upload_id'] = 54919;

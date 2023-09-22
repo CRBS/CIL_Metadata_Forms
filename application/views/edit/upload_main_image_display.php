@@ -21,6 +21,9 @@
         </div>
         
     </div>
+    <div class="row">
+        <div id="error_message_id" class="col-md-12"></div>
+    </div>
 </div>
 
 
@@ -29,7 +32,7 @@ $(function() {
 
 
 	// Setup html5 version
-	$("#html5_uploader").pluploadQueue({
+	var uploader = $("#html5_uploader").pluploadQueue({
 		// General settings
 		runtimes : 'html5',
 		url : "<?php echo $base_url; ?>/Data_uploader/process_images_upload/<?php echo $image_id; ?>",
@@ -71,7 +74,8 @@ $(function() {
                     FileUploaded: function(up, file, info) 
                     {
                         console.log("Uploaded:"+file.name);
-                        /*var addUrl = "<?php echo $base_url."/cdeep3m_create_training/pending/" ?>";
+                        console.log(info);
+                        /*var addUrl = "<?php //echo $base_url."/cdeep3m_create_training/pending/" ?>";
                         
                         
                         //window.location.href = addUrl;
@@ -81,12 +85,34 @@ $(function() {
                             window.location.href = addUrl;
                          }*/
                         
+                    },
+                    Error: function(up, obj) {
+                        // Called when error occurs
+                        if (obj.hasOwnProperty('response')) 
+                        {
+                            var res = JSON.parse(obj.response);
+                            console.log(res);
+                            if(res.hasOwnProperty('error'))
+                            {
+                                alert('Error: '+res.error.message);
+                                document.getElementById('error_message_id').innerHTML = "<span style='color: red'>"+res.error.message+
+                                        "</span><br/>Refresh the browser to try again.";
+                            }
+                            else 
+                            {
+                                alert("Error: Unable to upload");
+                            }
+                            
+                        }
+                        //alert("error");
+                        //console.log(obj);
                     }
                 }
 
 		
 	});
 
+        
 
 });
 </script>
