@@ -2772,6 +2772,39 @@ class Image_metadata extends CI_Controller
     }
     
     
+    public function upload_jpeg_image($image_id)
+    {
+        $this->load->helper('url');
+        $dbutil = new DB_util();
+        $login_hash = $this->session->userdata('login_hash');
+        $data['username'] = $this->session->userdata('username');
+        $base_url = $this->config->item('base_url');
+        /***********Checking login****************/
+        if(is_null($login_hash))
+        {
+            redirect ($base_url."/login/auth_image/".$image_id);
+            return;
+        }
+        /***********End Checking login****************/
+        
+        /***********Checking Permission************/
+        $username = $data['username'];
+        if(!$dbutil->isAdmin($username))
+        {
+            redirect ($base_url."/home");
+            return;
+        }
+        
+        $data['base_url'] = $this->config->item('base_url');
+        $data['image_id'] = $image_id;
+        /***********End Checking Permission************/
+        $data['title'] = "CIL | Upload the display image ".$image_id;
+        $this->load->view('templates/header', $data);
+        $this->load->view('edit/upload_jpeg_image_display', $data);
+        $this->load->view('templates/footer', $data);
+    }
+    
+    
     /*
     public function edit($image_id="0")
     {
