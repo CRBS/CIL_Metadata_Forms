@@ -2201,6 +2201,10 @@ class Image_metadata extends CI_Controller
             redirect ($base_url."/login/auth_image/".$image_id);
             return;
         }
+        
+        if(!file_exists($test_output_folder))
+            mkdir ($test_output_folder);
+        
         $log_path = $test_output_folder."/edit_".$image_id.".txt";
         if(file_exists($log_path))
             unlink ($log_path);
