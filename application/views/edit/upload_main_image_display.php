@@ -84,6 +84,9 @@ $(function() {
                             //alert("DONE");
                             window.location.href = addUrl;
                          }*/
+    
+    
+                         document.getElementById('error_message_id').innerHTML = "<br/><center><a class='btn btn-success' href='<?php echo $base_url; ?>/image_metadata/edit/CIL_<?php echo $image_id; ?>'>Done</a></center>";
                         
                     },
                     Error: function(up, obj) {
@@ -95,8 +98,9 @@ $(function() {
                             if(res.hasOwnProperty('error'))
                             {
                                 alert('Error: '+res.error.message);
+                                var backBtn = "<br/><center><a class='btn btn-success' href='<?php echo $base_url; ?>/image_metadata/edit/CIL_<?php echo $image_id; ?>'>Back to the image page</a></center>";
                                 document.getElementById('error_message_id').innerHTML = "<span style='color: red'>"+res.error.message+
-                                        "</span><br/>Refresh the browser to try again.";
+                                        "</span><br/>Refresh the browser to try again."+backBtn;
                             }
                             else 
                             {

@@ -50,7 +50,7 @@ if(isset($image_size_json) && isset($numeric_id))
     </div>
     <div class="col-md-12">
         <center>
-            <a href="/image_metadata/upload_zipped_image/<?php echo $numeric_id; ?>" class="btn btn-primary" target="_blank">Replace ZIP file</a>
+            <a href="/image_metadata/upload_zipped_image/<?php echo $numeric_id; ?>" class="btn btn-primary" target="_self">Replace ZIP file</a>
         </center>
     </div> 
 </div>

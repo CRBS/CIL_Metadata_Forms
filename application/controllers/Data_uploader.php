@@ -55,7 +55,7 @@ class Data_uploader extends CI_Controller
         {
             $message = '{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Invalid image ID: '.$num.'."}, "id" : '.$num.'}';
             //$message = "Invalid Image ID:"+$num;
-            error_log("\nUpload error: ID is ".$num, 3, $targetDir."/upload.log");
+            error_log("\nUpload error: ID is ".$num, 3, $targetDir."/upload_zip.log");
             $this->output->set_status_header('400');
             //header('Content-Type: application/json');
             die($message);
@@ -63,16 +63,27 @@ class Data_uploader extends CI_Controller
             
         }
             
-
+        
         
         
         $topDir = $targetDir;
         if(!file_exists($targetDir))
             mkdir($targetDir);
         
+        $uploadLog = $targetDir."/upload.log";
+        if(!file_exists($uploadLog))
+        {
+            $message = '{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "This folder cannot be modified - image ID: '.$num.'."}, "id" : '.$num.'}';
+            //$message = "Invalid Image ID:"+$num;
+            error_log("\nUpload error: ID is ".$num, 3, $targetDir."/upload_zip.log");
+            error_log("\n".$message, 3, $targetDir."/upload_zip.log");
+            $this->output->set_status_header('400');
+            //header('Content-Type: application/json');
+            die($message);
+            return;
+        }
         
-        
-        error_log("\ntargetDir:".$targetDir, 3, $targetDir."/upload.log");
+        error_log("\ntargetDir:".$targetDir, 3, $targetDir."/upload_zip.log");
 
         $cleanupTargetDir = false; // Remove old files
         $maxFileAge = 60 * 60*60; // Temp file age in seconds
@@ -89,12 +100,14 @@ class Data_uploader extends CI_Controller
             $fileName = $_REQUEST["name"];           
         }
 
-        $fileName = preg_replace('/[^\w\._]+/', '', $fileName);
+        //$fileName = preg_replace('/[^\w\._]+/', '', $fileName);
+        $fileName = $image_id.".zip";
+        
         if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) 
-            error_log("\nStep 0: Filename:".$fileName, 3, $targetDir."/upload.log");
+            error_log("\nStep 0: Filename:".$fileName, 3, $targetDir."/upload_zip.log");
                 
-        $fileName2 = $_FILES["file"]["name"];
-        error_log("\nStep 0.1: Filename:".$fileName2, 3, $targetDir."/upload.log");
+        //$fileName2 = $_FILES["file"]["name"];
+        //error_log("\nStep 0.1: Filename:".$fileName2, 3, $targetDir."/upload_zip.log");
                 
         // Create target dir
         if (!file_exists($targetDir))
@@ -117,14 +130,15 @@ class Data_uploader extends CI_Controller
         if (isset($_SERVER["CONTENT_TYPE"]))
             $contentType = $_SERVER["CONTENT_TYPE"];
                 
-        error_log("\nStep 0", 3, $topDir."/upload.log");
+        error_log("\nStep 0", 3, $topDir."/upload_zip.log");
                 
         if (strpos($contentType, "multipart") !== false) 
         {
-            error_log("\nStep 1", 3, $topDir."/upload.log");
+            error_log("\nStep 1:", 3, $topDir."/upload_zip.log");
 
             if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) 
             {
+                error_log("\nStep 1.1 - upload file:".$_FILES['file']['tmp_name'], 3, $topDir."/upload_zip.log");
                 // Open temp file
                 $out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
                 if ($out) 
@@ -155,14 +169,14 @@ class Data_uploader extends CI_Controller
                     }
                     catch(Exception $e) 
                     {
-                         error_log("\n".$e->getMessage(), 3, $targetDir."/upload.log");
+                         error_log("\n".$e->getMessage(), 3, $targetDir."/upload_zip.log");
                     }
                 }
                 else
                 {
                     $message = '{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}';
                     //$message = "Failed to open output stream.";
-                    error_log("\n".$message, 3, $targetDir."/upload.log");
+                    error_log("\n".$message, 3, $targetDir."/upload_zip.log");
                     //die($message);
                     $this->output->set_status_header('400');
                     header('Content-Type: application/json');
@@ -173,10 +187,10 @@ class Data_uploader extends CI_Controller
             else
             {
                 $message = '{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}';
-                //error_log("\n".$message, 3, $targetDir."/upload.log");
+                //error_log("\n".$message, 3, $targetDir."/upload_zip.log");
                 //die($message);
                 //$message = "Failed to move uploaded file.";
-                error_log("\n".$message, 3, $targetDir."/upload.log");
+                error_log("\n".$message, 3, $targetDir."/upload_zip.log");
                 //die($message);
                 $this->output->set_status_header('400');
                 header('Content-Type: application/json');
@@ -186,7 +200,7 @@ class Data_uploader extends CI_Controller
         }
         else 
         {
-            error_log("\nStep 2", 3, $imagesFolder."/upload.log");
+            error_log("\nStep 2", 3, $imagesFolder."/upload_zip.log");
             // Open temp file
             $out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
             if ($out) 
