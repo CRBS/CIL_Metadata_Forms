@@ -2236,6 +2236,9 @@ class Image_metadata extends CI_Controller
             $metadata_service_prefix = $this->config->item('metadata_service_prefix');
             $metadata_auth = $this->config->item('metadata_auth');
             $size_url = str_replace("metadata_service", "rest/file_size", $metadata_service_prefix);
+            
+            //echo "<br/>".$size_url;
+            clearstatcache();
             //if(!is_null($image_size_json) && isset($image_size_json->jpeg_size))
             if(!is_null($image_size_json))
             {
