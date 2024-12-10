@@ -20,7 +20,7 @@ class DB_util
     
     public function isValidImageIdForUpload($num_id='0')
     {
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
             return false;
         $sql = "select image_id from cil_metadata where image_id = $1 and publish_date is NULL and delete_date is NULL";
@@ -47,7 +47,7 @@ class DB_util
     
     public function insertImage($db_params,$image_id,$array)
     {
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
             return false;
         $sql = "insert into images(id,image_id,max_z,is_rgb,update_timestamp,is_public,max_zoom, init_lat, \n".
@@ -82,7 +82,7 @@ class DB_util
     
     private function imageExist($db_params,$image_id)
     {
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
             return false;
         $sql = "select image_id from images where image_id = $1";
@@ -105,7 +105,7 @@ class DB_util
     
     public function updateImage($db_params,$image_id,$array)
     {
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
             return false;
         $sql = "update images set max_z = $1, is_rgb = $2, update_timestamp=now(), \n".
@@ -144,7 +144,7 @@ class DB_util
         $db_params = $CI->config->item('ad_structure_db_params');
         $sql = "update images set image_type = $1 where image_id = $2";
         
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return false;
@@ -169,7 +169,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('ad_structure_db_params');
         $sql = "select id from images where image_id=$1";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return false;
@@ -202,7 +202,7 @@ class DB_util
         
         if($section_id < 0)
             $section_id = NULL;
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return false;
@@ -231,7 +231,7 @@ class DB_util
             $roi_id = NULL;
         
         $sql = "update images set roi_id = $1 where image_id = $2";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return false;
@@ -256,7 +256,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('ad_structure_db_params');
         $sql = "update images set biopsy_id = $1, block_id = $2 where image_id = $3";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return false;
@@ -282,7 +282,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('ad_structure_db_params');
         $sql = "insert into images(id, image_id,image_type) values(nextval('general_seq'),$1,$2)";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return false;
@@ -308,7 +308,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('ad_structure_db_params');
         $sql = "select id, block_name, biopsy_id from block";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return $mainArray;
@@ -340,7 +340,7 @@ class DB_util
         $mainArray = array();
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('ad_structure_db_params');
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         //$sql = "select i.id, i.image_id, i.image_type, i.biopsy_id, i.block_id, bp.biopsy_name, b.block_name, i.roi_id, r.roi_name from images i left join biopsy bp on i.biopsy_id = bp.id left join block b on i.block_id = b.id left join roi r on i.roi_id = r.id order by i.id asc";
         
         $sql = "select i.id, i.image_id, i.image_type, i.biopsy_id, i.block_id, bp.biopsy_name, b.block_name, i.serial_section_id, s.serial_section_name, i.roi_id, r.roi_name from images i ".
@@ -388,7 +388,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('ad_structure_db_params');
         $sql = "select id, serial_section_name, block_id from serial_section order by id asc";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return $mainArray;
@@ -421,7 +421,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('ad_structure_db_params');
         $sql = "select id, roi_name, serial_section_id  from roi order by id asc";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return $mainArray;
@@ -454,7 +454,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('ad_structure_db_params');
         $sql = "select bp.id as biopsy_id, bp.biopsy_name, b.id as block_id, b.block_name from biopsy bp, block b where bp.id = b.biopsy_id  order by bp.id, b.id";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return NULL;
@@ -511,7 +511,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('ad_structure_db_params');
         $sql = "select id, biopsy_name from biopsy order by id";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return NULL;
@@ -547,7 +547,7 @@ class DB_util
         $db_params = $CI->config->item('db_params');
         $sql = "select distinct gi.id, gi.group_name, gi.image_id from cil_groups g, cil_user_groups ug, group_images gi ".
                " where g.group_name = ug.group_name and ug.group_name = gi.group_name and ug.username = $1 and g.data_category = $2 and gi.not_alzdata is NULL order by gi.id asc";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return NULL;
@@ -592,7 +592,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "select uncapped_upload from cil_users where username = $1 and uncapped_upload = true";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return false;
@@ -624,7 +624,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "select id from retrain_models where published_model_id = $1";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return NULL;
@@ -654,7 +654,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "update retrain_models set published_model_id = $1  where id = $2";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return false;
@@ -680,7 +680,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "update models set file_size = $1 where id = $2";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return false;
@@ -714,7 +714,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "select id, num_iterations, second_aug, tertiary_aug, model_doi, process_start_time, process_finish_time,published_model_id,username from retrain_models where id = $1";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return NULL;
@@ -761,7 +761,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "select gi.id, gi.group_name, gi.image_id from cil_groups g, group_images gi where g.group_name = gi.group_name and g.id = $1 order by id asc";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return NULL;
@@ -798,7 +798,7 @@ class DB_util
         //$sql = "select id,username, group_name, group_type, group_type from cil_user_groups where username = $1 and group_type = $2";
         $sql = "select distinct g.id, ug.username, g.group_name, ug.group_type from cil_user_groups ug, cil_groups g where ug.group_name = g.group_name and  ug.username = $1 and ug.group_type = $2 order by g.id asc";
         //echo $sql;
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return NULL;
@@ -834,7 +834,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "select id, username, group_name from cil_user_groups where username=$1";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return NULL;
@@ -871,7 +871,7 @@ class DB_util
         $db_params = $CI->config->item('image_viewer_db_params');
         $sql="select id, image_id, contact_email, submit_time, finish_time from  cropping_processes where submit_time >= '".$start_time."'::timestamp and submit_time <= '".$end_time."'::timestamp";
     
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return NULL;
@@ -906,7 +906,7 @@ class DB_util
         $db_params = $CI->config->item('image_viewer_db_params');
         $sql = "select max(submit_time) from cropping_processes";
         
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return "NA";
@@ -936,7 +936,7 @@ class DB_util
         $db_params = $CI->config->item('image_viewer_db_params');
         $sql = "select min(submit_time) from cropping_processes";
         
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return "NA";
@@ -966,7 +966,7 @@ class DB_util
         $db_params = $CI->config->item('image_viewer_db_params');
         $sql = "select count(id) from cropping_processes where finish_time is  NULL";
         
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return 0;
@@ -995,7 +995,7 @@ class DB_util
         $db_params = $CI->config->item('image_viewer_db_params');
         $sql = "select count(id) from cropping_processes where finish_time is not NULL";
         
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return 0;
@@ -1023,7 +1023,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "select id, username, full_name, user_role, create_time, activated_time from cil_users where email = $1";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return NULL;
@@ -1062,7 +1062,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "select id from models where delete_time is NULL and username = $1 and id = $2";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return false;
@@ -1093,7 +1093,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "select id, metadata_json, file_size from models where publish_date is not NULL and delete_time is NULL order by id desc";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         $mainArray = array();
         
         if(!$conn)
@@ -1127,7 +1127,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "select id, file_name, file_size,has_display_image,publish_date from models where delete_time is NULL and username = $1 order by id desc";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         $mainArray = array();
         
          if(!$conn)
@@ -1174,7 +1174,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
 
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return NULL;
@@ -1216,7 +1216,7 @@ class DB_util
         if(!is_numeric($retrainID))
             return false;
         $retrainID = intval($retrainID);
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return false;
@@ -1253,7 +1253,7 @@ class DB_util
             return NULL;
         
         $retrainID = intval($retrainID);
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return NULL;
@@ -1289,7 +1289,7 @@ class DB_util
         
         $id = intval($id);
  
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return NULL;
@@ -1323,7 +1323,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return NULL;
@@ -1360,7 +1360,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('image_viewer_db_params');
         
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return NULL;
@@ -1396,7 +1396,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return NULL;
@@ -1441,7 +1441,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
             return false;
         $sql = "delete from cil_auth_tokens where username = $1";
@@ -1464,7 +1464,7 @@ class DB_util
         $db_params = $CI->config->item('db_params');
         
         
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
             return false;
         $sql = "insert into cil_auth_tokens(id,username,token,token_create_time) ".
@@ -1494,7 +1494,7 @@ class DB_util
         $db_params = $CI->config->item('image_viewer_db_params');
         $sql = "update cropping_processes set delete_time = now() where id = $1";
         
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
             return false;
         
@@ -1518,7 +1518,7 @@ class DB_util
         $db_params = $CI->config->item('image_viewer_db_params');
         $sql = "select id, width, height, num_of_images, upload_time from super_pixel where username = $1 order by id desc";
         
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
             return NULL;
         
@@ -1554,7 +1554,7 @@ class DB_util
         $db_params = $CI->config->item('image_viewer_db_params');
         $sql = "select contact_email from cropping_processes where id = $1";
         
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
             return NULL;
         
@@ -1586,7 +1586,7 @@ class DB_util
         $db_params = $CI->config->item('image_viewer_db_params');
         
         
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
             return false;
         
@@ -1619,7 +1619,7 @@ class DB_util
         $db_params = $CI->config->item('image_viewer_db_params');
         
         
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
             return false;
 
@@ -1665,7 +1665,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "select * from cil_users where email = $1";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return false;
@@ -1694,7 +1694,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "select * from cil_users where username = $1";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return false;
@@ -1724,7 +1724,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "select * from cil_users where username = $1 and activated_time is NULL";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return false;
@@ -1753,7 +1753,7 @@ class DB_util
     {
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
             return false;
         
@@ -1785,7 +1785,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "select role from cil_users u, cil_roles r where u.user_role = r.id and username = $1 and role = 'admin'";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return false;
@@ -1816,7 +1816,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "select group_id from cil_metadata m, cil_tags t where m.tags = t.tag and image_id = $1";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return NULL;
@@ -1845,7 +1845,7 @@ class DB_util
         $db_params = $CI->config->item('db_params');
         $sql = "select image_id from cil_metadata where tags = $1 order by create_time";
        
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return NULL;
@@ -1878,7 +1878,7 @@ class DB_util
         $db_params = $CI->config->item('db_params');
         $sql = "select tag,group_id from cil_metadata m, cil_tags t where m.tags = t.tag and image_id = $1";
        
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
         {
             return NULL;
@@ -1925,7 +1925,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "select id, file_name, file_size,has_display_image,publish_date from models where delete_time is NULL order by id desc";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         $mainArray = array();
         
          if(!$conn)
@@ -1969,7 +1969,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "select tag from cil_tags order by order_number desc";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         $tarray = array();
         if(!$conn)
             return $tarray;
@@ -1988,7 +1988,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "update models set metadata_json = $1 where id = $2";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         
         $input = array();
         array_push($input,$json_str);
@@ -2009,7 +2009,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "update cil_metadata set metadata = $1 where image_id = $2";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         
         $input = array();
         array_push($input,$metadata);
@@ -2030,7 +2030,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "update models has_display_image set has_display_image = true where id = $1";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         
         $input = array();
         array_push($input,$model_id);
@@ -2049,7 +2049,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "update models set training_data_filename = $1, training_data_filesize = $2 where id = $3";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         
         $input = array();
         array_push($input,$fileName);
@@ -2071,7 +2071,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "update models set file_name = $1, file_size =$2 where id = $3";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
             return false;
         
@@ -2095,7 +2095,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "update cil_users set pass_hash  = $1 where username = $2";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
             return false;
         $input = array();
@@ -2118,7 +2118,7 @@ class DB_util
         $db_params = $CI->config->item('db_params');
         
         $sql = "insert into retrain_models(id) values($1)";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
             return false;
         $input = array();
@@ -2141,7 +2141,7 @@ class DB_util
         $db_params = $CI->config->item('db_params');
         $sql = "update retrain_models set retrain_label_folder = $1 where id = $2";
         
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
             return false;
         $input = array();
@@ -2165,7 +2165,7 @@ class DB_util
         $db_params = $CI->config->item('db_params');
         $sql = "update retrain_models set model_doi=$1, second_aug=$2, tertiary_aug=$3, num_iterations=$4, username=$5, email=$6, process_start_time=now() where id=$7";
         
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
             return false;
         $input = array();
@@ -2195,7 +2195,7 @@ class DB_util
         $db_params = $CI->config->item('db_params');
         $sql = "update retrain_models set retrain_image_folder = $1 where id = $2";
         
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
             return false;
         $input = array();
@@ -2219,7 +2219,7 @@ class DB_util
         $db_params = $CI->config->item('db_params');
         
         $sql = "insert into retrain_models(id,retrain_images_upload) values(1,now())";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
             return false;
         $input = array();
@@ -2243,7 +2243,7 @@ class DB_util
         $db_params = $CI->config->item('db_params');
         
         $sql = "insert into models(id, file_name,file_size, username, create_time) values($1, $2, $3, $4, now())";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         
         $input = array();
         array_push($input,$model_id);
@@ -2267,7 +2267,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "select id from models where id = $1";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         $input = array();
         array_push($input,$model_id);
         
@@ -2291,7 +2291,7 @@ class DB_util
         else 
            $sql = "select nextval('cil_id_sequence')";
        
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         $result = pg_query($conn, $sql);
         $id = 0;
         if($row = pg_fetch_row($result))
@@ -2306,7 +2306,7 @@ class DB_util
     {
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('image_viewer_db_params');
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
             return false;
         
@@ -2337,7 +2337,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('image_viewer_db_params');
         $sql = "select id  from cropping_processes where id = $1";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
             return false;
         
@@ -2366,7 +2366,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('image_viewer_db_params');
         $defaultType = "stable";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
             return $defaultType;
         $sql = "select docker_image_type from cropping_processes where id = $1";
@@ -2393,7 +2393,7 @@ class DB_util
     {
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
         {
             return false;
@@ -2417,7 +2417,7 @@ class DB_util
     {
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('image_viewer_db_params');
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
         {
             return false;
@@ -2443,7 +2443,7 @@ class DB_util
     {
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('image_viewer_db_params');
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
             return null;
         $sql = "select nextval('general_sequence')";
@@ -2467,7 +2467,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "select distinct tags from cil_metadata where tags is not null order by tags";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         $result = pg_query($conn, $sql);
         $tarray = array();
         while($row = pg_fetch_row($result))
@@ -2484,7 +2484,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "select role from cil_users u, cil_roles r where u.user_role = r.id and u.username = $1";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         $input = array();
         array_push($input, $username);
         $result = pg_query_params($conn,$sql,$input);
@@ -2502,7 +2502,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "select jpeg_size, zip_size from cil_metadata where image_id = $1";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         $input = array();
         array_push($input, $image_id);
         $result = pg_query_params($conn,$sql,$input);
@@ -2531,7 +2531,7 @@ class DB_util
         $json = null;
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         $sql = "select id, metadata_json from models where publish_date is not null and delete_time is null order by  display_order desc";
         $result = pg_query($conn,$sql);
         if(!$result) 
@@ -2624,7 +2624,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "select metadata_json from models where id = $1";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         $input = array();
         array_push($input, $model_id);
         $result = pg_query_params($conn,$sql,$input);
@@ -2665,7 +2665,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "select tag from cil_tags where tag = $1";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if(!$conn)
             return false;
         $input = array();
@@ -2693,7 +2693,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "select token from cil_auth_tokens where username = $1 order by id desc limit 1";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         $input = array();
         array_push($input,$username);
         
@@ -2718,7 +2718,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "select numeric_id from cil_metadata where publish_date is NULL order by numeric_id desc";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         $idArray = array();
         
         $result = pg_query($conn,$sql);
@@ -2744,7 +2744,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $array = array();
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
         {   
             return NULL;
@@ -2772,7 +2772,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $sql = "update models set delete_time = now() where id = $1";
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
         {   
             return false;
@@ -2796,7 +2796,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $array = array();
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
         {   
             return false;
@@ -2821,7 +2821,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $array = array();
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
         {   
             return false;
@@ -2850,7 +2850,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $array = array();
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
         {   
             return false;
@@ -2874,7 +2874,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $array = array();
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
         {   
             return false;
@@ -2903,7 +2903,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $array = array();
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
         {   
             return false;
@@ -2927,7 +2927,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $array = array();
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
         {   
             return false;
@@ -2950,7 +2950,7 @@ class DB_util
     {
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
         {   
             return false;
@@ -2984,7 +2984,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $array = array();
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
         {   
             return false;
@@ -3009,7 +3009,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $array = array();
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
         {   
             return false;
@@ -3035,7 +3035,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $array = array();
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
         {   
             return false;
@@ -3063,7 +3063,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $array = array();
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
         {   
             return $id_array;
@@ -3095,7 +3095,7 @@ class DB_util
     {
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
             return NULL;
         $sql = "select training_data_filename, training_data_filesize from models where id = $1 and training_data_filename is not NULL ".
@@ -3131,7 +3131,7 @@ class DB_util
     {
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
             return NULL;
         
@@ -3169,7 +3169,7 @@ class DB_util
     {
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
             return NULL;
         
@@ -3209,7 +3209,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('db_params');
         $array = array();
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
         {   
             $array[$this->success] = false;
@@ -3267,7 +3267,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('image_viewer_db_params');
         $array = array();
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         
         if(!is_numeric($cropId))
         {
@@ -3303,7 +3303,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('image_viewer_db_params');
         $array = array();
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         
         if(!is_numeric($cropId))
         {
@@ -3338,7 +3338,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('image_viewer_db_params');
         $array = array();
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         
         if(!is_numeric($cropId))
         {
@@ -3373,7 +3373,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('image_viewer_db_params');
         $array = array();
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         
         if(!is_numeric($cropId))
         {
@@ -3409,7 +3409,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('image_viewer_db_params');
         $array = array();
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         
         if(!is_numeric($cropId))
         {
@@ -3445,7 +3445,7 @@ class DB_util
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('image_viewer_db_params');
         $array = array();
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         
         if(!is_numeric($cropId))
         {
@@ -3486,7 +3486,7 @@ class DB_util
         $sql = "select image_id, internal_image_location from images where internal_image_location is not null order by id asc";
         
     
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         
         
         $result = pg_query($conn,$sql);
